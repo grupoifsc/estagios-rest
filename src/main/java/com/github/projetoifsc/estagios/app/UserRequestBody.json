@@ -1,0 +1,21 @@
+{
+  "username": "<string>",
+  "nome": "<string>",
+  "cnpj": "<string>",
+  "instituicaoDeEnsino": true,
+  "info": "<string>",
+  "contatoPrincipal": {
+    "email": "<string>",
+    "telefone": "<string>"
+  },
+  "contatoCandidaturas": {
+    "email": "<string>",
+    "telefone": "<string>"
+  },
+  "endereco": {
+    "rua": "<string>",
+    "cidade": "<string>",
+    "estado": "<string>",
+    "pais": "<string>"
+  }
+}
