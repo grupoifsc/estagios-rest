@@ -10,13 +10,12 @@ public interface IOrganizationRepository {
     IOrganization findByUsername(String username);
 
     IOrganization save(IOrganization organization);
-    void delete(IOrganization organization);
+    void delete(String organization);
 
     IOrganization getPublicProfile(String organization);
     IOrganization getPrivateProfile(String organization);
 
-    List<ITraineeship> getCreatedJobs(IOrganization organization);
-    List<ITraineeship> getExclusiveReceivedJobs(IOrganization organization);
+    List<ITraineeship> getCreatedJobs(String organization);
+    List<ITraineeship> getExclusiveReceivedJobs(String organization);
 
-    
 }

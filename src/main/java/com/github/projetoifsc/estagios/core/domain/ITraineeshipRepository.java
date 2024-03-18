@@ -9,9 +9,10 @@ public interface ITraineeshipRepository {
     ITraineeship save(ITraineeship created);
     void delete(String ITraineeship);
 
-    List<ITraineeship> findAllWhereReceiversIsNull(boolean exclusive);
     List<IOrganization> getReceivers(String ITraineeship);
     ITraineeship getPublicDetails(String ITraineeship);
     ITraineeship getPrivateDetails(String ITraineeship);
+
+    List<ITraineeship> findAllWithoutReceivers();
 
 }
