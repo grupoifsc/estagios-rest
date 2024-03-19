@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GetTraineeshipUseCasesUnitTests {
+public class GetOneTraineeshipUseCasesUnitTests {
 
     ITraineeshipRepository traineeshipRepository = mock();
     IOrganizationRepository organizationRepository = mock();
@@ -35,6 +35,7 @@ public class GetTraineeshipUseCasesUnitTests {
         traineeship.setOwner(organization);
 
     }
+
 
 
     @Test

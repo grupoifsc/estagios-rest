@@ -32,9 +32,9 @@ public class ITraineeshipUnitTest {
     }
 
     @Test
-    void receiversIsListOfOrganization() {
+    void receiversIsListOfOrganizationStringIds() {
         assertInstanceOf(List.class, traineeship.getReceiversIds());
-        assertInstanceOf(IOrganization.class, traineeship.getReceiversIds().get(0));
+        assertInstanceOf(String.class, traineeship.getReceiversIds().get(0));
     }
 
 }
