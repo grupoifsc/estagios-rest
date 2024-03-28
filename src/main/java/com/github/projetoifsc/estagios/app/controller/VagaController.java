@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.controller;
 
-import com.github.projetoifsc.estagios.app.dto.UserDTO;
+import com.github.projetoifsc.estagios.app.dto.OrgDTO;
 import com.github.projetoifsc.estagios.app.dto.VagaPrivateProfileDTO;
 import com.github.projetoifsc.estagios.app.dto.VagaPublicProfileDTO;
 import com.github.projetoifsc.estagios.app.service.VagaService;
@@ -87,7 +87,7 @@ public class VagaController {
 		return service.delete(vagaId);
 	}
 
-	@GetMapping("/vagas/{id}")
+	@GetMapping("/vagas/{id}/public")
 	@Operation(summary="Ver Vaga", description="Ver o perfil público de uma vaga. Autorizado apenas ao criador ou destinatários da vaga.", tags= {VAGAS}, operationId="getVaga")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200"),
@@ -104,7 +104,7 @@ public class VagaController {
 	}
 
 
-	@GetMapping("/vagas/{id}/private")
+	@GetMapping("/vagas/{id}")
 	@Operation(summary="Ver Perfil Privado de Vaga", description="Ver perfil privado de uma vaga. Autorizado apenas ao criador da vaga.", tags= {VAGAS}, operationId="getVagaPrivate")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200"),
@@ -121,7 +121,7 @@ public class VagaController {
 	}
 
 
-	@GetMapping("/users/{id}/vagas/received")
+	@GetMapping("/entidades/{id}/vagas/recebidas")
 	@Operation(summary="Vagas recebidas", description="Ver as vagas recebidas pelo usuário autenticado", tags= {VAGAS}, operationId="getVagasRecebidas")
 	@ApiResponses({
 		@ApiResponse(responseCode = "200"),
@@ -155,7 +155,7 @@ public class VagaController {
 	}
 
 
-	@GetMapping("/users/{id}/vagas")
+	@GetMapping("/entidades/{id}/vagas")
 	@Operation(summary="Vagas Criadas", description="Ver as vagas criadas pelo usuário autenticado.", tags= { VAGAS}, operationId="getVagasCriadas")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200"),
@@ -173,7 +173,7 @@ public class VagaController {
 	}
 
 
-	public ResponseEntity<Page<UserDTO>> getVagaRecipients(
+	public ResponseEntity<Page<OrgDTO>> getVagaRecipients(
 			@PathVariable String id) {
 		return service.getVagaRecipients(id);
 	}

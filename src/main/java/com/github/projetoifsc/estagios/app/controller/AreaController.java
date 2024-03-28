@@ -11,17 +11,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.github.projetoifsc.estagios.app.utils.HttpErrorMessages.TOO_MANY_REQUESTS_MSG;
 import static com.github.projetoifsc.estagios.app.utils.HttpErrorMessages.UNAUTHORIZED_MSG;
-import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.BASE_URL;
-import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.VAGAS;
+import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.*;
 
 @RestController
-@RequestMapping(value = BASE_URL + "/areas", 
+@RequestMapping(value = BASE_URL,
 				produces = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML, 
 								MediaTypes.APPLICATION_HAL, MediaTypes.APPLICATION_HAL_FORMS } )
 
@@ -34,8 +31,8 @@ public class AreaController {
 		this.service = service;
 	}
 
-	@GetMapping("")
-	@Operation(summary="Áreas", description="Ver todas as áreas", tags={VAGAS}, operationId="getAllAreas")
+	@GetMapping("/areas")
+	@Operation(summary="Ver Todas", description="Ver todas as áreas", tags={AREAS}, operationId="getAllAreas")
 	@ApiResponses({
 	    @ApiResponse(responseCode = "200"),
 	    @ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
@@ -45,12 +42,47 @@ public class AreaController {
 		return service.getAll();
 	}
 
-	
+
+	@PostMapping("/areas")
+	@Operation(summary="Criar", description="Criar Área", tags={AREAS}, operationId="postArea")
+	public ResponseEntity<Page<AreaDTO>> criarArea () {
+		return service.getAll();
+	}
+
+
+	@GetMapping("/entidades/{id}/areas")
+	@Operation(summary="Ver áreas de uma entidade", description="Ver todas as áreas criadas por uma entidade", tags={AREAS}, operationId="getAllAreasFromUser")
+	public ResponseEntity<Page<AreaDTO>> areasCriadas () {
+		return service.getAll();
+	}
+
+	@GetMapping("/areas/{id}")
+	@Operation(summary="Ver", description="Ver uma área", tags={AREAS}, operationId="getArea")
+	public ResponseEntity<Page<AreaDTO>> verArea () {
+		return service.getAll();
+	}
+
+
+	@PutMapping("/areas/{id}")
+	@Operation(summary="Editar", description="Editar uma área", tags={AREAS}, operationId="putArea")
+	public ResponseEntity<Page<AreaDTO>> editarAreas () {
+		return service.getAll();
+	}
+
+
+	@DeleteMapping("/areas/{id}")
+	@Operation(summary="Deletar", description="Deletar uma área", tags={AREAS}, operationId="deleteArea")
+	public ResponseEntity<Page<AreaDTO>> deletarAreas () {
+		return service.getAll();
+	}
+
+
+
 //	@GetMapping("/mine")
-//	@Operation(summary=GET_MINE_SUMMARY, description=GET_MINE_DESCRIPTION, tags={ VAGAS, IES }, operationId=GET_MINE_ID)
+//	@Operation(summary=GET_MINE_SUMMARY, description=GET_MINE_DESCRIPTION, tags={ AREAS, IES }, operationId=GET_MINE_ID)
 //	@ApiResponses({
 //	    @ApiResponse(responseCode = "200", content = {@Content(examples= { @ExampleObject(value = AREA_CONTENT_MSG) })} ),
-//	    		//links = {@Link(operationId="getPerfil", name="self"), @Link(operationId="getConfigs", name="configs"), @Link(operationId="getVagas", name="vagas"), @Link(operationId="getPerfilPublico", name="perfilPublico")}),
+//	    		//links = {@Link(operationId="getPerfil", name="self"), @Link(operationId="getConfigs", name="configs"), @Link(operationId="getAREAS", name="vagas"), @Link(operationId="getPerfilPublico", name="perfilPublico")}),
 //	    @ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
 //	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 //	})
@@ -99,7 +131,7 @@ public class AreaController {
 //
 //
 //	@DeleteMapping("/mine")
-//	@Operation(summary=DELETE_SUMMARY, description=DELETE_DESCRIPTION, tags={ VAGAS, IES }, operationId=DELETE_ID)
+//	@Operation(summary=DELETE_SUMMARY, description=DELETE_DESCRIPTION, tags={ AREAS, IES }, operationId=DELETE_ID)
 //	@ApiResponses({
 //	    @ApiResponse(responseCode = "204"),
 //	    @ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),

@@ -1,10 +1,10 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.dto.UserDTO;
-import com.github.projetoifsc.estagios.app.dto.UserPrivateProfileDTO;
-import com.github.projetoifsc.estagios.app.dto.UserPublicProfileDTO;
+import com.github.projetoifsc.estagios.app.dto.OrgDTO;
+import com.github.projetoifsc.estagios.app.dto.OrgPrivateProfileDTO;
+import com.github.projetoifsc.estagios.app.dto.OrgPublicProfileDTO;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
-import com.github.projetoifsc.estagios.app.utils.mock.UserMock;
+import com.github.projetoifsc.estagios.app.utils.mock.OrgMock;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,20 +31,20 @@ import java.util.List;
 
 
 @Service
-public class UserService {
+public class OrgService {
 
     ModelMapper mapper = new ModelMapper();
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
 
-    public ResponseEntity<UserPrivateProfileDTO> create(UserPrivateProfileDTO perfil) {
+    public ResponseEntity<OrgPrivateProfileDTO> create(OrgPrivateProfileDTO perfil) {
 
         requestHandlerChain.handle(perfil);
 
         perfil.setId("111");
         var userDTO = mapper.map(
                 perfil,
-                UserPrivateProfileDTO.class);
+                OrgPrivateProfileDTO.class);
 
         return new ResponseEntity<>(
                 userDTO,
@@ -53,11 +53,11 @@ public class UserService {
     }
 
 
-    public ResponseEntity<UserPrivateProfileDTO> getAuthUserPerfil() {
+    public ResponseEntity<OrgPrivateProfileDTO> getAuthUserPerfil() {
 
         var userDTO = mapper.map(
-                UserMock.getOne(),
-                UserPrivateProfileDTO.class
+                OrgMock.getOne(),
+                OrgPrivateProfileDTO.class
         );
 
         return new ResponseEntity<> (
@@ -66,14 +66,14 @@ public class UserService {
     }
 
 
-    public ResponseEntity<UserPrivateProfileDTO> updateAuthUserPerfil(UserPrivateProfileDTO perfil) {
+    public ResponseEntity<OrgPrivateProfileDTO> updateAuthUserPerfil(OrgPrivateProfileDTO perfil) {
 
         requestHandlerChain.handle(perfil);
 
         perfil.setId("123");
         var userDTO = mapper.map(
                 perfil,
-                UserPrivateProfileDTO.class
+                OrgPrivateProfileDTO.class
         );
 
         return new ResponseEntity<>(
@@ -82,28 +82,28 @@ public class UserService {
     }
 
 
-    public ResponseEntity<UserPrivateProfileDTO> deleteAuthUserPerfil() {
+    public ResponseEntity<OrgPrivateProfileDTO> deleteAuthUserPerfil() {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
-    public ResponseEntity<Page<UserDTO>> getAllUsers() {
-        var users = UserMock.getList();
+    public ResponseEntity<Page<OrgDTO>> getAllUsers() {
+        var users = OrgMock.getList();
         return this.getPageFromList(users);
     }
 
 
-    public ResponseEntity<Page<UserDTO>> getAllSchools() {
-        var users = UserMock.getSchools();
+    public ResponseEntity<Page<OrgDTO>> getAllSchools() {
+        var users = OrgMock.getSchools();
         return this.getPageFromList(users);
     }
 
 
-    public ResponseEntity<UserPublicProfileDTO> getUserPublicProfile(String id) {
-        var user = UserMock.getOne();
+    public ResponseEntity<OrgPublicProfileDTO> getUserPublicProfile(String id) {
+        var user = OrgMock.getOne();
         var userDTO = mapper.map(
                 user,
-                UserPublicProfileDTO.class
+                OrgPublicProfileDTO.class
         );
         return new ResponseEntity<>(
                 userDTO,
@@ -112,8 +112,8 @@ public class UserService {
     }
 
 
-    private ResponseEntity<Page<UserDTO>> getPageFromList(List<UserPrivateProfileDTO> users) {
-        var usersDTO = users.stream().map(user -> mapper.map(user, UserDTO.class)).toList();
+    private ResponseEntity<Page<OrgDTO>> getPageFromList(List<OrgPrivateProfileDTO> users) {
+        var usersDTO = users.stream().map(user -> mapper.map(user, OrgDTO.class)).toList();
         var page = new PageImpl<>(usersDTO);
         return new ResponseEntity<>(
                 page,

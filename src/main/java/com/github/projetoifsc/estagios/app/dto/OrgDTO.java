@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 @Schema(name = "Organização", description = "Sumário da Organização")
 @JsonPropertyOrder(value = {"id", "nome", "instituicaoDeEnsino", "links"})
 @Validated
-public class UserDTO extends DTO {
+public class OrgDTO extends DTO {
 
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     @Schema(description = "Id", example="123", accessMode = Schema.AccessMode.READ_ONLY, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -25,10 +25,10 @@ public class UserDTO extends DTO {
     private boolean ie = false;
 
 
-    public UserDTO() {
+    public OrgDTO() {
     }
 
-    public UserDTO(String key, String name, boolean ie) {
+    public OrgDTO(String key, String name, boolean ie) {
         this.key = key;
         this.name = name;
         this.ie = ie;

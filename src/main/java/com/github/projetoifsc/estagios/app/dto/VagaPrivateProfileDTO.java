@@ -41,7 +41,7 @@ public class VagaPrivateProfileDTO extends VagaPublicProfileDTO {
 
 	public VagaPrivateProfileDTO() {}
 
-	public VagaPrivateProfileDTO(String key, UserDTO owner, String title, String description, List<@NotBlank String> requirements, List<@NotBlank String> periods, long workloadInHours, long payment, List<@NotBlank String> levels, List<@NotBlank String> areas, LocalDate startsAt, LocalDate endsAt, Contato contact, Localizacao address, List<@NotBlank String> externalLinks, LocalDateTime createdAt, LocalDateTime updatedAt, Integer expiresInDays, List<@NotNull String> ies, int renovateInDays, String creatorInternalId) {
+	public VagaPrivateProfileDTO(String key, OrgDTO owner, String title, String description, List<@NotBlank String> requirements, List<@NotBlank String> periods, long workloadInHours, long payment, List<@NotBlank String> levels, List<@NotBlank String> areas, LocalDate startsAt, LocalDate endsAt, Contato contact, Localizacao address, List<@NotBlank String> externalLinks, LocalDateTime createdAt, LocalDateTime updatedAt, Integer expiresInDays, List<@NotNull String> ies, int renovateInDays, String creatorInternalId) {
 		super(key, owner, title, description, requirements, periods, workloadInHours, payment, levels, areas, startsAt, endsAt, contact, address, externalLinks, createdAt, updatedAt);
 		this.expiresInDays = expiresInDays;
 		this.ies = ies;

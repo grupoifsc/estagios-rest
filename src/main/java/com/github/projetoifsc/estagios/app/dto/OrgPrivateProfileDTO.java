@@ -20,7 +20,7 @@ import jakarta.validation.constraints.NotNull;
 		"instituicaoDeEnsino", "info", "contatoPrincipal", "contatoCandidaturas",
 		"endereco", "criadoEm", "atualizadoEm", "links"})
 @Validated
-public class UserPrivateProfileDTO extends UserPublicProfileDTO {
+public class OrgPrivateProfileDTO extends OrgPublicProfileDTO {
 
 	@JsonProperty(required = true)
 	@Schema(description = "Identificador para autenticação", requiredMode = Schema.RequiredMode.REQUIRED, example = "nobanks")
@@ -55,7 +55,7 @@ public class UserPrivateProfileDTO extends UserPublicProfileDTO {
 	@JsonProperty(value = "atualizadoEm", access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime updatedAt;
 
-	public UserPrivateProfileDTO(String key, String name, boolean ie, String info, Contato mainContact, String username, String cnpj, Localizacao address, Contato applicationContact, LocalDateTime createdAt, LocalDateTime updatedAt) {
+	public OrgPrivateProfileDTO(String key, String name, boolean ie, String info, Contato mainContact, String username, String cnpj, Localizacao address, Contato applicationContact, LocalDateTime createdAt, LocalDateTime updatedAt) {
 		super(key, name, ie, info, mainContact);
 		this.username = username;
 		this.cnpj = cnpj;

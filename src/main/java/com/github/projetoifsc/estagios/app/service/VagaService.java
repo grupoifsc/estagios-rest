@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.app.service;
 
 import com.github.projetoifsc.estagios.app.dto.*;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
-import com.github.projetoifsc.estagios.app.utils.mock.UserMock;
+import com.github.projetoifsc.estagios.app.utils.mock.OrgMock;
 import com.github.projetoifsc.estagios.app.utils.mock.VagaMock;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -33,7 +33,7 @@ public class VagaService {
         requestHandlerChain.handle(vaga);
 
         vaga.setId("123");
-        vaga.setOwner(UserMock.getOne());
+        vaga.setOwner(OrgMock.getOne());
 
         var mapped = mapper.map
                 (vaga, VagaPrivateProfileDTO.class);
@@ -67,7 +67,7 @@ public class VagaService {
         requestHandlerChain.handle(vaga);
 
         vaga.setId("123");
-        vaga.setOwner(UserMock.getOne());
+        vaga.setOwner(OrgMock.getOne());
         var mapped = mapper.map(
                 vaga, VagaPrivateProfileDTO.class
         );
@@ -135,11 +135,11 @@ public class VagaService {
     }
 
 
-    public ResponseEntity<Page<UserDTO>> getVagaRecipients(String id) {
-        var users = UserMock.getList();
+    public ResponseEntity<Page<OrgDTO>> getVagaRecipients(String id) {
+        var users = OrgMock.getList();
         var usersDTO = users.stream().map(user -> mapper.map(
                 user,
-                UserDTO.class
+                OrgDTO.class
         )).toList();
         var pageImpl = new PageImpl<>(usersDTO);
 

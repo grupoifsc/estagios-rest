@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 @JsonPropertyOrder(value = {"id", "nome", "instituicaoDeEnsino",
         "info", "contatoPrincipal", "links"})
 @Validated
-public class UserPublicProfileDTO extends UserDTO {
+public class OrgPublicProfileDTO extends OrgDTO {
 
     @JsonProperty(value = "info", required = true)
     @Schema(description = "Informações sobre a organização", requiredMode = Schema.RequiredMode.REQUIRED, example = "Uma organização sem bancos", maxLength = 500)
@@ -27,7 +27,7 @@ public class UserPublicProfileDTO extends UserDTO {
     private Contato mainContact;
 
 
-    public UserPublicProfileDTO(String key, String name, boolean ie, String info, Contato mainContact) {
+    public OrgPublicProfileDTO(String key, String name, boolean ie, String info, Contato mainContact) {
         super(key, name, ie);
         this.info = info;
         this.mainContact = mainContact;

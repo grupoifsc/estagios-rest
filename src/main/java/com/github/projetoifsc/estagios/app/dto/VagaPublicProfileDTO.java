@@ -90,7 +90,7 @@ public class VagaPublicProfileDTO extends VagaDTO {
 
     public VagaPublicProfileDTO() {}
 
-    public VagaPublicProfileDTO(String key, UserDTO
+    public VagaPublicProfileDTO(String key, OrgDTO
             owner, String title, String description, List<@NotBlank String> requirements, List<@NotBlank String> periods, long workloadInHours, long payment, List<@NotBlank String> levels, List<@NotBlank String> areas, LocalDate startsAt, LocalDate endsAt, Contato contact, Localizacao address, List<@NotBlank String> externalLinks, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(key, owner, title);
         this.description = description;

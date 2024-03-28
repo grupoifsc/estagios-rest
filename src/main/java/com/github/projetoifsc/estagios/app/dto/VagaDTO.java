@@ -23,7 +23,7 @@ public class VagaDTO extends DTO {
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@NotNull
 	@Valid
-	private UserDTO owner;
+	private OrgDTO owner;
 
 	@JsonProperty("titulo")
 	@Schema(example="Vaga de desenhista Junior")
@@ -32,7 +32,7 @@ public class VagaDTO extends DTO {
 
 	public VagaDTO() {}
 
-	public VagaDTO(String id, UserDTO owner, String title) {
+	public VagaDTO(String id, OrgDTO owner, String title) {
 		this.id = id;
 		this.owner = owner;
 		this.title = title;
@@ -46,11 +46,11 @@ public class VagaDTO extends DTO {
 		this.id = id;
 	}
 
-	public UserDTO getOwner() {
+	public OrgDTO getOwner() {
 		return owner;
 	}
 
-	public void setOwner(UserDTO owner) {
+	public void setOwner(OrgDTO owner) {
 		this.owner = owner;
 	}
 

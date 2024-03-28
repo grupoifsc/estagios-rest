@@ -14,7 +14,7 @@ public class AreaDTO extends DTO {
     private String id;
 
     @JsonIgnore
-    private UserDTO owner;
+    private OrgDTO owner;
 
     @JsonProperty(value = "nome", required = true)
     @Schema(description = "Nome da área", example = "Educação",requiredMode = Schema.RequiredMode.REQUIRED)
@@ -22,7 +22,7 @@ public class AreaDTO extends DTO {
     private String name;
 
 
-    public AreaDTO(String id, UserDTO owner, String name) {
+    public AreaDTO(String id, OrgDTO owner, String name) {
         this.id = id;
         this.owner = owner;
         this.name = name;
@@ -36,11 +36,11 @@ public class AreaDTO extends DTO {
         this.id = id;
     }
 
-    public UserDTO getOwner() {
+    public OrgDTO getOwner() {
         return owner;
     }
 
-    public void setOwner(UserDTO owner) {
+    public void setOwner(OrgDTO owner) {
         this.owner = owner;
     }
 

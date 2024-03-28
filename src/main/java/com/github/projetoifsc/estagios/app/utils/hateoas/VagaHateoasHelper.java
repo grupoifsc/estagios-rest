@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.utils.hateoas;
 
-import com.github.projetoifsc.estagios.app.controller.UserController;
+import com.github.projetoifsc.estagios.app.controller.OrgController;
 import com.github.projetoifsc.estagios.app.controller.VagaController;
 import com.github.projetoifsc.estagios.app.dto.VagaDTO;
 import com.github.projetoifsc.estagios.app.dto.VagaPrivateProfileDTO;
@@ -15,7 +15,7 @@ public class VagaHateoasHelper {
 
         vaga.add(linkTo(methodOn(vagaController)
                 .getPublicProfile(vaga.getId())).withSelfRel());
-        vaga.add(linkTo(methodOn(UserController.class)
+        vaga.add(linkTo(methodOn(OrgController.class)
                 .getUserPublicProfile(vaga.getOwner().getId())).withRel("criador"));
 
     }
@@ -33,7 +33,7 @@ public class VagaHateoasHelper {
                 .andAffordance(afford(methodOn(vagaController)
                         .delete(vaga.getId())))
         );
-        vaga.add(linkTo(methodOn(UserController.class)
+        vaga.add(linkTo(methodOn(OrgController.class)
                 .getAuthUserPerfil()).withRel("criador"));
         vaga.add(linkTo(methodOn(vagaController)
                 .getVagaRecipients(vaga.getId())).withRel("destinatarios"));
