@@ -1,15 +1,15 @@
 package com.github.projetoifsc.estagios.core.domain.dto;
 
-import com.github.projetoifsc.estagios.core.domain.ITraineeship;
-import com.github.projetoifsc.estagios.core.domain.IOrganization;
+import com.github.projetoifsc.estagios.core.domain.iJob;
+import com.github.projetoifsc.estagios.core.domain.iOrganization;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TraineeshipImpl implements ITraineeship {
+public class JobImpl implements iJob {
 
     private String id;
-    private IOrganization owner;
+    private iOrganization owner;
     private List<String> receivers = new ArrayList<>();
 
     @Override
@@ -23,12 +23,12 @@ public class TraineeshipImpl implements ITraineeship {
     }
 
     @Override
-    public IOrganization getOwner() {
+    public iOrganization getOwner() {
         return owner;
     }
 
     @Override
-    public void setOwner(IOrganization owner) {
+    public void setOwner(iOrganization owner) {
         this.owner = owner;
     }
 

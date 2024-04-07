@@ -2,12 +2,12 @@ package com.github.projetoifsc.estagios.core.domain;
 
 import java.util.List;
 
-public interface ITraineeship {
+public interface iJob {
 
     String getId();
     void setId(String id);
-    IOrganization getOwner();
-    void setOwner(IOrganization user);
+    iOrganization getOwner();
+    void setOwner(iOrganization user);
     List<String> getReceiversIds();
     void setReceiversIds(List<String> receiversIds);
 

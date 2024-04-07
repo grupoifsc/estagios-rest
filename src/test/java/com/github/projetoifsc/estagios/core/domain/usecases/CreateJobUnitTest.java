@@ -1,11 +1,11 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
-import com.github.projetoifsc.estagios.core.domain.IOrganization;
+import com.github.projetoifsc.estagios.core.domain.iOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
-import com.github.projetoifsc.estagios.core.domain.ITraineeship;
-import com.github.projetoifsc.estagios.core.domain.ITraineeshipRepository;
+import com.github.projetoifsc.estagios.core.domain.iJob;
+import com.github.projetoifsc.estagios.core.domain.iJobRepository;
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
-import com.github.projetoifsc.estagios.core.domain.dto.TraineeshipImpl;
+import com.github.projetoifsc.estagios.core.domain.dto.JobImpl;
 import com.github.projetoifsc.estagios.core.exceptions.InvalidReceiverException;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,23 +17,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CreateTraineeshipsUseCasesUnitTest {
+public class CreateJobUnitTest {
 
-    ITraineeshipRepository traineeshipRepository = mock();
+    iJobRepository jobRepository = mock();
     IOrganizationRepository organizationRepository = mock();
 
-    CreateTraineeshipsUseCases service = new CreateTraineeshipsUseCases(traineeshipRepository, organizationRepository);
+    CreateJob service = new CreateJob(jobRepository, organizationRepository);
 
-    ITraineeship traineeship;
-    IOrganization organization;
+    iJob job;
+    iOrganization organization;
 
     @BeforeEach
     void setUp() {
         organization = new OrganizationImpl("1", false);
 
-        traineeship = new TraineeshipImpl();
-        traineeship.setId("1");
-        traineeship.setOwner(organization);
+        job = new JobImpl();
+        job.setId("1");
+        job.setOwner(organization);
 
     }
 
@@ -43,10 +43,10 @@ public class CreateTraineeshipsUseCasesUnitTest {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
 
-        when(traineeshipRepository.save(traineeship))
-                .thenReturn(traineeship);
+        when(jobRepository.save(job))
+                .thenReturn(job);
 
-        assertInstanceOf(ITraineeship.class, service.create(organization.getId(), traineeship));
+        assertInstanceOf(iJob.class, service.create(organization.getId(), job));
     }
 
 
@@ -55,12 +55,12 @@ public class CreateTraineeshipsUseCasesUnitTest {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
 
-        when(traineeshipRepository.save(traineeship))
-                .thenReturn(traineeship);
+        when(jobRepository.save(job))
+                .thenReturn(job);
 
-        traineeship.setOwner(null);
+        job.setOwner(null);
         assertEquals(organization,
-                service.create(organization.getId(), traineeship).getOwner());
+                service.create(organization.getId(), job).getOwner());
     }
 
 
@@ -73,12 +73,12 @@ public class CreateTraineeshipsUseCasesUnitTest {
         when(organizationRepository.findAllById(List.of(schoolA.getId(), schoolB.getId())))
                 .thenReturn(List.of(schoolA,schoolB));
 
-        traineeship.setReceiversIds(List.of(schoolA.getId(), schoolB.getId()));
+        job.setReceiversIds(List.of(schoolA.getId(), schoolB.getId()));
 
-        when(traineeshipRepository.save(traineeship))
-                .thenReturn(traineeship);
+        when(jobRepository.save(job))
+                .thenReturn(job);
 
-        var created = service.create(organization.getId(), traineeship);
+        var created = service.create(organization.getId(), job);
 
         assertTrue(created.getReceiversIds().contains(schoolA.getId()));
         assertTrue(created.getReceiversIds().contains(schoolB.getId()));
@@ -97,10 +97,10 @@ public class CreateTraineeshipsUseCasesUnitTest {
         when(organizationRepository.findAllById(List.of(schoolA.getId(), schoolB.getId(),notSchool.getId())))
                 .thenReturn(List.of(schoolA,schoolB, notSchool));
 
-        traineeship.setReceiversIds(List.of(schoolA.getId(), schoolB.getId(),notSchool.getId()));
+        job.setReceiversIds(List.of(schoolA.getId(), schoolB.getId(),notSchool.getId()));
 
         assertThrows(InvalidReceiverException.class,
-                ()->service.create(organization.getId(),traineeship));
+                ()->service.create(organization.getId(), job));
     }
 
 
@@ -108,26 +108,26 @@ public class CreateTraineeshipsUseCasesUnitTest {
     void updatesTraineeshipReturnsInterface() {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
-        when(traineeshipRepository.findById(traineeship.getId())).thenReturn(traineeship);
+        when(jobRepository.findById(job.getId())).thenReturn(job);
 
-        when(traineeshipRepository.save(traineeship))
-                .thenReturn(traineeship);
+        when(jobRepository.save(job))
+                .thenReturn(job);
 
-        assertInstanceOf(ITraineeship.class, service.update(organization.getId(), traineeship.getId(), traineeship));
+        assertInstanceOf(iJob.class, service.update(organization.getId(), job.getId(), job));
     }
 
 
     @Test
     void updatedTraineeshipHasOrganizationAsOwner() {
-        when(traineeshipRepository.findById(traineeship.getId()))
-                .thenReturn(traineeship);
+        when(jobRepository.findById(job.getId()))
+                .thenReturn(job);
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
-        when(traineeshipRepository.save(traineeship))
-                .thenReturn(traineeship);
+        when(jobRepository.save(job))
+                .thenReturn(job);
 
         assertEquals(organization,
-                service.update(organization.getId(), traineeship.getId(), traineeship).getOwner());
+                service.update(organization.getId(), job.getId(), job).getOwner());
     }
 
 
@@ -136,8 +136,8 @@ public class CreateTraineeshipsUseCasesUnitTest {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
 
-        when(traineeshipRepository.findById(traineeship.getId()))
-                .thenReturn(traineeship);
+        when(jobRepository.findById(job.getId()))
+                .thenReturn(job);
 
         var schoolA = new OrganizationImpl("2", true);
         var schoolB = new OrganizationImpl("3", true);
@@ -145,12 +145,12 @@ public class CreateTraineeshipsUseCasesUnitTest {
         when(organizationRepository.findAllById(List.of(schoolA.getId(), schoolB.getId())))
                 .thenReturn(List.of(schoolA,schoolB));
 
-        traineeship.setReceiversIds(List.of(schoolA.getId(), schoolB.getId()));
+        job.setReceiversIds(List.of(schoolA.getId(), schoolB.getId()));
 
-        when(traineeshipRepository.save(traineeship))
-                .thenReturn(traineeship);
+        when(jobRepository.save(job))
+                .thenReturn(job);
 
-        var updated = service.update(organization.getId(), traineeship.getId(), traineeship);
+        var updated = service.update(organization.getId(), job.getId(), job);
 
         assertTrue(updated.getReceiversIds().contains(schoolA.getId()));
         assertTrue(updated.getReceiversIds().contains(schoolB.getId()));
@@ -164,8 +164,8 @@ public class CreateTraineeshipsUseCasesUnitTest {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
 
-        when(traineeshipRepository.findById(traineeship.getId()))
-                .thenReturn(traineeship);
+        when(jobRepository.findById(job.getId()))
+                .thenReturn(job);
 
         var schoolA = new OrganizationImpl("2", true);
         var schoolB = new OrganizationImpl("3", true);
@@ -174,24 +174,25 @@ public class CreateTraineeshipsUseCasesUnitTest {
         when(organizationRepository.findAllById(List.of(schoolA.getId(), schoolB.getId(),notSchool.getId())))
                 .thenReturn(List.of(schoolA,schoolB, notSchool));
 
-        traineeship.setReceiversIds(List.of(schoolA.getId(), schoolB.getId(),notSchool.getId()));
+        job.setReceiversIds(List.of(schoolA.getId(), schoolB.getId(),notSchool.getId()));
 
         assertThrows(InvalidReceiverException.class,
-                ()->service.update(organization.getId(), traineeship.getId(), traineeship));
+                ()->service.update(organization.getId(), job.getId(), job));
     }
 
 
 
     @Test
     void tryToUpdateTraineeshipFromOtherOrganizationThrowsUnauthorized () {
-        var otherTraineeship = new TraineeshipImpl();
-        otherTraineeship.setOwner(new OrganizationImpl("3", true));
-        when(traineeshipRepository.findById("2")).thenReturn(otherTraineeship);
+        var otherJob = new JobImpl();
+        otherJob.setOwner(new OrganizationImpl("3", true));
+        when(jobRepository.findById("2")).thenReturn(otherJob);
+        when(organizationRepository.findById(organization.getId())).thenReturn(organization);
 
         assertThrows(UnauthorizedAccessException.class, ()->service.update(
                 organization.getId(),
                 "2",
-                traineeship
+                job
         ));
     }
 
@@ -200,17 +201,18 @@ public class CreateTraineeshipsUseCasesUnitTest {
     void canDeleteTraineeship() {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
-        when(traineeshipRepository.findById(traineeship.getId())).thenReturn(traineeship);
+        when(jobRepository.findById(job.getId())).thenReturn(job);
 
-        assertDoesNotThrow(()->service.delete(organization.getId(), traineeship.getId()));
+        assertDoesNotThrow(()->service.delete(organization.getId(), job.getId()));
     }
 
 
     @Test
     void tryDeleteTraineeshipFromOtherOrgThrowsUnauthorized() {
-        var otherTraineeship = new TraineeshipImpl();
+        var otherTraineeship = new JobImpl();
         otherTraineeship.setOwner(new OrganizationImpl("3", true));
-        when(traineeshipRepository.findById("2")).thenReturn(otherTraineeship);
+        when(jobRepository.findById("2")).thenReturn(otherTraineeship);
+        when(organizationRepository.findById(organization.getId())).thenReturn(organization);
 
         assertThrows(UnauthorizedAccessException.class,
                 ()->service.delete(organization.getId(), "2")

@@ -2,26 +2,27 @@ package com.github.projetoifsc.estagios.core.domain.usecases;
 
 
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
-import com.github.projetoifsc.estagios.core.domain.ITraineeship;
-import com.github.projetoifsc.estagios.core.domain.ITraineeshipRepository;
+import com.github.projetoifsc.estagios.core.domain.iJob;
+import com.github.projetoifsc.estagios.core.domain.iJobRepository;
+import com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 
-public class GetOneTraineeshipUseCases {
+public class GetOneJob {
 
-    ITraineeshipRepository traineeshipRepository;
+    iJobRepository traineeshipRepository;
     IOrganizationRepository organizationRepository;
 
-    public GetOneTraineeshipUseCases(ITraineeshipRepository traineeshipRepository, IOrganizationRepository organizationRepository) {
+    public GetOneJob(iJobRepository traineeshipRepository, IOrganizationRepository organizationRepository) {
         this.traineeshipRepository = traineeshipRepository;
         this.organizationRepository = organizationRepository;
     }
 
 
-    public ITraineeship getPrivateDetails(String organizationId, String traineeshipId) {
+    public iJob getPrivateDetails(String organizationId, String traineeshipId) {
         var organization = organizationRepository.findById(organizationId);
         var traineeship = traineeshipRepository.findById(traineeshipId);
 
-        if (TraineeshipValidation.organizationIsOwner(organization, traineeship)) {
+        if (OrganizationValidation.isOwner(organization, traineeship)) {
             return traineeshipRepository.getPrivateDetails(traineeshipId);
         }
 
@@ -30,14 +31,14 @@ public class GetOneTraineeshipUseCases {
     }
 
 
-    public ITraineeship getPublicDetails(String organizationId, String traineeshipId) {
+    public iJob getPublicDetails(String organizationId, String traineeshipId) {
         var organization = organizationRepository.findById(organizationId);
         var traineeship = traineeshipRepository.findById(traineeshipId);
 
         var receivers = traineeshipRepository.getReceivers(traineeshipId);
 
-        if (TraineeshipValidation.organizationIsOwner(organization, traineeship)
-                || TraineeshipValidation.organizationIsReceiver(organization, receivers)) {
+        if (OrganizationValidation.isOwner(organization, traineeship)
+                || OrganizationValidation.isReceiver(organization, receivers)) {
             return traineeshipRepository.getPublicDetails(traineeshipId);
         }
 

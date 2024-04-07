@@ -5,17 +5,17 @@ import java.util.List;
 
 public interface IOrganizationRepository {
 
-    IOrganization findById(String id);
-    List<IOrganization> findAllById(List<String> receiversIds);
-    IOrganization findByUsername(String username);
+    iOrganization findById(String id);
+    List<iOrganization> findAllById(List<String> receiversIds);
+    iOrganization findByUsername(String username);
 
-    IOrganization save(IOrganization organization);
+    iOrganization save(iOrganization organization);
     void delete(String organization);
 
-    IOrganization getPublicProfile(String organization);
-    IOrganization getPrivateProfile(String organization);
+    iOrganization getPublicProfile(String organization);
+    iOrganization getPrivateProfile(String organization);
 
-    List<ITraineeship> getCreatedJobs(String organization);
-    List<ITraineeship> getExclusiveReceivedJobs(String organization);
+    List<iJob> getCreatedJobs(String organization);
+    List<iJob> getExclusiveReceivedJobs(String organization);
 
 }

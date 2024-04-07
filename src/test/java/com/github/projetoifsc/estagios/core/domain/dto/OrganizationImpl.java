@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.core.domain.dto;
 
-import com.github.projetoifsc.estagios.core.domain.IOrganization;
+import com.github.projetoifsc.estagios.core.domain.iOrganization;
 
-public class OrganizationImpl implements IOrganization {
+public class OrganizationImpl implements iOrganization {
 
     private String id;
     boolean isSchool;

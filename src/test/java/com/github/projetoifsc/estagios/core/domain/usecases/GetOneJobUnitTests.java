@@ -1,11 +1,11 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
-import com.github.projetoifsc.estagios.core.domain.IOrganization;
+import com.github.projetoifsc.estagios.core.domain.iOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
-import com.github.projetoifsc.estagios.core.domain.ITraineeship;
-import com.github.projetoifsc.estagios.core.domain.ITraineeshipRepository;
+import com.github.projetoifsc.estagios.core.domain.iJob;
+import com.github.projetoifsc.estagios.core.domain.iJobRepository;
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
-import com.github.projetoifsc.estagios.core.domain.dto.TraineeshipImpl;
+import com.github.projetoifsc.estagios.core.domain.dto.JobImpl;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,21 +16,21 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GetOneTraineeshipUseCasesUnitTests {
+public class GetOneJobUnitTests {
 
-    ITraineeshipRepository traineeshipRepository = mock();
+    iJobRepository traineeshipRepository = mock();
     IOrganizationRepository organizationRepository = mock();
 
-    GetOneTraineeshipUseCases service = new GetOneTraineeshipUseCases(traineeshipRepository, organizationRepository);
+    GetOneJob service = new GetOneJob(traineeshipRepository, organizationRepository);
 
-    ITraineeship traineeship;
-    IOrganization organization;
+    iJob traineeship;
+    iOrganization organization;
 
     @BeforeEach
     void setUp() {
         organization = new OrganizationImpl("1", false);
 
-        traineeship = new TraineeshipImpl();
+        traineeship = new JobImpl();
         traineeship.setId("1");
         traineeship.setOwner(organization);
 
@@ -45,7 +45,7 @@ public class GetOneTraineeshipUseCasesUnitTests {
         when(traineeshipRepository.findById(traineeship.getId())).thenReturn(traineeship);
         when(traineeshipRepository.getPublicDetails(traineeship.getId())).thenReturn(traineeship);
 
-        assertInstanceOf(ITraineeship.class,
+        assertInstanceOf(iJob.class,
                 service.getPublicDetails(organization.getId(), traineeship.getId())
         );
     }
@@ -64,7 +64,7 @@ public class GetOneTraineeshipUseCasesUnitTests {
         when(traineeshipRepository.getPublicDetails(traineeship.getId()))
                 .thenReturn(traineeship);
 
-        assertInstanceOf(ITraineeship.class,
+        assertInstanceOf(iJob.class,
                 service.getPublicDetails(
                         school.getId(), traineeship.getId())
         );
@@ -100,7 +100,7 @@ public class GetOneTraineeshipUseCasesUnitTests {
         when(traineeshipRepository.findById(traineeship.getId())).thenReturn(traineeship);
         when(traineeshipRepository.getPrivateDetails(traineeship.getId())).thenReturn(traineeship);
 
-        assertInstanceOf(ITraineeship.class,
+        assertInstanceOf(iJob.class,
                 service.getPrivateDetails(organization.getId(), traineeship.getId())
         );
     }

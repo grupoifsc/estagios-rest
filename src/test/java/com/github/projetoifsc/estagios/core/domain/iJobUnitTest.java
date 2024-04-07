@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain;
 
-import com.github.projetoifsc.estagios.core.domain.dto.TraineeshipImpl;
+import com.github.projetoifsc.estagios.core.domain.dto.JobImpl;
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,13 +9,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-public class ITraineeshipUnitTest {
+public class iJobUnitTest {
 
-    ITraineeship traineeship;
+    iJob traineeship;
 
     @BeforeEach
     void setUp() {
-        traineeship = new TraineeshipImpl();
+        traineeship = new JobImpl();
         traineeship.setId("1");
         traineeship.setOwner(new OrganizationImpl("1", false));
         traineeship.setReceiversIds(List.of("2", "3"));
@@ -28,7 +28,7 @@ public class ITraineeshipUnitTest {
 
     @Test
     void ownerIsOrganization() {
-        assertInstanceOf(IOrganization.class, traineeship.getOwner());
+        assertInstanceOf(iOrganization.class, traineeship.getOwner());
     }
 
     @Test

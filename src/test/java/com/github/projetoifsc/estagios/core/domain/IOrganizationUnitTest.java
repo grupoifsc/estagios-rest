@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class IOrganizationUnitTest {
 
-    IOrganization organization;
+    iOrganization organization;
 
     @BeforeEach
     void setUp() {

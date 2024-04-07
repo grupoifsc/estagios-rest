@@ -1,34 +1,36 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
-import com.github.projetoifsc.estagios.core.domain.IOrganization;
+import com.github.projetoifsc.estagios.core.domain.iOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
-import com.github.projetoifsc.estagios.core.domain.ITraineeship;
-import com.github.projetoifsc.estagios.core.domain.ITraineeshipRepository;
+import com.github.projetoifsc.estagios.core.domain.iJob;
+import com.github.projetoifsc.estagios.core.domain.iJobRepository;
+import com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation;
+import com.github.projetoifsc.estagios.core.domain.usecases.helper.ReceiverValidation;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 
 
-public class CreateTraineeshipsUseCases {
+public class CreateJob {
 
-    ITraineeshipRepository traineeshipRepository;
+    iJobRepository traineeshipRepository;
     IOrganizationRepository organizationRepository;
 
-    public CreateTraineeshipsUseCases(ITraineeshipRepository traineeshipRepository, IOrganizationRepository organizationRepository) {
+    public CreateJob(iJobRepository traineeshipRepository, IOrganizationRepository organizationRepository) {
         this.traineeshipRepository = traineeshipRepository;
         this.organizationRepository = organizationRepository;
     }
 
 
-    public ITraineeship create(String organizationId, ITraineeship traineeship) {
+    public iJob create(String organizationId, iJob traineeship) {
         var organization = organizationRepository.findById(organizationId);
         return saveOrUpdate(organization, traineeship);
     }
 
 
-    public ITraineeship update(String organizationId, String traineeshipId, ITraineeship newData) {
+    public iJob update(String organizationId, String traineeshipId, iJob newData) {
         var traineeship = traineeshipRepository.findById(traineeshipId);
         var organization = organizationRepository.findById(organizationId);
 
-        if ( TraineeshipValidation.organizationIsOwner(organization, traineeship) ) {
+        if ( OrganizationValidation.isOwner(organization, traineeship) ) {
             newData.setId(traineeshipId);
             return saveOrUpdate(organization, traineeship);
         }
@@ -42,7 +44,7 @@ public class CreateTraineeshipsUseCases {
         var traineeship = traineeshipRepository.findById(traineeshipId);
         var organization = organizationRepository.findById(organizationId);
 
-        if ( TraineeshipValidation.organizationIsOwner(organization, traineeship) ) {
+        if ( OrganizationValidation.isOwner(organization, traineeship) ) {
             traineeshipRepository.delete(traineeship.getId());
             return;
         }
@@ -52,10 +54,11 @@ public class CreateTraineeshipsUseCases {
     }
 
 
-    private ITraineeship saveOrUpdate(IOrganization organization, ITraineeship traineeship) {
+
+    private iJob saveOrUpdate(iOrganization organization, iJob traineeship) {
         traineeship.setOwner(organization);
         var receiversList = organizationRepository.findAllById(traineeship.getReceiversIds());
-        TraineeshipValidation.validateReceivers(receiversList);
+        ReceiverValidation.validateReceivers(receiversList);
         return traineeshipRepository.save(traineeship);
     }
 

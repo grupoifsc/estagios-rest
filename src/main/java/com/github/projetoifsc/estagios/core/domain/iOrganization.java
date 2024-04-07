@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain;
 
-public interface IOrganization {
+public interface iOrganization {
 
     String getId();
     void setId(String id);
