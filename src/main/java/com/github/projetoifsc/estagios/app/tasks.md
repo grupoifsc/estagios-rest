@@ -1,11 +1,13 @@
 # Tasks for Web API
 
- - API 00 : Setup project
- - API 01 : Implement Perfil Endpoints
- - API 02 : Implement Vagas Endpoints
- - API 03 : Exceptions and Exceptions Handler for Web
- - API 04 : Add Rate Limit
- - API 05 : Add Cache
- - API 06 : Add OAuth or similar authentication
- - API 07 : Integrate with Domain and Infrastructure layers
+ - API 00 : Setup
+ - API 01 : Endpoints
+ - API 02 : POJOs
+ - API 03 : Data Validation
+ - API 04 : HATEOAS
+ - API 05 : Exceptions
+ - API 06 : Rate Limit
+ - API 07 : Cache
+ - API 08 : OAuth or similar authentication
+ - API 09 : Integrations
  
