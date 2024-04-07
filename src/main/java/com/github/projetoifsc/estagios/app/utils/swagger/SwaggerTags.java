@@ -4,7 +4,7 @@ public class SwaggerTags {
 
 	public static final String BASE_URL = "/api/v1";
 
-	public static final String ENTIDADES = "Entidades";
+	public static final String ORGS = "Organizações";
 	public static final String VAGAS = "Vagas";
 	public static final String AREAS = "Áreas";
 

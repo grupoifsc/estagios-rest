@@ -35,7 +35,7 @@ public class OrgController {
 
 
 	@PostMapping(value = "", consumes = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML } )
-	@Operation(summary="Criar Perfil da Organização", description="Cadastro de Nova Organização", tags={SwaggerTags.ENTIDADES}, operationId="userPost")
+	@Operation(summary="Cadastrar", description="Cadastro de Nova Organização", tags={SwaggerTags.ORGS}, operationId="userPost")
 	@ApiResponses({
 			@ApiResponse(responseCode = "201"),
 			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -50,7 +50,7 @@ public class OrgController {
 
 
 	@GetMapping("/{id}")
-	@Operation(summary="Perfil da organização autenticado", description="Ver Perfil Privado da organização autenticada", tags={SwaggerTags.ENTIDADES}, operationId="getPerfil")
+	@Operation(summary="Ver Perfil", description="Ver Perfil Privado da organização", tags={SwaggerTags.ORGS}, operationId="getPerfil")
 	@ApiResponses({
 	    @ApiResponse(responseCode = "200"),
 	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -63,7 +63,7 @@ public class OrgController {
 
 	
 	@PutMapping(value = "/{id}", consumes = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML } )
-	@Operation(summary="Atualizar perfil", description="Atualizar perfil da organização autenticada", tags={SwaggerTags.ENTIDADES}, operationId="putPerfil")
+	@Operation(summary="Atualizar perfil", description="Atualizar perfil da organização", tags={SwaggerTags.ORGS}, operationId="putPerfil")
 	@ApiResponses({
 	    @ApiResponse(responseCode = "200"),
 	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -79,7 +79,7 @@ public class OrgController {
 	
 	
 	@DeleteMapping("/{id}")
-	@Operation(summary="Deletar Perfil", description="Deletar perfil da organização autenticada e todos os seus dados (vagas de estágio, áreas, etc)", tags={SwaggerTags.ENTIDADES}, operationId="deletePerfil")
+	@Operation(summary="Deletar Perfil", description="Deletar perfil da organização e todos os seus dados (vagas de estágio, áreas, etc)", tags={SwaggerTags.ORGS}, operationId="deletePerfil")
 	@ApiResponses({
 	    @ApiResponse(responseCode = "204"),
 	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -105,7 +105,7 @@ public class OrgController {
 
 
 	@GetMapping("/educacionais")
-	@Operation(summary="Instituições de Ensino", description="Lista de todas as instituições de ensino cadastradas no sistema", tags={SwaggerTags.ENTIDADES}, operationId="getSchools")
+	@Operation(summary="Ver Instituições de Ensino", description="Lista de todas as instituições de ensino cadastradas no sistema", tags={SwaggerTags.ORGS}, operationId="getSchools")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200"),
 			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -118,7 +118,7 @@ public class OrgController {
 
 
 	@GetMapping("/{id}/public")
-	@Operation(summary="Perfil da organização", description="Ver Perfil Público da organização", tags={SwaggerTags.ENTIDADES}, operationId="getUserPublicProfile")
+	@Operation(summary="Perfil público da organização", description="Ver Perfil Público da organização", tags={SwaggerTags.ORGS}, operationId="getUserPublicProfile")
 	@ApiResponses({
 			@ApiResponse(responseCode = "200"),
 			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),

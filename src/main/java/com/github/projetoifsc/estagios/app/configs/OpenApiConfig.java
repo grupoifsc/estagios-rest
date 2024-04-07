@@ -31,7 +31,7 @@ public class OpenApiConfig {
 					.summary("Um serviço web para conectar empresas e instituições de ensino em torno de um objetivo em comum: divulgar vagas de estágio à comunidade estudantil")
 				)
 				.addTagsItem( new Tag()
-						.name(SwaggerTags.ENTIDADES)
+						.name(SwaggerTags.ORGS)
 						.description("")
 				)
 				.addTagsItem( new Tag()
