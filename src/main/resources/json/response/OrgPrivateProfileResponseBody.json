@@ -1,0 +1,32 @@
+{
+  "id": "<string>",
+  "nome": "<string>",
+  "cnpj": "<string>",
+  "instituicao_de_ensino": "<boolean>",
+  "info": "<string>",
+  "contato_principal": {
+    "email": "<string>",
+    "telefone": "<string>"
+  },
+  "contato_candidaturas": {
+    "email": "<string>",
+    "telefone": "<string>"
+  },
+  "endereco": {
+    "rua": "<string>",
+    "bairro": "<string>",
+    "cidade": "<string>",
+    "estado": "<string>",
+    "pais": "<string>"
+  },
+  "website": "<url>",
+  "redes_sociais": ["<url>"],
+  "criado_em": "<datetime>",
+  "atualizado_em": "<datetime>",
+  "_links": [
+    {
+      "rel": "<string>",
+      "href": "<url>"
+    }
+  ]
+}

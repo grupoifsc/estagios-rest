@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "titulo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "id_externo_autor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "descricao": {
+      "type": "string",
+      "minLength": 1
+    },
+    "imagem": {
+      "type": "string",
+      "format": "uri"
+    },
+    "requisitos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "areas": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "data_inicio": {
+      "type": "string",
+      "format": "date"
+    },
+    "data_final": {
+      "type": "string",
+      "format": "date"
+    },
+    "duracao_meses": {
+      "type": "number"
+    },
+    "periodos": {
+      "type": "array",
+      "items": {
+        "enum": ["matutino", "vespertino", "noturno"]
+      }
+    },
+    "nivel": {
+      "enum": ["fundamental", "medio", "tecnico", "graduacao", "pos"]
+    },
+    "remuneracao": {
+      "type": "number",
+      "minimum": 0
+    },
+    "carga_horaria_semanal": {
+      "type": "number",
+      "minimum": 0
+    },
+    "formato": {
+      "enum": ["remoto", "presencial", "hibrido"]
+    },
+    "localizacao": {
+      "type": "object",
+      "properties": {
+        "rua": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bairro": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cidade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "estado": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "pais": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "rua",
+        "bairro",
+        "cidade",
+        "estado",
+        "pais"
+      ]
+    },
+    "contato": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "telefone": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "email",
+        "telefone"
+      ]
+    }
+  },
+  "required": [
+    "titulo",
+    "descricao",
+    "requisitos",
+    "areas",
+    "periodos",
+    "nivel",
+    "remuneracao",
+    "carga_horaria_semanal",
+    "formato"
+  ]
+}

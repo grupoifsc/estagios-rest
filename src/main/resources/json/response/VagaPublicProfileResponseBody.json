@@ -1,0 +1,34 @@
+{
+  "id": "<string>",
+  "titulo": "<string>",
+  "descricao": "<string>",
+  "imagem": "<url>",
+  "requisitos": ["<string>"],
+  "areas": ["<string>"],
+  "data_inicio": "<datetime>",
+  "data_final": "<datetime>",
+  "duracao_meses": "<int>",
+  "periodos": ["<string>"],
+  "nivel": "<string>",
+  "remuneracao": "<double>",
+  "carga_horaria_semanal": "<int>",
+  "formato": "<string>",
+  "localizacao": {
+    "rua": "<string>",
+    "bairro": "<string>",
+    "cidade": "<string>",
+    "estado": "<string>",
+    "pais": "<string>"
+  },
+  "contato": {
+    "email": "<string>",
+    "telefone": "<string>"
+  },
+  "atualizado_em": "<datetime>",
+  "_links": [
+    {
+      "rel": "<string>",
+      "href": "<url>"
+    }
+  ]
+}

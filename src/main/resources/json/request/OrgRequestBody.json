@@ -1,21 +1,25 @@
 {
   "username": "<string>",
+  "password": "<string>",
   "nome": "<string>",
   "cnpj": "<string>",
-  "instituicaoDeEnsino": true,
+  "instituicao_de_ensino": "<boolean>",
   "info": "<string>",
-  "contatoPrincipal": {
+  "contato_principal": {
     "email": "<string>",
     "telefone": "<string>"
   },
-  "contatoCandidaturas": {
+  "contato_candidaturas": {
     "email": "<string>",
     "telefone": "<string>"
   },
   "endereco": {
     "rua": "<string>",
+    "bairro": "<string>",
     "cidade": "<string>",
     "estado": "<string>",
     "pais": "<string>"
-  }
+  },
+  "website": "<url>",
+  "redes_sociais": ["<url>"]
 }

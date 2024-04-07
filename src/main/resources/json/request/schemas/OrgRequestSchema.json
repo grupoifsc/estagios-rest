@@ -1,0 +1,118 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string",
+      "minLength": 2
+    },
+    "password": {
+      "type": "string",
+      "minLength": 6
+    },
+    "nome": {
+      "type": "string",
+      "minLength": 2
+    },
+    "cnpj": {
+      "type": "string",
+      "minLength": 14
+    },
+    "instituicao_de_ensino": {
+      "type": "boolean"
+    },
+    "info": {
+      "type": "string",
+      "minLength": 10
+    },
+    "contato_principal": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "telefone": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "email",
+        "telefone"
+      ]
+    },
+    "contato_candidaturas": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "telefone": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "email",
+        "telefone"
+      ]
+    },
+    "endereco": {
+      "type": "object",
+      "properties": {
+        "rua": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bairro": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cidade": {
+          "type": "string",
+          "minLength": 1
+        },
+        "estado": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "pais": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "rua",
+        "bairro",
+        "cidade",
+        "estado",
+        "pais"
+      ]
+    },
+    "website": {
+      "type": "string",
+      "format": "uri"
+    },
+    "redes_sociais": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    }
+  },
+  "required": [
+    "username",
+    "password",
+    "nome",
+    "cnpj",
+    "instituicao_de_ensino",
+    "info",
+    "contato_principal",
+    "endereco"
+  ]
+}
