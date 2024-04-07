@@ -17,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.github.projetoifsc.estagios.app.utils.HttpErrorMessages.FORBIDDEN_MSG;
+
 
 @RestController
 @RequestMapping(
@@ -55,6 +57,7 @@ public class OrgController {
 	    @ApiResponse(responseCode = "200"),
 	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
 	    @ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.UNAUTHORIZED_MSG) })} ),
+		@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
 	public ResponseEntity<OrgPrivateProfileDTO> getAuthUserPerfil () {
@@ -68,6 +71,7 @@ public class OrgController {
 	    @ApiResponse(responseCode = "200"),
 	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
 	    @ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.UNAUTHORIZED_MSG) })} ),
+		@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
 	public ResponseEntity<OrgPrivateProfileDTO> updateAuthUserPerfil (
@@ -84,6 +88,7 @@ public class OrgController {
 	    @ApiResponse(responseCode = "204"),
 	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
 	    @ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.UNAUTHORIZED_MSG) })} ),
+		@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	  })
 	public ResponseEntity<OrgPrivateProfileDTO> deleteAuthUserPerfil () {
