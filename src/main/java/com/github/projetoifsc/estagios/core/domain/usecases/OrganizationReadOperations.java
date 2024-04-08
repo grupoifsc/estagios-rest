@@ -4,16 +4,25 @@ import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 
+import java.util.List;
+
 import static com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation.isSelf;
 
-public class GetOneOrganization {
+class OrganizationReadOperations {
 
     IOrganizationRepository organizationRepository;
 
-    public GetOneOrganization(IOrganizationRepository organizationRepository) {
+    public OrganizationReadOperations(IOrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
     }
 
+    public List<IOrganization> getAll() {
+        return this.organizationRepository.getAllPublicProfile();
+    }
+
+    public List<IOrganization> getSchools() {
+        return this.organizationRepository.getSchoolsPublicProfile();
+    }
 
     public IOrganization getPrivateProfile(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId))
@@ -26,7 +35,6 @@ public class GetOneOrganization {
     public IOrganization getPublicProfile(String loggedId, String targetId) {
         return organizationRepository.getPublicProfile(targetId);
     }
-
 
 
 }

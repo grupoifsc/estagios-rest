@@ -5,11 +5,11 @@ import com.github.projetoifsc.estagios.core.domain.iArea;
 
 import java.util.List;
 
-public class GetAreas {
+public class AreaReadOperations {
 
     IAreaRepository areaRepository;
 
-    public GetAreas(IAreaRepository areaRepository) {
+    public AreaReadOperations(IAreaRepository areaRepository) {
         this.areaRepository = areaRepository;
     }
 
@@ -20,8 +20,5 @@ public class GetAreas {
     public iArea getById(String id) {
         return areaRepository.getById(id);
     }
-
-    // TODO Teste Get One Area
-    // TODO Teste Get All Areas
 
 }

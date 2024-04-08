@@ -9,12 +9,12 @@ import com.github.projetoifsc.estagios.core.domain.usecases.helper.ReceiverValid
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 
 
-public class CreateJob {
+class JobWriteOperationsImpl implements IJobWriteOperations {
 
     iJobRepository traineeshipRepository;
     IOrganizationRepository organizationRepository;
 
-    public CreateJob(iJobRepository traineeshipRepository, IOrganizationRepository organizationRepository) {
+    public JobWriteOperationsImpl(iJobRepository traineeshipRepository, IOrganizationRepository organizationRepository) {
         this.traineeshipRepository = traineeshipRepository;
         this.organizationRepository = organizationRepository;
     }

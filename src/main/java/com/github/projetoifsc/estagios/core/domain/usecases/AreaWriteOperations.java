@@ -3,15 +3,12 @@ package com.github.projetoifsc.estagios.core.domain.usecases;
 import com.github.projetoifsc.estagios.core.domain.IAreaRepository;
 import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.iArea;
-import com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 
-public class CreateArea {
-
-
+public class AreaWriteOperations {
 
     private IAreaRepository areaRepository;
-    public CreateArea(IAreaRepository areaRepository) {
+    public AreaWriteOperations(IAreaRepository areaRepository) {
         this.areaRepository = areaRepository;
     }
 

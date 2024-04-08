@@ -10,10 +10,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.*;
 
-public class GetAreasUnitTest {
+public class AreaReadOperationsUnitTest {
 
     IAreaRepository areaRepository = mock();
-    GetAreas service = new GetAreas(areaRepository);
+    AreaReadOperations service = new AreaReadOperations(areaRepository);
 
     @Test
     void getAllAreasReturnList() {

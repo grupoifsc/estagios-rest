@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class CreateAreaUnitTest {
+public class AreaWriteOperationsUnitTest {
 
     IAreaRepository areaRepository = mock();
-    CreateArea service = new CreateArea(areaRepository);
+    AreaWriteOperations service = new AreaWriteOperations(areaRepository);
 
     private IOrganization school = new OrganizationImpl("1", true);
     private IOrganization enterprise = new OrganizationImpl("2", false);

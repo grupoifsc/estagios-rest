@@ -12,11 +12,11 @@ import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CreateOrganizationUnitTest {
+public class OrganizationWriteOperationsUnitTest {
 
     IOrganizationRepository organizationRepository = mock();
 
-    CreateOrganization service = new CreateOrganization(organizationRepository);
+    OrganizationWriteOperations service = new OrganizationWriteOperations(organizationRepository);
 
     IOrganization organizationA;
     IOrganization organizationB;

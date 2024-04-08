@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CreateJobUnitTest {
+public class JobWriteOperationsImplUnitTest {
 
     iJobRepository jobRepository = mock();
     IOrganizationRepository organizationRepository = mock();
 
-    CreateJob service = new CreateJob(jobRepository, organizationRepository);
+    JobWriteOperationsImpl service = new JobWriteOperationsImpl(jobRepository, organizationRepository);
 
     iJob job;
     IOrganization organization;

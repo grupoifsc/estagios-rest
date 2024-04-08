@@ -1,4 +1,5 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
+
 import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
@@ -6,16 +7,16 @@ import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessExcepti
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.Mockito.*;
 
-public class GetOneOrganizationUnitTest {
+public class OrganizationReadOperationsUnitTest {
 
     IOrganizationRepository organizationRepository = mock();
-
-    GetOneOrganization service = new GetOneOrganization(organizationRepository);
+    OrganizationReadOperations service = new OrganizationReadOperations(organizationRepository);
 
     IOrganization organizationA;
     IOrganization organizationB;
@@ -25,6 +26,19 @@ public class GetOneOrganizationUnitTest {
         organizationA = new OrganizationImpl("1", false);
         organizationB = new OrganizationImpl("2", true);
     }
+
+    @Test
+    void getAllCallsPublicProfileAndReturnsList() {
+        when(organizationRepository.getAllPublicProfile()).thenReturn(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", false)));
+        assertInstanceOf(List.class, service.getAll());
+    }
+
+    @Test
+    void getSchoolsCallsSchoolsPublicProfileAndReturnsList() {
+        when(organizationRepository.getSchoolsPublicProfile()).thenReturn(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", true)));
+        assertInstanceOf(List.class, service.getSchools());
+    }
+
 
     @Test
     void seePrivateProfileReturnsInterface() {
@@ -71,5 +85,6 @@ public class GetOneOrganizationUnitTest {
     }
 
 
-}
 
+
+}
