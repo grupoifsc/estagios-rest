@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.core.domain.dto;
 
 import com.github.projetoifsc.estagios.core.domain.iJob;
-import com.github.projetoifsc.estagios.core.domain.iOrganization;
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 public class JobImpl implements iJob {
 
     private String id;
-    private iOrganization owner;
+    private IOrganization owner;
     private List<String> receivers = new ArrayList<>();
 
     @Override
@@ -23,12 +23,12 @@ public class JobImpl implements iJob {
     }
 
     @Override
-    public iOrganization getOwner() {
+    public IOrganization getOwner() {
         return owner;
     }
 
     @Override
-    public void setOwner(iOrganization owner) {
+    public void setOwner(IOrganization owner) {
         this.owner = owner;
     }
 

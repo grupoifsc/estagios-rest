@@ -1,6 +1,9 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
+
+import java.util.List;
 
 public class GetAllOrganizations {
 
@@ -10,7 +13,12 @@ public class GetAllOrganizations {
         this.organizationRepository = organizationRepository;
     }
 
-    // TODO Teste Educacionais
-    // TODO Teste Todas em Geral
+    public List<IOrganization> getAll() {
+        return this.organizationRepository.getAllPublicProfile();
+    }
+
+    public List<IOrganization> getSchools() {
+        return this.organizationRepository.getSchoolsPublicProfile();
+    }
 
 }

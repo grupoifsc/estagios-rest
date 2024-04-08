@@ -6,8 +6,8 @@ public interface iJob {
 
     String getId();
     void setId(String id);
-    iOrganization getOwner();
-    void setOwner(iOrganization user);
+    IOrganization getOwner();
+    void setOwner(IOrganization user);
     List<String> getReceiversIds();
     void setReceiversIds(List<String> receiversIds);
 

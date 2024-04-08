@@ -1,5 +1,5 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
-import com.github.projetoifsc.estagios.core.domain.iOrganization;
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
@@ -18,8 +18,8 @@ public class CreateOrganizationUnitTest {
 
     CreateOrganization service = new CreateOrganization(organizationRepository);
 
-    iOrganization organizationA;
-    iOrganization organizationB;
+    IOrganization organizationA;
+    IOrganization organizationB;
 
     @BeforeEach
     void setUp() {
@@ -32,7 +32,7 @@ public class CreateOrganizationUnitTest {
     void createProfileReturnsInterface() {
         when(organizationRepository.save(organizationA)).thenReturn(organizationA);
 
-        assertInstanceOf(iOrganization.class, service.createProfile(organizationA));
+        assertInstanceOf(IOrganization.class, service.createProfile(organizationA));
     }
 
 
@@ -40,7 +40,7 @@ public class CreateOrganizationUnitTest {
     void updateProfileReturnsInterface() {
         when(organizationRepository.save(organizationA)).thenReturn(organizationA);
 
-        assertInstanceOf(iOrganization.class, service.updateProfile(
+        assertInstanceOf(IOrganization.class, service.updateProfile(
                         organizationA.getId(),
                         organizationA.getId(),
                         organizationA)

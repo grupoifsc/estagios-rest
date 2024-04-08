@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
-import com.github.projetoifsc.estagios.core.domain.iOrganization;
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 
@@ -15,7 +15,7 @@ public class GetOneOrganization {
     }
 
 
-    public iOrganization getPrivateProfile(String loggedId, String targetId) {
+    public IOrganization getPrivateProfile(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId))
             return organizationRepository.getPrivateProfile(targetId);
         var exceptionMessage = "Organizations can only see their own private profiles";
@@ -23,7 +23,7 @@ public class GetOneOrganization {
     }
 
 
-    public iOrganization getPublicProfile(String loggedId, String targetId) {
+    public IOrganization getPublicProfile(String loggedId, String targetId) {
         return organizationRepository.getPublicProfile(targetId);
     }
 

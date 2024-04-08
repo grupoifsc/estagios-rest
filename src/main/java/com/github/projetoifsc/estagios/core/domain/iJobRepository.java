@@ -9,7 +9,7 @@ public interface iJobRepository {
     iJob save(iJob created);
     void delete(String ITraineeship);
 
-    List<iOrganization> getReceivers(String ITraineeship);
+    List<IOrganization> getReceivers(String ITraineeship);
     iJob getPublicDetails(String ITraineeship);
     iJob getPrivateDetails(String ITraineeship);
 

@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
-import com.github.projetoifsc.estagios.core.domain.iOrganization;
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.domain.iJob;
 import com.github.projetoifsc.estagios.core.domain.iJobRepository;
@@ -55,7 +55,7 @@ public class CreateJob {
 
 
 
-    private iJob saveOrUpdate(iOrganization organization, iJob traineeship) {
+    private iJob saveOrUpdate(IOrganization organization, iJob traineeship) {
         traineeship.setOwner(organization);
         var receiversList = organizationRepository.findAllById(traineeship.getReceiversIds());
         ReceiverValidation.validateReceivers(receiversList);

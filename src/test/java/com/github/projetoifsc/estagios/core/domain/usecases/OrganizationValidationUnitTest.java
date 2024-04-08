@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
-import com.github.projetoifsc.estagios.core.domain.iOrganization;
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.domain.dto.JobImpl;
 import com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation;
@@ -45,7 +45,7 @@ public class OrganizationValidationUnitTest {
 
     @Test
     void givenOrgAndReceiverList_ifReceiverListIsEmpty_thenOrgIsReceiver() {
-        List<iOrganization> receivers = new ArrayList<>();
+        List<IOrganization> receivers = new ArrayList<>();
         assertTrue(OrganizationValidation.isReceiver(enterprise, receivers));
         assertTrue(OrganizationValidation.isReceiver(school, receivers));
 
@@ -53,14 +53,14 @@ public class OrganizationValidationUnitTest {
 
     @Test
     void givenOrgAndReceiverList_ifOrgInList_thenOrgIsReceiver() {
-        List<iOrganization> receivers = new ArrayList<>(List.of(enterprise, school));
+        List<IOrganization> receivers = new ArrayList<>(List.of(enterprise, school));
         assertTrue(OrganizationValidation.isReceiver(enterprise, receivers));
         assertTrue(OrganizationValidation.isReceiver(school, receivers));
     }
 
     @Test
     void givenOrgAndReceiverList_ifOrgNotInList_thenIsNotReceiver() {
-        List<iOrganization> receivers = new ArrayList<>(List.of(enterprise));
+        List<IOrganization> receivers = new ArrayList<>(List.of(enterprise));
         assertTrue(OrganizationValidation.isReceiver(enterprise, receivers));
         assertFalse(OrganizationValidation.isReceiver(school, receivers));
     }

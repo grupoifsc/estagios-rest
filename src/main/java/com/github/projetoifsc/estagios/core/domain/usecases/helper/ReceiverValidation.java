@@ -1,13 +1,13 @@
 package com.github.projetoifsc.estagios.core.domain.usecases.helper;
 
-import com.github.projetoifsc.estagios.core.domain.iOrganization;
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.exceptions.InvalidReceiverException;
 
 import java.util.List;
 
 public class ReceiverValidation {
 
-    public static void validateReceivers(List<iOrganization> receivers) {
+    public static void validateReceivers(List<IOrganization> receivers) {
         var invalidReceiversIds = listInvalidReceiversIds(receivers);
         if(invalidReceiversIds.isEmpty()) {
             return;
@@ -17,10 +17,10 @@ public class ReceiverValidation {
     }
 
 
-    private static List<String> listInvalidReceiversIds(List<iOrganization> receivers) {
+    private static List<String> listInvalidReceiversIds(List<IOrganization> receivers) {
         return receivers.stream()
                 .filter(receiver -> !OrganizationValidation.isValidReceiver(receiver))
-                .map(iOrganization::getId)
+                .map(IOrganization::getId)
                 .toList();
     }
 

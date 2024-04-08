@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
-import com.github.projetoifsc.estagios.core.domain.iOrganization;
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.domain.iJob;
 import com.github.projetoifsc.estagios.core.domain.iJobRepository;
@@ -24,7 +24,7 @@ public class GetOneJobUnitTests {
     GetOneJob service = new GetOneJob(traineeshipRepository, organizationRepository);
 
     iJob traineeship;
-    iOrganization organization;
+    IOrganization organization;
 
     @BeforeEach
     void setUp() {

@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
-import com.github.projetoifsc.estagios.core.domain.iOrganization;
+import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 import static com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation.isSelf;
@@ -14,12 +14,12 @@ public class CreateOrganization {
     }
 
 
-    public iOrganization createProfile(iOrganization organization) {
+    public IOrganization createProfile(IOrganization organization) {
         return organizationRepository.save(organization);
     }
 
 
-    public iOrganization updateProfile(String loggedId, String targetId, iOrganization organization) {
+    public IOrganization updateProfile(String loggedId, String targetId, IOrganization organization) {
         if(isSelf(loggedId, targetId)) {
             organization.setId(targetId);
             return organizationRepository.save(organization);

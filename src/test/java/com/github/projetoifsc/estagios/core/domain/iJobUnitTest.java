@@ -28,7 +28,7 @@ public class iJobUnitTest {
 
     @Test
     void ownerIsOrganization() {
-        assertInstanceOf(iOrganization.class, traineeship.getOwner());
+        assertInstanceOf(IOrganization.class, traineeship.getOwner());
     }
 
     @Test
