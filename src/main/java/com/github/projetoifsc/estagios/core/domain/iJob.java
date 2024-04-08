@@ -10,5 +10,6 @@ public interface iJob {
     void setOwner(IOrganization user);
     List<String> getReceiversIds();
     void setReceiversIds(List<String> receiversIds);
+    List<iArea> getAreas();
 
 }

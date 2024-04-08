@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain.dto;
 
+import com.github.projetoifsc.estagios.core.domain.iArea;
 import com.github.projetoifsc.estagios.core.domain.iJob;
 import com.github.projetoifsc.estagios.core.domain.IOrganization;
 
@@ -11,6 +12,7 @@ public class JobImpl implements iJob {
     private String id;
     private IOrganization owner;
     private List<String> receivers = new ArrayList<>();
+    private List<iArea> areas = new ArrayList<>();
 
     @Override
     public String getId() {
@@ -40,6 +42,11 @@ public class JobImpl implements iJob {
     @Override
     public void setReceiversIds(List<String> receivers) {
         this.receivers = receivers;
+    }
+
+    @Override
+    public List<iArea> getAreas() {
+        return areas;
     }
 
 }
