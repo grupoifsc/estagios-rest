@@ -1,16 +1,15 @@
-package com.github.projetoifsc.estagios.infra.db.model;
+package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "periods")
-public class Period{
+@Table(name = "levels")
+class Level {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, unique = true)
     private String name;
 
 }
