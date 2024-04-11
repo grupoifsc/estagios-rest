@@ -46,12 +46,9 @@ class Job {
     @JoinColumn(name = "contact_id")
     Contact contact;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "jobs_periods",
-            joinColumns = @JoinColumn(name = "job_id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "period_id", nullable = false)
-    )
-    List<Period> periodos;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "period_id")
+    Period periodos;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "study_level_id")
