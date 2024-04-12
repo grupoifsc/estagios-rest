@@ -1,8 +1,7 @@
 package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationRepository;
-import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
-import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
+import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

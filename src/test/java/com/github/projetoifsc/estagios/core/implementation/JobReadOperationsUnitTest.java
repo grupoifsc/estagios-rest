@@ -4,9 +4,8 @@ import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.core.IJobRepository;
-import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
-import com.github.projetoifsc.estagios.core.domain.dto.JobImpl;
-import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
+import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
+import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -147,6 +146,8 @@ public class JobReadOperationsUnitTest {
 
         when(traineeshipRepository.findAllWithoutReceivers())
                 .thenReturn(List.of(new JobImpl()));
+
+        when(organizationRepository.findById(school.getId())).thenReturn(school);
 
         assertInstanceOf(List.class, service.getAllReceived(school.getId(), school.getId()));
         assertInstanceOf(IJob.class, service.getAllReceived(school.getId(), school.getId()).get(0));

@@ -1,9 +1,7 @@
-package com.github.projetoifsc.estagios.core.domain;
+package com.github.projetoifsc.estagios.core.dto;
 
-import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.domain.dto.JobImpl;
-import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.IOrganization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

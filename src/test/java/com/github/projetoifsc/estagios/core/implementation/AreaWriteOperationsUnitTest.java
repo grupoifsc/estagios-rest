@@ -2,8 +2,8 @@ package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IAreaRepository;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.domain.dto.AreaImpl;
-import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
+import com.github.projetoifsc.estagios.core.dto.AreaImpl;
+import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.IArea;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

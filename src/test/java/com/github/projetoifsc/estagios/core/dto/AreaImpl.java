@@ -1,4 +1,4 @@
-package com.github.projetoifsc.estagios.core.domain.dto;
+package com.github.projetoifsc.estagios.core.dto;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IArea;
