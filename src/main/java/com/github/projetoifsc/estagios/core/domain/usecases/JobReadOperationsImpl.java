@@ -6,7 +6,10 @@ import com.github.projetoifsc.estagios.core.domain.iJobRepository;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 import static com.github.projetoifsc.estagios.core.domain.usecases.OrganizationValidation.isSelf;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 class JobReadOperationsImpl implements IJobReadOperations {
@@ -27,15 +30,22 @@ class JobReadOperationsImpl implements IJobReadOperations {
         throw new UnauthorizedAccessException(errorMessage);
     }
 
+    // TODO Ver se o Set vai estar funcionando aqui, se o equals vai estar correto...
     public List<iJob> getAllReceived(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId)) {
+            Set<iJob> set = new HashSet<>();
+            if(organizationRepository.findById(loggedId).isSchool()) {
+                var created = organizationRepository.getCreatedJobs(loggedId);
+                set.addAll(created);
+            }
             var exclusivelyReceived = organizationRepository.getExclusiveReceivedJobs(targetId);
-            var globalTraineeships = traineeshipRepository.findAllWithoutReceivers();
-            return Stream.concat(exclusivelyReceived.stream(), globalTraineeships.stream()).toList();
+            set.addAll(exclusivelyReceived);
+            var globallyReceived = traineeshipRepository.findAllWithoutReceivers();
+            set.addAll(globallyReceived);
+            return new ArrayList<>(set);
         }
         var errorMessage = "Organizations can only access their own created traineeships";
         throw new UnauthorizedAccessException(errorMessage);
-
     }
 
     public iJob getPrivateDetails(String organizationId, String traineeshipId) {
