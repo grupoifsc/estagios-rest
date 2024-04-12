@@ -10,12 +10,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
+// Aí aqui no app, que tá usando o Spring, eu posso colocar um arquivo de configuração
+// Onde eu vou dizer qual a dependência pra cada um desses serviços
+// O Spring carrega e injeta as dependências pra mim, como tem que ser
+// Então tem que ver agora o que é componente e o que é configuração
+// Esse é o próximo passo para eu aprender
+
+
 @Service
 public class AreaService {
 
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
     public ResponseEntity<Page<AreaDTO>> getAll() {
+        // Aqui a ideia é que o serviço a ser usado pode mudar...
         return new ResponseEntity<>(
                 new PageImpl<>(AreaMock.getList()),
                 HttpStatus.OK

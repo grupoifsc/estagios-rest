@@ -12,7 +12,6 @@ public interface IAddressAndContactRepository {
 
     IAddress getMainAddress(String organizationId);
     List<IAddress> getAllAddress(String organizationId);
-
     IContact getGeneralContact(String organizationId);
     IContact getDefaultContact(String organizationId);
     List<IContact> getAllContacts(String organizationId);
