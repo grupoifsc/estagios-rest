@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain.dto;
 
-import com.github.projetoifsc.estagios.core.domain.IOrganization;
+import com.github.projetoifsc.estagios.core.IOrganization;
 
 public class OrganizationImpl implements IOrganization {
 

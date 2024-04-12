@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.core.domain.dto;
 
-import com.github.projetoifsc.estagios.core.domain.IOrganization;
-import com.github.projetoifsc.estagios.core.domain.iArea;
+import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.IArea;
 
-public class AreaImpl implements iArea {
+public class AreaImpl implements IArea {
 
 
     private String id;

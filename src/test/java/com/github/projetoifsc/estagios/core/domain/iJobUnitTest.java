@@ -1,7 +1,9 @@
 package com.github.projetoifsc.estagios.core.domain;
 
+import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.dto.JobImpl;
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
+import com.github.projetoifsc.estagios.core.IJob;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class iJobUnitTest {
 
-    iJob traineeship;
+    IJob traineeship;
 
     @BeforeEach
     void setUp() {

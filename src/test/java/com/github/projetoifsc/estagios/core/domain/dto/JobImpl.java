@@ -1,18 +1,18 @@
 package com.github.projetoifsc.estagios.core.domain.dto;
 
-import com.github.projetoifsc.estagios.core.domain.iArea;
-import com.github.projetoifsc.estagios.core.domain.iJob;
-import com.github.projetoifsc.estagios.core.domain.IOrganization;
+import com.github.projetoifsc.estagios.core.IArea;
+import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.IOrganization;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobImpl implements iJob {
+public class JobImpl implements IJob {
 
     private String id;
     private IOrganization owner;
     private List<String> receivers = new ArrayList<>();
-    private List<iArea> areas = new ArrayList<>();
+    private List<IArea> areas = new ArrayList<>();
 
     @Override
     public String getId() {
@@ -45,7 +45,7 @@ public class JobImpl implements iJob {
     }
 
     @Override
-    public List<iArea> getAreas() {
+    public List<IArea> getAreas() {
         return areas;
     }
 
