@@ -3,7 +3,6 @@ package com.github.projetoifsc.estagios.core.domain.usecases;
 import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.domain.dto.JobImpl;
-import com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

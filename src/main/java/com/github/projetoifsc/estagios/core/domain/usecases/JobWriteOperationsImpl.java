@@ -4,8 +4,6 @@ import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.domain.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.domain.iJob;
 import com.github.projetoifsc.estagios.core.domain.iJobRepository;
-import com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation;
-import com.github.projetoifsc.estagios.core.domain.usecases.helper.ReceiverValidation;
 import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
 
 

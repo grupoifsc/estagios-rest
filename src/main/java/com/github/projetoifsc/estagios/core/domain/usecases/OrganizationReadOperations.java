@@ -6,7 +6,7 @@ import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessExcepti
 
 import java.util.List;
 
-import static com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation.isSelf;
+import static com.github.projetoifsc.estagios.core.domain.usecases.OrganizationValidation.isSelf;
 
 class OrganizationReadOperations {
 

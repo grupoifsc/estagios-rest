@@ -1,4 +1,4 @@
-package com.github.projetoifsc.estagios.core.domain.usecases.helper;
+package com.github.projetoifsc.estagios.core.domain.usecases;
 
 import com.github.projetoifsc.estagios.core.domain.IOrganization;
 import com.github.projetoifsc.estagios.core.exceptions.InvalidReceiverException;

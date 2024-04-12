@@ -1,8 +1,6 @@
 package com.github.projetoifsc.estagios.core.domain.usecases;
 
 import com.github.projetoifsc.estagios.core.domain.dto.OrganizationImpl;
-import com.github.projetoifsc.estagios.core.domain.usecases.helper.OrganizationValidation;
-import com.github.projetoifsc.estagios.core.domain.usecases.helper.ReceiverValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
