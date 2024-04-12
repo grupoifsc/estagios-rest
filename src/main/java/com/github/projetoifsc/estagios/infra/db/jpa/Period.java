@@ -8,8 +8,17 @@ class Period{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private short id;
 
     private String name;
+
+
+    @Override
+    public String toString() {
+        return "Period{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
 }

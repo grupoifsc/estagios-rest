@@ -1,8 +1,14 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "contacts")
 class Contact {
 
@@ -10,7 +16,7 @@ class Contact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     Organization owner;
 
@@ -22,6 +28,15 @@ class Contact {
     String email;
     String telefone;
 
+    @CreatedDate
+    @Column(name = "created_at")
+    LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    LocalDateTime updatedAt;
+
+
     @Override
     public String toString() {
         return "Contact{" +
@@ -30,5 +45,8 @@ class Contact {
                 '}';
     }
 
+    Organization getOwner() {
+        return owner;
+    }
 
 }

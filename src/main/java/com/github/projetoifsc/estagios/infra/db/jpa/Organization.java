@@ -2,10 +2,19 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+// TODO Aprender mais sobre Auditable
+//  https://codersathi.com/auto-generate-created-and-modified-date-time-in-spring-boot/
+
+
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="orgs")
 class Organization{
 
@@ -17,24 +26,30 @@ class Organization{
 
     String cnpj;
 
-    @Column(name = "instituicao_de_ensino")
+    @Column(name = "ie")
     boolean ie;
 
     String info;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     List<Contact> contatos;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     List<Address> enderecos;
 
     String website;
 
-    // TODO Fazer como em requisitos
-    String redes_sociais;
+    // TODO Fazer como em requisitos, forçando uma má prática em
+    @Column(name = "redes_sociais")
+    String redesSociais;
 
-    String criado_em;
-    String atualizado_em;
+    @CreatedDate
+    @Column(name = "created_at")
+    LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    LocalDateTime updatedAt;
 
 
     Organization(String nome) {
@@ -45,15 +60,13 @@ class Organization{
 
     }
 
-    Organization(String nome, String cnpj, boolean instituicao_de_ensino, String info, String website, String redes_sociais, String criado_em, String atualizado_em) {
+    Organization(String nome, String cnpj, boolean instituicao_de_ensino, String info, String website, String redes_sociais) {
         this.nome = nome;
         this.cnpj = cnpj;
         this.ie = instituicao_de_ensino;
         this.info = info;
         this.website = website;
-        this.redes_sociais = redes_sociais;
-        this.criado_em = criado_em;
-        this.atualizado_em = atualizado_em;
+        this.redesSociais = redes_sociais;
     }
 
     @Override
@@ -65,9 +78,9 @@ class Organization{
                 ", ie=" + ie +
                 ", info='" + info + '\'' +
                 ", website='" + website + '\'' +
-                ", redes_sociais='" + redes_sociais + '\'' +
-                ", criado_em='" + criado_em + '\'' +
-                ", atualizado_em='" + atualizado_em + '\'' +
+                ", redes_sociais='" + redesSociais + '\'' +
+                ", criado_em='" + createdAt + '\'' +
+                ", atualizado_em='" + updatedAt + '\'' +
                 '}';
     }
 

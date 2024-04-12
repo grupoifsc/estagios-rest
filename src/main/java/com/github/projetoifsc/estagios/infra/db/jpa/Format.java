@@ -14,8 +14,16 @@ class Format{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private short id;
 
     private String name;
+
+    @Override
+    public String toString() {
+        return "Format{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
 }

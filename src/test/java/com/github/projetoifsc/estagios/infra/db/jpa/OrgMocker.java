@@ -51,10 +51,10 @@ class OrgMocker {
 //        applyPhone = faker.phoneNumber().cellPhone();
         website = "www." + strippedLowerCaseName + ".org";
         redes_sociais = website;
-        criado_em = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        atualizado_em = criado_em;
+//        criado_em = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+//        atualizado_em = criado_em;
 
-        return new Organization(nome,cnpj,ie,info,website,redes_sociais,criado_em,atualizado_em);
+        return new Organization(nome,cnpj,ie,info,website,redes_sociais);
 
 
 

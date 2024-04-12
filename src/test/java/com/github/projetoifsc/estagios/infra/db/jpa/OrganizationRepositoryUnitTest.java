@@ -37,4 +37,14 @@ class OrganizationRepositoryUnitTest {
         }
     }
 
+
+    @Test
+    void updateOrganization() {
+        var org = organizationRepository.findById(1L).get();
+        org.ie = false;
+        var saved = organizationRepository.save(org);
+        var retrieved = organizationRepository.findById(1L).get();
+        System.out.println(retrieved);
+    }
+
 }
