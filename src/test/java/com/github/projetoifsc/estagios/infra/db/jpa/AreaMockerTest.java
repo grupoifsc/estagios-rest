@@ -13,7 +13,7 @@ class AreaMockerTest {
     @Test
     void gerarArea() {
         for (int i = 0; i < 20; i++) {
-            System.out.println(areaMocker.generate().nome);
+            System.out.println(areaMocker.generate());
         }
     }
 

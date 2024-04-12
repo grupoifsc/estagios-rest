@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
+import com.github.projetoifsc.estagios.core.IOrganization;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,7 +17,7 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="orgs")
-class Organization{
+class Organization implements IOrganization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,6 +83,21 @@ class Organization{
                 ", criado_em='" + createdAt + '\'' +
                 ", atualizado_em='" + updatedAt + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getId() {
+        return Long.toString(id);
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = Long.parseLong(id);
+    }
+
+    @Override
+    public boolean isSchool() {
+        return ie;
     }
 
 }

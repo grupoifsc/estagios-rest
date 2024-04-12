@@ -20,11 +20,9 @@ class JobMocker {
         Job job = new Job();
 
         job.titulo = faker.job().title();
-        job.atualizado_em = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         job.carga_horaria_semanal = faker.number().numberBetween(0, 50);
-        job.criado_em = faker.date().past(150, TimeUnit.DAYS).toString();
         job.data_final = faker.date().future(500, TimeUnit.DAYS).toString();
-        job.data_inicio = job.criado_em;
+        job.data_inicio = LocalDateTime.parse(job.data_final).minusDays(50).toString();
         job.descricao = job.titulo + " performing " + faker.job().field() + " " + faker.job().position() + " activities with our clients at " + faker.lordOfTheRings().location() ;
         job.duracao_meses = faker.number().numberBetween(0, 24);
         job.id_externo_autor = faker.bothify("sdssfsdf");

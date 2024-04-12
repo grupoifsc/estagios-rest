@@ -1,8 +1,9 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
+import com.github.projetoifsc.estagios.core.IArea;
 
-class AreaMocker {
+public class AreaMocker {
 
     Faker faker;
 
@@ -10,7 +11,7 @@ class AreaMocker {
         this.faker = faker;
     }
 
-    public Area generate() {
+    public IArea generate() {
         var nomeCurso = faker.educator().course();
         var nomeArea = getLast(nomeCurso);
         return new Area(nomeArea);

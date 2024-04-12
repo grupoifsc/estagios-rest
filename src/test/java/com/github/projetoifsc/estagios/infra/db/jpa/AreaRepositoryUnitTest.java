@@ -28,7 +28,7 @@ class AreaRepositoryUnitTest {
     void createMockedArea() {
         var orgDBResponse = organizationRepository.findById(1L);
         orgDBResponse.ifPresent(value -> organization = value);
-        area = areaMocker.generate();
+        area = (Area) areaMocker.generate();
         area.owner = organization;
         var savedArea = areaRepository.save(area);
         System.out.println(savedArea);

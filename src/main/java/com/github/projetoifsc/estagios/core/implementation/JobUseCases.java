@@ -8,7 +8,7 @@ import com.github.projetoifsc.estagios.core.IJobRepository;
 import java.util.List;
 
 
-class JobUseCases implements IJobUseCases {
+public class JobUseCases implements IJobUseCases {
 
     private final JobReadOperations readOperations;
     private final JobWriteOperations writeOperations;

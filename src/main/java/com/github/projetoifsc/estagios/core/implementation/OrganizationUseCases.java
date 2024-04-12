@@ -6,7 +6,7 @@ import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 
 import java.util.List;
 
-class OrganizationUseCases implements IOrganizationUseCases {
+public class OrganizationUseCases implements IOrganizationUseCases {
 
     IOrganizationRepository organizationRepository;
 

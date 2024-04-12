@@ -4,7 +4,7 @@ import com.github.projetoifsc.estagios.core.*;
 
 import java.util.List;
 
-class AreaUseCases implements IAreaUseCases {
+public class AreaUseCases implements IAreaUseCases {
 
     AreaReadOperations readOperations;
     AreaWriteOperations writeOperations;

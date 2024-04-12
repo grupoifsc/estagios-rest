@@ -1,5 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
+import com.github.projetoifsc.estagios.core.IArea;
+import com.github.projetoifsc.estagios.core.IOrganization;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="areas")
-class Area {
+class Area implements IArea {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,4 +54,16 @@ class Area {
     Organization getOwner() {
         return owner;
     }
+
+    @Override
+    public String getId() {
+        return Long.toString(id);
+    }
+
+    // Tive que usar cast aqui pra encaixar com as restrições do JPA
+    @Override
+    public void setOwner(IOrganization owner) {
+        this.owner = (Organization) owner;
+    }
+
 }
