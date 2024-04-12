@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.core.IAreaRepository;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IArea;
-import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
+import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
 
 class AreaWriteOperations {
 

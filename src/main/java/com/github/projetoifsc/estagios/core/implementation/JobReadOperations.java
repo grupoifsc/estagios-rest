@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.core.IOrganizationRepository;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.core.IJobRepository;
-import com.github.projetoifsc.estagios.core.exceptions.UnauthorizedAccessException;
+import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
 import static com.github.projetoifsc.estagios.core.implementation.OrganizationValidation.isSelf;
 
 import java.util.ArrayList;
