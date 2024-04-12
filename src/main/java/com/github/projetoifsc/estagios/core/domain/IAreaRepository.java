@@ -6,8 +6,7 @@ public interface IAreaRepository {
 
     iArea create(iArea area);
     IOrganization getOwner(iArea area);
-
     List<iArea> getAll();
-
     iArea getById(String id);
+
 }

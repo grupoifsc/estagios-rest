@@ -17,7 +17,7 @@ public class OrganizationImpl implements IOrganization {
         return id;
     }
 
-    @Override
+//    @Override
     public void setId(String id) {
         this.id = id;
     }

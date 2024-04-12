@@ -21,4 +21,5 @@ public interface IOrganizationRepository {
     List<IOrganization> getAllPublicProfile();
     List<IOrganization> getSchoolsPublicProfile();
 
+
 }
