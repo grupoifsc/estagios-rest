@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-class JobMockerTest {
+class JobEntityMockerTest {
 
     Faker faker = new Faker(new Locale("pt-BR", "BR"));
     JobMocker jobMocker = new JobMocker(faker);
@@ -13,8 +13,8 @@ class JobMockerTest {
     @Test
     void generateRandom() {
         for (int i = 0; i < 10; i++) {
-            Job job = jobMocker.generate();
-            System.out.println(job);
+            JobEntity jobEntity = jobMocker.generate();
+            System.out.println(jobEntity);
         }
     }
 

@@ -1,24 +1,24 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
-import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 class OrganizationReadOperations {
 
-    IOrganizationRepository organizationRepository;
+    IOrganizationDB organizationRepository;
 
-    public OrganizationReadOperations(IOrganizationRepository organizationRepository) {
+    public OrganizationReadOperations(IOrganizationDB organizationRepository) {
         this.organizationRepository = organizationRepository;
     }
 
-    public List<IOrganization> getAll() {
+    public Page<IOrganization> getAll() {
         return this.organizationRepository.getAllPublicProfile();
     }
 
-    public List<IOrganization> getSchools() {
+    public Page<IOrganization> getSchools() {
         return this.organizationRepository.getSchoolsPublicProfile();
     }
 

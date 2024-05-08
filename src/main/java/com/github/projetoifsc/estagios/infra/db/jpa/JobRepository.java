@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-interface JobRepository extends ListPagingAndSortingRepository<Job, Long> {
-    Job save(Job job);
-    Optional<Job> findById(long id);
+interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> {
+    JobEntity save(JobEntity jobEntity);
+    Optional<JobEntity> findById(long id);
 }

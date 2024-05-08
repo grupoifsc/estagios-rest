@@ -4,11 +4,15 @@ import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.time.LocalDateTime;
 
+@EnableJpaAuditing
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "priority", discriminatorType = DiscriminatorType.INTEGER)
 @Table(name = "contacts")
 class Contact {
 
@@ -18,12 +22,9 @@ class Contact {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
-    Organization owner;
+    OrganizationEntity owner;
 
     boolean geral;
-
-    @Column(name="main_candidatura")
-    boolean mainCandidatura;
 
     String email;
     String telefone;
@@ -45,7 +46,7 @@ class Contact {
                 '}';
     }
 
-    Organization getOwner() {
+    OrganizationEntity getOwner() {
         return owner;
     }
 

@@ -1,10 +1,12 @@
 package com.github.projetoifsc.estagios.core;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface IJobUseCases {
 
-    List<IJob> getAllCreated(String loggedId, String targetId);
+    Page<IJob> getAllCreated(String loggedId, String targetId);
     List<IJob> getAllReceived(String loggedId, String targetId);
     IJob getPrivateDetails(String organizationId, String traineeshipId);
     IJob getPublicDetails(String organizationId, String traineeshipId);

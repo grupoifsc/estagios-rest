@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IJobRepository;
+import com.github.projetoifsc.estagios.core.IJobDB;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class JobWriteOperationsUnitTest {
+public class JobEntityWriteOperationsUnitTest {
 
-    IJobRepository jobRepository = mock();
-    IOrganizationRepository organizationRepository = mock();
+    IJobDB jobRepository = mock();
+    IOrganizationDB organizationRepository = mock();
 
     JobWriteOperations service = new JobWriteOperations(jobRepository, organizationRepository);
 

@@ -8,9 +8,9 @@ public class AreaUseCases implements IAreaUseCases {
 
     AreaReadOperations readOperations;
     AreaWriteOperations writeOperations;
-    IOrganizationRepository organizationRepository;
+    IOrganizationDB organizationRepository;
 
-    public AreaUseCases(IAreaRepository areaRepository, IOrganizationRepository organizationRepository) {
+    public AreaUseCases(IAreaDB areaRepository, IOrganizationDB organizationRepository) {
         readOperations = new AreaReadOperations(areaRepository);
         writeOperations = new AreaWriteOperations(areaRepository);
         this.organizationRepository = organizationRepository;

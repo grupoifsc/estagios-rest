@@ -4,6 +4,6 @@ public interface IOrganization {
 
     String getId();
     void setId(String id);
-    boolean isSchool();
+    Boolean getIe();
 
 }

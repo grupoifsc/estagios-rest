@@ -1,7 +1,9 @@
 package com.github.projetoifsc.estagios.app.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.github.projetoifsc.estagios.core.IOrganization;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;
@@ -9,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 @Schema(name = "Organização", description = "Sumário da Organização")
 @JsonPropertyOrder(value = {"id", "nome", "instituicaoDeEnsino", "links"})
 @Validated
-public class OrgDTO extends DTO {
+public class OrgDTO extends DTO implements IOrganization {
 
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     @Schema(description = "Id", example="123", accessMode = Schema.AccessMode.READ_ONLY, requiredMode = Schema.RequiredMode.NOT_REQUIRED)
@@ -42,16 +44,18 @@ public class OrgDTO extends DTO {
         this.key = key;
     }
 
+    @JsonIgnore
+    @Override
+    public Boolean getIe() {
+        return ie;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isIe() {
-        return ie;
     }
 
     public void setIe(boolean ie) {

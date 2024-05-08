@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.core;
 
 import java.util.List;
 
-public interface IJobRepository {
+public interface IJobDB {
 
     IJob findById(String id);
     IJob save(IJob created);

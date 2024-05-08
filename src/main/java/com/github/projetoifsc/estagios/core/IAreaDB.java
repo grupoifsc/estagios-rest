@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.core;
 
 import java.util.List;
 
-public interface IAreaRepository {
+public interface IAreaDB {
 
     IArea create(IArea area);
     IOrganization getOwner(IArea area);

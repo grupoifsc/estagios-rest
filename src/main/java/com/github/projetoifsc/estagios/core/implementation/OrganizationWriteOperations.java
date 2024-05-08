@@ -1,14 +1,13 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
-import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
 
 class OrganizationWriteOperations {
 
-    IOrganizationRepository organizationRepository;
+    IOrganizationDB organizationRepository;
 
-    public OrganizationWriteOperations(IOrganizationRepository organizationRepository) {
+    public OrganizationWriteOperations(IOrganizationDB organizationRepository) {
         this.organizationRepository = organizationRepository;
     }
 

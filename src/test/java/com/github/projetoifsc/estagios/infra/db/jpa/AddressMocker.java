@@ -15,7 +15,6 @@ class AddressMocker {
         var addr = faker.address();
         Address address = new Address();
 
-        address.main = faker.bool().bool();
         address.rua = addr.streetAddress(true);
         address.bairro = addr.cityPrefix();
         address.cidade = addr.cityName();

@@ -11,7 +11,7 @@ class AreaRepositoryUnitTest {
     AreaRepository areaRepository;
     OrganizationRepository organizationRepository;
 
-    Organization organization;
+    OrganizationEntity organizationEntity;
     Area area;
 
     Faker faker = new Faker();
@@ -24,14 +24,18 @@ class AreaRepositoryUnitTest {
     }
 
 
+
+    // Repensar todos estes testes...
+    // Repensar a questão da camada.. para não ter que fazer duas vezes a consulta ao banco de dados...
     @Test
     void createMockedArea() {
-        var orgDBResponse = organizationRepository.findById(1L);
-        orgDBResponse.ifPresent(value -> organization = value);
-        area = (Area) areaMocker.generate();
-        area.owner = organization;
-        var savedArea = areaRepository.save(area);
-        System.out.println(savedArea);
+//        var orgDBResponse = organizationRepository.findById(1L);
+//
+//        orgDBResponse.ifPresent(value -> (OrganizationEntity) organizationEntity = value);
+//        area = (Area) areaMocker.generate();
+//        area.owner = organizationEntity;
+//        var savedArea = areaRepository.save(area);
+//        System.out.println(savedArea);
     }
 
 

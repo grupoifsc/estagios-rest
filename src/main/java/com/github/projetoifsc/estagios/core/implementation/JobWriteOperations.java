@@ -1,18 +1,17 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IJobRepository;
-import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
+import com.github.projetoifsc.estagios.core.IJobDB;
 
 
 class JobWriteOperations {
 
-    IJobRepository traineeshipRepository;
-    IOrganizationRepository organizationRepository;
+    IJobDB traineeshipRepository;
+    IOrganizationDB organizationRepository;
 
-    public JobWriteOperations(IJobRepository traineeshipRepository, IOrganizationRepository organizationRepository) {
+    public JobWriteOperations(IJobDB traineeshipRepository, IOrganizationDB organizationRepository) {
         this.traineeshipRepository = traineeshipRepository;
         this.organizationRepository = organizationRepository;
     }

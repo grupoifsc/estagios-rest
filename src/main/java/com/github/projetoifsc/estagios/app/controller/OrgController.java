@@ -1,12 +1,11 @@
 package com.github.projetoifsc.estagios.app.controller;
 
-import com.github.projetoifsc.estagios.app.dto.OrgDTO;
 import com.github.projetoifsc.estagios.app.dto.OrgPrivateProfileDTO;
-import com.github.projetoifsc.estagios.app.dto.OrgPublicProfileDTO;
 import com.github.projetoifsc.estagios.app.service.OrgService;
 import com.github.projetoifsc.estagios.app.utils.HttpErrorMessages;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags;
+import com.github.projetoifsc.estagios.core.IOrganization;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -44,7 +43,7 @@ public class OrgController {
 			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.UNAUTHORIZED_MSG) })} ),
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<OrgPrivateProfileDTO> createNewUser (
+	public ResponseEntity<IOrganization> createNewUser (
 			@RequestBody OrgPrivateProfileDTO perfil
 	) {
 		return service.create(perfil);
@@ -60,8 +59,10 @@ public class OrgController {
 		@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<OrgPrivateProfileDTO> getAuthUserPerfil () {
-		return service.getAuthUserPerfil();
+	public ResponseEntity<IOrganization> getAuthUserPerfil (
+			@PathVariable String id
+	) {
+		return service.getAuthUserPerfil(id);
 	}
 
 	
@@ -74,10 +75,11 @@ public class OrgController {
 		@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<OrgPrivateProfileDTO> updateAuthUserPerfil (
+	public ResponseEntity<IOrganization> updateAuthUserPerfil (
+			@PathVariable String id,
 			@RequestBody OrgPrivateProfileDTO perfil
 	)  {
-		return service.updateAuthUserPerfil(perfil);
+		return service.updateAuthUserPerfil(id, perfil);
 	}
 	
 	
@@ -91,8 +93,9 @@ public class OrgController {
 		@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	  })
-	public ResponseEntity<OrgPrivateProfileDTO> deleteAuthUserPerfil () {
-		return service.deleteAuthUserPerfil();
+	public ResponseEntity<IOrganization> deleteAuthUserPerfil (
+			@PathVariable String id) {
+		return service.deleteAuthUserPerfil(id);
 	}
 
 
@@ -117,7 +120,7 @@ public class OrgController {
 			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.UNAUTHORIZED_MSG) })} ),
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<Page<OrgDTO>> getAllSchools() {
+	public ResponseEntity<Page<IOrganization>> getAllSchools() {
 		return service.getAllSchools();
 	}
 
@@ -131,7 +134,7 @@ public class OrgController {
 			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.NOT_FOUND_MSG) })} ),
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<OrgPublicProfileDTO> getUserPublicProfile(
+	public ResponseEntity<IOrganization> getUserPublicProfile(
 			@PathVariable String id
 	) {
 		return service.getUserPublicProfile(id);

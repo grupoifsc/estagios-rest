@@ -1,9 +1,11 @@
 package com.github.projetoifsc.estagios.core;
 
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
-public interface IOrganizationRepository {
+public interface IOrganizationDB {
 
     IOrganization findById(String id);
     List<IOrganization> findAllById(List<String> receiversIds);
@@ -12,9 +14,9 @@ public interface IOrganizationRepository {
     void delete(String organization);
     IOrganization getPublicProfile(String organization);
     IOrganization getPrivateProfile(String organization);
-    List<IJob> getCreatedJobs(String organization);
+    Page<IJob> getCreatedJobs(String organization);
     List<IJob> getExclusiveReceivedJobs(String organization);
-    List<IOrganization> getAllPublicProfile();
-    List<IOrganization> getSchoolsPublicProfile();
+    Page<IOrganization> getAllPublicProfile();
+    Page<IOrganization> getSchoolsPublicProfile();
 
 }

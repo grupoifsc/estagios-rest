@@ -1,9 +1,10 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IJobRepository;
-import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
+import com.github.projetoifsc.estagios.core.IJobDB;
+import org.springframework.data.domain.Page;
+
 import static com.github.projetoifsc.estagios.core.implementation.OrganizationValidation.isSelf;
 
 import java.util.ArrayList;
@@ -13,16 +14,16 @@ import java.util.Set;
 
 class JobReadOperations {
 
-    private final IJobRepository traineeshipRepository;
-    private final IOrganizationRepository organizationRepository;
+    private final IJobDB traineeshipRepository;
+    private final IOrganizationDB organizationRepository;
 
-    public JobReadOperations(IJobRepository traineeshipRepository, IOrganizationRepository organizationRepository) {
+    public JobReadOperations(IJobDB traineeshipRepository, IOrganizationDB organizationRepository) {
         this.traineeshipRepository = traineeshipRepository;
         this.organizationRepository = organizationRepository;
     }
 
 
-    public List<IJob> getAllCreated(String loggedId, String targetId) {
+    public Page<IJob> getAllCreated(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId))
             return organizationRepository.getCreatedJobs(targetId);
         var errorMessage = "Organizations can only access their own created traineeships";
@@ -30,11 +31,12 @@ class JobReadOperations {
     }
 
     // TODO Ver se o Set vai estar funcionando aqui, se o equals vai estar correto...
+    // Aqui tem o problema da paginação... Vai ficar estranho, vai ficar desencontrado
     public List<IJob> getAllReceived(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId)) {
             Set<IJob> set = new HashSet<>();
-            if(organizationRepository.findById(loggedId).isSchool()) {
-                var created = organizationRepository.getCreatedJobs(loggedId);
+            if(organizationRepository.findById(loggedId).getIe()) {
+                var created = organizationRepository.getCreatedJobs(loggedId).stream().toList();
                 set.addAll(created);
             }
             var exclusivelyReceived = organizationRepository.getExclusiveReceivedJobs(targetId);

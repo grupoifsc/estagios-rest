@@ -1,9 +1,10 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IJobUseCases;
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IJobRepository;
+import com.github.projetoifsc.estagios.core.IJobDB;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,13 +14,13 @@ public class JobUseCases implements IJobUseCases {
     private final JobReadOperations readOperations;
     private final JobWriteOperations writeOperations;
 
-    public JobUseCases(IJobRepository jobRepository, IOrganizationRepository organizationRepository) {
+    public JobUseCases(IJobDB jobRepository, IOrganizationDB organizationRepository) {
         readOperations = new JobReadOperations(jobRepository, organizationRepository);
         writeOperations = new JobWriteOperations(jobRepository, organizationRepository);
     }
 
     @Override
-    public List<IJob> getAllCreated(String loggedId, String targetId) {
+    public Page<IJob> getAllCreated(String loggedId, String targetId) {
         return readOperations.getAllCreated(loggedId, targetId);
     }
 

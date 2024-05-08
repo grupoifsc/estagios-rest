@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "priority", discriminatorType = DiscriminatorType.INTEGER)
 @Table(name = "adresses")
 class Address {
 
@@ -18,38 +20,27 @@ class Address {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
-    Organization owner;
+    OrganizationEntity owner;
 
-    boolean main;
     String rua;
     String bairro;
     String cidade;
     String estado;
     String pais;
 
-    @CreatedDate
-    @Column(name = "created_at")
-    LocalDateTime createdAt;
-
     @LastModifiedDate
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
-
     @Override
     public String toString() {
         return "Address{" +
-                "main=" + main +
                 ", rua='" + rua + '\'' +
                 ", bairro='" + bairro + '\'' +
                 ", cidade='" + cidade + '\'' +
                 ", estado='" + estado + '\'' +
                 ", pais='" + pais + '\'' +
                 '}';
-    }
-
-    Organization getOwner() {
-        return owner;
     }
 
 }

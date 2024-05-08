@@ -34,7 +34,7 @@ public class VagaHateoasHelper {
                         .delete(vaga.getId())))
         );
         vaga.add(linkTo(methodOn(OrgController.class)
-                .getAuthUserPerfil()).withRel("criador"));
+                .getAuthUserPerfil(vaga.getOwner().getId())).withRel("criador"));
         vaga.add(linkTo(methodOn(vagaController)
                 .getVagaRecipients(vaga.getId())).withRel("destinatarios"));
 

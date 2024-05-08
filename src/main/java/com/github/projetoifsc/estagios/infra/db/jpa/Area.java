@@ -23,7 +23,7 @@ class Area implements IArea {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
-    Organization owner;
+    OrganizationEntity owner;
 
     @CreatedDate
     @Column(name = "created_at")
@@ -51,7 +51,7 @@ class Area implements IArea {
                 '}';
     }
 
-    Organization getOwner() {
+    OrganizationEntity getOwner() {
         return owner;
     }
 
@@ -63,7 +63,7 @@ class Area implements IArea {
     // Tive que usar cast aqui pra encaixar com as restrições do JPA
     @Override
     public void setOwner(IOrganization owner) {
-        this.owner = (Organization) owner;
+        this.owner = (OrganizationEntity) owner;
     }
 
 }

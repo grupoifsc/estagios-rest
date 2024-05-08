@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IAreaRepository;
+import com.github.projetoifsc.estagios.core.IAreaDB;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.dto.AreaImpl;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 
 public class AreaWriteOperationsUnitTest {
 
-    IAreaRepository areaRepository = mock();
+    IAreaDB areaRepository = mock();
     AreaWriteOperations service = new AreaWriteOperations(areaRepository);
 
     private IOrganization school = new OrganizationImpl("1", true);

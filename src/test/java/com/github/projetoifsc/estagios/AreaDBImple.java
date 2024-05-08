@@ -2,14 +2,14 @@ package com.github.projetoifsc.estagios;
 
 import com.github.javafaker.Faker;
 import com.github.projetoifsc.estagios.core.IArea;
-import com.github.projetoifsc.estagios.core.IAreaRepository;
+import com.github.projetoifsc.estagios.core.IAreaDB;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.infra.db.jpa.AreaMocker;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class AreaRepositoryImple implements IAreaRepository {
+class AreaDBImple implements IAreaDB {
 
     Faker faker = new Faker();
     AreaMocker areaMocker = new AreaMocker(faker);

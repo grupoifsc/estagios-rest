@@ -26,6 +26,8 @@ public class OrgPublicProfileDTO extends OrgDTO {
     @Valid
     private Contato mainContact;
 
+    OrgPublicProfileDTO() {
+    }
 
     public OrgPublicProfileDTO(String key, String name, boolean ie, String info, Contato mainContact) {
         super(key, name, ie);

@@ -1,10 +1,11 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 
-public class OrganizationReadOperationsUnitTest {
+public class OrganizationEntityReadOperationsUnitTest {
 
-    IOrganizationRepository organizationRepository = mock();
+    IOrganizationDB organizationRepository = mock();
     OrganizationReadOperations service = new OrganizationReadOperations(organizationRepository);
 
     IOrganization organizationA;
@@ -28,13 +29,13 @@ public class OrganizationReadOperationsUnitTest {
 
     @Test
     void getAllCallsPublicProfileAndReturnsList() {
-        when(organizationRepository.getAllPublicProfile()).thenReturn(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", false)));
+        when(organizationRepository.getAllPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", false))));
         assertInstanceOf(List.class, service.getAll());
     }
 
     @Test
     void getSchoolsCallsSchoolsPublicProfileAndReturnsList() {
-        when(organizationRepository.getSchoolsPublicProfile()).thenReturn(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", true)));
+        when(organizationRepository.getSchoolsPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", true))));
         assertInstanceOf(List.class, service.getSchools());
     }
 

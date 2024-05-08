@@ -21,7 +21,7 @@ class OrganizationValidation {
     }
 
     public static boolean isValidReceiver(IOrganization organization) {
-        return organization.isSchool();
+        return organization.getIe();
     }
 
 }

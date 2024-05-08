@@ -1,19 +1,18 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IAreaRepository;
+import com.github.projetoifsc.estagios.core.IAreaDB;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IArea;
-import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
 
 class AreaWriteOperations {
 
-    private IAreaRepository areaRepository;
-    public AreaWriteOperations(IAreaRepository areaRepository) {
+    private IAreaDB areaRepository;
+    public AreaWriteOperations(IAreaDB areaRepository) {
         this.areaRepository = areaRepository;
     }
 
     public IArea create(IOrganization organization, IArea area) {
-        if(organization.isSchool()) {
+        if(organization.getIe()) {
             area.setOwner(organization);
             return areaRepository.create(area);
         }

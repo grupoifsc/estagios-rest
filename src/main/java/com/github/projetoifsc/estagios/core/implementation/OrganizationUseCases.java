@@ -1,21 +1,24 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public class OrganizationUseCases implements IOrganizationUseCases {
 
-    IOrganizationRepository organizationRepository;
+//    IOrganizationDB organizationDB;
 
     // TODO: Checar se é assim! Criando novos objetos a cada requisição? Impressão de que não era pra ser assim
-    OrganizationWriteOperations writeUC = new OrganizationWriteOperations(organizationRepository);
-    OrganizationReadOperations readUC = new OrganizationReadOperations(organizationRepository);
+    OrganizationWriteOperations writeUC;
+    OrganizationReadOperations readUC;
 
-    public OrganizationUseCases(IOrganizationRepository organizationRepository) {
-        this.organizationRepository = organizationRepository;
+    public OrganizationUseCases(IOrganizationDB organizationDB) {
+  //      this.organizationDB = organizationDB;
+        this.readUC = new OrganizationReadOperations(organizationDB);
+        this.writeUC = new OrganizationWriteOperations(organizationDB);
     }
 
     @Override
@@ -34,12 +37,12 @@ public class OrganizationUseCases implements IOrganizationUseCases {
     }
 
     @Override
-    public List<IOrganization> getAll() {
+    public Page<IOrganization> getAll() {
         return readUC.getAll();
     }
 
     @Override
-    public List<IOrganization> getSchools() {
+    public Page<IOrganization> getSchools() {
         return readUC.getSchools();
     }
 

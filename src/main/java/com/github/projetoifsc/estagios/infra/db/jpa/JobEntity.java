@@ -1,5 +1,8 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
+import com.github.projetoifsc.estagios.core.IArea;
+import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.IOrganization;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,7 +17,7 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "jobs")
-class Job {
+class JobEntity implements IJob {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +27,7 @@ class Job {
     // https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
-    Organization owner;
+    OrganizationEntity owner;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="areas_jobs",
@@ -38,7 +41,7 @@ class Job {
         joinColumns = @JoinColumn(name = "job_id"),
         inverseJoinColumns = @JoinColumn(name = "org_id")
     )
-    List<Organization> ies;
+    List<OrganizationEntity> ies;
 
     // Como pode vir das outras camadas:
     // Com um id OU com os campos marcados.. (a camada de negócio vai ter que resolver isso)
@@ -115,23 +118,52 @@ class Job {
 
 
 
-    public Job(String titulo) {
+    public JobEntity(String titulo) {
             this.titulo = titulo;
     }
 
-    public Job() {
+    public JobEntity() {
     }
 
 
-    Organization getOwner() {
+    @Override
+    public String getId() {
+        return String.valueOf(id);
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = Long.parseLong(id);
+    }
+
+    @Override
+    public OrganizationEntity getOwner() {
         return owner;
     }
 
-    List<Area> getAreas() {
-        return areas;
+    @Override
+    public void setOwner(IOrganization user) {
+        this.owner = (OrganizationEntity) user;
     }
 
-    List<Organization> getIes() {
+    @Override
+    public List<String> getReceiversIds() {
+        return null;
+    }
+
+    @Override
+    public void setReceiversIds(List<String> receiversIds) {
+
+    }
+
+    @Override
+    public List<IArea> getAreas() {
+        return areas.stream()
+                .map(area -> (IArea) area)
+                .toList();
+    }
+
+    List<OrganizationEntity> getIes() {
         return ies;
     }
 

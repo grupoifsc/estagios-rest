@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationRepository;
+import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,9 +11,9 @@ import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OrganizationWriteOperationsUnitTest {
+public class OrganizationEntityWriteOperationsUnitTest {
 
-    IOrganizationRepository organizationRepository = mock();
+    IOrganizationDB organizationRepository = mock();
 
     OrganizationWriteOperations service = new OrganizationWriteOperations(organizationRepository);
 

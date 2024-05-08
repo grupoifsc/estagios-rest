@@ -1,16 +1,21 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.dto.OrgDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.projetoifsc.estagios.app.dto.OrgPrivateProfileDTO;
-import com.github.projetoifsc.estagios.app.dto.OrgPublicProfileDTO;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
-import com.github.projetoifsc.estagios.app.utils.mock.OrgMock;
+import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 // TODO:
@@ -27,96 +32,144 @@ import org.springframework.stereotype.Service;
 // h) Devolve a resposta ao Controller
 
 
-import java.util.List;
-
-
 @Service
 public class OrgService {
 
+    IOrganizationUseCases organizationUseCases;
+
+    @Autowired
+    OrgService(IOrganizationUseCases organizationUseCases) {
+        this.organizationUseCases = organizationUseCases;
+    }
+
     ModelMapper mapper = new ModelMapper();
+    ObjectMapper jsonMapper = new ObjectMapper();
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
+    OrgService() {
+        System.out.println("Ol´aááááŕrrrr");
 
-    public ResponseEntity<OrgPrivateProfileDTO> create(OrgPrivateProfileDTO perfil) {
+    }
 
-        requestHandlerChain.handle(perfil);
+    public ResponseEntity<IOrganization> create(OrgPrivateProfileDTO perfil) {
 
-        perfil.setId("111");
-        var userDTO = mapper.map(
-                perfil,
-                OrgPrivateProfileDTO.class);
+//        requestHandlerChain.handle(perfil);
+//        var userDTO = mapper.map(
+//                perfil,
+//                OrgPrivateProfileDTO.class);
+
+        var responseObject = organizationUseCases.createProfile(perfil);
 
         return new ResponseEntity<>(
-                userDTO,
+                responseObject,
                 HttpStatus.CREATED);
 
     }
 
 
-    public ResponseEntity<OrgPrivateProfileDTO> getAuthUserPerfil() {
+    public ResponseEntity<IOrganization> getAuthUserPerfil(String id) {
 
-        var userDTO = mapper.map(
-                OrgMock.getOne(),
-                OrgPrivateProfileDTO.class
-        );
+//        var userDTO = mapper.map(
+//                organizationUseCases.getPrivateProfile("1", "1"),
+//                OrgPrivateProfileDTO.class
+//        );
+        var response = organizationUseCases.getPrivateProfile(id, id);
 
         return new ResponseEntity<> (
-                userDTO,
+                response,
                 HttpStatus.OK);
     }
 
 
-    public ResponseEntity<OrgPrivateProfileDTO> updateAuthUserPerfil(OrgPrivateProfileDTO perfil) {
+    public ResponseEntity<IOrganization> updateAuthUserPerfil(String id, OrgPrivateProfileDTO perfil) {
 
         requestHandlerChain.handle(perfil);
 
-        perfil.setId("123");
-        var userDTO = mapper.map(
-                perfil,
-                OrgPrivateProfileDTO.class
-        );
+//        var userDTO = mapper.map(
+//                perfil,
+//                OrgPrivateProfileDTO.class
+//        );
+        var responseObject = organizationUseCases.updateProfile(id,id, perfil);
 
         return new ResponseEntity<>(
-                userDTO,
+                responseObject,
                 HttpStatus.OK);
     }
 
 
-    public ResponseEntity<OrgPrivateProfileDTO> deleteAuthUserPerfil() {
+    public ResponseEntity<IOrganization> deleteAuthUserPerfil(String id) {
+        organizationUseCases.deleteProfile(id, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
-    public ResponseEntity<Page<OrgDTO>> getAllUsers() {
-        var users = OrgMock.getList();
-        return this.getPageFromList(users);
-    }
+    public ResponseEntity<Page<IOrganization>> getAllUsers() {
+        jsonMapper.registerModule(new JavaTimeModule());
+        jsonMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+        var responseObject = organizationUseCases.getAll();
+        System.out.println(responseObject);
+        // map to DTOs
+        // TODO correct DTO type
+        var dtos = responseObject.getContent().stream().map(org -> mapper.map(org, OrgPrivateProfileDTO.class)).toList();
+        dtos.forEach(dto -> {
+            System.out.println(dto);
+            try {
+                System.out.println(jsonMapper.writeValueAsString(dto));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
 
-    public ResponseEntity<Page<OrgDTO>> getAllSchools() {
-        var users = OrgMock.getSchools();
-        return this.getPageFromList(users);
-    }
-
-
-    public ResponseEntity<OrgPublicProfileDTO> getUserPublicProfile(String id) {
-        var user = OrgMock.getOne();
-        var userDTO = mapper.map(
-                user,
-                OrgPublicProfileDTO.class
-        );
+        });
         return new ResponseEntity<>(
-                userDTO,
+                responseObject,
                 HttpStatus.OK
         );
     }
 
 
-    private ResponseEntity<Page<OrgDTO>> getPageFromList(List<OrgPrivateProfileDTO> users) {
-        var usersDTO = users.stream().map(user -> mapper.map(user, OrgDTO.class)).toList();
-        var page = new PageImpl<>(usersDTO);
+    public ResponseEntity<Page<IOrganization>> getAllSchools() {
+        jsonMapper.registerModule(new JavaTimeModule());
+        jsonMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        var responseObject = organizationUseCases.getAll();
+        System.out.println(responseObject);
+        // map to DTOs
+        // TODO correct DTO type
+        var dtos = responseObject.getContent().stream().map(org -> mapper.map(org, OrgPrivateProfileDTO.class)).toList();
+        dtos.forEach(dto -> {
+            System.out.println(dto);
+            try {
+                System.out.println(jsonMapper.writeValueAsString(dto));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+
+        });
+
+        var dtoPage = responseObject.map(org ->
+        {
+            var converted = mapper.map(org, OrgPrivateProfileDTO.class);
+            return (IOrganization) converted;
+        }
+        );
+
         return new ResponseEntity<>(
-                page,
+                dtoPage,
+                HttpStatus.OK
+        );
+    }
+
+
+    public ResponseEntity<IOrganization> getUserPublicProfile(String id) {
+        var responseObject = organizationUseCases.getPublicProfile(id, id);
+
+        //        var userDTO = mapper.map(
+//                user,
+//                OrgPublicProfileDTO.class
+//        );
+        return new ResponseEntity<>(
+                responseObject,
                 HttpStatus.OK
         );
     }

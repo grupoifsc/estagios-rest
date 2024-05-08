@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.core;
 
 import java.util.List;
 
-public interface IAddressAndContactRepository {
+public interface IAddressAndContactDB {
 
     IAddress findAddressById(String id);
     IContact findContactById(String id);

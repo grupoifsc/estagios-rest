@@ -13,7 +13,7 @@ class OrgMockerTest {
         GeradorCnpj geradorCnpj = new GeradorCnpj();
         OrgMocker orgMocker = new OrgMocker(faker, geradorCnpj);
 
-        Organization mockedOrg = orgMocker.generate();
+        OrganizationEntity mockedOrg = orgMocker.generate();
         System.out.println(mockedOrg);
     }
 

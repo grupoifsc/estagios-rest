@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OrganizationValidationUnitTest {
+public class OrganizationEntityValidationUnitTest {
 
     private OrganizationImpl enterprise;
     private OrganizationImpl school;

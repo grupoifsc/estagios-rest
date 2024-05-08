@@ -23,7 +23,7 @@ public class OrganizationImpl implements IOrganization {
     }
 
     @Override
-    public boolean isSchool() {
+    public Boolean getIe() {
         return isSchool;
     }
 

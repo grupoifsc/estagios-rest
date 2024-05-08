@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-public class IOrganizationUnitTest {
+public class IOrganizationEntityUnitTest {
 
     IOrganization organization;
 
@@ -24,7 +24,7 @@ public class IOrganizationUnitTest {
 
     @Test
     void isSchoolIsABooleanField() {
-        assertInstanceOf(Boolean.class, organization.isSchool());
+        assertInstanceOf(Boolean.class, organization.getIe());
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-public class iJobUnitTest {
+public class iJobEntityUnitTest {
 
     IJob traineeship;
 
