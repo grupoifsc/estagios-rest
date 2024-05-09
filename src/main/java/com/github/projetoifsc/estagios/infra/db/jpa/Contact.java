@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "priority", discriminatorType = DiscriminatorType.INTEGER)
 @Table(name = "contacts")
-class Contact {
+abstract class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,30 +24,52 @@ class Contact {
     @JoinColumn(name = "owner_id", nullable = false)
     OrganizationEntity owner;
 
-    boolean geral;
-
     String email;
     String telefone;
-
-    @CreatedDate
-    @Column(name = "created_at")
-    LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
 
-    @Override
-    public String toString() {
-        return "Contact{" +
-                "email='" + email + '\'' +
-                ", telefone='" + telefone + '\'' +
-                '}';
+    Long getId() {
+        return id;
+    }
+
+    void setId(Long id) {
+        this.id = id;
     }
 
     OrganizationEntity getOwner() {
         return owner;
+    }
+
+    void setOwner(OrganizationEntity owner) {
+        this.owner = owner;
+    }
+
+    String getEmail() {
+        return email;
+    }
+
+    void setEmail(String email) {
+        this.email = email;
+    }
+
+    String getTelefone() {
+        return telefone;
+    }
+
+    void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 }

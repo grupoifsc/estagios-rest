@@ -1,7 +1,11 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.javafaker.Faker;
+import com.github.projetoifsc.estagios.app.interfaces.OrgPublicProfileProjection;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,13 +26,20 @@ class OrganizationRepositoryUnitTest {
     OrganizationRepository organizationRepository;
 
     @Autowired
+    AddressRepository addressRepository;
+
+    @Autowired
     OrganizationDBImpl organizationDB;
 
     Faker faker = new Faker();
     GeradorCnpj geradorCnpj = new GeradorCnpj();
     OrgMocker orgMocker = new OrgMocker(faker, geradorCnpj);
 
-    ObjectMapper jsonMapper = new ObjectMapper();
+    JsonMapper jsonMapper = JsonMapper.builder()
+            .addModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .build();
+
     ModelMapper modelMapper = new ModelMapper();
 
 //    @Autowired
@@ -43,11 +55,12 @@ class OrganizationRepositoryUnitTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(value = false)
     void saveOrganization() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             organizationEntity = orgMocker.generate();
-            var saved = organizationRepository.save(organizationEntity);
-            System.out.println(saved);
+            organizationRepository.save(organizationEntity);
         }
     }
 
@@ -153,7 +166,7 @@ class OrganizationRepositoryUnitTest {
     @Test
     void findByIdPublicProfile() {
 
-        var projection = organizationRepository.findById(5, PublicOrgProfileProjection.class);
+        var projection = organizationRepository.findById(5, OrgPublicProfileProjection.class);
         System.out.println(projection.get());
 
         System.out.println("Projection: ");
@@ -172,6 +185,93 @@ class OrganizationRepositoryUnitTest {
 
         assertEquals(mapped.id, projection.get().getId());
         assertEquals(mapped.nome,projection.get().getNome());
+
+    }
+
+
+    @Test
+    void findingById() {
+
+        var entitiy = organizationRepository.findById(28).orElse(null);
+
+        System.out.println("Elemento recuperado do banco de dados com findById: ");
+        try {
+            System.out.println(jsonMapper.writeValueAsString(entitiy));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Imprimindo o id do primeiro contato criado para a entidade: ");
+        System.out.println(entitiy.getContatos().get(0).getId());
+        System.out.println(entitiy.getEnderecos().get(0).getUpdatedAt());
+
+
+    }
+
+    @Transactional
+    @Rollback(value = false)
+    @Test
+    void lazyLoadingFromSaved() {
+        var ent = organizationRepository.save(orgMocker.generate());
+
+        var address = new AddressMain();
+        address.setOwner(ent);
+        address = addressRepository.save(address);
+
+        var otheraddress = new AddressMain();
+        otheraddress.setOwner(ent);
+        otheraddress = addressRepository.save(otheraddress);
+
+        var enderecos = addressRepository.findByOwner(ent);
+
+        System.out.println(enderecos);
+
+        var main = addressRepository.findFirstAddressMainByOwner(ent);
+
+        System.out.println(main);
+
+
+    }
+
+
+
+    @Test
+    @Transactional
+    @Rollback(value = false)
+    void lazyLoadingOneToOne() {
+
+        var addr = addressRepository.findById(35L).orElse(null);
+
+        System.out.println(addr.getId());
+        System.out.println(addr.getBairro());
+
+        var entity = addr.getOwner();
+        entity.setUsername("Jujujujujuju");
+        entity = organizationRepository.save(entity);
+
+        System.out.println(entity.getNome());
+        System.out.println(entity.getUsername());
+
+        var adresses = entity.getEnderecos();
+
+        System.out.println(adresses);
+
+        var newAddr = new AddressMain();
+        newAddr.setOwner(entity);
+        newAddr.setCidade("Cairo");
+        newAddr = addressRepository.save(newAddr);
+
+        System.out.println(newAddr.getId());
+        System.out.println(newAddr.getOwner());
+
+//        Essa chamada aqui não faz uma outra chamada ao banco para atualizar...
+        adresses = entity.getEnderecos();
+        System.out.println(adresses);
+
+        // O endereço não foi salvo de verdade no banco de dados =OOO
+        // É como se estivesse dando um rollback...
+        // Mas por que??? Não tem nada que explique isso...
+
 
     }
 

@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.dto.*;
+import com.github.projetoifsc.estagios.app.view.*;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
 import com.github.projetoifsc.estagios.app.utils.mock.OrgMock;
 import com.github.projetoifsc.estagios.app.utils.mock.VagaMock;
@@ -24,11 +24,11 @@ public class VagaService {
 
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
-    PagedResourcesAssembler<VagaPublicProfileDTO> pageAssembler = new PagedResourcesAssembler<VagaPublicProfileDTO>(null, null);
+    PagedResourcesAssembler<VagaPublicProfileSerializableView> pageAssembler = new PagedResourcesAssembler<VagaPublicProfileSerializableView>(null, null);
 
 
 
-    public ResponseEntity<VagaPrivateProfileDTO> create(VagaPrivateProfileDTO vaga) {
+    public ResponseEntity<VagaPrivateProfileSerializableView> create(VagaPrivateProfileSerializableView vaga) {
 
         requestHandlerChain.handle(vaga);
 
@@ -36,7 +36,7 @@ public class VagaService {
         vaga.setOwner(OrgMock.getOne());
 
         var mapped = mapper.map
-                (vaga, VagaPrivateProfileDTO.class);
+                (vaga, VagaPrivateProfileSerializableView.class);
 
         return new ResponseEntity<>(
                 mapped,
@@ -63,31 +63,31 @@ public class VagaService {
 //    }
 
 
-    public ResponseEntity<VagaPrivateProfileDTO> update(String vagaId, VagaPrivateProfileDTO vaga) {
+    public ResponseEntity<VagaPrivateProfileSerializableView> update(String vagaId, VagaPrivateProfileSerializableView vaga) {
         requestHandlerChain.handle(vaga);
 
         vaga.setId("123");
         vaga.setOwner(OrgMock.getOne());
         var mapped = mapper.map(
-                vaga, VagaPrivateProfileDTO.class
+                vaga, VagaPrivateProfileSerializableView.class
         );
-        return new ResponseEntity<VagaPrivateProfileDTO> (
+        return new ResponseEntity<VagaPrivateProfileSerializableView> (
                 mapped,
                 HttpStatus.OK );
     }
 
 
-    public ResponseEntity<VagaPrivateProfileDTO> delete(String vagaId) {
-        return new ResponseEntity<VagaPrivateProfileDTO> (
+    public ResponseEntity<VagaPrivateProfileSerializableView> delete(String vagaId) {
+        return new ResponseEntity<VagaPrivateProfileSerializableView> (
                 HttpStatus.NO_CONTENT );
     }
 
 
-    public ResponseEntity<VagaPublicProfileDTO> getPublicProfile(String vagaId) {
+    public ResponseEntity<VagaPublicProfileSerializableView> getPublicProfile(String vagaId) {
         var vaga = VagaMock.getOne();
         var mapped = mapper.map(
                 vaga,
-                VagaPublicProfileDTO.class
+                VagaPublicProfileSerializableView.class
         );
         return new ResponseEntity<>(
                 mapped,
@@ -96,11 +96,11 @@ public class VagaService {
     }
 
 
-    public ResponseEntity<VagaPrivateProfileDTO> getPrivateProfile(String vagaId) {
+    public ResponseEntity<VagaPrivateProfileSerializableView> getPrivateProfile(String vagaId) {
         var vaga = VagaMock.getOne();
         var mapped = mapper.map(
                 vaga,
-                VagaPrivateProfileDTO.class
+                VagaPrivateProfileSerializableView.class
         );
         return new ResponseEntity<> (
                 mapped,
@@ -108,11 +108,11 @@ public class VagaService {
     }
 
 
-    public ResponseEntity<Page<VagaPublicProfileDTO>> getAllReceivedByUser(String id, HashMap<String, String> filterArgs) {
+    public ResponseEntity<Page<VagaPublicProfileSerializableView>> getAllReceivedByUser(String id, HashMap<String, String> filterArgs) {
         var vagas = VagaMock.getList();
         var vagasDto = vagas.stream().map(vaga -> mapper.map(
                 vaga,
-                VagaPublicProfileDTO.class
+                VagaPublicProfileSerializableView.class
         )).toList();
         var pageImpl = new PageImpl<>(vagasDto);
         return new ResponseEntity<> (
@@ -121,11 +121,11 @@ public class VagaService {
     }
 
 
-    public ResponseEntity<Page<VagaPrivateProfileDTO>> getAllCreatedByUser(String id, Integer page, Integer limit) {
+    public ResponseEntity<Page<VagaPrivateProfileSerializableView>> getAllCreatedByUser(String id, Integer page, Integer limit) {
         var vagas = VagaMock.getList();
         var vagasDTO = vagas.stream().map(vaga -> mapper.map(
                 vaga,
-                VagaPrivateProfileDTO.class
+                VagaPrivateProfileSerializableView.class
         )).toList();
         var pageImpl = new PageImpl<>(vagasDTO);
 
@@ -135,11 +135,11 @@ public class VagaService {
     }
 
 
-    public ResponseEntity<Page<OrgDTO>> getVagaRecipients(String id) {
+    public ResponseEntity<Page<OrgBasicView>> getVagaRecipients(String id) {
         var users = OrgMock.getList();
         var usersDTO = users.stream().map(user -> mapper.map(
                 user,
-                OrgDTO.class
+                OrgBasicView.class
         )).toList();
         var pageImpl = new PageImpl<>(usersDTO);
 

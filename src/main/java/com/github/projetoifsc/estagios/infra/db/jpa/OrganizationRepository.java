@@ -17,6 +17,7 @@ interface OrganizationRepository extends PagingAndSortingRepository<Organization
     OrganizationEntity save(OrganizationEntity org);
 
     Optional<OrganizationEntity> findById(long id);
+
     <T> Optional<T> findById(long id, Class<T> type);
 
     <T> Optional<T> findByUsername(String username, Class<T> type);

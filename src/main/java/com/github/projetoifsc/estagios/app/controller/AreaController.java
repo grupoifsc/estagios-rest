@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.controller;
 
-import com.github.projetoifsc.estagios.app.dto.AreaDTO;
+import com.github.projetoifsc.estagios.app.view.AreaSerializableView;
 import com.github.projetoifsc.estagios.app.service.AreaService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,41 +38,41 @@ public class AreaController {
 	    @ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<Page<AreaDTO>> getAllAreas () {
+	public ResponseEntity<Page<AreaSerializableView>> getAllAreas () {
 		return service.getAll();
 	}
 
 
 	@PostMapping("/areas")
 	@Operation(summary="Criar", description="Criar Área", tags={AREAS}, operationId="postArea")
-	public ResponseEntity<Page<AreaDTO>> criarArea () {
+	public ResponseEntity<Page<AreaSerializableView>> criarArea () {
 		return service.getAll();
 	}
 
 
 	@GetMapping("/entidades/{id}/areas")
 	@Operation(summary="Ver áreas de uma entidade", description="Ver todas as áreas criadas por uma entidade", tags={AREAS}, operationId="getAllAreasFromUser")
-	public ResponseEntity<Page<AreaDTO>> areasCriadas () {
+	public ResponseEntity<Page<AreaSerializableView>> areasCriadas () {
 		return service.getAll();
 	}
 
 	@GetMapping("/areas/{id}")
 	@Operation(summary="Ver", description="Ver uma área", tags={AREAS}, operationId="getArea")
-	public ResponseEntity<Page<AreaDTO>> verArea () {
+	public ResponseEntity<Page<AreaSerializableView>> verArea () {
 		return service.getAll();
 	}
 
 
 	@PutMapping("/areas/{id}")
 	@Operation(summary="Editar", description="Editar uma área", tags={AREAS}, operationId="putArea")
-	public ResponseEntity<Page<AreaDTO>> editarAreas () {
+	public ResponseEntity<Page<AreaSerializableView>> editarAreas () {
 		return service.getAll();
 	}
 
 
 	@DeleteMapping("/areas/{id}")
 	@Operation(summary="Deletar", description="Deletar uma área", tags={AREAS}, operationId="deleteArea")
-	public ResponseEntity<Page<AreaDTO>> deletarAreas () {
+	public ResponseEntity<Page<AreaSerializableView>> deletarAreas () {
 		return service.getAll();
 	}
 

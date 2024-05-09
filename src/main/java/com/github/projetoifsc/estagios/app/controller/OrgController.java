@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.controller;
 
-import com.github.projetoifsc.estagios.app.dto.OrgPrivateProfileDTO;
+import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
 import com.github.projetoifsc.estagios.app.service.OrgService;
 import com.github.projetoifsc.estagios.app.utils.HttpErrorMessages;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
@@ -44,7 +44,7 @@ public class OrgController {
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
 	public ResponseEntity<IOrganization> createNewUser (
-			@RequestBody OrgPrivateProfileDTO perfil
+			@RequestBody OrgPrivateProfileBasicView perfil
 	) {
 		return service.create(perfil);
 	}
@@ -77,7 +77,7 @@ public class OrgController {
 	})
 	public ResponseEntity<IOrganization> updateAuthUserPerfil (
 			@PathVariable String id,
-			@RequestBody OrgPrivateProfileDTO perfil
+			@RequestBody OrgPrivateProfileBasicView perfil
 	)  {
 		return service.updateAuthUserPerfil(id, perfil);
 	}

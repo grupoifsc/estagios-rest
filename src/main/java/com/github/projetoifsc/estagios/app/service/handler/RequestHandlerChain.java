@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.service.handler;
 
-import com.github.projetoifsc.estagios.app.dto.DTO;
+import com.github.projetoifsc.estagios.app.view.SerializableView;
 
 public class RequestHandlerChain {
 
@@ -15,8 +15,8 @@ public class RequestHandlerChain {
         removeLinks.setNext(validate);
     }
 
-    public void handle(DTO dto) {
-        authenticate.handle(dto);
+    public void handle(SerializableView serializableView) {
+        authenticate.handle(serializableView);
     }
 
 }

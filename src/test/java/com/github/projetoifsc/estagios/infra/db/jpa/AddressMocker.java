@@ -13,7 +13,7 @@ class AddressMocker {
     public Address generate() {
 
         var addr = faker.address();
-        Address address = new Address();
+        Address address = new AddressMain();
 
         address.rua = addr.streetAddress(true);
         address.bairro = addr.cityPrefix();

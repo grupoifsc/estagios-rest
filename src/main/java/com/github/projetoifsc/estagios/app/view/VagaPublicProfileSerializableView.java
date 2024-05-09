@@ -1,10 +1,10 @@
-package com.github.projetoifsc.estagios.app.dto;
+package com.github.projetoifsc.estagios.app.view;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.projetoifsc.estagios.app.dto.shared.Contato;
-import com.github.projetoifsc.estagios.app.dto.shared.Localizacao;
+import com.github.projetoifsc.estagios.app.view.shared.Contato;
+import com.github.projetoifsc.estagios.app.view.shared.Localizacao;
 import com.github.projetoifsc.estagios.app.utils.hateoas.VagaHateoasHelper;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
@@ -20,7 +20,7 @@ import java.util.List;
         "linksExternos", "requisitos", "periodos", "cargaHoraria", "remuneracao",
         "niveis", "areas", "inicio", "final", "contato",
         "endereco", "criadoEm", "modificadoEm", "links"})
-public class VagaPublicProfileDTO extends VagaDTO {
+public class VagaPublicProfileSerializableView extends VagaSerializableView {
 
     @JsonProperty(value = "descricao", required = true)
     @Schema(example="Vaga para desenhista etc etc et etc etc etc", description = "Aceita HTML", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -88,9 +88,9 @@ public class VagaPublicProfileDTO extends VagaDTO {
     @JsonProperty("modificadoEm")
     private LocalDateTime updatedAt;
 
-    public VagaPublicProfileDTO() {}
+    public VagaPublicProfileSerializableView() {}
 
-    public VagaPublicProfileDTO(String key, OrgDTO
+    public VagaPublicProfileSerializableView(String key, OrgBasicView
             owner, String title, String description, List<@NotBlank String> requirements, List<@NotBlank String> periods, long workloadInHours, long payment, List<@NotBlank String> levels, List<@NotBlank String> areas, LocalDate startsAt, LocalDate endsAt, Contato contact, Localizacao address, List<@NotBlank String> externalLinks, LocalDateTime createdAt, LocalDateTime updatedAt) {
         super(key, owner, title);
         this.description = description;

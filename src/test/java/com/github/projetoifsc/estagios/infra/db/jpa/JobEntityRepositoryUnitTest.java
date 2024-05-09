@@ -40,6 +40,8 @@ class JobEntityRepositoryUnitTest {
         var organization = organizationRepository.findById(1L).get();
         var area = areaRepository.findAreaById(1L).get();
 
+       // area = new Area();
+
         jobEntity = jobMocker.generate();
         jobEntity.owner = organization;
         jobEntity.areas = List.of(area);

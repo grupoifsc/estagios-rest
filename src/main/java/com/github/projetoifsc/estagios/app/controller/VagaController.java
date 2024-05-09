@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.app.controller;
 
-import com.github.projetoifsc.estagios.app.dto.OrgDTO;
-import com.github.projetoifsc.estagios.app.dto.VagaPrivateProfileDTO;
-import com.github.projetoifsc.estagios.app.dto.VagaPublicProfileDTO;
+import com.github.projetoifsc.estagios.app.view.OrgBasicView;
+import com.github.projetoifsc.estagios.app.view.VagaPrivateProfileSerializableView;
+import com.github.projetoifsc.estagios.app.view.VagaPublicProfileSerializableView;
 import com.github.projetoifsc.estagios.app.service.VagaService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,8 +46,8 @@ public class VagaController {
 			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<VagaPrivateProfileDTO> create (
-			@RequestBody VagaPrivateProfileDTO vaga
+	public ResponseEntity<VagaPrivateProfileSerializableView> create (
+			@RequestBody VagaPrivateProfileSerializableView vaga
 	) {
 		return service.create(vaga);
 	}
@@ -63,9 +63,9 @@ public class VagaController {
 			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<VagaPrivateProfileDTO> update(
+	public ResponseEntity<VagaPrivateProfileSerializableView> update(
 			@PathVariable("id") String vagaId,
-			@RequestBody VagaPrivateProfileDTO vaga
+			@RequestBody VagaPrivateProfileSerializableView vaga
 	) {
 		return service.update(vagaId, vaga);
 	}
@@ -81,7 +81,7 @@ public class VagaController {
 			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<VagaPrivateProfileDTO> delete(
+	public ResponseEntity<VagaPrivateProfileSerializableView> delete(
 			@PathVariable("id") String vagaId
 	) {
 		return service.delete(vagaId);
@@ -97,7 +97,7 @@ public class VagaController {
 		@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<VagaPublicProfileDTO> getPublicProfile (
+	public ResponseEntity<VagaPublicProfileSerializableView> getPublicProfile (
 			@PathVariable("id") String vagaId
 	) {
 		return service.getPublicProfile(vagaId);
@@ -114,7 +114,7 @@ public class VagaController {
 			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<VagaPrivateProfileDTO> getPrivateProfile (
+	public ResponseEntity<VagaPrivateProfileSerializableView> getPrivateProfile (
 			@PathVariable("id") String vagaId
 	) {
 		return service.getPrivateProfile(vagaId);
@@ -131,7 +131,7 @@ public class VagaController {
 		@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<Page<VagaPublicProfileDTO>> getAllReceivedByUser (
+	public ResponseEntity<Page<VagaPublicProfileSerializableView>> getAllReceivedByUser (
 			@RequestParam(value = "titulo", defaultValue = "", required = false) String titulo,
 			@RequestParam(value = "areas", defaultValue = "", required = false) String areas,
 			@RequestParam(value = "niveis", defaultValue = "", required = false) @Schema(allowableValues = {"fundamental", "medio", "superior", "tecnico", "pos"}) String niveis,
@@ -165,7 +165,7 @@ public class VagaController {
 			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 	})
-	public ResponseEntity<Page<VagaPrivateProfileDTO>> getAllCreatedByUser (
+	public ResponseEntity<Page<VagaPrivateProfileSerializableView>> getAllCreatedByUser (
 			@RequestParam(value= "limit", defaultValue = DEFAULT_LIMIT_VALUE) Integer limit,
 			@RequestParam(value= "page", defaultValue = DEFAULT_PAGE_VALUE) Integer page,
 			@PathVariable String id) {
@@ -173,7 +173,7 @@ public class VagaController {
 	}
 
 
-	public ResponseEntity<Page<OrgDTO>> getVagaRecipients(
+	public ResponseEntity<Page<OrgBasicView>> getVagaRecipients(
 			@PathVariable String id) {
 		return service.getVagaRecipients(id);
 	}

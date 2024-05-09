@@ -1,4 +1,4 @@
-package com.github.projetoifsc.estagios.app.dto.shared;
+package com.github.projetoifsc.estagios.app.view.shared;
 
 import java.io.Serializable;
 

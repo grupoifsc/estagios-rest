@@ -1,4 +1,4 @@
-package com.github.projetoifsc.estagios.app.dto;
+package com.github.projetoifsc.estagios.app.view;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 @JsonPropertyOrder(value = {"id", "titulo", "entidade", "links"})
 @Schema(name="Vaga")
 @Validated
-public class VagaDTO extends DTO {
+public class VagaSerializableView extends SerializableView {
 
 	@JsonProperty("id")
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1")
@@ -23,16 +23,16 @@ public class VagaDTO extends DTO {
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@NotNull
 	@Valid
-	private OrgDTO owner;
+	private OrgBasicView owner;
 
 	@JsonProperty("titulo")
 	@Schema(example="Vaga de desenhista Junior")
 	@NotBlank
 	private String title;
 
-	public VagaDTO() {}
+	public VagaSerializableView() {}
 
-	public VagaDTO(String id, OrgDTO owner, String title) {
+	public VagaSerializableView(String id, OrgBasicView owner, String title) {
 		this.id = id;
 		this.owner = owner;
 		this.title = title;
@@ -46,11 +46,11 @@ public class VagaDTO extends DTO {
 		this.id = id;
 	}
 
-	public OrgDTO getOwner() {
+	public OrgBasicView getOwner() {
 		return owner;
 	}
 
-	public void setOwner(OrgDTO owner) {
+	public void setOwner(OrgBasicView owner) {
 		this.owner = owner;
 	}
 

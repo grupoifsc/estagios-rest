@@ -2,8 +2,8 @@ package com.github.projetoifsc.estagios.app.utils.hateoas;
 
 import com.github.projetoifsc.estagios.app.controller.OrgController;
 import com.github.projetoifsc.estagios.app.controller.VagaController;
-import com.github.projetoifsc.estagios.app.dto.VagaDTO;
-import com.github.projetoifsc.estagios.app.dto.VagaPrivateProfileDTO;
+import com.github.projetoifsc.estagios.app.view.VagaSerializableView;
+import com.github.projetoifsc.estagios.app.view.VagaPrivateProfileSerializableView;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -11,7 +11,7 @@ public class VagaHateoasHelper {
 
     private static Class<VagaController> vagaController = VagaController.class;
 
-    public static void addPublicProfileLinks(VagaDTO vaga) {
+    public static void addPublicProfileLinks(VagaSerializableView vaga) {
 
         vaga.add(linkTo(methodOn(vagaController)
                 .getPublicProfile(vaga.getId())).withSelfRel());
@@ -21,15 +21,15 @@ public class VagaHateoasHelper {
     }
 
 
-    public static void addPrivateProfileLinks(VagaDTO vaga) {
+    public static void addPrivateProfileLinks(VagaSerializableView vaga) {
 
         vaga.add(linkTo(methodOn(vagaController)
                 .getPrivateProfile(vaga.getId())).withSelfRel()
                 .andAffordance(afford(methodOn(vagaController
                 )
-                        .create(new VagaPrivateProfileDTO())))
+                        .create(new VagaPrivateProfileSerializableView())))
                 .andAffordance(afford(methodOn(vagaController)
-                        .update(vaga.getId(), new VagaPrivateProfileDTO())))
+                        .update(vaga.getId(), new VagaPrivateProfileSerializableView())))
                 .andAffordance(afford(methodOn(vagaController)
                         .delete(vaga.getId())))
         );

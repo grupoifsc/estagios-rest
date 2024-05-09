@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.app.utils.mock;
 //import static com.github.juhachmann.estagios.data.mock.MockDatabasePerfil.enderecoDTOMockCollection;
 
-import com.github.projetoifsc.estagios.app.dto.shared.Localizacao;
+import com.github.projetoifsc.estagios.app.view.shared.Localizacao;
 import org.springframework.stereotype.Service;
 
 @Service

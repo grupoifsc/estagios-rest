@@ -109,7 +109,7 @@ class JobEntity implements IJob {
     // TODO Criação e Atualização automáticos
 
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     LocalDateTime createdAt;
 
     @LastModifiedDate

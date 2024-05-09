@@ -1,4 +1,4 @@
-package com.github.projetoifsc.estagios.app.dto;
+package com.github.projetoifsc.estagios.app.view;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,14 +7,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
 @JsonPropertyOrder(value = {"id", "nome", "links"})
-public class AreaDTO extends DTO {
+public class AreaSerializableView extends SerializableView {
 
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     @Schema(example = "1")
     private String id;
 
     @JsonIgnore
-    private OrgDTO owner;
+    private OrgBasicView owner;
 
     @JsonProperty(value = "nome", required = true)
     @Schema(description = "Nome da área", example = "Educação",requiredMode = Schema.RequiredMode.REQUIRED)
@@ -22,7 +22,7 @@ public class AreaDTO extends DTO {
     private String name;
 
 
-    public AreaDTO(String id, OrgDTO owner, String name) {
+    public AreaSerializableView(String id, OrgBasicView owner, String name) {
         this.id = id;
         this.owner = owner;
         this.name = name;
@@ -36,11 +36,11 @@ public class AreaDTO extends DTO {
         this.id = id;
     }
 
-    public OrgDTO getOwner() {
+    public OrgBasicView getOwner() {
         return owner;
     }
 
-    public void setOwner(OrgDTO owner) {
+    public void setOwner(OrgBasicView owner) {
         this.owner = owner;
     }
 

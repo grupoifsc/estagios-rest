@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.dto.AreaDTO;
+import com.github.projetoifsc.estagios.app.view.AreaSerializableView;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
 import com.github.projetoifsc.estagios.app.utils.mock.AreaMock;
 import org.springframework.data.domain.Page;
@@ -22,7 +22,7 @@ public class AreaService {
 
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
-    public ResponseEntity<Page<AreaDTO>> getAll() {
+    public ResponseEntity<Page<AreaSerializableView>> getAll() {
         // Aqui a ideia é que o serviço a ser usado pode mudar...
         return new ResponseEntity<>(
                 new PageImpl<>(AreaMock.getList()),
@@ -30,7 +30,7 @@ public class AreaService {
         );
     }
 
-    private AreaDTO addHateoasLinks(AreaDTO area) {
+    private AreaSerializableView addHateoasLinks(AreaSerializableView area) {
         return area;
     }
 

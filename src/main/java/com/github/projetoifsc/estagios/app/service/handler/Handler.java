@@ -12,12 +12,12 @@ package com.github.projetoifsc.estagios.app.service.handler;
 // Adiciona Links Hateoas
 
 
-import com.github.projetoifsc.estagios.app.dto.DTO;
+import com.github.projetoifsc.estagios.app.view.SerializableView;
 
 public interface Handler {
 
     void setNext(Handler handler);
-    void handle(DTO dto);
+    void handle(SerializableView serializableView);
 
 
 }

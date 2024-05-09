@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.app.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.projetoifsc.estagios.app.dto.OrgPrivateProfileDTO;
+import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
@@ -13,9 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 // TODO:
@@ -46,12 +43,7 @@ public class OrgService {
     ObjectMapper jsonMapper = new ObjectMapper();
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
-    OrgService() {
-        System.out.println("Ol´aááááŕrrrr");
-
-    }
-
-    public ResponseEntity<IOrganization> create(OrgPrivateProfileDTO perfil) {
+    public ResponseEntity<IOrganization> create(OrgPrivateProfileBasicView perfil) {
 
 //        requestHandlerChain.handle(perfil);
 //        var userDTO = mapper.map(
@@ -81,9 +73,9 @@ public class OrgService {
     }
 
 
-    public ResponseEntity<IOrganization> updateAuthUserPerfil(String id, OrgPrivateProfileDTO perfil) {
+    public ResponseEntity<IOrganization> updateAuthUserPerfil(String id, OrgPrivateProfileBasicView perfil) {
 
-        requestHandlerChain.handle(perfil);
+//        requestHandlerChain.handle(perfil);
 
 //        var userDTO = mapper.map(
 //                perfil,
@@ -111,7 +103,7 @@ public class OrgService {
         System.out.println(responseObject);
         // map to DTOs
         // TODO correct DTO type
-        var dtos = responseObject.getContent().stream().map(org -> mapper.map(org, OrgPrivateProfileDTO.class)).toList();
+        var dtos = responseObject.getContent().stream().map(org -> mapper.map(org, OrgPrivateProfileBasicView.class)).toList();
         dtos.forEach(dto -> {
             System.out.println(dto);
             try {
@@ -136,7 +128,7 @@ public class OrgService {
         System.out.println(responseObject);
         // map to DTOs
         // TODO correct DTO type
-        var dtos = responseObject.getContent().stream().map(org -> mapper.map(org, OrgPrivateProfileDTO.class)).toList();
+        var dtos = responseObject.getContent().stream().map(org -> mapper.map(org, OrgPrivateProfileBasicView.class)).toList();
         dtos.forEach(dto -> {
             System.out.println(dto);
             try {
@@ -149,7 +141,7 @@ public class OrgService {
 
         var dtoPage = responseObject.map(org ->
         {
-            var converted = mapper.map(org, OrgPrivateProfileDTO.class);
+            var converted = mapper.map(org, OrgPrivateProfileBasicView.class);
             return (IOrganization) converted;
         }
         );

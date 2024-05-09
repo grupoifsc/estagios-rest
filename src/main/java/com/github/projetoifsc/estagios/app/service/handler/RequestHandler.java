@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.service.handler;
 
-import com.github.projetoifsc.estagios.app.dto.DTO;
+import com.github.projetoifsc.estagios.app.view.SerializableView;
 
 public abstract class RequestHandler implements Handler {
 
@@ -12,14 +12,14 @@ public abstract class RequestHandler implements Handler {
     }
 
     @Override
-    public void handle(DTO dto) {
+    public void handle(SerializableView serializableView) {
         // Handle e passar adiante
-        next(dto);
+        next(serializableView);
     }
 
-    protected void next(DTO dto) {
+    protected void next(SerializableView serializableView) {
         if (this.next != null) {
-            next.handle(dto);
+            next.handle(serializableView);
         }
     }
 

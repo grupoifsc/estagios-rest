@@ -1,4 +1,4 @@
-package com.github.projetoifsc.estagios.app.dto;
+package com.github.projetoifsc.estagios.app.view;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.projetoifsc.estagios.app.utils.validation.Validatable;
@@ -10,10 +10,10 @@ import org.springframework.validation.annotation.Validated;
 import java.io.Serializable;
 
 @Validated
-public abstract class DTO extends RepresentationModel<DTO> implements Serializable, Validatable {
+public abstract class SerializableView extends RepresentationModel<SerializableView> implements Serializable, Validatable {
 
     @Override
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "_links")
     @Schema(hidden = true)
     public Links getLinks() {
         return super.getLinks();

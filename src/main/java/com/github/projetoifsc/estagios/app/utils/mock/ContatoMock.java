@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.utils.mock;
 
-import com.github.projetoifsc.estagios.app.dto.shared.Contato;
+import com.github.projetoifsc.estagios.app.view.shared.Contato;
 
 public class ContatoMock {
 	
