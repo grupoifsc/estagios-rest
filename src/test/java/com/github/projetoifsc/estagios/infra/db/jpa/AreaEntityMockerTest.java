@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-class AreaMockerTest {
+class AreaEntityMockerTest {
 
     Faker faker = new Faker(new Locale("pt-BR"));
     AreaMocker areaMocker = new AreaMocker(faker);

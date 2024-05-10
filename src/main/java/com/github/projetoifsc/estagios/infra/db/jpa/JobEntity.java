@@ -34,7 +34,7 @@ class JobEntity implements IJob {
         joinColumns = @JoinColumn(name="job_id"),
         inverseJoinColumns = @JoinColumn(name="area_id")
     )
-    List<Area> areas;
+    List<AreaEntity> areaEntities;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "ies_received_jobs",
@@ -158,8 +158,8 @@ class JobEntity implements IJob {
 
     @Override
     public List<IArea> getAreas() {
-        return areas.stream()
-                .map(area -> (IArea) area)
+        return areaEntities.stream()
+                .map(areaEntity -> (IArea) areaEntity)
                 .toList();
     }
 

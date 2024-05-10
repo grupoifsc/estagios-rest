@@ -6,25 +6,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
-@JsonPropertyOrder(value = {"id", "nome", "links"})
+@JsonPropertyOrder(value = {"id", "nome", "_links"})
 public class AreaSerializableView extends SerializableView {
 
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     @Schema(example = "1")
     private String id;
 
-    @JsonIgnore
-    private OrgBasicView owner;
-
     @JsonProperty(value = "nome", required = true)
     @Schema(description = "Nome da área", example = "Educação",requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     private String name;
 
+    public AreaSerializableView() {
+    }
 
-    public AreaSerializableView(String id, OrgBasicView owner, String name) {
+    public AreaSerializableView(String id, String name) {
         this.id = id;
-        this.owner = owner;
         this.name = name;
     }
 
@@ -34,14 +32,6 @@ public class AreaSerializableView extends SerializableView {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public OrgBasicView getOwner() {
-        return owner;
-    }
-
-    public void setOwner(OrgBasicView owner) {
-        this.owner = owner;
     }
 
     public String getName() {
@@ -57,4 +47,5 @@ public class AreaSerializableView extends SerializableView {
     public void addHypermediaLinks() {
         // TODO
     }
+
 }

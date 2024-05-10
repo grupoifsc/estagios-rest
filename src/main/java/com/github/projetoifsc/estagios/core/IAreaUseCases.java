@@ -6,6 +6,5 @@ public interface IAreaUseCases {
 
     List<IArea> getAll();
     IArea getById(String id);
-    IArea create(String organizationId, IArea area);
 
 }

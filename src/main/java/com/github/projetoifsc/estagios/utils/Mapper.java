@@ -4,7 +4,6 @@ import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-@Component
 public class Mapper {
 
     ModelMapper modelMapper = new ModelMapper();

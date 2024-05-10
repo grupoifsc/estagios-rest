@@ -14,7 +14,7 @@ public class AreaMocker {
     public IArea generate() {
         var nomeCurso = faker.educator().course();
         var nomeArea = getLast(nomeCurso);
-        return new Area(nomeArea);
+        return new AreaEntity(nomeArea);
     }
 
     private String getLast(String compostName) {

@@ -6,23 +6,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AreaRepositoryUnitTest {
+class AreaEntityRepositoryUnitTest {
 
     AreaRepository areaRepository;
     OrganizationRepository organizationRepository;
 
     OrganizationEntity organizationEntity;
-    Area area;
+    AreaEntity areaEntity;
 
     Faker faker = new Faker();
     AreaMocker areaMocker = new AreaMocker(faker);
 
     @Autowired
-    public AreaRepositoryUnitTest(AreaRepository areaRepository, OrganizationRepository organizationRepository) {
+    public AreaEntityRepositoryUnitTest(AreaRepository areaRepository, OrganizationRepository organizationRepository) {
         this.areaRepository = areaRepository;
         this.organizationRepository = organizationRepository;
     }
-
 
 
     // Repensar todos estes testes...

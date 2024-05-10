@@ -7,13 +7,9 @@ import java.util.List;
 public class AreaUseCases implements IAreaUseCases {
 
     AreaReadOperations readOperations;
-    AreaWriteOperations writeOperations;
-    IOrganizationDB organizationRepository;
 
-    public AreaUseCases(IAreaDB areaRepository, IOrganizationDB organizationRepository) {
+    public AreaUseCases(IAreaDB areaRepository) {
         readOperations = new AreaReadOperations(areaRepository);
-        writeOperations = new AreaWriteOperations(areaRepository);
-        this.organizationRepository = organizationRepository;
     }
 
     @Override
@@ -24,12 +20,6 @@ public class AreaUseCases implements IAreaUseCases {
     @Override
     public IArea getById(String id) {
         return readOperations.getById(id);
-    }
-
-    @Override
-    public IArea create(String organizationId, IArea area) {
-        var organization = organizationRepository.findById(organizationId);
-        return writeOperations.create(organization, area);
     }
 
 

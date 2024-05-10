@@ -8,7 +8,6 @@ public class AreaImpl implements IArea {
 
     private String id;
     private String name;
-    private IOrganization owner;
 
     public AreaImpl(String name) {
         this.name = name;
@@ -23,11 +22,6 @@ public class AreaImpl implements IArea {
     @Override
     public String getId() {
         return id;
-    }
-
-    @Override
-    public void setOwner(IOrganization owner) {
-        this.owner = owner;
     }
 
     public String getName() {
