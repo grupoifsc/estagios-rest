@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,10 @@ public class OrgController {
 	public ResponseEntity<IOrganization> createNewUser (
 			@RequestBody OrgPrivateProfileBasicView perfil
 	) {
-		return service.create(perfil);
+		return new ResponseEntity<>(
+				service.create(perfil),
+				HttpStatus.CREATED
+		);
 	}
 
 
@@ -62,7 +66,10 @@ public class OrgController {
 	public ResponseEntity<IOrganization> getAuthUserPerfil (
 			@PathVariable String id
 	) {
-		return service.getAuthUserPerfil(id);
+		return new ResponseEntity<>(
+				service.getAuthUserPerfil(id),
+				HttpStatus.OK
+		);
 	}
 
 	
@@ -79,7 +86,10 @@ public class OrgController {
 			@PathVariable String id,
 			@RequestBody OrgPrivateProfileBasicView perfil
 	)  {
-		return service.updateAuthUserPerfil(id, perfil);
+		return new ResponseEntity<>(
+				service.updateAuthUserPerfil(id, perfil),
+				HttpStatus.OK
+		);
 	}
 	
 	
@@ -95,7 +105,8 @@ public class OrgController {
 	  })
 	public ResponseEntity<IOrganization> deleteAuthUserPerfil (
 			@PathVariable String id) {
-		return service.deleteAuthUserPerfil(id);
+		service.deleteAuthUserPerfil(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 
@@ -121,7 +132,10 @@ public class OrgController {
 			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 	})
 	public ResponseEntity<Page<IOrganization>> getAllSchools() {
-		return service.getAllSchools();
+		return new ResponseEntity<>(
+				service.getAllSchools(),
+				HttpStatus.OK
+		);
 	}
 
 
@@ -137,7 +151,10 @@ public class OrgController {
 	public ResponseEntity<IOrganization> getUserPublicProfile(
 			@PathVariable String id
 	) {
-		return service.getUserPublicProfile(id);
+		return new ResponseEntity<>(
+				service.getUserPublicProfile(id),
+				HttpStatus.OK
+		);
 	}
 
 

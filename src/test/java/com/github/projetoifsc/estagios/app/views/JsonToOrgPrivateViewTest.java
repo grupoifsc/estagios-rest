@@ -1,11 +1,13 @@
 package com.github.projetoifsc.estagios.app.views;
 
 import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
-import com.github.projetoifsc.estagios.general.config.LocalMapper;
+import com.github.projetoifsc.estagios.utils.JsonParser;
 import org.junit.jupiter.api.Test;
 
 
 class JsonToOrgPrivateViewTest {
+
+    JsonParser jsonParser = new JsonParser();
 
     @Test
     void dataEntryWithoutValidation() {
@@ -37,7 +39,7 @@ class JsonToOrgPrivateViewTest {
         "\"website\": \"www.juju.com.br\"," +
         "\"redes_sociais\": \"['juju']\"" + "}";
 
-        var mapped = LocalMapper.readValue(jsonString, OrgPrivateProfileBasicView.class);
+        var mapped = jsonParser.parseString(jsonString, OrgPrivateProfileBasicView.class);
 
         System.out.println(mapped.getUsername());
         System.out.println(mapped.getRedesSociais());

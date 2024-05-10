@@ -6,13 +6,11 @@ import com.github.projetoifsc.estagios.app.view.AddressView;
 import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
 import com.github.projetoifsc.estagios.app.view.OrgPublicProfileBasicView;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.general.config.LocalMapper;
 import com.github.projetoifsc.estagios.infra.db.jpa.GeradorCnpj;
 import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;
+import com.github.projetoifsc.estagios.utils.JsonParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.Condition;
-import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +25,7 @@ class OrgServiceIntegrationTest {
 
    // @Autowired
     ModelMapper modelMapper = new ModelMapper();
+    JsonParser jsonParser = new JsonParser();
 
     IOrganization entity;
 
@@ -37,26 +36,27 @@ class OrgServiceIntegrationTest {
     void setUp() {
         var mockedEntity = mocker.generateWithIdAsZero();
         var view = modelMapper.map(mockedEntity, OrgPrivateProfileBasicView.class);
-        entity = orgService.create(view).getBody();
+        entity = orgService.create(view);
     }
 
     @Test
     void getPrivateProfile() {
         var dto = orgService.getAuthUserPerfil(entity.getId());
-        LocalMapper.printAsJson(dto);
+        jsonParser.printValue(dto);
+        
 
-        var mapped = modelMapper.map(dto.getBody(), OrgPrivateProfileBasicView.class);
-        LocalMapper.printAsJson(mapped);
+        var mapped = modelMapper.map(dto, OrgPrivateProfileBasicView.class);
+        jsonParser.printValue(mapped);
 
     }
 
     @Test
     void getPublic() {
         var dto = orgService.getUserPublicProfile(entity.getId());
-        LocalMapper.printAsJson(dto);
+        jsonParser.printValue(dto);
 
-        var mapped = modelMapper.map(dto.getBody(), OrgPublicProfileBasicView.class);
-        LocalMapper.printAsJson(mapped);
+        var mapped = modelMapper.map(dto, OrgPublicProfileBasicView.class);
+        jsonParser.printValue(mapped);
 
     }
 
@@ -81,15 +81,15 @@ class OrgServiceIntegrationTest {
         org.setWebsite("www.meusite.com");
 
         System.out.println("Imprimindo o objeto local: ");
-        LocalMapper.printAsJson(org);
+        jsonParser.printValue(org);
 
         var saved = orgService.create(org);
         System.out.println("O que veio salvo lá do banco de dados: ");
-        LocalMapper.printAsJson(saved);
+        jsonParser.printValue(saved);
 
-        var mapped = modelMapper.map(saved.getBody(), OrgPrivateProfileBasicView.class);
+        var mapped = modelMapper.map(saved, OrgPrivateProfileBasicView.class);
         System.out.println("O objeto mapeado para ser devolvido: ");
-        LocalMapper.printAsJson(mapped);
+        jsonParser.printValue(mapped);
 
     }
 
@@ -114,15 +114,15 @@ class OrgServiceIntegrationTest {
         org.setWebsite("www.meusite.com");
 
         System.out.println("Imprimindo o objeto local: ");
-        LocalMapper.printAsJson(org);
+        jsonParser.printValue(org);
 
         var saved = orgService.updateAuthUserPerfil(org.getId(), org);
         System.out.println("O que veio salvo lá do banco de dados: ");
-        LocalMapper.printAsJson(saved);
+        jsonParser.printValue(saved);
 
-        var mapped = modelMapper.map(saved.getBody(), OrgPrivateProfileBasicView.class);
+        var mapped = modelMapper.map(saved, OrgPrivateProfileBasicView.class);
         System.out.println("O objeto mapeado para ser devolvido: ");
-        LocalMapper.printAsJson(mapped);
+        jsonParser.printValue(mapped);
 
     }
 
