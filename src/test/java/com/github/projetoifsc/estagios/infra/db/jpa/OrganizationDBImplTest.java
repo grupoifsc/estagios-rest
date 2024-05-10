@@ -4,11 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.javafaker.Faker;
+import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.core.IOrganization;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -21,16 +26,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 @SpringBootTest
 class OrganizationDBImplTest {
+
+    OrgMocker orgMocker = new OrgMocker(new Faker(new Locale("pt-BR")), new GeradorCnpj());
 
     @Autowired
     OrganizationRepository repository;
 
     @Autowired
     OrganizationDBImpl organizationDB;
+
+    @Autowired
+    ModelMapper mapper;
 
     ObjectMapper jsonMapper = JsonMapper.builder()
             .addModule(new JavaTimeModule())
@@ -41,10 +52,17 @@ class OrganizationDBImplTest {
     private OrganizationRepository organizationRepository;
 
 
+    IOrganization org;
+
+    @BeforeEach
+    void setUp() {
+        org = organizationRepository.save(orgMocker.generate());
+    }
+
     @Test
     void findByIdReturnsBasicInfoOrNull() {
 
-        var dto = organizationDB.findById("1");
+        var dto = organizationDB.findById(org.getId());
 
         try {
             System.out.println(jsonMapper.writeValueAsString(dto));
@@ -58,7 +76,7 @@ class OrganizationDBImplTest {
 
     @Test
     void findAllByIdReturnsBasicInfoOrEmptyList() {
-        var ids = List.of("1", "2", "3", "10000");
+        var ids = List.of(org.getId());
         var dtos = organizationDB.findAllById(ids);
 
         try {
@@ -74,7 +92,8 @@ class OrganizationDBImplTest {
 
     @Test
     void findByUsernameReturnsBasicInfoOrNull() {
-        var dto = organizationDB.findByUsername("kilback");
+        var ent = mapper.map(org, OrgPrivateProfileBasicView.class);
+        var dto = organizationDB.findByUsername(ent.getUsername());
 
         try {
             System.out.println(jsonMapper.writeValueAsString(dto));
@@ -88,7 +107,8 @@ class OrganizationDBImplTest {
 
     @Test
     void saveReturnsPrivateProfile() {
-        var organizationEntity = new OrgMocker().generate();
+        var entity = new OrgMocker().generateWithIdAsZero();
+        var organizationEntity = mapper.map(entity, OrgPrivateProfileBasicView.class);
         var saved = organizationDB.save(organizationEntity);
 
         try {
@@ -103,26 +123,14 @@ class OrganizationDBImplTest {
 
     @Test
     void delete() {
-
-        organizationDB.delete("5");
-        var dto = organizationDB.getPrivateProfile("5");
-
-        try {
-            System.out.println(jsonMapper.writeValueAsString(dto));
-        } catch (Exception e) {
-            System.out.println(
-                    e.getMessage()
-            );
-        }
-
+        organizationDB.delete(org.getId());
     }
 
 
     @Test
     void getPublicProfile() {
 
-        var dto = organizationDB.getPublicProfile("1");
-
+        var dto = organizationDB.getPublicProfile(org.getId());
 
         try {
             System.out.println(jsonMapper.writeValueAsString(dto));
@@ -138,7 +146,7 @@ class OrganizationDBImplTest {
     @Test
     void getPrivateProfile() {
 
-        var dto = organizationDB.getPrivateProfile("1");
+        var dto = organizationDB.getPrivateProfile(org.getId());
 
         try {
             System.out.println(jsonMapper.writeValueAsString(dto));

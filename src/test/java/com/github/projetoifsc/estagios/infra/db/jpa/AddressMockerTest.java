@@ -14,7 +14,7 @@ class AddressMockerTest {
     void gerarEndereco() {
         for (int i = 0; i < 10; i++) {
             Address address = addressMocker.generate();
-            System.out.println(address);
+            System.out.println(address.getCidade());
         }
     }
 

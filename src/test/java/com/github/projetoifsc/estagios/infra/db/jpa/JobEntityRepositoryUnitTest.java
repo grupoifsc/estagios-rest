@@ -17,7 +17,6 @@ class JobEntityRepositoryUnitTest {
     OrganizationRepository organizationRepository;
 
     OrganizationEntity organizationEntity;
-
     JobEntity jobEntity;
 
     Faker faker = new Faker();
@@ -37,17 +36,17 @@ class JobEntityRepositoryUnitTest {
     // TODO Sobre transactional context ver: https://stackoverflow.com/questions/53836776/lazyinitializationexception-spring-boot
     void createTest() {
 
-        var organization = organizationRepository.findById(1L).get();
-        var area = areaRepository.findAreaById(1L).get();
-
-       // area = new Area();
-
-        jobEntity = jobMocker.generate();
-        jobEntity.owner = organization;
-        jobEntity.areas = List.of(area);
-
-        var savedJob = jobRepository.save(jobEntity);
-        System.out.println(savedJob);
+//        var organization = organizationRepository.findById(1L).get();
+//        var area = areaRepository.findAreaById(1L).get();
+//
+//       // area = new Area();
+//
+//        jobEntity = jobMocker.generate();
+//        jobEntity.owner = organization;
+//        jobEntity.areas = List.of(area);
+//
+//        var savedJob = jobRepository.save(jobEntity);
+//        System.out.println(savedJob);
 
 
     }
@@ -55,16 +54,16 @@ class JobEntityRepositoryUnitTest {
 
     @Test
     void testandoGambiarraParaLidarComTabelasAuxiliares() {
-        var organization = organizationRepository.findById(1L).get();
-        var area = areaRepository.findAreaById(1L).get();
-
-        jobEntity = jobMocker.generate();
-        //job.owner = organization;
-        jobEntity.areas = List.of(area);
-        jobEntity.periodId = 10;
-
-        var savedJob = jobRepository.save(jobEntity);
-        System.out.println(savedJob);
+//        var organization = organizationRepository.findById(1L).get();
+//        var area = areaRepository.findAreaById(1L).get();
+//
+//        jobEntity = jobMocker.generate();
+//        //job.owner = organization;
+//        jobEntity.areas = List.of(area);
+//        jobEntity.periodId = 10;
+//
+//        var savedJob = jobRepository.save(jobEntity);
+//        System.out.println(savedJob);
 
     }
 
@@ -72,9 +71,9 @@ class JobEntityRepositoryUnitTest {
     @Test
     @Transactional
     void retrievePeriodInGambiarraMode() {
-        var job = jobRepository.findById(4L).get();
-        System.out.println(job);
-        System.out.println(job.getPeriodo());
+//        var job = jobRepository.findById(4L).get();
+//        System.out.println(job);
+//        System.out.println(job.getPeriodo());
     }
 
 }

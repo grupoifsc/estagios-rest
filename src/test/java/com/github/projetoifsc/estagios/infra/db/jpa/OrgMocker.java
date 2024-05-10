@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 import com.github.javafaker.Company;
 import com.github.javafaker.Faker;
 
-class OrgMocker {
+public class OrgMocker {
 
     Faker faker;
     GeradorCnpj geradorCnpj;
@@ -36,6 +36,11 @@ class OrgMocker {
         return randomOrganization();
     }
 
+    public OrganizationEntity generateWithIdAsZero() {
+        var org = randomOrganization();
+        org.setId("0");
+        return org;
+    }
 
     private OrganizationEntity randomOrganization() {
 

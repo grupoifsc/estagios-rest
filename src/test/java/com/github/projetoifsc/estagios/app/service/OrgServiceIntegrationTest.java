@@ -1,13 +1,23 @@
 package com.github.projetoifsc.estagios.app.service;
 
+import com.github.javafaker.Faker;
+import com.github.projetoifsc.estagios.app.utils.mock.OrgMock;
 import com.github.projetoifsc.estagios.app.view.AddressView;
 import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
 import com.github.projetoifsc.estagios.app.view.OrgPublicProfileBasicView;
+import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.general.config.LocalMapper;
+import com.github.projetoifsc.estagios.infra.db.jpa.GeradorCnpj;
+import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.Condition;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Locale;
 
 @SpringBootTest
 class OrgServiceIntegrationTest {
@@ -15,14 +25,24 @@ class OrgServiceIntegrationTest {
     @Autowired
     OrgService orgService;
 
-    @Autowired
-    ModelMapper modelMapper;
+   // @Autowired
+    ModelMapper modelMapper = new ModelMapper();
+
+    IOrganization entity;
+
+    OrgMocker mocker = new OrgMocker(new Faker(new Locale("pt-BR")), new GeradorCnpj());
+
+
+    @BeforeEach
+    void setUp() {
+        var mockedEntity = mocker.generateWithIdAsZero();
+        var view = modelMapper.map(mockedEntity, OrgPrivateProfileBasicView.class);
+        entity = orgService.create(view).getBody();
+    }
 
     @Test
     void getPrivateProfile() {
-        String id = "1";
-
-        var dto = orgService.getAuthUserPerfil(id);
+        var dto = orgService.getAuthUserPerfil(entity.getId());
         LocalMapper.printAsJson(dto);
 
         var mapped = modelMapper.map(dto.getBody(), OrgPrivateProfileBasicView.class);
@@ -32,9 +52,7 @@ class OrgServiceIntegrationTest {
 
     @Test
     void getPublic() {
-        String id = "1";
-
-        var dto = orgService.getUserPublicProfile(id);
+        var dto = orgService.getUserPublicProfile(entity.getId());
         LocalMapper.printAsJson(dto);
 
         var mapped = modelMapper.map(dto.getBody(), OrgPublicProfileBasicView.class);
@@ -54,7 +72,7 @@ class OrgServiceIntegrationTest {
         mainAddr.setRua("Anthonio Thiago Nunes");
 
         var org = new OrgPrivateProfileBasicView();
-        org.setId("63");
+        //org.setId("63");
         org.setNome("Ju Atualizado");
         org.setMainAddress(mainAddr);
         org.setIe(true);
@@ -79,7 +97,7 @@ class OrgServiceIntegrationTest {
     @Test
     void delete() {
 
-        orgService.deleteAuthUserPerfil("1");
+        orgService.deleteAuthUserPerfil(entity.getId());
 
     }
 
@@ -88,7 +106,7 @@ class OrgServiceIntegrationTest {
     void update() {
 
         var org = new OrgPrivateProfileBasicView();
-        org.setId("63");
+        org.setId(entity.getId());
         org.setNome("Ju Via Update");
         org.setIe(true);
         org.setInfo("updated etc etc etc");

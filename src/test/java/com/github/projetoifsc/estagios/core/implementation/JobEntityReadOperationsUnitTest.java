@@ -8,6 +8,8 @@ import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 
@@ -122,11 +124,11 @@ public class JobEntityReadOperationsUnitTest {
 
     @Test
     void getAllCreatedReturnsList() {
-//        when(organizationRepository.getCreatedJobs(school.getId()))
-//                .thenReturn(List.of(new JobImpl(), new JobImpl()));
+        when(organizationRepository.getCreatedJobs(school.getId()))
+                .thenReturn(new PageImpl<>(List.of(new JobImpl(), new JobImpl())));
 
-        assertInstanceOf(List.class, service.getAllCreated(school.getId(), school.getId()));
-//        assertInstanceOf(IJob.class, service.getAllCreated(school.getId(), school.getId()).get(0));
+        assertInstanceOf(PageImpl.class, service.getAllCreated(school.getId(), school.getId()));
+        assertInstanceOf(IJob.class, service.getAllCreated(school.getId(), school.getId()).getContent().get(0));
 
     }
 
@@ -143,6 +145,9 @@ public class JobEntityReadOperationsUnitTest {
     void getAllReceivedReturnsList() {
         when(organizationRepository.getExclusiveReceivedJobs(school.getId()))
                 .thenReturn(List.of(new JobImpl(), new JobImpl()));
+
+        when(organizationRepository.getCreatedJobs(school.getId()))
+                .thenReturn(new PageImpl<>(List.of(new JobImpl(), new JobImpl())));
 
         when(traineeshipRepository.findAllWithoutReceivers())
                 .thenReturn(List.of(new JobImpl()));

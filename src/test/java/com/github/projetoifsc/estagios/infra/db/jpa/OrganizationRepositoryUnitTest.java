@@ -52,6 +52,7 @@ class OrganizationRepositoryUnitTest {
     @BeforeEach
     void setUp() {
         organizationEntity = orgMocker.generate();
+        organizationEntity = organizationRepository.save(organizationEntity);
     }
 
     @Test
@@ -166,7 +167,7 @@ class OrganizationRepositoryUnitTest {
     @Test
     void findByIdPublicProfile() {
 
-        var projection = organizationRepository.findById(5, OrgPublicProfileProjection.class);
+        var projection = organizationRepository.findById(Long.parseLong(organizationEntity.getId()), OrgPublicProfileProjection.class);
         System.out.println(projection.get());
 
         System.out.println("Projection: ");
@@ -190,9 +191,10 @@ class OrganizationRepositoryUnitTest {
 
 
     @Test
+    @Transactional
     void findingById() {
 
-        var entitiy = organizationRepository.findById(28).orElse(null);
+        var entitiy = organizationRepository.findById(Long.parseLong(organizationEntity.getId())).orElse(null);
 
         System.out.println("Elemento recuperado do banco de dados com findById: ");
         try {
@@ -200,12 +202,7 @@ class OrganizationRepositoryUnitTest {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-        System.out.println("Imprimindo o id do primeiro contato criado para a entidade: ");
-        System.out.println(entitiy.getContatos().get(0).getId());
-        System.out.println(entitiy.getEnderecos().get(0).getUpdatedAt());
-
-
+        
     }
 
     @Transactional
@@ -230,51 +227,7 @@ class OrganizationRepositoryUnitTest {
 
         System.out.println(main);
 
-
     }
-
-
-
-    @Test
-    @Transactional
-    @Rollback(value = false)
-    void lazyLoadingOneToOne() {
-
-        var addr = addressRepository.findById(35L).orElse(null);
-
-        System.out.println(addr.getId());
-        System.out.println(addr.getBairro());
-
-        var entity = addr.getOwner();
-        entity.setUsername("Jujujujujuju");
-        entity = organizationRepository.save(entity);
-
-        System.out.println(entity.getNome());
-        System.out.println(entity.getUsername());
-
-        var adresses = entity.getEnderecos();
-
-        System.out.println(adresses);
-
-        var newAddr = new AddressMain();
-        newAddr.setOwner(entity);
-        newAddr.setCidade("Cairo");
-        newAddr = addressRepository.save(newAddr);
-
-        System.out.println(newAddr.getId());
-        System.out.println(newAddr.getOwner());
-
-//        Essa chamada aqui não faz uma outra chamada ao banco para atualizar...
-        adresses = entity.getEnderecos();
-        System.out.println(adresses);
-
-        // O endereço não foi salvo de verdade no banco de dados =OOO
-        // É como se estivesse dando um rollback...
-        // Mas por que??? Não tem nada que explique isso...
-
-
-    }
-
 
 
 

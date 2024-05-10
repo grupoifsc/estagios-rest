@@ -3,6 +3,7 @@ package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
+import org.hibernate.query.Page;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageImpl;
@@ -30,13 +31,13 @@ public class OrganizationEntityReadOperationsUnitTest {
     @Test
     void getAllCallsPublicProfileAndReturnsList() {
         when(organizationRepository.getAllPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", false))));
-        assertInstanceOf(List.class, service.getAll());
+        assertInstanceOf(PageImpl.class, service.getAll());
     }
 
     @Test
     void getSchoolsCallsSchoolsPublicProfileAndReturnsList() {
         when(organizationRepository.getSchoolsPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", true))));
-        assertInstanceOf(List.class, service.getSchools());
+        assertInstanceOf(PageImpl.class, service.getSchools());
     }
 
 

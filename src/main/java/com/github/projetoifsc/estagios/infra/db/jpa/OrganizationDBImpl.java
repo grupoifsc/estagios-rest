@@ -117,6 +117,7 @@ class OrganizationDBImpl implements IOrganizationDB {
         var entity = modelMapper.map(organization, OrganizationEntity.class);
         var saved = organizationRepository.save(entity);
 
+        // TODO: Olha uma dependẽncia escondida aqui!
         saveAddressAndContact((OrgPrivateProfileProjection) organization, saved);
 
         var dto = organizationRepository.findById(Long.parseLong(saved.getId()), OrgPrivateProfileProjection.class);

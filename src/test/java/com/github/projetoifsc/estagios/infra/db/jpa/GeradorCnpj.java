@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 import java.util.InputMismatchException;
 
 // Receitas de Código .com
-class GeradorCnpj {
+public class GeradorCnpj {
 
     private int randomiza(int n) {
         int ranNum = (int) (Math.random() * n);
