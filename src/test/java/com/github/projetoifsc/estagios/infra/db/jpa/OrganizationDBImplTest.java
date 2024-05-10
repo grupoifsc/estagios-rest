@@ -9,6 +9,7 @@ import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjectio
 import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +42,7 @@ class OrganizationDBImplTest {
     OrganizationDBImpl organizationDB;
 
     @Autowired
-    ModelMapper mapper;
+    Mapper mapper;
 
     ObjectMapper jsonMapper = JsonMapper.builder()
             .addModule(new JavaTimeModule())
