@@ -10,10 +10,11 @@ import java.util.List;
 public class JwtToPrincipalConverter {
 
     public UserPrincipal convert(DecodedJWT jwt) {
+
         return new UserPrincipal(
-                Long.parseLong(jwt.getSubject()),
+                jwt.getSubject(),
                 null,
-        //        jwt.getClaim("e").asString(),
+                null,
                 extractAuthoritiesFromClaim(jwt)
         );
     }
@@ -24,5 +25,6 @@ public class JwtToPrincipalConverter {
         if(claim.isNull() ||  claim.isMissing()) return List.of();
         return claim.asList(SimpleGrantedAuthority.class);
     }
+
 
 }

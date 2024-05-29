@@ -21,9 +21,9 @@ public class JwtIssuer {
     }
 
 
-    public String issueAccessToken(long userId, String userMail, List<String> roles) {
+    public String issueAccessToken(String userId, String userMail, List<String> roles) {
         return JWT.create()
-                .withSubject(String.valueOf(userId))
+                .withSubject(userId)
                 .withIssuedAt(Instant.now())
                 .withExpiresAt(Instant.now().plus(Duration.of(jwtProperties.getAccessTokenExpirationMinutes(), ChronoUnit.MINUTES)))
 //                .withClaim("e", userMail)
@@ -32,9 +32,9 @@ public class JwtIssuer {
     }
 
 
-    public String issueRefreshToken(long userId) {
+    public String issueRefreshToken(String userId) {
         return JWT.create()
-                .withSubject(String.valueOf(userId))
+                .withSubject(userId)
                 .withJWTId(userId + Instant.now().toString())
                 .withIssuedAt(Instant.now())
                 .withExpiresAt(Instant.now().plus(Duration.of(jwtProperties.getRefreshTokenExpirationMinutes(), ChronoUnit.MINUTES)))

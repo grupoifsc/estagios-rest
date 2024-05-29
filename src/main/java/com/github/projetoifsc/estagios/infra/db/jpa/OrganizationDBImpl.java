@@ -92,23 +92,25 @@ class OrganizationDBImpl implements IOrganizationDB {
     @Override
     @Transactional
     public IOrganization save(INewUser organization) {
+        var entity = mapper.map(organization, OrganizationEntity.class);
+        jsonParser.printValue(entity);
+        var savedEntity = organizationRepository.save(entity);
+
         var userCredentials = mapper.map(organization, UserCredentialsEntity.class);
         // TODO: Talvez isso fique melhor lá na camada da API, que é onde controla a Autorização
         userCredentials.setRole(
                 organization.getIe() ? "school" : "user"
         );
+        userCredentials.setOrganization(savedEntity);
         jsonParser.printValue(userCredentials);
-        var savedCredentials = userCredentialsRepository.save(userCredentials);
+        userCredentialsRepository.save(userCredentials);
 
-        var entity = mapper.map(organization, OrganizationEntity.class);
-        entity.setUserCredentials(savedCredentials);
-        jsonParser.printValue(entity);
-        var saved = organizationRepository.save(entity);
+
 
         // TODO: Olha uma dependẽncia escondida aqui!
-        saveAddressAndContact((INewUser) organization, saved);
+        saveAddressAndContact((INewUser) organization, savedEntity);
 
-        var dto = organizationRepository.findById(Long.parseLong(saved.getId()), OrgPrivateProfileProjection.class);
+        var dto = organizationRepository.findById(Long.parseLong(savedEntity.getId()), OrgPrivateProfileProjection.class);
         return (IOrganization) dto.orElse(null);
     }
 

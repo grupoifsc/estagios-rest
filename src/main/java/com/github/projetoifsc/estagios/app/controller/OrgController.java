@@ -22,12 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.AUTHORIZATION;
 
-//@SecurityScheme(
-//		name = AUTHORIZATION,
-//		type = SecuritySchemeType.HTTP,
-//		scheme = "bearer",
-//		bearerFormat = "JWT"
-//)
+
 @RestController
 @RequestMapping(
 		value = SwaggerTags.BASE_URL + "/organizacoes",

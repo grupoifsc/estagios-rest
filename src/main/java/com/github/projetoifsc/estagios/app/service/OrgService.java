@@ -1,6 +1,7 @@
 package com.github.projetoifsc.estagios.app.service;
 
 import com.github.projetoifsc.estagios.app.interfaces.INewUser;
+import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
 import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
 import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfileBasicInfoView;
@@ -9,6 +10,7 @@ import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -29,20 +31,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrgService {
 
-    IOrganizationUseCases organizationUseCases;
-    Mapper mapper;
+    private final IOrganizationUseCases organizationUseCases;
+    private final Mapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    OrgService(IOrganizationUseCases organizationUseCases, Mapper mapper) {
+    OrgService(IOrganizationUseCases organizationUseCases, Mapper mapper, PasswordEncoder passwordEncoder) {
         this.organizationUseCases = organizationUseCases;
         this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
     public IOrganization create(INewUser newUser) {
-        var org = organizationUseCases.createProfile(newUser);
-        return mapper.map(org, OrgPrivateProfileResponse.class);
+        var userData = (NewUserRequest) newUser;
+        userData.setPassword(passwordEncoder.encode(userData.getPassword()));
+        var createdOrganization = organizationUseCases.createProfile(userData);
+        return mapper.map(createdOrganization, OrgPrivateProfileResponse.class);
     }
 
 

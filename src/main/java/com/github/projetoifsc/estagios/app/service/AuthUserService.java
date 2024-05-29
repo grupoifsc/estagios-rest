@@ -1,10 +1,14 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.infra.auth.AuthUser;
+import com.github.projetoifsc.estagios.app.interfaces.CustomUserDetails;
+import com.github.projetoifsc.estagios.app.security.IAuthenticationDB;
+import com.github.projetoifsc.estagios.app.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 // TODO: Aqui fazer a conexão com o banco de dados
@@ -13,34 +17,37 @@ import java.util.Optional;
 public class AuthUserService {
 
     private final PasswordEncoder passwordEncoder;
+    private final IAuthenticationDB authenticationDB;
 
     private final String ADMIN_EMAIL = "admin@teste.com";
     private final String USER_EMAIL = "user@teste.com";
 
+
     @Autowired
-    public AuthUserService(PasswordEncoder passwordEncoder) {
+    public AuthUserService(PasswordEncoder passwordEncoder, IAuthenticationDB authenticationDB) {
         this.passwordEncoder = passwordEncoder;
+        this.authenticationDB = authenticationDB;
     }
 
-    public Optional<AuthUser> findByEmail(String email) {
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    public Optional<CustomUserDetails> findByUsername(String username) {
+        if(username.equalsIgnoreCase(ADMIN_EMAIL) || username.equalsIgnoreCase(USER_EMAIL))
+            return findMockedByEmail(username);
+        return authenticationDB.findByUsername(username);
+    }
+
+    public Optional<CustomUserDetails> findMockedByEmail(String email) {
         if(email.equalsIgnoreCase(ADMIN_EMAIL)) {
-            var user = new AuthUser();
-            user.setEmail(ADMIN_EMAIL);
-            user.setId(1L);
-            user.setExtraInfo("Administrador");
-            user.setPassword(passwordEncoder.encode("senha"));
-            user.setRole("ROLE_ADMIN");
-            return Optional.of(user);
-        } else if(email.equalsIgnoreCase(USER_EMAIL)) {
-            var user = new AuthUser();
-            user.setEmail(USER_EMAIL);
-            user.setId(99L);
-            user.setExtraInfo("Basic User");
-            user.setPassword(passwordEncoder.encode("senha"));
-            user.setRole("ROLE_USER");
+            var password = passwordEncoder.encode("senha");
+            var user = new UserPrincipal("1", ADMIN_EMAIL, password, List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
             return Optional.of(user);
         }
-        return Optional.empty();
+        var password = passwordEncoder.encode("senha");
+        var user = new UserPrincipal("99", USER_EMAIL, password, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        return Optional.of(user);
     }
 
 }

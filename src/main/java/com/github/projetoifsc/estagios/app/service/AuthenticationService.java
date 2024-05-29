@@ -62,12 +62,12 @@ public class AuthenticationService {
                 .toList();
 
         var accessToken = jwtIssuer.issueAccessToken(
-                principal.getUserId(),
-                principal.getEmail(),
+                principal.getId(),
+                principal.getUsername(),
                 roles
         );
 
-        var refreshToken = jwtIssuer.issueRefreshToken(principal.getUserId());
+        var refreshToken = jwtIssuer.issueRefreshToken(principal.getId());
 
         var tokenResponse = new TokenResponse();
         tokenResponse.setAccessToken(accessToken);

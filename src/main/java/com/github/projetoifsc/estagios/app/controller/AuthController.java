@@ -51,7 +51,7 @@ public class AuthController {
     @GetMapping("/test")
     @Operation(security = {@SecurityRequirement(name = AUTHORIZATION)})
     public String testAuth(@AuthenticationPrincipal UserPrincipal principal) {
-        return "User Id: " + principal.getUserId();
+        return "User Id: " + principal.getId();
     }
 
     @GetMapping("/admin")

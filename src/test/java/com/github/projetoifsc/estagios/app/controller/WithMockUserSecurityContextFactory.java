@@ -16,8 +16,9 @@ public class WithMockUserSecurityContextFactory implements WithSecurityContextFa
                 .map(SimpleGrantedAuthority::new)
                 .toList();
         var principal = new UserPrincipal(
-                annotation.userId(),
+                String.valueOf(annotation.userId()),
                 "fake@email.com",
+                "senha",
                 authorities
         );
 

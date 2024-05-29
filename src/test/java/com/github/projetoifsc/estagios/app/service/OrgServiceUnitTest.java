@@ -4,6 +4,7 @@ import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjectio
 import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
 import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfileBasicInfoView;
+import com.github.projetoifsc.estagios.app.security.PwdEncoder;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;
 import com.github.projetoifsc.estagios.utils.JsonParser;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,8 @@ class OrgServiceUnitTest {
     // Mocking Dependency Injection
     IOrganizationUseCases organizationUseCases = Mockito.mock();
     Mapper mapper = new Mapper();
-    OrgService orgService = new OrgService(organizationUseCases, mapper);
+    PasswordEncoder encoder = new PwdEncoder().passwordEncoder();
+    OrgService orgService = new OrgService(organizationUseCases, mapper, encoder);
 
     JsonParser jsonParser = new JsonParser();
     OrgPrivateProfileProjection dbProjection;

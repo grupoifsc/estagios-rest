@@ -29,8 +29,8 @@ class OrganizationEntity implements IOrganization {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(fetch = EAGER)
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "organization",cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private UserCredentialsEntity userCredentials;
 
     private String nome;
