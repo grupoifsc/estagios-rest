@@ -12,7 +12,8 @@ public class JwtToPrincipalConverter {
     public UserPrincipal convert(DecodedJWT jwt) {
         return new UserPrincipal(
                 Long.parseLong(jwt.getSubject()),
-                jwt.getClaim("e").asString(),
+                null,
+        //        jwt.getClaim("e").asString(),
                 extractAuthoritiesFromClaim(jwt)
         );
     }

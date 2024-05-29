@@ -25,11 +25,10 @@ import static jakarta.persistence.FetchType.LAZY;
 class OrganizationEntity implements IOrganization {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-//    @Id
     @OneToOne(fetch = EAGER)
     @JoinColumn(name = "user_id")
     private UserCredentialsEntity userCredentials;
@@ -91,12 +90,12 @@ class OrganizationEntity implements IOrganization {
     // TODO: tenho que fazer direito esse negócio de id...
     @Override
     public String getId() {
-        return Long.toString(userId);
+        return Long.toString(id);
     }
 
     @Override
     public void setId(String id) {
-        userCredentials.setId(Long.parseLong(id));
+        this.id = Long.parseLong(id);
     }
 
     @Override

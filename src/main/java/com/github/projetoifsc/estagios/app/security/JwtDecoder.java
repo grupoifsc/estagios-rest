@@ -16,11 +16,16 @@ public class JwtDecoder {
         this.jwtProperties = jwtProperties;
     }
 
-    // "Altamente personalizável"...
-    public DecodedJWT decode(String token) {
-        return JWT.require(Algorithm.HMAC256(jwtProperties.getSecretKey()))
-                .withClaimPresence("e")
+    public DecodedJWT decodeAccessToken(String token) {
+        return JWT.require(Algorithm.HMAC256(jwtProperties.getAccessTokenSecretKey()))
+                .withClaimPresence("sub")
                 .withClaimPresence("a")
+                .build()
+                .verify(token);
+    }
+
+    public DecodedJWT decodeRefreshToken(String token) {
+        return JWT.require(Algorithm.HMAC256(jwtProperties.getRefreshTokenSecretKey()))
                 .build()
                 .verify(token);
     }

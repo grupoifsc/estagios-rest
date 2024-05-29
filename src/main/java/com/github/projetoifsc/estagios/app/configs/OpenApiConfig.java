@@ -1,5 +1,7 @@
 package com.github.projetoifsc.estagios.app.configs;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,12 +13,28 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.tags.Tag;
 
+import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.AUTHORIZATION;
+
 @Configuration
 public class OpenApiConfig {
+
+//	private final String SECURITY_SCHEME_NAME = "bearerAuth";
 
     @Bean
     public OpenAPI customOpenApi() {
 		return new OpenAPI()
+//				.addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
+				.components(
+						new Components()
+								.addSecuritySchemes(AUTHORIZATION,
+										new SecurityScheme()
+												.name(AUTHORIZATION)
+												.type(SecurityScheme.Type.HTTP)
+												.scheme("bearer")
+												.bearerFormat("JWT")
+												.in(SecurityScheme.In.HEADER)
+								)
+				)
 				.info(new Info() 
 					.title("API para Vagas de Estágio")
 					.version("0.1.0")

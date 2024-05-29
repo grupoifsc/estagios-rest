@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         extractTokenFromRequest(request)
-                .map(jwtDecoder::decode)
+                .map(jwtDecoder::decodeAccessToken)
                 .map(jwtToPrincipalConverter::convert)
                 .map(UserPrincipalAuthenticationToken::new)
                 .ifPresent(

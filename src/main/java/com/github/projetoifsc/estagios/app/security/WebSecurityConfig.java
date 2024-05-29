@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 
 @Configuration
 @EnableWebSecurity
@@ -44,11 +47,12 @@ public class WebSecurityConfig {
              .formLogin(AbstractHttpConfigurer::disable)
              .exceptionHandling(h -> h.authenticationEntryPoint(unauthorizedHandler))
              .authorizeHttpRequests(registry -> registry
-                .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/v3/api-docs/**").permitAll()
-                .requestMatchers("/api/v1/auth/login").permitAll()
-                .requestMatchers("/api/v1/organizacoes").permitAll()
-                .requestMatchers("/api/v1/auth/admin/**").hasRole("ADMIN")
+                .requestMatchers(GET, "/swagger-ui/**").permitAll()
+                .requestMatchers(GET, "/v3/api-docs/**").permitAll()
+                .requestMatchers(POST, "/api/v1/auth/login").permitAll()
+                .requestMatchers(POST, "/api/v1/organizacoes").permitAll()
+                .requestMatchers(POST, "/api/v1/auth/token").permitAll()
+                .requestMatchers(GET, "/api/v1/auth/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
          );
 

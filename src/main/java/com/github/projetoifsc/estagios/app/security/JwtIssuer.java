@@ -20,13 +20,25 @@ public class JwtIssuer {
         this.jwtProperties = jwtProperties;
     }
 
-    public String issue(long userId, String userMail, List<String> roles) {
+
+    public String issueAccessToken(long userId, String userMail, List<String> roles) {
         return JWT.create()
                 .withSubject(String.valueOf(userId))
-                .withExpiresAt(Instant.now().plus(Duration.of(1, ChronoUnit.DAYS)))
-                .withClaim("e", userMail)
+                .withIssuedAt(Instant.now())
+                .withExpiresAt(Instant.now().plus(Duration.of(jwtProperties.getAccessTokenExpirationMinutes(), ChronoUnit.MINUTES)))
+//                .withClaim("e", userMail)
                 .withClaim("a", roles)
-                .sign(Algorithm.HMAC256(jwtProperties.getSecretKey()));
+                .sign(Algorithm.HMAC256(jwtProperties.getAccessTokenSecretKey()));
+    }
+
+
+    public String issueRefreshToken(long userId) {
+        return JWT.create()
+                .withSubject(String.valueOf(userId))
+                .withJWTId(userId + Instant.now().toString())
+                .withIssuedAt(Instant.now())
+                .withExpiresAt(Instant.now().plus(Duration.of(jwtProperties.getRefreshTokenExpirationMinutes(), ChronoUnit.MINUTES)))
+                .sign(Algorithm.HMAC256(jwtProperties.getRefreshTokenSecretKey()));
     }
 
 }
