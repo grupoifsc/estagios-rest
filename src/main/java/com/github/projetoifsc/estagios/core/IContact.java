@@ -2,9 +2,9 @@ package com.github.projetoifsc.estagios.core;
 
 public interface IContact {
 
-    IOrganization getOwner();
+//    IOrganization getOwner();
     String getId();
-    boolean isGeneral();
-    boolean isDefault();
+//    boolean isGeneral();
+//    boolean isDefault();
 
 }

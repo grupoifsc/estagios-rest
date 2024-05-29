@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public interface OrgPrivateProfileProjection extends IOrganization {
 
     String getId();
-    String getUsername();
     String getNome();
     String getCnpj();
     Boolean getIe();

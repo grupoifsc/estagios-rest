@@ -8,8 +8,6 @@ public interface IJob {
     void setId(String id);
     IOrganization getOwner();
     void setOwner(IOrganization user);
-    List<String> getReceiversIds();
-    void setReceiversIds(List<String> receiversIds);
-    List<IArea> getAreas();
+//    List<IArea> getAreas();
 
 }

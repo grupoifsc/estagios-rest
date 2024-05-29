@@ -10,18 +10,18 @@ class AddressMocker {
         this.faker = faker;
     }
 
-    public Address generate() {
+    public AddressEntity generate() {
 
         var addr = faker.address();
-        Address address = new AddressMain();
+        AddressEntity addressEntity = new AddressMainEntity();
 
-        address.rua = addr.streetAddress(true);
-        address.bairro = addr.cityPrefix();
-        address.cidade = addr.cityName();
-        address.estado = addr.stateAbbr();
-        address.pais = addr.country();
+        addressEntity.rua = addr.streetAddress(true);
+        addressEntity.bairro = addr.cityPrefix();
+        addressEntity.cidade = addr.cityName();
+        addressEntity.estado = addr.stateAbbr();
+        addressEntity.pais = addr.country();
 
-        return address;
+        return addressEntity;
     }
 
 

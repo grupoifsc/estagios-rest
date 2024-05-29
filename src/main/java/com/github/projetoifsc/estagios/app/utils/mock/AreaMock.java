@@ -1,23 +1,23 @@
 package com.github.projetoifsc.estagios.app.utils.mock;
 
-import com.github.projetoifsc.estagios.app.view.AreaSerializableView;
+import com.github.projetoifsc.estagios.app.model.response.AreaView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AreaMock {
 
-    public static AreaSerializableView getOne() {
+    public static AreaView getOne() {
         return AreaMock.getList().get(0);
     }
 
-    public static List<AreaSerializableView> getList() {
-        List<AreaSerializableView> list = new ArrayList<>();
-        list.add(new AreaSerializableView("1", "Engenharia Elétrica"));
-        list.add(new AreaSerializableView("1", "Educação"));
-        list.add(new AreaSerializableView("2", "Letras"));
-        list.add(new AreaSerializableView("3", "Tecnologia da Informação"));
-        list.add(new AreaSerializableView("5", "Ciências Humanas"));
+    public static List<AreaView> getList() {
+        List<AreaView> list = new ArrayList<>();
+        list.add(new AreaView("1", "Engenharia Elétrica"));
+        list.add(new AreaView("1", "Educação"));
+        list.add(new AreaView("2", "Letras"));
+        list.add(new AreaView("3", "Tecnologia da Informação"));
+        list.add(new AreaView("5", "Ciências Humanas"));
         return list;
     }
 

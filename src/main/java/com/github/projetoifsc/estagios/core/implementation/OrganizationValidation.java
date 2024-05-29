@@ -17,7 +17,9 @@ class OrganizationValidation {
     }
 
     public static boolean isOwner(IOrganization organization, IJob traineeship) {
-        return isSelf(organization.getId(), traineeship.getOwner().getId());
+        var orgId = organization.getId();
+        var jobOwnerId = traineeship.getOwner().getId();
+        return isSelf(orgId, jobOwnerId);
     }
 
     public static boolean isValidReceiver(IOrganization organization) {

@@ -8,11 +8,14 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
-// Ver a questão do ID
+// TODO: Considerar a possibilidade de usar Views ao invés de projections muito elaboradas
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -21,12 +24,10 @@ class JobEntity implements IJob {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    long id;
 
-    // TODO Ver Projection (Proxy interface ou Record)
-    // https://docs.spring.io/spring-data/jpa/reference/repositories/projections.html
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     OrganizationEntity owner;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -34,79 +35,82 @@ class JobEntity implements IJob {
         joinColumns = @JoinColumn(name="job_id"),
         inverseJoinColumns = @JoinColumn(name="area_id")
     )
-    List<AreaEntity> areaEntities;
+    List<AreaEntity> areas = new ArrayList<>();
 
+    // Ver outra solução para esta relação:
+    // https://www.baeldung.com/jpa-many-to-many
+    // Pode ser útil para ver as vagas aceitas!
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "ies_received_jobs",
         joinColumns = @JoinColumn(name = "job_id"),
         inverseJoinColumns = @JoinColumn(name = "org_id")
     )
-    List<OrganizationEntity> ies;
+    List<OrganizationEntity> exclusiveReceivers;
 
-    // Como pode vir das outras camadas:
-    // Com um id OU com os campos marcados.. (a camada de negócio vai ter que resolver isso)
-    // Ver aqui, pq vai pegar o id de uma tabela que tá relacionada com organização
-    // Ver bem como vai fazer aqui!
-    // A organização precisa cadastrar o endereço e aí depois cadastrar a vaga, ou só depois associar os dois
-    // Ver como faz transaction corretamente com o Spring Data ! (maneja automaticamente?)
-    // Como testar falhas em transactions? (Boa pergunta pra jogar para o Bruno!)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
-    Address address;
+    AddressEntity address;
 
-    // Mesma coisa do caso acima
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id")
-    Contact contact;
+    ContactEntity contact;
+
+
+    @OneToMany(mappedBy = "job")
+    Set<ApprovedJobEntity> approvals;
+
+    @OneToMany(mappedBy = "job")
+    Set<RejectedJobEntity> rejections;
 
 
     // Solução: https://stackoverflow.com/questions/27930449/jpa-many-to-one-relation-need-to-save-only-id
     // Funciona, pois acusa falha de restrição de FK quando insere um valor que não existe na tabela relacionada
     // Não funciona caso, na mesma transação, deseje salvar E selecionar a tabela relacionada
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "period_id", insertable = false, updatable = false)
-    Period periodo;
+    PeriodEntity periodo;
 
     @Column(name = "period_id")
     short periodId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_level_id", insertable = false, updatable = false)
-    Level nivel;
+    LevelEntity level;
 
     @Column(name = "study_level_id")
     short levelId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "format_id", insertable = false,updatable = false)
-    Format format;
+    FormatEntity formatEntity;
 
     @Column(name = "format_id")
     short formatId;
 
-
     String titulo;
-
-    String id_externo_autor;
 
     String descricao;
 
     String imagem;
 
-    // TODO Descobrir a melhor forma de armazenar os requisitos
     String requisitos;
 
-    // TODO LocalDateTime
-    String data_inicio;
-    String data_final;
+    @Column(name = "data_inicio")
+    LocalDate dataInicio;
 
-    int duracao_meses;
+    @Column(name = "data_final")
+    LocalDate dataFinal;
 
+    @Column(name = "duracao_meses")
+    int duracaoMeses;
+
+    @Column(nullable = false)
     float remuneracao;
 
-    int carga_horaria_semanal;
-    // TODO Criação e Atualização automáticos
+    @Column(name = "carga_horaria_semanal")
+    int cargaHorariaSemanal;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
@@ -117,21 +121,11 @@ class JobEntity implements IJob {
     LocalDateTime updatedAt;
 
 
-
-    public JobEntity(String titulo) {
-            this.titulo = titulo;
-    }
-
-    public JobEntity() {
-    }
-
-
     @Override
     public String getId() {
         return String.valueOf(id);
     }
 
-    @Override
     public void setId(String id) {
         this.id = Long.parseLong(id);
     }
@@ -142,67 +136,177 @@ class JobEntity implements IJob {
     }
 
     @Override
-    public void setOwner(IOrganization user) {
-        this.owner = (OrganizationEntity) user;
+    public void setOwner(IOrganization owner) {
+        this.owner = (OrganizationEntity) owner;
     }
 
-    @Override
-    public List<String> getReceiversIds() {
-        return null;
+    public List<AreaEntity> getAreas() {
+        return areas;
     }
 
-    @Override
-    public void setReceiversIds(List<String> receiversIds) {
-
+    public void setAreas(List<AreaEntity> areas) {
+        this.areas = areas;
     }
 
-    @Override
-    public List<IArea> getAreas() {
-        return areaEntities.stream()
-                .map(areaEntity -> (IArea) areaEntity)
-                .toList();
+    public List<OrganizationEntity> getExclusiveReceivers() {
+        return exclusiveReceivers;
     }
 
-    List<OrganizationEntity> getIes() {
-        return ies;
+    public void setExclusiveReceivers(List<OrganizationEntity> exclusiveReceivers) {
+        this.exclusiveReceivers = exclusiveReceivers;
     }
 
-    Address getAddress() {
+    public AddressEntity getAddress() {
         return address;
     }
 
-    Contact getContact() {
+    public void setAddress(AddressEntity addressEntity) {
+        this.address = addressEntity;
+    }
+
+    public ContactEntity getContact() {
         return contact;
     }
 
-    Period getPeriodo() {
+    public void setContact(ContactEntity contactEntity) {
+        this.contact = contactEntity;
+    }
+
+    public PeriodEntity getPeriodo() {
         return periodo;
     }
 
-    Level getNivel() {
-        return nivel;
+    public void setPeriodo(PeriodEntity periodo) {
+        this.periodo = periodo;
     }
 
-    Format getFormat() {
-        return format;
+    public short getPeriodId() {
+        return periodId;
     }
 
-    @Override
-    public String toString() {
-        return "Job{" +
-                "titulo='" + titulo + '\'' +
-                ", id_externo_autor='" + id_externo_autor + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", imagem='" + imagem + '\'' +
-                ", requisitos='" + requisitos + '\'' +
-                ", data_inicio='" + data_inicio + '\'' +
-                ", data_final='" + data_final + '\'' +
-                ", duracao_meses=" + duracao_meses +
-                ", remuneracao=" + remuneracao +
-                ", carga_horaria_semanal=" + carga_horaria_semanal +
-                ", criado_em='" + createdAt + '\'' +
-                ", atualizado_em='" + updatedAt + '\'' +
-                '}';
+    public void setPeriodId(short periodId) {
+        this.periodId = periodId;
     }
+
+    public LevelEntity getLevel() {
+        return level;
+    }
+
+    public void setLevel(LevelEntity level) {
+        this.level = level;
+    }
+
+    public short getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(short levelId) {
+        this.levelId = levelId;
+    }
+
+    public FormatEntity getFormat() {
+        return formatEntity;
+    }
+
+    public void setFormat(FormatEntity formatEntity) {
+        this.formatEntity = formatEntity;
+    }
+
+    public short getFormatId() {
+        return formatId;
+    }
+
+    public void setFormatId(short formatId) {
+        this.formatId = formatId;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
+
+    public String getRequisitos() {
+        return requisitos;
+    }
+
+    public void setRequisitos(String requisitos) {
+        this.requisitos = requisitos;
+    }
+
+    public LocalDate getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public LocalDate getDataFinal() {
+        return dataFinal;
+    }
+
+    public void setDataFinal(LocalDate dataFinal) {
+        this.dataFinal = dataFinal;
+    }
+
+    public int getDuracaoMeses() {
+        return duracaoMeses;
+    }
+
+    public void setDuracaoMeses(int duracaoMeses) {
+        this.duracaoMeses = duracaoMeses;
+    }
+
+    public float getRemuneracao() {
+        return remuneracao;
+    }
+
+    public void setRemuneracao(float remuneracao) {
+        this.remuneracao = remuneracao;
+    }
+
+    public int getCargaHorariaSemanal() {
+        return cargaHorariaSemanal;
+    }
+
+    public void setCargaHorariaSemanal(int cargaHorariaSemanal) {
+        this.cargaHorariaSemanal = cargaHorariaSemanal;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 
 }

@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-interface AddressRepository extends CrudRepository<Address, Long> {
+interface AddressRepository extends CrudRepository<AddressEntity, Long> {
 
-    Optional<AddressMain> findFirstAddressMainByOwner(OrganizationEntity owner);
+    Optional<AddressMainEntity> findFirstByOwnerId(long id);
 
-    List<Address> findByOwner(OrganizationEntity owner);
+    Optional<AddressMainEntity> findFirstAddressMainByOwner(OrganizationEntity owner);
+
+    List<AddressEntity> findByOwner(OrganizationEntity owner);
 
     void deleteAllByOwner(OrganizationEntity owner);
 

@@ -8,7 +8,6 @@ import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
@@ -46,11 +45,11 @@ public class JobEntityReadOperationsUnitTest {
     void canGetPublicDetailsFromTraineeshipIfOwner() {
         traineeship.setOwner(organization);
         when(organizationRepository.findById(organization.getId())).thenReturn(organization);
-        when(traineeshipRepository.findById(traineeship.getId())).thenReturn(traineeship);
+        when(traineeshipRepository.getBasicInfoById(traineeship.getId())).thenReturn(traineeship);
         when(traineeshipRepository.getPublicDetails(traineeship.getId())).thenReturn(traineeship);
 
         assertInstanceOf(IJob.class,
-                service.getPublicDetails(organization.getId(), traineeship.getId())
+                service.getOnePublicDetails(organization.getId(), traineeship.getId())
         );
     }
 
@@ -61,15 +60,15 @@ public class JobEntityReadOperationsUnitTest {
 
         when(organizationRepository.findById(school.getId()))
                 .thenReturn(school);
-        when(traineeshipRepository.findById(traineeship.getId()))
+        when(traineeshipRepository.getBasicInfoById(traineeship.getId()))
                 .thenReturn(traineeship);
-        when(traineeshipRepository.getReceivers(traineeship.getId()))
+        when(traineeshipRepository.getExclusiveReceiversForJob(traineeship.getId()))
                 .thenReturn(List.of(school));
         when(traineeshipRepository.getPublicDetails(traineeship.getId()))
                 .thenReturn(traineeship);
 
         assertInstanceOf(IJob.class,
-                service.getPublicDetails(
+                service.getOnePublicDetails(
                         school.getId(), traineeship.getId())
         );
 
@@ -83,15 +82,15 @@ public class JobEntityReadOperationsUnitTest {
                 .thenReturn(organization);
 
         traineeship.setOwner(new OrganizationImpl("5", true));
-        when(traineeshipRepository.findById(traineeship.getId()))
+        when(traineeshipRepository.getBasicInfoById(traineeship.getId()))
                 .thenReturn(traineeship);
 
         var school = new OrganizationImpl("3", true);
-        when(traineeshipRepository.getReceivers(traineeship.getId()))
+        when(traineeshipRepository.getExclusiveReceiversForJob(traineeship.getId()))
                 .thenReturn(List.of(school));
 
         assertThrows(UnauthorizedAccessException.class,
-                ()-> service.getPublicDetails(
+                ()-> service.getOnePublicDetails(
                         organization.getId(), traineeship.getId())
         );
     }
@@ -101,11 +100,11 @@ public class JobEntityReadOperationsUnitTest {
     void canGetPrivateDetailsFromTraineeshipIfOwner() {
         traineeship.setOwner(organization);
         when(organizationRepository.findById(organization.getId())).thenReturn(organization);
-        when(traineeshipRepository.findById(traineeship.getId())).thenReturn(traineeship);
+        when(traineeshipRepository.getBasicInfoById(traineeship.getId())).thenReturn(traineeship);
         when(traineeshipRepository.getPrivateDetails(traineeship.getId())).thenReturn(traineeship);
 
         assertInstanceOf(IJob.class,
-                service.getPrivateDetails(organization.getId(), traineeship.getId())
+                service.getOnePrivateDetails(organization.getId(), traineeship.getId())
         );
     }
 
@@ -114,21 +113,21 @@ public class JobEntityReadOperationsUnitTest {
     void tryGetPrivateDetailsFromTraineeshipIfNotOwnerThrowsUnauthorized() {
         traineeship.setOwner(new OrganizationImpl("5", false));
         when(organizationRepository.findById(organization.getId())).thenReturn(organization);
-        when(traineeshipRepository.findById(traineeship.getId())).thenReturn(traineeship);
+        when(traineeshipRepository.getBasicInfoById(traineeship.getId())).thenReturn(traineeship);
 
         assertThrows(UnauthorizedAccessException.class,
-                () -> service.getPrivateDetails(organization.getId(), traineeship.getId())
+                () -> service.getOnePrivateDetails(organization.getId(), traineeship.getId())
         );
     }
 
 
     @Test
     void getAllCreatedReturnsList() {
-        when(organizationRepository.getCreatedJobs(school.getId()))
+        when(organizationRepository.getAllCreatedJobsSummaryFromOrg(school.getId()))
                 .thenReturn(new PageImpl<>(List.of(new JobImpl(), new JobImpl())));
 
-        assertInstanceOf(PageImpl.class, service.getAllCreated(school.getId(), school.getId()));
-        assertInstanceOf(IJob.class, service.getAllCreated(school.getId(), school.getId()).getContent().get(0));
+        assertInstanceOf(PageImpl.class, service.getAllCreatedSummary(school.getId(), school.getId()));
+        assertInstanceOf(IJob.class, service.getAllCreatedSummary(school.getId(), school.getId()).getContent().get(0));
 
     }
 
@@ -136,33 +135,33 @@ public class JobEntityReadOperationsUnitTest {
     @Test
     void tryToGetOtherOrganizationCreatedTraineeshipsThrowsUnauthorized() {
         assertThrows(UnauthorizedAccessException.class,
-                ()->service.getAllCreated(school.getId(), enterprise.getId()));
+                ()->service.getAllCreatedSummary(school.getId(), enterprise.getId()));
     }
 
 
     // Pegar todas as vagas recebidas
     @Test
     void getAllReceivedReturnsList() {
-        when(organizationRepository.getExclusiveReceivedJobs(school.getId()))
+        when(organizationRepository.getExclusiveReceivedJobsSummaryForOrg(school.getId()))
                 .thenReturn(List.of(new JobImpl(), new JobImpl()));
 
-        when(organizationRepository.getCreatedJobs(school.getId()))
+        when(organizationRepository.getAllCreatedJobsSummaryFromOrg(school.getId()))
                 .thenReturn(new PageImpl<>(List.of(new JobImpl(), new JobImpl())));
 
-        when(traineeshipRepository.findAllWithoutReceivers())
+        when(traineeshipRepository.findAllPublicJobs())
                 .thenReturn(List.of(new JobImpl()));
 
         when(organizationRepository.findById(school.getId())).thenReturn(school);
 
-        assertInstanceOf(List.class, service.getAllReceived(school.getId(), school.getId()));
-        assertInstanceOf(IJob.class, service.getAllReceived(school.getId(), school.getId()).get(0));
+        assertInstanceOf(List.class, service.getAllReceivedSummary(school.getId(), school.getId()));
+        assertInstanceOf(IJob.class, service.getAllReceivedSummary(school.getId(), school.getId()).get(0));
 
     }
 
     @Test
     void tryToGetOtherOrganizationReceivedTraineeshipsThrowsUnauthorized() {
         assertThrows(UnauthorizedAccessException.class,
-                ()->service.getAllReceived(school.getId(), enterprise.getId()));
+                ()->service.getAllReceivedSummary(school.getId(), enterprise.getId()));
     }
 
 }

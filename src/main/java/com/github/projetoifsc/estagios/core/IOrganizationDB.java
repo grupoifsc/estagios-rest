@@ -1,6 +1,7 @@
 package com.github.projetoifsc.estagios.core;
 
 
+import com.github.projetoifsc.estagios.app.interfaces.INewUser;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -8,15 +9,26 @@ import java.util.List;
 public interface IOrganizationDB {
 
     IOrganization findById(String id);
+
     List<IOrganization> findAllById(List<String> receiversIds);
+
     IOrganization findByUsername(String username);
-    IOrganization save(IOrganization organization);
+    IOrganization save(INewUser organization);
+
     void delete(String organization);
-    IOrganization getPublicProfile(String organization);
-    IOrganization getPrivateProfile(String organization);
-    Page<IJob> getCreatedJobs(String organization);
-    List<IJob> getExclusiveReceivedJobs(String organization);
-    Page<IOrganization> getAllPublicProfile();
-    Page<IOrganization> getSchoolsPublicProfile();
+
+    IOrganization getOnePublicProfile(String organization);
+    IOrganization getOnePrivateProfile(String organization);
+
+    Page<IOrganization> getAllSchoolsPublicProfile();
+
+    IAddress getMainAddress(String orgId);
+    IContact getMainContact(String orgId);
+
+    
+    //  TODO: Mover queries relacionadas com vagas para outro DB
+    Page<IJob> getAllCreatedJobsSummaryFromOrg(String organization);
+    List<IJob> getExclusiveReceivedJobsSummaryForOrg(String organization);
+
 
 }

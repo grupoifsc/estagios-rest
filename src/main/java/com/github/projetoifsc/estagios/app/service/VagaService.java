@@ -1,46 +1,55 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.view.*;
+import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
+import com.github.projetoifsc.estagios.app.model.response.VagaPrivateDetailsView;
+import com.github.projetoifsc.estagios.app.model.response.VagaPrivateSummaryView;
+import com.github.projetoifsc.estagios.app.model.response.VagaPublicDetailsView;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
-import com.github.projetoifsc.estagios.app.utils.mock.OrgMock;
-import com.github.projetoifsc.estagios.app.utils.mock.VagaMock;
-import org.modelmapper.ModelMapper;
+import com.github.projetoifsc.estagios.core.IJobUseCases;
+import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
+import com.github.projetoifsc.estagios.utils.JsonParser;
+import com.github.projetoifsc.estagios.utils.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 @Service
 public class VagaService {
 
-    ModelMapper mapper = new ModelMapper();
+    Mapper mapper;
+    IJobUseCases jobUseCases;
+    IOrganizationUseCases organizationUseCases;
+
+    JsonParser jsonParser = new JsonParser();
 
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
-    PagedResourcesAssembler<VagaPublicProfileSerializableView> pageAssembler = new PagedResourcesAssembler<VagaPublicProfileSerializableView>(null, null);
+    PagedResourcesAssembler<VagaPublicDetailsView> pageAssembler = new PagedResourcesAssembler<VagaPublicDetailsView>(null, null);
 
 
+    @Autowired
+    public VagaService(Mapper mapper, IJobUseCases jobUseCases, IOrganizationUseCases organizationUseCases) {
+        this.mapper = mapper;
+        this.jobUseCases = jobUseCases;
+        this.organizationUseCases = organizationUseCases;
+    }
 
-    public ResponseEntity<VagaPrivateProfileSerializableView> create(VagaPrivateProfileSerializableView vaga) {
 
-        requestHandlerChain.handle(vaga);
-
-        vaga.setId("123");
-        vaga.setOwner(OrgMock.getOne());
-
-        var mapped = mapper.map
-                (vaga, VagaPrivateProfileSerializableView.class);
-
-        return new ResponseEntity<>(
-                mapped,
-                HttpStatus.CREATED );
+    public VagaPrivateDetailsView create(NewVagaRequest vaga) {
+        //requestHandlerChain.handle(vaga);
+        var created = jobUseCases.create("198", vaga);
+        return mapper.map(
+                created,
+                VagaPrivateDetailsView.class
+        );
     }
 
 
@@ -63,89 +72,68 @@ public class VagaService {
 //    }
 
 
-    public ResponseEntity<VagaPrivateProfileSerializableView> update(String vagaId, VagaPrivateProfileSerializableView vaga) {
-        requestHandlerChain.handle(vaga);
-
-        vaga.setId("123");
-        vaga.setOwner(OrgMock.getOne());
-        var mapped = mapper.map(
-                vaga, VagaPrivateProfileSerializableView.class
+    public VagaPrivateDetailsView update(String vagaId, NewVagaRequest vaga) {
+        //requestHandlerChain.handle(vaga);
+        var created = jobUseCases.update("198", vagaId, vaga);
+        return mapper.map(
+                created,
+                VagaPrivateDetailsView.class
         );
-        return new ResponseEntity<VagaPrivateProfileSerializableView> (
-                mapped,
-                HttpStatus.OK );
     }
 
 
-    public ResponseEntity<VagaPrivateProfileSerializableView> delete(String vagaId) {
-        return new ResponseEntity<VagaPrivateProfileSerializableView> (
-                HttpStatus.NO_CONTENT );
+    public void delete(String vagaId) {
+        jobUseCases.delete("195", vagaId);
     }
 
 
-    public ResponseEntity<VagaPublicProfileSerializableView> getPublicProfile(String vagaId) {
-        var vaga = VagaMock.getOne();
-        var mapped = mapper.map(
+    public VagaPublicDetailsView getPublicProfile(String vagaId) {
+        var vaga = jobUseCases.getOnePublicDetails("195", vagaId);
+        return mapper.map(
                 vaga,
-                VagaPublicProfileSerializableView.class
-        );
-        return new ResponseEntity<>(
-                mapped,
-                HttpStatus.OK
+                VagaPublicDetailsView.class
         );
     }
 
 
-    public ResponseEntity<VagaPrivateProfileSerializableView> getPrivateProfile(String vagaId) {
-        var vaga = VagaMock.getOne();
-        var mapped = mapper.map(
+    public VagaPrivateDetailsView getPrivateProfile(String vagaId) {
+        var vaga = jobUseCases.getOnePrivateDetails("198", vagaId);
+        return mapper.map(
                 vaga,
-                VagaPrivateProfileSerializableView.class
+                VagaPrivateDetailsView.class
         );
-        return new ResponseEntity<> (
-                mapped,
-                HttpStatus.OK );
     }
 
-
-    public ResponseEntity<Page<VagaPublicProfileSerializableView>> getAllReceivedByUser(String id, HashMap<String, String> filterArgs) {
-        var vagas = VagaMock.getList();
-        var vagasDto = vagas.stream().map(vaga -> mapper.map(
+    // TODO: Melhorar a apresentação
+    public List<VagaPublicDetailsView> getAllReceivedByUser(String id, HashMap<String, String> filterArgs) {
+        var vagas = jobUseCases.getAllReceivedSummary(id, id);
+        return vagas.stream().map(vaga -> mapper.map(
                 vaga,
-                VagaPublicProfileSerializableView.class
+                VagaPublicDetailsView.class
         )).toList();
-        var pageImpl = new PageImpl<>(vagasDto);
-        return new ResponseEntity<> (
-                pageImpl,
-                HttpStatus.OK );
     }
 
 
-    public ResponseEntity<Page<VagaPrivateProfileSerializableView>> getAllCreatedByUser(String id, Integer page, Integer limit) {
-        var vagas = VagaMock.getList();
-        var vagasDTO = vagas.stream().map(vaga -> mapper.map(
+    public Page<VagaPrivateSummaryView> getAllCreatedByUser(String id, Integer page, Integer limit) {
+        var vagas = jobUseCases.getAllCreatedSummary(id, id);
+        return vagas.map(vaga -> mapper.map(
                 vaga,
-                VagaPrivateProfileSerializableView.class
-        )).toList();
-        var pageImpl = new PageImpl<>(vagasDTO);
-
-        return new ResponseEntity<> (
-                pageImpl,
-                HttpStatus.OK );
+                VagaPrivateSummaryView.class
+        ));
     }
 
 
-    public ResponseEntity<Page<OrgBasicView>> getVagaRecipients(String id) {
-        var users = OrgMock.getList();
-        var usersDTO = users.stream().map(user -> mapper.map(
-                user,
-                OrgBasicView.class
-        )).toList();
-        var pageImpl = new PageImpl<>(usersDTO);
-
-        return new ResponseEntity<> (
-                pageImpl,
-                HttpStatus.OK );
-    }
+//    public ResponseEntity<Page<OrgBasicView>> getVagaRecipients(String id) {
+//        var users = organizationUseCases.get
+//        var usersDTO = users.stream().map(user -> mapper.map(
+//                user,
+//                OrgBasicView.class
+//        )).toList();
+//        var pageImpl = new PageImpl<>(usersDTO);
+//
+//        return new ResponseEntity<> (
+//                pageImpl,
+//                HttpStatus.OK );
+//    }
 
 }

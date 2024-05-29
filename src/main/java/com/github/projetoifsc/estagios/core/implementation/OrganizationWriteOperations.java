@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
+import com.github.projetoifsc.estagios.app.interfaces.INewUser;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationDB;
 
@@ -12,12 +13,12 @@ class OrganizationWriteOperations {
     }
 
 
-    public IOrganization createProfile(IOrganization organization) {
+    public IOrganization createProfile(INewUser organization) {
         return organizationRepository.save(organization);
     }
 
 
-    public IOrganization updateProfile(String loggedId, String targetId, IOrganization organization) {
+    public IOrganization updateProfile(String loggedId, String targetId, INewUser organization) {
         if(OrganizationValidation.isSelf(loggedId, targetId)) {
             organization.setId(targetId);
             return organizationRepository.save(organization);

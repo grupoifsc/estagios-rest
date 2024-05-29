@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.service.handler;
 
-import com.github.projetoifsc.estagios.app.view.SerializableView;
+import com.github.projetoifsc.estagios.app.model.response.View;
 
 public class RequestHandlerChain {
 
@@ -15,8 +15,8 @@ public class RequestHandlerChain {
         removeLinks.setNext(validate);
     }
 
-    public void handle(SerializableView serializableView) {
-        authenticate.handle(serializableView);
+    public void handle(View view) {
+        authenticate.handle(view);
     }
 
 }

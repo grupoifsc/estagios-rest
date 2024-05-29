@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.views;
 
-import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
+import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.utils.JsonParser;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ class JsonToOrgPrivateViewTest {
         "\"website\": \"www.juju.com.br\"," +
         "\"redes_sociais\": \"['juju']\"" + "}";
 
-        var mapped = jsonParser.parseString(jsonString, OrgPrivateProfileBasicView.class);
+        var mapped = jsonParser.parseString(jsonString, OrgPrivateProfileResponse.class);
 
         System.out.println(mapped.getUsername());
         System.out.println(mapped.getRedesSociais());

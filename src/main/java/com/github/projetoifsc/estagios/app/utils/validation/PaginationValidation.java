@@ -18,7 +18,8 @@ public class PaginationValidation {
 		}
 	}
 
-	public void validateLimitAndOffset (Integer limit, Integer offset) { // TODO - essa é a validação do parâmetro para autenticação
+	public void validateLimitAndOffset (Integer limit, Integer offset) {
+		// TODO - essa é a validação do parâmetro para autenticação
 		if ( limit < 1 || offset < 1)
 			throw new InvalidException("Page and Limit params must not be smaller than 1");
 		validateMaxLimitPageableValue(limit);

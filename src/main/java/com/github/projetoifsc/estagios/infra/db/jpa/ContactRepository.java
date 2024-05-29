@@ -5,11 +5,11 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-interface ContactRepository extends CrudRepository<Contact, Long> {
+interface ContactRepository extends CrudRepository<ContactEntity, Long> {
 
-    List<Contact> findByOwner(OrganizationEntity owner);
-    Optional<ContactMain> findFirstContactMainByOwner(OrganizationEntity owner);
-    Optional<ContactAppliance> findFirstContactApplianceByOwner(OrganizationEntity owner);
+    List<ContactEntity> findByOwner(OrganizationEntity owner);
+    Optional<ContactMainEntity> findFirstContactMainByOwner(OrganizationEntity owner);
+    Optional<ContactApplianceEntity> findFirstContactApplianceByOwner(OrganizationEntity owner);
 
     void deleteAllByOwner(OrganizationEntity owner);
 

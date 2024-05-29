@@ -6,9 +6,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjection;
 import com.github.projetoifsc.estagios.app.service.OrgService;
-import com.github.projetoifsc.estagios.app.view.AddressView;
-import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
-import com.github.projetoifsc.estagios.app.view.OrgPublicProfileBasicView;
+import com.github.projetoifsc.estagios.app.model.response.AdressPublicView;
+import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -40,14 +39,14 @@ class OrgEntityCascadeAllTest {
     @Test
     void saveCascadingAll() {
 
-        var mainAddr = new AddressView();
+        var mainAddr = new AdressPublicView();
         mainAddr.setBairro("Kobrasol");
         mainAddr.setCidade("São José");
         mainAddr.setPais("Brasil");
         mainAddr.setEstado("SC");
         mainAddr.setRua("Av. Central");
 
-        var org = new OrgPrivateProfileBasicView();
+        var org = new OrgPrivateProfileResponse();
         org.setNome("Nana Vasconcelos");
         org.setMainAddress(mainAddr);
         org.setIe(true);

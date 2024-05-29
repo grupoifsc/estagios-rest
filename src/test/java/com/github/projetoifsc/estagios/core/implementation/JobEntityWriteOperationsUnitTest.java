@@ -1,9 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
-import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IJobDB;
+import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,10 +16,11 @@ public class JobEntityWriteOperationsUnitTest {
 
     IJobDB jobRepository = mock();
     IOrganizationDB organizationRepository = mock();
+    JobReadOperations jobReadOperations;
 
-    JobWriteOperations service = new JobWriteOperations(jobRepository, organizationRepository);
+    JobWriteOperations service = new JobWriteOperations(jobReadOperations, jobRepository, organizationRepository);
 
-    IJob job;
+    IJobEntryData job;
     IOrganization organization;
 
     @BeforeEach
@@ -41,8 +39,8 @@ public class JobEntityWriteOperationsUnitTest {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
 
-        when(jobRepository.save(job))
-                .thenReturn(job);
+        when(jobRepository.saveAndGetId(job))
+                .thenReturn(job.getId());
 
         assertInstanceOf(IJob.class, service.create(organization.getId(), job));
     }
@@ -53,8 +51,8 @@ public class JobEntityWriteOperationsUnitTest {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
 
-        when(jobRepository.save(job))
-                .thenReturn(job);
+        when(jobRepository.saveAndGetId(job))
+                .thenReturn(job.getId());
 
         job.setOwner(null);
         assertEquals(organization,
@@ -73,14 +71,19 @@ public class JobEntityWriteOperationsUnitTest {
 
         job.setReceiversIds(List.of(schoolA.getId(), schoolB.getId()));
 
-        when(jobRepository.save(job))
-                .thenReturn(job);
+        when(jobRepository.saveAndGetId(job))
+                .thenReturn(job.getId());
 
         var created = service.create(organization.getId(), job);
 
-        assertTrue(created.getReceiversIds().contains(schoolA.getId()));
-        assertTrue(created.getReceiversIds().contains(schoolB.getId()));
-        assertEquals(2, created.getReceiversIds().size());
+        when(jobRepository.getExclusiveReceiversForJob(created.getId()))
+                .thenReturn(List.of(schoolA, schoolB));
+
+        var receivers = jobRepository.getExclusiveReceiversForJob(created.getId());
+
+        assertTrue(receivers.contains(schoolA));
+        assertTrue(receivers.contains(schoolB));
+        assertEquals(2, receivers.size());
 
     }
 
@@ -106,10 +109,10 @@ public class JobEntityWriteOperationsUnitTest {
     void updatesTraineeshipReturnsInterface() {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
-        when(jobRepository.findById(job.getId())).thenReturn(job);
+        when(jobRepository.getBasicInfoById(job.getId())).thenReturn(job);
 
-        when(jobRepository.save(job))
-                .thenReturn(job);
+        when(jobRepository.saveAndGetId(job))
+                .thenReturn(job.getId());
 
         assertInstanceOf(IJob.class, service.update(organization.getId(), job.getId(), job));
     }
@@ -117,12 +120,12 @@ public class JobEntityWriteOperationsUnitTest {
 
     @Test
     void updatedTraineeshipHasOrganizationAsOwner() {
-        when(jobRepository.findById(job.getId()))
+        when(jobRepository.getBasicInfoById(job.getId()))
                 .thenReturn(job);
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
-        when(jobRepository.save(job))
-                .thenReturn(job);
+        when(jobRepository.saveAndGetId(job))
+                .thenReturn(job.getId());
 
         assertEquals(organization,
                 service.update(organization.getId(), job.getId(), job).getOwner());
@@ -134,7 +137,7 @@ public class JobEntityWriteOperationsUnitTest {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
 
-        when(jobRepository.findById(job.getId()))
+        when(jobRepository.getBasicInfoById(job.getId()))
                 .thenReturn(job);
 
         var schoolA = new OrganizationImpl("2", true);
@@ -145,14 +148,19 @@ public class JobEntityWriteOperationsUnitTest {
 
         job.setReceiversIds(List.of(schoolA.getId(), schoolB.getId()));
 
-        when(jobRepository.save(job))
-                .thenReturn(job);
+        when(jobRepository.saveAndGetId(job))
+                .thenReturn(job.getId());
 
         var updated = service.update(organization.getId(), job.getId(), job);
 
-        assertTrue(updated.getReceiversIds().contains(schoolA.getId()));
-        assertTrue(updated.getReceiversIds().contains(schoolB.getId()));
-        assertEquals(2, updated.getReceiversIds().size());
+        when(jobRepository.getExclusiveReceiversForJob(updated.getId()))
+                .thenReturn(List.of(schoolA, schoolB));
+
+        var receivers = jobRepository.getExclusiveReceiversForJob(updated.getId());
+
+        assertTrue(receivers.contains(schoolA));
+        assertTrue(receivers.contains(schoolB));
+        assertEquals(2, receivers.size());
 
     }
 
@@ -162,7 +170,7 @@ public class JobEntityWriteOperationsUnitTest {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
 
-        when(jobRepository.findById(job.getId()))
+        when(jobRepository.getBasicInfoById(job.getId()))
                 .thenReturn(job);
 
         var schoolA = new OrganizationImpl("2", true);
@@ -184,7 +192,7 @@ public class JobEntityWriteOperationsUnitTest {
     void tryToUpdateTraineeshipFromOtherOrganizationThrowsUnauthorized () {
         var otherJob = new JobImpl();
         otherJob.setOwner(new OrganizationImpl("3", true));
-        when(jobRepository.findById("2")).thenReturn(otherJob);
+        when(jobRepository.getBasicInfoById("2")).thenReturn(otherJob);
         when(organizationRepository.findById(organization.getId())).thenReturn(organization);
 
         assertThrows(UnauthorizedAccessException.class, ()->service.update(
@@ -199,7 +207,7 @@ public class JobEntityWriteOperationsUnitTest {
     void canDeleteTraineeship() {
         when(organizationRepository.findById(organization.getId()))
                 .thenReturn(organization);
-        when(jobRepository.findById(job.getId())).thenReturn(job);
+        when(jobRepository.getBasicInfoById(job.getId())).thenReturn(job);
 
         assertDoesNotThrow(()->service.delete(organization.getId(), job.getId()));
     }
@@ -209,7 +217,7 @@ public class JobEntityWriteOperationsUnitTest {
     void tryDeleteTraineeshipFromOtherOrgThrowsUnauthorized() {
         var otherTraineeship = new JobImpl();
         otherTraineeship.setOwner(new OrganizationImpl("3", true));
-        when(jobRepository.findById("2")).thenReturn(otherTraineeship);
+        when(jobRepository.getBasicInfoById("2")).thenReturn(otherTraineeship);
         when(organizationRepository.findById(organization.getId())).thenReturn(organization);
 
         assertThrows(UnauthorizedAccessException.class,

@@ -3,7 +3,6 @@ package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationDB;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
-import org.hibernate.query.Page;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageImpl;
@@ -28,22 +27,17 @@ public class OrganizationEntityReadOperationsUnitTest {
         organizationB = new OrganizationImpl("2", true);
     }
 
-    @Test
-    void getAllCallsPublicProfileAndReturnsList() {
-        when(organizationRepository.getAllPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", false))));
-        assertInstanceOf(PageImpl.class, service.getAll());
-    }
 
     @Test
     void getSchoolsCallsSchoolsPublicProfileAndReturnsList() {
-        when(organizationRepository.getSchoolsPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", true))));
+        when(organizationRepository.getAllSchoolsPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", true))));
         assertInstanceOf(PageImpl.class, service.getSchools());
     }
 
 
     @Test
     void seePrivateProfileReturnsInterface() {
-        when(organizationRepository.getPrivateProfile(organizationA.getId())).thenReturn(organizationA);
+        when(organizationRepository.getOnePrivateProfile(organizationA.getId())).thenReturn(organizationA);
 
         assertInstanceOf(IOrganization.class, service.getPrivateProfile(
                 organizationA.getId(),
@@ -64,7 +58,7 @@ public class OrganizationEntityReadOperationsUnitTest {
 
     @Test
     void seePublicProfileReturnsInterface() {
-        when(organizationRepository.getPublicProfile(organizationA.getId())).thenReturn(organizationA);
+        when(organizationRepository.getOnePublicProfile(organizationA.getId())).thenReturn(organizationA);
 
         assertDoesNotThrow(()->service.getPublicProfile(
                         organizationA.getId(),
@@ -76,7 +70,7 @@ public class OrganizationEntityReadOperationsUnitTest {
 
     @Test
     void canSeeAnyOrganizationPublicProfile() {
-        when(organizationRepository.getPublicProfile(organizationB.getId())).thenReturn(organizationB);
+        when(organizationRepository.getOnePublicProfile(organizationB.getId())).thenReturn(organizationB);
 
         assertDoesNotThrow(()->service.getPublicProfile(
                         organizationA.getId(),

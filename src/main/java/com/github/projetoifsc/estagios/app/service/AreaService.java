@@ -1,15 +1,10 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.view.AreaSerializableView;
+import com.github.projetoifsc.estagios.app.model.response.AreaView;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
-import com.github.projetoifsc.estagios.app.utils.mock.AreaMock;
 import com.github.projetoifsc.estagios.core.IAreaUseCases;
 import com.github.projetoifsc.estagios.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,22 +31,22 @@ public class AreaService {
 
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
-    public List<AreaSerializableView> getAll() {
+    public List<AreaView> getAll() {
         var areas = areaUseCases.getAll();
         return areas.stream()
-                .map(area -> mapper.map(area, AreaSerializableView.class))
+                .map(area -> mapper.map(area, AreaView.class))
                 .toList();
     }
 
 
-    public AreaSerializableView getById(String id) {
+    public AreaView getById(String id) {
         var area= areaUseCases.getById(id);
-        var mapped = mapper.map(area, AreaSerializableView.class);
+        var mapped = mapper.map(area, AreaView.class);
         return mapped;
     }
 
 
-    private AreaSerializableView addHateoasLinks(AreaSerializableView area) {
+    private AreaView addHateoasLinks(AreaView area) {
         // TODO
         return null;
     }

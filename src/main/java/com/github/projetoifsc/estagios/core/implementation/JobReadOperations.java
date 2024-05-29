@@ -14,34 +14,35 @@ import java.util.Set;
 
 class JobReadOperations {
 
-    private final IJobDB traineeshipRepository;
-    private final IOrganizationDB organizationRepository;
+    private final IJobDB jobDB;
+    private final IOrganizationDB organizationDB;
 
-    public JobReadOperations(IJobDB traineeshipRepository, IOrganizationDB organizationRepository) {
-        this.traineeshipRepository = traineeshipRepository;
-        this.organizationRepository = organizationRepository;
+    public JobReadOperations(IJobDB jobDB, IOrganizationDB organizationDB) {
+        this.jobDB = jobDB;
+        this.organizationDB = organizationDB;
     }
 
 
-    public Page<IJob> getAllCreated(String loggedId, String targetId) {
+    public Page<IJob> getAllCreatedSummary(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId))
-            return organizationRepository.getCreatedJobs(targetId);
+            return organizationDB.getAllCreatedJobsSummaryFromOrg(targetId);
         var errorMessage = "Organizations can only access their own created traineeships";
         throw new UnauthorizedAccessException(errorMessage);
     }
 
+    // TODO 22/05 ARRUMAR
     // TODO Ver se o Set vai estar funcionando aqui, se o equals vai estar correto...
     // Aqui tem o problema da paginação... Vai ficar estranho, vai ficar desencontrado
-    public List<IJob> getAllReceived(String loggedId, String targetId) {
+    public List<IJob> getAllReceivedSummary(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId)) {
             Set<IJob> set = new HashSet<>();
-            if(organizationRepository.findById(loggedId).getIe()) {
-                var created = organizationRepository.getCreatedJobs(loggedId).stream().toList();
+            if(organizationDB.findById(loggedId).getIe()) {
+                var created = organizationDB.getAllCreatedJobsSummaryFromOrg(loggedId).stream().toList();
                 set.addAll(created);
             }
-            var exclusivelyReceived = organizationRepository.getExclusiveReceivedJobs(targetId);
+            var exclusivelyReceived = organizationDB.getExclusiveReceivedJobsSummaryForOrg(targetId);
             set.addAll(exclusivelyReceived);
-            var globallyReceived = traineeshipRepository.findAllWithoutReceivers();
+            var globallyReceived = jobDB.findAllPublicJobs();
             set.addAll(globallyReceived);
             return new ArrayList<>(set);
         }
@@ -49,12 +50,13 @@ class JobReadOperations {
         throw new UnauthorizedAccessException(errorMessage);
     }
 
-    public IJob getPrivateDetails(String organizationId, String traineeshipId) {
-        var organization = organizationRepository.findById(organizationId);
-        var traineeship = traineeshipRepository.findById(traineeshipId);
 
-        if (OrganizationValidation.isOwner(organization, traineeship)) {
-            return traineeshipRepository.getPrivateDetails(traineeshipId);
+    public IJob getOnePrivateDetails(String organizationId, String traineeshipId) {
+        var organization = organizationDB.findById(organizationId);
+        var job = jobDB.getPrivateDetails(traineeshipId);
+
+        if (OrganizationValidation.isOwner(organization, job)) {
+            return job;
         }
 
         var errorMessage = "Organizations can only see private details of traineeships which they own";
@@ -62,15 +64,15 @@ class JobReadOperations {
     }
 
 
-    public IJob getPublicDetails(String organizationId, String traineeshipId) {
-        var organization = organizationRepository.findById(organizationId);
-        var traineeship = traineeshipRepository.findById(traineeshipId);
+    public IJob getOnePublicDetails(String organizationId, String traineeshipId) {
+        var organization = organizationDB.findById(organizationId);
+        var traineeship = jobDB.getBasicInfoById(traineeshipId);
 
-        var receivers = traineeshipRepository.getReceivers(traineeshipId);
+        var exclusiveReceivers = jobDB.getExclusiveReceiversForJob(traineeshipId);
 
         if (OrganizationValidation.isOwner(organization, traineeship)
-                || OrganizationValidation.isReceiver(organization, receivers)) {
-            return traineeshipRepository.getPublicDetails(traineeshipId);
+                || OrganizationValidation.isReceiver(organization, exclusiveReceivers)) {
+            return jobDB.getPublicDetails(traineeshipId);
         }
 
         var errorMessage = "Organizations can only see traineeships which they own or receive";
@@ -78,5 +80,10 @@ class JobReadOperations {
     }
 
 
+    public List<IJob> getAllApprovedSummary(String loggedId, String targetId) {
+        if(isSelf(loggedId, targetId))
+            return jobDB.getAllApprovedSummaryByOrg(loggedId);
+        throw new UnauthorizedAccessException("User not authorized to access these resources because is not self");
+    }
 
 }

@@ -1,21 +1,21 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.javafaker.Faker;
+import com.github.projetoifsc.estagios.app.interfaces.OrgBasicInfoProjection;
+import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjection;
 import com.github.projetoifsc.estagios.app.interfaces.OrgPublicProfileProjection;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.utils.JsonParser;
+import com.github.projetoifsc.estagios.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,212 +23,118 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class OrganizationRepositoryUnitTest {
 
     @Autowired
-    OrganizationRepository organizationRepository;
-
-    @Autowired
-    AddressRepository addressRepository;
-
-    @Autowired
-    OrganizationDBImpl organizationDB;
+    OrganizationRepository repository;
 
     Faker faker = new Faker();
     GeradorCnpj geradorCnpj = new GeradorCnpj();
     OrgMocker orgMocker = new OrgMocker(faker, geradorCnpj);
 
-    JsonMapper jsonMapper = JsonMapper.builder()
-            .addModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .build();
+    @Autowired
+    JsonParser jsonParser;
 
-    ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    Mapper mapper;
 
-//    @Autowired
-//    public OrganizationEntityRepositoryUnitTest(OrganizationRepository organizationRepository) {
-//        this.organizationRepository = organizationRepository;
-//    }
 
-    OrganizationEntity organizationEntity;
+    OrganizationEntity entity;
 
-    @BeforeEach
-    void setUp() {
-        organizationEntity = orgMocker.generate();
-        organizationEntity = organizationRepository.save(organizationEntity);
-    }
 
     @Test
     @Transactional
     @Rollback(value = false)
     void saveOrganization() {
-        for (int i = 0; i < 5; i++) {
-            organizationEntity = orgMocker.generate();
-            organizationRepository.save(organizationEntity);
-        }
+        entity = orgMocker.generate();
+        var saved = repository.save(entity);
+        jsonParser.printValue(saved);
     }
 
 
     @Test
     @Transactional
     void updateOrganization() {
-//        var org = organizationRepository.findById(6L, PrivateOrgProfileProjection.class).get();
-//        org.ie = !org.ie;
-//        var saved = organizationRepository.save(org);
-//        var retrieved = organizationRepository.findById(6L).get();
-//        System.out.println(retrieved);
+        entity = repository.save(orgMocker.generate());
+        jsonParser.printValue(entity);
+        var id = entity.getId();
+        var newData = orgMocker.generate();
+        newData.setId(id);
+        var updated = repository.save(newData);
+        jsonParser.printValue(updated);
     }
 
     @Test
     @Transactional
-    void findAll() {
-        var response = organizationRepository.findAll(PageRequest.of(1, 20));
-        //System.out.println(response.stream().count());
-        System.out.println(response.getTotalElements());
-        System.out.println(response.getTotalPages());
-        System.out.println(response.getNumberOfElements());
-        System.out.println(response.getSize());
-        System.out.println(response.getNumber());
-        System.out.println(response.getContent());
-
-    }
-
-    @Test
-    void findAllUnpaged() {
-        var response = organizationRepository.findAll(Pageable.unpaged());
-        System.out.println(response);
-        System.out.println(response.stream().count());
-        System.out.println(response.getContent());
-        response.getContent().forEach(org -> System.out.println(org));
-    }
-
-    public static class LocalDTO implements IOrganization {
-
-        private String id;
-        private String nome;
-        private boolean ie;
-        private String info;
-        private String website;
-        private String redesSociais;
-
-        public LocalDTO() {
-        }
-
-        @Override
-        public String getId() {
-            return id;
-        }
-
-        @Override
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getNome() {
-            return nome;
-        }
-
-        public void setNome(String nome) {
-            this.nome = nome;
-        }
-
-        public Boolean getIe() {
-            return ie;
-        }
-
-        public void setIe(boolean ie) {
-            this.ie = ie;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
-
-        public String getWebsite() {
-            return website;
-        }
-
-        public void setWebsite(String website) {
-            this.website = website;
-        }
-
-        public String getRedesSociais() {
-            return redesSociais;
-        }
-
-        public void setRedesSociais(String redesSociais) {
-            this.redesSociais = redesSociais;
-        }
-
-    }
-
-
-    @Test
-    void findByIdPublicProfile() {
-
-        var projection = organizationRepository.findById(Long.parseLong(organizationEntity.getId()), OrgPublicProfileProjection.class);
-        System.out.println(projection.get());
-
-        System.out.println("Projection: ");
-        try {
-            System.out.println(jsonMapper.writeValueAsString(projection.get()));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        var mapped = modelMapper.map(projection.get(), LocalDTO.class);
-        System.out.println("Mapped object");
-        try {
-            System.out.println(jsonMapper.writeValueAsString(mapped));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        assertEquals(mapped.id, projection.get().getId());
-        assertEquals(mapped.nome,projection.get().getNome());
-
+    void findAllProjectedBy() {
+        var responseProjection = repository.findAllProjectedBy(PageRequest.of(0, 20), OrgPublicProfileProjection.class);
+        jsonParser.printValue(responseProjection.getContent());
     }
 
 
     @Test
     @Transactional
-    void findingById() {
-
-        var entitiy = organizationRepository.findById(Long.parseLong(organizationEntity.getId())).orElse(null);
-
-        System.out.println("Elemento recuperado do banco de dados com findById: ");
-        try {
-            System.out.println(jsonMapper.writeValueAsString(entitiy));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        
+    void findById() {
+        var projection = repository.findById(195L, OrganizationEntity.class);
+        var org = projection.orElse(null);
+        jsonParser.printValue(org);
     }
 
-    @Transactional
-    @Rollback(value = false)
+
+    // TODO: Otimizar o Delete pois não é otimizado! Ele busca todas as relações e depois deleta elas
+    // Ver esta solução possível: https://vladmihalcea.com/cascade-delete-unidirectional-associations-spring/
+    // Cuidar com as relações de JobEntity também (tem que usar um select de qualquer forma)
     @Test
-    void lazyLoadingFromSaved() {
-        var ent = organizationRepository.save(orgMocker.generate());
-
-        var address = new AddressMain();
-        address.setOwner(ent);
-        address = addressRepository.save(address);
-
-        var otheraddress = new AddressMain();
-        otheraddress.setOwner(ent);
-        otheraddress = addressRepository.save(otheraddress);
-
-        var enderecos = addressRepository.findByOwner(ent);
-
-        System.out.println(enderecos);
-
-        var main = addressRepository.findFirstAddressMainByOwner(ent);
-
-        System.out.println(main);
-
+    void delete() {
+        repository.deleteById(381L);
     }
 
+
+    @Test
+    void findAllProjectedByByIe() {
+        var orgs = repository.findAllByIe(true, PageRequest.of(0, 10), OrgPublicProfileProjection.class);
+        jsonParser.printValue(orgs.getContent());
+    }
+
+
+    @Test
+    void findAllProjectedByByIdIn() {
+        var orgs = repository.findAllByIdIn (List.of(196L, 200L, 270L), OrgPrivateProfileProjection.class);
+        jsonParser.printValue(orgs);
+    }
+
+
+    @Test
+    void findAllProjectedByByExclusiveReceivedJobsId() {
+        var orgs = repository.findAllByExclusiveReceivedJobsId(4L, OrgBasicInfoProjection.class);
+        jsonParser.printValue(orgs);
+    }
+
+
+    @Test
+    @Transactional
+    void findByUserCredentialsEmail() {
+        var email = "teste@teste.com";
+        var org_id = "395";
+       // var user_id = 3L;
+
+        var org = repository.findByUserCredentialsEmail(email, OrganizationEntity.class).orElseThrow();
+        jsonParser.printValue(org.getUserCredentials());
+        jsonParser.printValue(org.getId());
+        assertEquals(org.getId(), org_id);
+    }
+
+    @Test
+    @Transactional
+    void findByUserCredentialsId() {
+     //   var email = "teste@teste.com";
+        var org_id = "395";
+        var user_id = 3L;
+
+        var org = repository.findByUserCredentialsId(user_id, OrganizationEntity.class).orElseThrow();
+        var credentials = org.getUserCredentials();
+        jsonParser.printValue(credentials);
+        //jsonParser.printValue(org.getUserCredentials());
+        jsonParser.printValue(org.getId());
+        assertEquals(org.getId(), org_id);
+    }
 
 
 }

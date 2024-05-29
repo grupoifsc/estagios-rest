@@ -1,13 +1,9 @@
 package com.github.projetoifsc.estagios.app.controller;
 
-import com.github.projetoifsc.estagios.app.view.AreaSerializableView;
+import com.github.projetoifsc.estagios.app.model.response.AreaView;
 import com.github.projetoifsc.estagios.app.service.AreaService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.github.projetoifsc.estagios.app.utils.HttpErrorMessages.TOO_MANY_REQUESTS_MSG;
-import static com.github.projetoifsc.estagios.app.utils.HttpErrorMessages.UNAUTHORIZED_MSG;
 import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.*;
 
 @RestController
@@ -35,7 +29,7 @@ public class AreaController {
 
 	@GetMapping("/areas")
 	@Operation(summary="Ver Todas", description="Ver todas as áreas", tags={AREAS}, operationId="getAllAreas")
-	public ResponseEntity<List<AreaSerializableView>> getAllAreas () {
+	public ResponseEntity<List<AreaView>> getAllAreas () {
 		return new ResponseEntity<>(
 				service.getAll(),
 				HttpStatus.OK
@@ -45,7 +39,7 @@ public class AreaController {
 
 	@GetMapping("/areas/{id}")
 	@Operation(summary="Ver", description="Ver uma área", tags={AREAS}, operationId="getArea")
-	public ResponseEntity<AreaSerializableView> verArea (
+	public ResponseEntity<AreaView> verArea (
 			@PathVariable String id
 	) {
 		return new ResponseEntity<>(

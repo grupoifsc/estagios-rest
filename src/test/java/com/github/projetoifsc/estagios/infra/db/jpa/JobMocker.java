@@ -2,14 +2,15 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.concurrent.TimeUnit;
 
-class JobMocker {
+public class JobMocker {
 
     Faker faker;
 
-    JobMocker(Faker faker) {
+    public JobMocker(Faker faker) {
         this.faker = faker;
     }
 
@@ -18,19 +19,18 @@ class JobMocker {
         JobEntity jobEntity = new JobEntity();
 
         jobEntity.titulo = faker.job().title();
-        jobEntity.carga_horaria_semanal = faker.number().numberBetween(0, 50);
-       // jobEntity.data_final = faker.date().future(500, TimeUnit.DAYS).toInstant().toString();
-       // jobEntity.data_inicio = LocalDateTime.parse(jobEntity.data_final).minusDays(50).toString();
+        jobEntity.cargaHorariaSemanal = faker.number().numberBetween(0, 50);
         jobEntity.descricao = jobEntity.titulo + " performing " + faker.job().field() + " " + faker.job().position() + " activities with our clients at " + faker.lordOfTheRings().location() ;
-        jobEntity.duracao_meses = faker.number().numberBetween(0, 24);
-        jobEntity.id_externo_autor = faker.bothify("sdssfsdf");
+        jobEntity.duracaoMeses = faker.number().numberBetween(0, 24);
         jobEntity.imagem = faker.company().logo();
         jobEntity.remuneracao = faker.number().numberBetween(0, 5000);
-        jobEntity.requisitos = faker.job().keySkills() + ";" + faker.job().keySkills() + ";" + faker.job().keySkills();
+        jobEntity.requisitos = faker.job().keySkills() + "; " + faker.job().keySkills() + "; " + faker.job().keySkills();
 
-        jobEntity.formatId = 1;
-        jobEntity.levelId = 2;
-        jobEntity.periodId = 1;
+        jobEntity.formatId = (short) faker.number().numberBetween(1, 3);
+        jobEntity.levelId = (short) faker.number().numberBetween(1, 5);
+        jobEntity.periodId = (short) faker.number().numberBetween(1, 3);
+
+        jobEntity.dataInicio = LocalDate.ofInstant(faker.date().future(5, TimeUnit.DAYS).toInstant(), ZoneId.systemDefault());
 
         return jobEntity;
 

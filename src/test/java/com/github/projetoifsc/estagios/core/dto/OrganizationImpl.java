@@ -1,5 +1,7 @@
 package com.github.projetoifsc.estagios.core.dto;
 
+import com.github.projetoifsc.estagios.core.IAddress;
+import com.github.projetoifsc.estagios.core.IContact;
 import com.github.projetoifsc.estagios.core.IOrganization;
 
 public class OrganizationImpl implements IOrganization {
@@ -25,6 +27,16 @@ public class OrganizationImpl implements IOrganization {
     @Override
     public Boolean getIe() {
         return isSchool;
+    }
+
+    //@Override
+    public IContact getMainContact() {
+        return null;
+    }
+
+    //@Override
+    public IAddress getMainAddress() {
+        return null;
     }
 
 }

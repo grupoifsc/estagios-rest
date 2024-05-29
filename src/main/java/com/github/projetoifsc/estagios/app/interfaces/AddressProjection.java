@@ -1,6 +1,8 @@
 package com.github.projetoifsc.estagios.app.interfaces;
 
-public interface AddressProjection {
+import com.github.projetoifsc.estagios.core.IAddress;
+
+public interface AddressProjection extends IAddress {
     String getId();
     String getRua();
     String getBairro();

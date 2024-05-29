@@ -1,11 +1,11 @@
 package com.github.projetoifsc.estagios.app.service.handler;
 
-import com.github.projetoifsc.estagios.app.view.SerializableView;
+import com.github.projetoifsc.estagios.app.model.response.View;
 
 public class AuthenticateRequestHandler extends RequestHandler{
     @Override
-    public void handle(SerializableView serializableView) {
+    public void handle(View view) {
         // Authenticate
-        super.next(serializableView);
+        super.next(view);
     }
 }

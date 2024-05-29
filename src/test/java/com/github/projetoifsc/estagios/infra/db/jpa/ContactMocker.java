@@ -10,18 +10,18 @@ class ContactMocker {
         this.faker = faker;
     }
 
-    public Contact random() {
-        Contact contact = new ContactAppliance();
-        contact.email = faker.internet().emailAddress();
-        contact.telefone = faker.phoneNumber().phoneNumber();
-        return contact;
+    public ContactEntity random() {
+        ContactEntity contactEntity = new ContactApplianceEntity();
+        contactEntity.email = faker.internet().emailAddress();
+        contactEntity.telefone = faker.phoneNumber().phoneNumber();
+        return contactEntity;
     }
 
-    public Contact fromName(String name) {
-        Contact contact = new ContactAppliance();
-        contact.email = faker.internet().emailAddress(name);
-        contact.telefone = faker.phoneNumber().phoneNumber();
-        return contact;
+    public ContactEntity fromName(String name) {
+        ContactEntity contactEntity = new ContactApplianceEntity();
+        contactEntity.email = faker.internet().emailAddress(name);
+        contactEntity.telefone = faker.phoneNumber().phoneNumber();
+        return contactEntity;
     }
 
 }

@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.utils;
 
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.modelmapper.convention.MatchingStrategies;
 
 public class Mapper {
 
@@ -10,7 +10,8 @@ public class Mapper {
 
     public Mapper() {
         modelMapper.getConfiguration()
-                .setPropertyCondition(Conditions.isNotNull());
+                .setPropertyCondition(Conditions.isNotNull())
+                .setMatchingStrategy(MatchingStrategies.STRICT);
     }
 
     public <T> T map(Object source, Class<T> destinationType) {

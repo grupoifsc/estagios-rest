@@ -1,0 +1,25 @@
+package com.github.projetoifsc.estagios.infra.db.jpa;
+
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("1")
+class AddressMainEntity extends AddressEntity {
+
+    @Override
+    public String toString() {
+        return "AddressMain{" +
+                "id=" + getId() +
+                ", owner=" + getOwner().getId() +
+                ", rua='" + getRua() + '\'' +
+                ", bairro='" + getBairro() + '\'' +
+                ", cidade='" + getCidade() + '\'' +
+                ", estado='" + getEstado() + '\'' +
+                ", pais='" + getPais() + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + getUpdatedAt() +
+                '}';
+    }
+}
+

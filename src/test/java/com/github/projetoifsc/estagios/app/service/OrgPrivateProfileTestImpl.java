@@ -32,7 +32,7 @@ class OrgPrivateProfileTestImpl implements OrgPrivateProfileProjection {
         this.id = id;
     }
 
-    @Override
+//    @Override
     public String getUsername() {
         return username;
     }

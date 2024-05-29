@@ -1,5 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
+import com.github.projetoifsc.estagios.core.IAddress;
+import com.github.projetoifsc.estagios.core.IContact;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,13 +9,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 
-// TODO Aprender mais sobre Auditable
+//  Auditable:
 //  https://codersathi.com/auto-generate-created-and-modified-date-time-in-spring-boot/
 
 
@@ -23,10 +25,14 @@ import static jakarta.persistence.FetchType.LAZY;
 class OrganizationEntity implements IOrganization {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id", insertable = false, updatable = false)
+    private Long userId;
 
-    private String username;
+//    @Id
+    @OneToOne(fetch = EAGER)
+    @JoinColumn(name = "user_id")
+    private UserCredentialsEntity userCredentials;
 
     private String nome;
 
@@ -36,24 +42,26 @@ class OrganizationEntity implements IOrganization {
 
     private String info;
 
-    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL)
-    private List<Contact> contatos;
-
-    @OneToMany(mappedBy = "owner", fetch = LAZY)
-    private List<ContactMain> mainContact;
-
-    @OneToMany(mappedBy = "owner", fetch = LAZY)
-    private List<ContactAppliance> applianceContact;
+    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JobEntity> createdJobs = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL)
-    List<Address> enderecos;
+    private List<ContactEntity> contatos;
 
     @OneToMany(mappedBy = "owner", fetch = LAZY)
-    private List<AddressMain> mainAddress;
+    private List<ContactMainEntity> mainContact = new ArrayList<>();
+
+    @OneToMany(mappedBy = "owner", fetch = LAZY)
+    private List<ContactApplianceEntity> applianceContact;
+
+    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL)
+    List<AddressEntity> enderecos;
+
+    @OneToMany(mappedBy = "owner", fetch = LAZY)
+    private List<AddressMainEntity> mainAddress = new ArrayList<>();
 
     private String website;
 
-    // TODO Fazer como em requisitos, forçando uma má prática em
     @Column(name = "redes_sociais")
     private String redesSociais;
 
@@ -65,12 +73,13 @@ class OrganizationEntity implements IOrganization {
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
+    @ManyToMany(mappedBy = "exclusiveReceivers", fetch = LAZY)
+    List<JobEntity> exclusiveReceivedJobs;
 
     public OrganizationEntity() {
     }
 
-    OrganizationEntity(String username, String nome, String cnpj, boolean ie, String info, String website, String redesSociais) {
-        this.username = username;
+    OrganizationEntity(String nome, String cnpj, boolean ie, String info, String website, String redesSociais) {
         this.nome = nome;
         this.cnpj = cnpj;
         this.ie = ie;
@@ -79,27 +88,20 @@ class OrganizationEntity implements IOrganization {
         this.redesSociais = redesSociais;
     }
 
+    // TODO: tenho que fazer direito esse negócio de id...
     @Override
     public String getId() {
-        return Long.toString(id);
+        return Long.toString(userId);
     }
 
     @Override
     public void setId(String id) {
-        this.id = Long.parseLong(id);
+        userCredentials.setId(Long.parseLong(id));
     }
 
     @Override
     public Boolean getIe() {
         return ie;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getNome() {
@@ -134,43 +136,43 @@ class OrganizationEntity implements IOrganization {
         this.info = info;
     }
 
-    public List<Contact> getContatos() {
+    public List<ContactEntity> getContatos() {
         return contatos;
     }
 
-    public void setContatos(List<Contact> contatos) {
+    public void setContatos(List<ContactEntity> contatos) {
         this.contatos = contatos;
     }
 
-    public List<ContactMain> getMainContact() {
-        return mainContact;
+    public IContact getMainContact() {
+        return !mainContact.isEmpty() ? mainContact.get(0) : null;
     }
 
-    public void setMainContact(List<ContactMain> mainContact) {
+    public void setMainContact(List<ContactMainEntity> mainContact) {
         this.mainContact = mainContact;
     }
 
-    public List<ContactAppliance> getApplianceContact() {
+    public List<ContactApplianceEntity> getApplianceContact() {
         return applianceContact;
     }
 
-    public void setApplianceContact(List<ContactAppliance> applianceContact) {
+    public void setApplianceContact(List<ContactApplianceEntity> applianceContact) {
         this.applianceContact = applianceContact;
     }
 
-    public List<Address> getEnderecos() {
+    public List<AddressEntity> getEnderecos() {
         return enderecos;
     }
 
-    public void setEnderecos(List<Address> enderecos) {
+    public void setEnderecos(List<AddressEntity> enderecos) {
         this.enderecos = enderecos;
     }
 
-    public List<AddressMain> getMainAddress() {
-        return mainAddress;
+    public IAddress getMainAddress() {
+        return !mainAddress.isEmpty() ? mainAddress.get(0) : null ;
     }
 
-    public void setMainAddress(List<AddressMain> mainAddress) {
+    public void setMainAddress(List<AddressMainEntity> mainAddress) {
         this.mainAddress = mainAddress;
     }
 
@@ -206,4 +208,11 @@ class OrganizationEntity implements IOrganization {
         this.updatedAt = updatedAt;
     }
 
+    public UserCredentialsEntity getUserCredentials() {
+        return userCredentials;
+    }
+
+    public void setUserCredentials(UserCredentialsEntity userCredentials) {
+        this.userCredentials = userCredentials;
+    }
 }

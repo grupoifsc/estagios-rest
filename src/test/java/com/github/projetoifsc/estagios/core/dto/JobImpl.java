@@ -1,13 +1,13 @@
 package com.github.projetoifsc.estagios.core.dto;
 
 import com.github.projetoifsc.estagios.core.IArea;
-import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.IJobEntryData;
 import com.github.projetoifsc.estagios.core.IOrganization;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobImpl implements IJob {
+public class JobImpl implements IJobEntryData {
 
     private String id;
     private IOrganization owner;
@@ -35,6 +35,11 @@ public class JobImpl implements IJob {
     }
 
     @Override
+    public List<String> getAreasIds() {
+        return List.of();
+    }
+
+    @Override
     public List<String> getReceiversIds() {
         return receivers;
     }
@@ -45,6 +50,16 @@ public class JobImpl implements IJob {
     }
 
     @Override
+    public String getContactId() {
+        return "";
+    }
+
+    @Override
+    public String getAddressId() {
+        return "";
+    }
+
+    //@Override
     public List<IArea> getAreas() {
         return areas;
     }

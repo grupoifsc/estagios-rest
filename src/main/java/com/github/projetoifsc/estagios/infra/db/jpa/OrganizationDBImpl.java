@@ -1,18 +1,10 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjection;
-import com.github.projetoifsc.estagios.app.interfaces.OrgPublicProfileProjection;
-import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import com.github.projetoifsc.estagios.app.interfaces.*;
+import com.github.projetoifsc.estagios.core.*;
+import com.github.projetoifsc.estagios.utils.JsonParser;
+import com.github.projetoifsc.estagios.utils.Mapper;
 import jakarta.persistence.EntityNotFoundException;
-import org.modelmapper.Conditions;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,54 +14,40 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 
-// TODO Mapper Implementation a ser utilizada (mas não vamos fazer isso agora)
-
-
 // TODO: única forma que achei de fazer funcionar sem tornar muitas classes públicas foi coloca
 // a anotação do Spring aqui... e assim perde toda a modularidade... aff... Fica aí o problema pra resolver
 @Component
 class OrganizationDBImpl implements IOrganizationDB {
 
-    JsonMapper jsonMapper = JsonMapper.builder()
-            .addModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .build();
-
-    OrganizationRepository organizationRepository;
-    JobRepository jobRepository;
-    AddressRepository addressRepository;
-    ContactRepository contactRepository;
-
-    // TODO arrumar esse mapper aqui.. Deixar escolher qual o mapper a utilizar
-    ModelMapper modelMapper = new ModelMapper();
+    private final OrganizationRepository organizationRepository;
+    private final JobRepository jobRepository;
+    private final AddressRepository addressRepository;
+    private final ContactRepository contactRepository;
+    private final UserCredentialsRepository userCredentialsRepository;
+    private final Mapper mapper;
+    private final JsonParser jsonParser;
 
     @Autowired
-    public OrganizationDBImpl(OrganizationRepository organizationRepository, JobRepository jobRepository, AddressRepository addressRepository,
-                              ContactRepository contactRepository) {
+    public OrganizationDBImpl(OrganizationRepository organizationRepository, JobRepository jobRepository, AddressRepository addressRepository, ContactRepository contactRepository, UserCredentialsRepository userCredentialsRepository, Mapper mapper, JsonParser jsonParser) {
         this.organizationRepository = organizationRepository;
         this.jobRepository = jobRepository;
         this.addressRepository = addressRepository;
-        configureModelMapper();
         this.contactRepository = contactRepository;
+        this.userCredentialsRepository = userCredentialsRepository;
+        this.mapper = mapper;
+        this.jsonParser = jsonParser;
     }
 
-    private void configureModelMapper() {
-        modelMapper.getConfiguration()
-                .setPropertyCondition(Conditions.isNotNull())
-                .setMethodAccessLevel(Configuration.AccessLevel.PACKAGE_PRIVATE);
-    }
 
     @Override
+   // @Transactional
     public IOrganization findById(String id) {
         var optional = organizationRepository.findById(Long.parseLong(id), OrgBasicInfoProjection.class);
-        return optional.orElseThrow(EntityNotFoundException::new);
+        return (IOrganization) optional.orElseThrow(EntityNotFoundException::new);
+
     }
 
 
-    // TODO Como retornar erro se um id não existir?
-    //  -> Vai ser na outra camada que vai ter que gerar erro...
-    // Aqui que tá uma bosta... a exceção vai retornar na camada da lógica...
-    // MAS ISSO É REGRA DE NEGÓCIO SIM !  OU NÃO É ?
     @Override
     public List<IOrganization> findAllById(List<String> ids) {
 
@@ -77,7 +55,7 @@ class OrganizationDBImpl implements IOrganizationDB {
                 .map(Long::valueOf)
                 .toList();
 
-        var found =  organizationRepository.findByIdIn(longIds, OrgBasicInfoProjection.class);
+        var found =  organizationRepository.findAllByIdIn(longIds, OrgBasicInfoProjection.class);
 
         if(ids.size() == found.size()) {
             return found.stream()
@@ -102,7 +80,7 @@ class OrganizationDBImpl implements IOrganizationDB {
 
     @Override
     public IOrganization findByUsername(String username) {
-        var optionalOrganization = organizationRepository.findByUsername(username, OrgBasicInfoProjection.class);
+        var optionalOrganization = organizationRepository.findByUserCredentialsEmail(username, OrgBasicInfoProjection.class);
         return (IOrganization) optionalOrganization.orElseThrow(EntityNotFoundException::new);
     }
 
@@ -113,113 +91,136 @@ class OrganizationDBImpl implements IOrganizationDB {
     // Aqui vamos usar transaction para salvar os objetos "menores" tbm!
     @Override
     @Transactional
-    public IOrganization save(IOrganization organization) {
-        var entity = modelMapper.map(organization, OrganizationEntity.class);
+    public IOrganization save(INewUser organization) {
+        var userCredentials = mapper.map(organization, UserCredentialsEntity.class);
+        // TODO: Talvez isso fique melhor lá na camada da API, que é onde controla a Autorização
+        userCredentials.setRole(
+                organization.getIe() ? "school" : "user"
+        );
+        jsonParser.printValue(userCredentials);
+        var savedCredentials = userCredentialsRepository.save(userCredentials);
+
+        var entity = mapper.map(organization, OrganizationEntity.class);
+        entity.setUserCredentials(savedCredentials);
+        jsonParser.printValue(entity);
         var saved = organizationRepository.save(entity);
 
         // TODO: Olha uma dependẽncia escondida aqui!
-        saveAddressAndContact((OrgPrivateProfileProjection) organization, saved);
+        saveAddressAndContact((INewUser) organization, saved);
 
         var dto = organizationRepository.findById(Long.parseLong(saved.getId()), OrgPrivateProfileProjection.class);
         return (IOrganization) dto.orElse(null);
     }
 
-    private void saveAddressAndContact(OrgPrivateProfileProjection dto, OrganizationEntity organization) {
+
+    private void saveAddressAndContact(INewUser dto, OrganizationEntity organization) {
         saveMainAddress(dto, organization);
         saveMainContact(dto, organization);
         saveApplianceContact(dto, organization);
     }
 
 
-    private void saveMainContact(OrgPrivateProfileProjection dto, OrganizationEntity org) {
-
+    private void saveMainContact(INewUser dto, OrganizationEntity org) {
         var mainContact = contactRepository.findFirstContactMainByOwner(org)
-                .orElse(new ContactMain());
+                .orElse(new ContactMainEntity());
 
         if (dto.getMainContact() != null)
-            modelMapper.map(dto.getMainContact(), mainContact);
+            mapper.map(dto.getMainContact(), mainContact);
 
         mainContact.setOwner(org);
         contactRepository.save(mainContact);
-
     }
 
 
-    private void saveApplianceContact(OrgPrivateProfileProjection dto, OrganizationEntity org) {
-
+    private void saveApplianceContact(INewUser dto, OrganizationEntity org) {
         var applianceContact = contactRepository.findFirstContactApplianceByOwner(org)
-                .orElse(new ContactAppliance());
+                .orElse(new ContactApplianceEntity());
 
         if (dto.getApplianceContact() != null)
-            modelMapper.map(dto.getMainContact(), applianceContact);
+            mapper.map(dto.getMainContact(), applianceContact);
 
         applianceContact.setOwner(org);
         contactRepository.save(applianceContact);
-
     }
 
 
-    void saveMainAddress(OrgPrivateProfileProjection dto, OrganizationEntity org) {
-
+    void saveMainAddress(INewUser dto, OrganizationEntity org) {
         var mainAddress = addressRepository.findFirstAddressMainByOwner(org)
-                    .orElse(new AddressMain());
+                    .orElse(new AddressMainEntity());
 
         if (dto.getMainAddress() != null)
-            modelMapper.map(dto.getMainAddress(), mainAddress);
+            mapper.map(dto.getMainAddress(), mainAddress);
 
         mainAddress.setOwner(org);
         addressRepository.save(mainAddress);
-
     }
 
 
     @Override
     @Transactional
     public void delete(String id) {
-        var optional = organizationRepository.findById(Long.parseLong(id));
+        var optional = organizationRepository.findById(Long.parseLong(id), OrganizationEntity.class);
         var entity = optional.orElseThrow(EntityNotFoundException::new);
         organizationRepository.delete(entity);
     }
 
+
     @Override
-    @Transactional
-    public IOrganization getPublicProfile(String id) {
+//    @Transactional
+    public IOrganization getOnePublicProfile(String id) {
         var organizationProfile = organizationRepository.findById(Long.parseLong(id), OrgPublicProfileProjection.class);
-        return (IOrganization) organizationProfile.orElseThrow(EntityNotFoundException::new);
+        return organizationProfile.orElseThrow(EntityNotFoundException::new);
     }
+
 
     @Override
-    @Transactional
-    public IOrganization getPrivateProfile(String id) {
+//    @Transactional
+    public IOrganization getOnePrivateProfile(String id) {
         var organizationProfile = organizationRepository.findById(Long.parseLong(id), OrgPrivateProfileProjection.class);
-        return (IOrganization) organizationProfile.orElseThrow(EntityNotFoundException::new);
+        return organizationProfile.orElseThrow(EntityNotFoundException::new);
     }
 
 
-    // TODO: Já repensar aqui a questão da aprovação!
+    // TODO: Métodos que retornam Jobs deviam estar em outro DBImpl
+
+    // TODO: ver versão resumida no getAll e depois sim versão detalhada
     // TODO Aceitar Pageable!
     @Override
-    public Page<IJob> getCreatedJobs(String organizationId) {
-        return null;
+   // @Transactional
+    public Page<IJob> getAllCreatedJobsSummaryFromOrg(String organizationId) {
+        return jobRepository.findAllByOwnerId(Long.parseLong(organizationId), PageRequest.of(0, 100), JobPrivateSummaryProjection.class)
+                .map(job -> (IJob) job);
     }
 
+
+    // TODO: colocar em outro DBImpl (DAO)
     @Override
-    public List<IJob> getExclusiveReceivedJobs(String organizationId) {
-        return List.of();
+    public List<IJob> getExclusiveReceivedJobsSummaryForOrg(String organizationId) {
+        return jobRepository.findAllByExclusiveReceiversId(Long.parseLong(organizationId),JobPublicSummaryProjection.class)
+                .stream().map(r -> (IJob) r).toList();
     }
 
-    // TODO Accept Pageable as Parameter
+
     @Override
-    public Page<IOrganization> getAllPublicProfile() {
-        var page = organizationRepository.findAllProjectedBy(PageRequest.of(0, 20), OrgPublicProfileProjection.class);
+    public Page<IOrganization> getAllSchoolsPublicProfile() {
+        var page = organizationRepository.findAllByIe(true, PageRequest.of(0, 20), OrgPublicProfileProjection.class);
         return page.map(org -> (IOrganization) org);
     }
 
 
     @Override
-    public Page<IOrganization> getSchoolsPublicProfile() {
-        var page = organizationRepository.findByIe(true, PageRequest.of(0, 20), OrgPublicProfileProjection.class);
-        return page.map(org -> (IOrganization) org);
+    public IAddress getMainAddress(String orgId) {
+        return addressRepository.findFirstByOwnerId(Long.parseLong(orgId))
+                .orElseThrow(EntityNotFoundException::new);
     }
+
+
+    @Override
+    public IContact getMainContact(String orgId) {
+        var optional = organizationRepository.findById(Long.parseLong(orgId), OrganizationEntity.class);
+        var entity = optional.orElseThrow(EntityNotFoundException::new);
+        return entity.getMainContact();
+    }
+
 
 }

@@ -51,7 +51,7 @@ public class OrgMocker {
 
         cnpj = geradorCnpj.cnpj(false);
         ie = faker.bool().bool();
-        username = strippedLowerCaseName;
+//        username = strippedLowerCaseName;
         info = fakeCompany.catchPhrase();
 //        mainEmail = faker.internet().emailAddress(strippedLowerCaseName);
 //        mainPhone = faker.phoneNumber().phoneNumber();
@@ -62,7 +62,7 @@ public class OrgMocker {
 //        criado_em = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 //        atualizado_em = criado_em;
 
-        return new OrganizationEntity(username, nome, cnpj, ie, info, website, redes_sociais);
+        return new OrganizationEntity(nome, cnpj, ie, info, website, redes_sociais);
 
 
     }

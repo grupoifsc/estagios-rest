@@ -1,8 +1,9 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.view.OrgPrivateProfileBasicView;
+import com.github.projetoifsc.estagios.app.interfaces.INewUser;
+import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
-import com.github.projetoifsc.estagios.app.view.OrgPublicProfileBasicView;
+import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfileBasicInfoView;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.utils.Mapper;
@@ -39,27 +40,27 @@ public class OrgService {
 
     RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
-    public IOrganization create(OrgPrivateProfileBasicView perfil) {
-        var org = organizationUseCases.createProfile(perfil);
-        return mapper.map(org, OrgPrivateProfileBasicView.class);
+    public IOrganization create(INewUser newUser) {
+        var org = organizationUseCases.createProfile(newUser);
+        return mapper.map(org, OrgPrivateProfileResponse.class);
     }
 
 
     public IOrganization getAuthUserPerfil(String id) {
         var org = organizationUseCases.getPrivateProfile(id, id);
-        return mapper.map(org, OrgPrivateProfileBasicView.class);
+        return mapper.map(org, OrgPrivateProfileResponse.class);
     }
 
 
     public IOrganization getUserPublicProfile(String id) {
         var org = organizationUseCases.getPublicProfile(id, id);
-        return mapper.map(org, OrgPublicProfileBasicView.class);
+        return mapper.map(org, OrgPublicProfileBasicInfoView.class);
     }
 
 
-    public IOrganization updateAuthUserPerfil(String id, OrgPrivateProfileBasicView perfil) {
-        var org = organizationUseCases.updateProfile(id,id, perfil);
-        return mapper.map(org, OrgPrivateProfileBasicView.class);
+    public IOrganization updateAuthUserPerfil(String id, INewUser updatedUser) {
+        var org = organizationUseCases.updateProfile(id,id, updatedUser);
+        return mapper.map(org, OrgPrivateProfileResponse.class);
     }
 
 
@@ -68,19 +69,10 @@ public class OrgService {
     }
 
 
-    public Page<IOrganization> getAllUsers() {
-        var orgs = organizationUseCases.getAll();
-        orgs.getContent().forEach(
-                org -> mapper.map(org, OrgPublicProfileBasicView.class)
-        );
-        return orgs;
-    }
-
-
     public Page<IOrganization> getAllSchools() {
         var orgs = organizationUseCases.getSchools();
         return orgs.map(
-                org -> mapper.map(org, OrgPublicProfileBasicView.class)
+                org -> mapper.map(org, OrgPublicProfileBasicInfoView.class)
         );
     }
 
