@@ -5,6 +5,7 @@ import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
 import com.github.projetoifsc.estagios.app.model.response.AdressPublicView;
 import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfileBasicInfoView;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.infra.db.jpa.GeradorCnpj;
 import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;
@@ -29,19 +30,23 @@ class OrgServiceIntegrationTest {
     @Autowired
     JsonParser jsonParser;
 
-    IOrganization entity;
     OrgMocker mocker = new OrgMocker(new Faker(new Locale("pt-BR")), new GeradorCnpj());
+
+    UserPrincipal userPrincipal;
+    IOrganization entity;
+
 
     @BeforeEach
     void setUp() {
         var mockedEntity = mocker.generateWithIdAsZero();
         var view = mapper.map(mockedEntity, NewUserRequest.class);
         entity = orgService.create(view);
+        userPrincipal = new UserPrincipal(entity.getId(), null,null, null);
     }
 
     @Test
     void getPrivateProfile() {
-        var dto = orgService.getAuthUserPerfil(, entity.getId(), );
+        var dto = orgService.getAuthUserPerfil(userPrincipal, entity.getId());
         jsonParser.printValue(dto);
         
 
@@ -116,7 +121,7 @@ class OrgServiceIntegrationTest {
         System.out.println("Imprimindo o objeto local: ");
         jsonParser.printValue(org);
 
-        var saved = orgService.updateAuthUserPerfil(, org.getId(), org);
+        var saved = orgService.updateAuthUserPerfil(userPrincipal, org.getId(), org);
         System.out.println("O que veio salvo lá do banco de dados: ");
         jsonParser.printValue(saved);
 
@@ -125,5 +130,6 @@ class OrgServiceIntegrationTest {
         jsonParser.printValue(mapped);
 
     }
+
 
 }

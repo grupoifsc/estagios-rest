@@ -2,6 +2,7 @@ package com.github.projetoifsc.estagios.app.service;
 
 import com.github.javafaker.Faker;
 import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.infra.db.jpa.JobMocker;
 import com.github.projetoifsc.estagios.utils.JsonParser;
@@ -29,6 +30,7 @@ class VagaServiceIntegrationTest {
     JobMocker jobMocker = new JobMocker(new Faker());
 
     IJob job;
+    UserPrincipal userPrincipal;
 
     @Test
     void create() {

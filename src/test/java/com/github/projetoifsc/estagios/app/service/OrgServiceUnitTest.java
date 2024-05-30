@@ -5,6 +5,7 @@ import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
 import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfileBasicInfoView;
 import com.github.projetoifsc.estagios.app.security.auth.PwdEncoder;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;
 import com.github.projetoifsc.estagios.utils.JsonParser;
@@ -34,12 +35,13 @@ class OrgServiceUnitTest {
     OrgPrivateProfileProjection dbProjection;
     OrgMocker orgMocker = new OrgMocker();
     String id;
-
+    UserPrincipal userPrincipal;
 
     @BeforeEach
     void setUp() {
         id = "1";
         dbProjection = generateProjection();
+        userPrincipal = new UserPrincipal(id, null, null, null);
     }
 
 
@@ -68,7 +70,7 @@ class OrgServiceUnitTest {
         when(organizationUseCases.getPrivateProfile(id, id))
                 .thenReturn(dbProjection);
 
-        var result = orgService.getAuthUserPerfil(, id, );
+        var result = orgService.getAuthUserPerfil(userPrincipal, id);
         assertInstanceOf(OrgPrivateProfileResponse.class, result);
 
         var jsonString = jsonParser.valueAsString(result);
@@ -105,7 +107,7 @@ class OrgServiceUnitTest {
         when(organizationUseCases.updateProfile(id, id, entryData))
                 .thenReturn(dbProjection);
 
-        var result = orgService.updateAuthUserPerfil(, id, entryData);
+        var result = orgService.updateAuthUserPerfil(userPrincipal, id, entryData);
         assertInstanceOf(OrgPrivateProfileResponse.class, result);
 
         var jsonString = jsonParser.valueAsString(result);
