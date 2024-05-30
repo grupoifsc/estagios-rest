@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.interfaces.ContactProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.ContactProjection;
 
 class ContactProjectionImplTest implements ContactProjection {
 

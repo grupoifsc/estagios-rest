@@ -1,7 +1,8 @@
 package com.github.projetoifsc.estagios.app.controller;
 
+import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
 import com.github.projetoifsc.estagios.app.model.response.AreaView;
-import com.github.projetoifsc.estagios.app.security.UserPrincipal;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.service.AreaService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,17 +15,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.*;
-
 //@SecurityScheme(
 //		name = "bearerToken",
 //		type = SecuritySchemeType.HTTP,
 //		scheme = "bearer",
 //		bearerFormat = "JWT"
 //)
-@SecurityRequirement(name = AUTHORIZATION)
+@SecurityRequirement(name = OpenApiConfig.AUTHORIZATION)
 @RestController
-@RequestMapping(value = BASE_URL,
+@RequestMapping(value = OpenApiConfig.BASE_URL,
 				produces = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML, 
 								MediaTypes.APPLICATION_HAL, MediaTypes.APPLICATION_HAL_FORMS } )
 
@@ -38,25 +37,25 @@ public class AreaController {
 	}
 
 	@GetMapping("/areas")
-	@Operation(summary="Ver Todas", description="Ver todas as áreas", tags={AREAS}, operationId="getAllAreas")
+	@Operation(summary="Ver Todas", description="Ver todas as áreas", tags={OpenApiConfig.AREAS}, operationId="getAllAreas")
 	public ResponseEntity<List<AreaView>> getAllAreas (
 			@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 		return new ResponseEntity<>(
-				service.getAll(),
+				service.getAll(userPrincipal),
 				HttpStatus.OK
 		);
 	}
 
 
 	@GetMapping("/areas/{id}")
-	@Operation(summary="Ver", description="Ver uma área", tags={AREAS}, operationId="getArea")
+	@Operation(summary="Ver", description="Ver uma área", tags={OpenApiConfig.AREAS}, operationId="getArea")
 	public ResponseEntity<AreaView> verArea (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable String id
 	) {
 		return new ResponseEntity<>(
-				service.getById(id),
+				service.getById(userPrincipal, id),
 				HttpStatus.OK
 		);
 	}

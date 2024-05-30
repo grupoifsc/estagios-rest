@@ -1,10 +1,11 @@
 package com.github.projetoifsc.estagios.app.controller;
 
+import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
 import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
 import com.github.projetoifsc.estagios.app.model.response.VagaPrivateDetailsView;
 import com.github.projetoifsc.estagios.app.model.response.VagaPrivateSummaryView;
 import com.github.projetoifsc.estagios.app.model.response.VagaPublicDetailsView;
-import com.github.projetoifsc.estagios.app.security.UserPrincipal;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.service.VagaService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.*;
 import static com.github.projetoifsc.estagios.app.utils.validation.PaginationValidation.DEFAULT_LIMIT_VALUE;
 import static com.github.projetoifsc.estagios.app.utils.validation.PaginationValidation.DEFAULT_PAGE_VALUE;
 
@@ -30,9 +30,9 @@ import static com.github.projetoifsc.estagios.app.utils.validation.PaginationVal
 //		scheme = "bearer",
 //		bearerFormat = "JWT"
 //)
-@SecurityRequirement(name = AUTHORIZATION)
+@SecurityRequirement(name = OpenApiConfig.AUTHORIZATION)
 @RestController
-@RequestMapping(value = BASE_URL,
+@RequestMapping(value = OpenApiConfig.BASE_URL,
 				produces = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML, 
 						MediaTypes.APPLICATION_HAL, MediaTypes.APPLICATION_HAL_FORMS })
 public class VagaController {
@@ -45,7 +45,7 @@ public class VagaController {
 	}
 
 	@PostMapping(value = "/vagas", consumes = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML })
-	@Operation(summary="Criar Vaga", description="Criar Nova Vaga de Estágio", tags= {VAGAS}, operationId="postVaga")
+	@Operation(summary="Criar Vaga", description="Criar Nova Vaga de Estágio", tags= {OpenApiConfig.VAGAS}, operationId="postVaga")
 //	@ApiResponses({
 //			@ApiResponse(responseCode = "201"),
 //			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
@@ -57,14 +57,14 @@ public class VagaController {
 			@RequestBody NewVagaRequest vaga
 	) {
 		return new ResponseEntity<>(
-				service.create(vaga),
+				service.create(userPrincipal, vaga),
 				HttpStatus.CREATED
 		);
 	}
 
 
 	@PutMapping("/vagas/{id}")
-	@Operation(summary="Atualizar Vaga", description="Atualizar uma vaga de estágio", tags= {VAGAS}, operationId="putVaga")
+	@Operation(summary="Atualizar Vaga", description="Atualizar uma vaga de estágio", tags= {OpenApiConfig.VAGAS}, operationId="putVaga")
 //	@ApiResponses({
 //			@ApiResponse(responseCode = "200"),
 //			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
@@ -79,14 +79,14 @@ public class VagaController {
 			@RequestBody NewVagaRequest vaga
 	) {
 		return new ResponseEntity<>(
-				service.update(vagaId, vaga),
+				service.update(userPrincipal, vagaId, vaga),
 				HttpStatus.OK
 		);
 	}
 
 
 	@DeleteMapping("/vagas/{id}")
-	@Operation(summary="Deletar Vaga", description="Deletar uma vaga de estágio e todos os dados relacionados a ela", tags= {VAGAS}, operationId="deleteVaga")
+	@Operation(summary="Deletar Vaga", description="Deletar uma vaga de estágio e todos os dados relacionados a ela", tags= {OpenApiConfig.VAGAS}, operationId="deleteVaga")
 //	@ApiResponses({
 //			@ApiResponse(responseCode = "204"),
 //			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
@@ -99,12 +99,12 @@ public class VagaController {
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId
 	) {
-		service.delete(vagaId);
+		service.delete(userPrincipal, vagaId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/vagas/{id}/public")
-	@Operation(summary="Ver Vaga", description="Ver o perfil público de uma vaga. Autorizado apenas ao criador ou destinatários da vaga.", tags= {VAGAS}, operationId="getVaga")
+	@Operation(summary="Ver Vaga", description="Ver o perfil público de uma vaga. Autorizado apenas ao criador ou destinatários da vaga.", tags= {OpenApiConfig.VAGAS}, operationId="getVaga")
 //	@ApiResponses({
 //		@ApiResponse(responseCode = "200"),
 //		@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
@@ -118,14 +118,14 @@ public class VagaController {
 			@PathVariable("id") String vagaId
 	) {
 		return new ResponseEntity<>(
-				service.getPublicProfile(vagaId),
+				service.getPublicProfile(userPrincipal, vagaId),
 				HttpStatus.OK
 		);
 	}
 
 
 	@GetMapping("/vagas/{id}")
-	@Operation(summary="Ver Perfil Privado de Vaga", description="Ver perfil privado de uma vaga. Autorizado apenas ao criador da vaga.", tags= {VAGAS}, operationId="getVagaPrivate")
+	@Operation(summary="Ver Perfil Privado de Vaga", description="Ver perfil privado de uma vaga. Autorizado apenas ao criador da vaga.", tags= {OpenApiConfig.VAGAS}, operationId="getVagaPrivate")
 //	@ApiResponses({
 //			@ApiResponse(responseCode = "200"),
 //			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
@@ -139,14 +139,14 @@ public class VagaController {
 			@PathVariable("id") String vagaId
 	) {
 		return new ResponseEntity<>(
-				service.getPrivateProfile(vagaId),
+				service.getPrivateProfile(userPrincipal, vagaId),
 				HttpStatus.OK
 		);
 	}
 
 
 	@GetMapping("/entidades/{id}/vagas/recebidas")
-	@Operation(summary="Vagas recebidas", description="Ver as vagas recebidas pelo usuário autenticado", tags= {VAGAS}, operationId="getVagasRecebidas")
+	@Operation(summary="Vagas recebidas", description="Ver as vagas recebidas pelo usuário autenticado", tags= {OpenApiConfig.VAGAS}, operationId="getVagasRecebidas")
 //	@ApiResponses({
 //		@ApiResponse(responseCode = "200"),
 //		@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
@@ -177,14 +177,14 @@ public class VagaController {
 		filterArgs.put("page", page.toString());
 		filterArgs.put("limit", limit.toString());
 		return new ResponseEntity<>(
-				service.getAllReceivedByUser(id, filterArgs),
+				service.getAllReceivedByUser(userPrincipal, id, filterArgs),
 				HttpStatus.OK
 		);
 	}
 
 
 	@GetMapping("/entidades/{id}/vagas")
-	@Operation(summary="Vagas Criadas", description="Ver as vagas criadas pelo usuário autenticado.", tags= { VAGAS}, operationId="getVagasCriadas")
+	@Operation(summary="Vagas Criadas", description="Ver as vagas criadas pelo usuário autenticado.", tags= { OpenApiConfig.VAGAS}, operationId="getVagasCriadas")
 //	@ApiResponses({
 //			@ApiResponse(responseCode = "200"),
 //			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
@@ -199,7 +199,7 @@ public class VagaController {
 			@RequestParam(value= "page", defaultValue = DEFAULT_PAGE_VALUE) Integer page,
 			@PathVariable String id) {
 		return new ResponseEntity<>(
-				service.getAllCreatedByUser(id, page, limit),
+				service.getAllCreatedByUser(userPrincipal, id, page, limit),
 				HttpStatus.OK
 		);
 	}

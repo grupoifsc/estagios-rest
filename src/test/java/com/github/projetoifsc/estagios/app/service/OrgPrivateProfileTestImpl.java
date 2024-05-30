@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.interfaces.AddressProjection;
-import com.github.projetoifsc.estagios.app.interfaces.ContactProjection;
-import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.AddressProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.ContactProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
 
 import java.time.LocalDateTime;
 

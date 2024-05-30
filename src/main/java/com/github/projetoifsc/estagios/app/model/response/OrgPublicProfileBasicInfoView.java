@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.app.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.projetoifsc.estagios.app.interfaces.OrgPublicProfileProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgPublicProfileProjection;
 import com.github.projetoifsc.estagios.app.model.shared.AddressView;
 import com.github.projetoifsc.estagios.app.model.shared.ContactView;
 import com.github.projetoifsc.estagios.app.utils.hateoas.UserHateoasHelper;

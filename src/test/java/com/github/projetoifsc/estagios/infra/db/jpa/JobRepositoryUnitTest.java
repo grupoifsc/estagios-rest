@@ -1,14 +1,12 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.interfaces.JobBasicInfoProjection;
-import com.github.projetoifsc.estagios.app.interfaces.JobPublicSummaryProjection;
-import com.github.projetoifsc.estagios.app.interfaces.OrgBasicInfoProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.JobBasicInfoProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicSummaryProjection;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.utils.JsonParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;

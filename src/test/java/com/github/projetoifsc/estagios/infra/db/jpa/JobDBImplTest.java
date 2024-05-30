@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.interfaces.JobPrivateDetailsProjection;
-import com.github.projetoifsc.estagios.app.interfaces.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicDetailsProjection;
 import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.utils.JsonParser;

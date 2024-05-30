@@ -1,12 +1,11 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.interfaces.OrgBasicInfoProjection;
-import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjection;
-import com.github.projetoifsc.estagios.app.interfaces.OrgPublicProfileProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgBasicInfoProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgPublicProfileProjection;
 import com.github.projetoifsc.estagios.utils.JsonParser;
 import com.github.projetoifsc.estagios.utils.Mapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +14,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

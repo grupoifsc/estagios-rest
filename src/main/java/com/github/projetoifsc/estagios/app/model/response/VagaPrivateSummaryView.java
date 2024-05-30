@@ -3,8 +3,8 @@ package com.github.projetoifsc.estagios.app.model.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.projetoifsc.estagios.app.interfaces.JobPrivateSummaryProjection;
-import com.github.projetoifsc.estagios.app.interfaces.OrgBasicInfoProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateSummaryProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgBasicInfoProjection;
 
 @JsonPropertyOrder(value = {"id", "titulo",
         "requisitos", "periodo", "carga_horaria", "remuneracao",

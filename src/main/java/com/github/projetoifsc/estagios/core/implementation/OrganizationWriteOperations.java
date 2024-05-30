@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.app.interfaces.INewUser;
+import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationDB;
 

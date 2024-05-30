@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.app.model.shared;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.projetoifsc.estagios.app.interfaces.ContactProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.ContactProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

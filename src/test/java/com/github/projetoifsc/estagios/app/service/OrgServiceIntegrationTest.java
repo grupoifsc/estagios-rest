@@ -41,7 +41,7 @@ class OrgServiceIntegrationTest {
 
     @Test
     void getPrivateProfile() {
-        var dto = orgService.getAuthUserPerfil(entity.getId());
+        var dto = orgService.getAuthUserPerfil(, entity.getId(), );
         jsonParser.printValue(dto);
         
 
@@ -52,7 +52,7 @@ class OrgServiceIntegrationTest {
 
     @Test
     void getPublic() {
-        var dto = orgService.getUserPublicProfile(entity.getId());
+        var dto = orgService.getUserPublicProfile(userPrincipal, entity.getId());
         jsonParser.printValue(dto);
 
         var mapped = mapper.map(dto, OrgPublicProfileBasicInfoView.class);
@@ -97,7 +97,7 @@ class OrgServiceIntegrationTest {
     @Test
     void delete() {
 
-        orgService.deleteAuthUserPerfil(entity.getId());
+        orgService.deleteAuthUserPerfil(userPrincipal, entity.getId());
 
     }
 
@@ -116,7 +116,7 @@ class OrgServiceIntegrationTest {
         System.out.println("Imprimindo o objeto local: ");
         jsonParser.printValue(org);
 
-        var saved = orgService.updateAuthUserPerfil(org.getId(), org);
+        var saved = orgService.updateAuthUserPerfil(, org.getId(), org);
         System.out.println("O que veio salvo lá do banco de dados: ");
         jsonParser.printValue(saved);
 

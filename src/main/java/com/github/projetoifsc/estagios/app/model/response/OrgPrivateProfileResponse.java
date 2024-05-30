@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.app.model.response;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.*;
-import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
 import com.github.projetoifsc.estagios.app.model.shared.ContactView;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

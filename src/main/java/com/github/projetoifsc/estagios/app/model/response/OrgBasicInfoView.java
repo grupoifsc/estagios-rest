@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.app.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.projetoifsc.estagios.app.interfaces.OrgBasicInfoProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgBasicInfoProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;

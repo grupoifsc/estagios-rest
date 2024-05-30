@@ -37,7 +37,7 @@ class VagaServiceIntegrationTest {
 //        entryData.setAreasIds(List.of("1", "2", "50"));
 //        entryData.setContactId("69");
 //        entryData.setAddressId("97");
-        var created = service.create(entryData);
+        var created = service.create(userPrincipal, entryData);
         assertFalse(created.getId().equalsIgnoreCase("0"));
         jsonParser.printValue(created);
     }
@@ -46,7 +46,7 @@ class VagaServiceIntegrationTest {
     void update() {
         var entryData = mapper.map(jobMocker.generate(), NewVagaRequest.class);
         String id = "29";
-        var updated = service.update(id, entryData);
+        var updated = service.update(userPrincipal, id, entryData);
         assertTrue(updated.getId().equalsIgnoreCase(id));
         assertNotEquals(updated.getCreatedAt(), updated.getUpdatedAt());
         jsonParser.printValue(updated);
@@ -56,15 +56,15 @@ class VagaServiceIntegrationTest {
     @Test
     void delete() {
         String id = "18";
-        assertDoesNotThrow(() -> service.delete(id));
-        assertThrows(Exception.class, () -> service.delete("300"));
+        assertDoesNotThrow(() -> service.delete(userPrincipal, id));
+        assertThrows(Exception.class, () -> service.delete(userPrincipal, "300"));
     }
 
 
     @Test
     void getOnePrivate() {
         String id = "29";
-        var vaga = service.getPrivateProfile(id);
+        var vaga = service.getPrivateProfile(userPrincipal, id);
         jsonParser.printValue(vaga);
 
     }
@@ -73,7 +73,7 @@ class VagaServiceIntegrationTest {
     @Test
     void getOnePublic() {
         String id = "4";
-        var vaga = service.getPublicProfile(id);
+        var vaga = service.getPublicProfile(userPrincipal, id);
         jsonParser.printValue(vaga);
     }
 
@@ -81,7 +81,7 @@ class VagaServiceIntegrationTest {
     @Test
     void getAllCreated() {
         String id = "195";
-        var vagas = service.getAllCreatedByUser(id, 0, 50);
+        var vagas = service.getAllCreatedByUser(userPrincipal, id, 0, 50);
         jsonParser.printValue(vagas.getContent());
     }
 
@@ -90,7 +90,7 @@ class VagaServiceIntegrationTest {
     @Test
     void getAllReceived() {
         String id = "274";
-        var vagas = service.getAllReceivedByUser(id, new HashMap<>());
+        var vagas = service.getAllReceivedByUser(userPrincipal, id, new HashMap<>());
         System.out.println(vagas.size());
         vagas.forEach(v -> System.out.println(v.getId()));
         jsonParser.printValue(vagas);

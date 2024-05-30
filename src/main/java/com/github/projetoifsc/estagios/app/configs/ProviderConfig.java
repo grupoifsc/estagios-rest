@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ProviderConfig {
 
-    @Autowired
+//    @Autowired
     @Bean
     public IOrganizationUseCases defaultOrganizationUseCases(IOrganizationDB iOrganizationDB) {
         return new OrganizationUseCases(iOrganizationDB);

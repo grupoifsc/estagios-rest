@@ -1,10 +1,10 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.interfaces.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
 import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
 import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfileBasicInfoView;
-import com.github.projetoifsc.estagios.app.security.PwdEncoder;
+import com.github.projetoifsc.estagios.app.security.auth.PwdEncoder;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;
 import com.github.projetoifsc.estagios.utils.JsonParser;
@@ -68,7 +68,7 @@ class OrgServiceUnitTest {
         when(organizationUseCases.getPrivateProfile(id, id))
                 .thenReturn(dbProjection);
 
-        var result = orgService.getAuthUserPerfil(id);
+        var result = orgService.getAuthUserPerfil(, id, );
         assertInstanceOf(OrgPrivateProfileResponse.class, result);
 
         var jsonString = jsonParser.valueAsString(result);
@@ -85,7 +85,7 @@ class OrgServiceUnitTest {
         when(organizationUseCases.getPublicProfile(id, id))
                 .thenReturn(dbProjection);
 
-        var result = orgService.getUserPublicProfile(id);
+        var result = orgService.getUserPublicProfile(userPrincipal, id);
         assertInstanceOf(OrgPublicProfileBasicInfoView.class, result);
 
         var jsonString = jsonParser.valueAsString(result);
@@ -105,7 +105,7 @@ class OrgServiceUnitTest {
         when(organizationUseCases.updateProfile(id, id, entryData))
                 .thenReturn(dbProjection);
 
-        var result = orgService.updateAuthUserPerfil(id, entryData);
+        var result = orgService.updateAuthUserPerfil(, id, entryData);
         assertInstanceOf(OrgPrivateProfileResponse.class, result);
 
         var jsonString = jsonParser.valueAsString(result);
@@ -118,7 +118,7 @@ class OrgServiceUnitTest {
     @Test
     void whenDeleteUserReturnsNull() {
         doNothing().when(organizationUseCases).deleteProfile(id, id);
-        assertDoesNotThrow(() -> orgService.deleteAuthUserPerfil(id));
+        assertDoesNotThrow(() -> orgService.deleteAuthUserPerfil(userPrincipal, id));
     }
 
 
@@ -131,7 +131,7 @@ class OrgServiceUnitTest {
                         generateProjection(), generateProjection(), generateProjection()
                 ))));
 
-        var result = orgService.getAllSchools();
+        var result = orgService.getAllSchools(userPrincipal);
         assertInstanceOf(PageImpl.class, result);
 
         result.getContent().forEach(org -> {

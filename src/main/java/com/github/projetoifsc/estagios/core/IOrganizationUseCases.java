@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core;
 
-import com.github.projetoifsc.estagios.app.interfaces.INewUser;
+import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
 import org.springframework.data.domain.Page;
 
 public interface IOrganizationUseCases {

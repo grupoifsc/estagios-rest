@@ -5,18 +5,20 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags;
-
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.tags.Tag;
 
-import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.AUTHORIZATION;
-
 @Configuration
 public class OpenApiConfig {
+
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String BASE_URL = "/api/v1";
+    public static final String ORGS = "Organizações";
+    public static final String VAGAS = "Vagas";
+    public static final String AREAS = "Áreas";
 
 //	private final String SECURITY_SCHEME_NAME = "bearerAuth";
 
@@ -48,11 +50,11 @@ public class OpenApiConfig {
 					.summary("Um serviço web para conectar empresas e instituições de ensino em torno de um objetivo em comum: divulgar vagas de estágio à comunidade estudantil")
 				)
 				.addTagsItem( new Tag()
-						.name(SwaggerTags.ORGS)
+						.name(ORGS)
 						.description("")
 				)
 				.addTagsItem( new Tag()
-						.name(SwaggerTags.VAGAS)
+						.name(VAGAS)
 						.description("")
 				)
 

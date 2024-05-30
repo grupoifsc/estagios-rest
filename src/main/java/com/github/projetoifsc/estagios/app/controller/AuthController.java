@@ -1,25 +1,26 @@
 package com.github.projetoifsc.estagios.app.controller;
 
+import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
 import com.github.projetoifsc.estagios.app.model.request.RefreshTokenRequest;
-import com.github.projetoifsc.estagios.app.security.UserPrincipal;
-import com.github.projetoifsc.estagios.app.service.AuthenticationService;
-import com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
+import com.github.projetoifsc.estagios.app.security.auth.AuthenticationService;
 import com.github.projetoifsc.estagios.app.model.request.LoginRequest;
 import com.github.projetoifsc.estagios.app.model.response.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.AUTHORIZATION;
+import static com.github.projetoifsc.estagios.app.configs.OpenApiConfig.AUTHORIZATION;
 
 
 
 @RestController
 @RequestMapping(
-        value = SwaggerTags.BASE_URL + "/auth"
+        value = OpenApiConfig.BASE_URL + "/auth"
         //,
 //        produces = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML,
 //                MediaTypes.APPLICATION_HAL, MediaTypes.APPLICATION_HAL_FORMS }
@@ -50,8 +51,9 @@ public class AuthController {
 
     @GetMapping("/test")
     @Operation(security = {@SecurityRequirement(name = AUTHORIZATION)})
-    public String testAuth(@AuthenticationPrincipal UserPrincipal principal) {
-        return "User Id: " + principal.getId();
+    public ResponseEntity<String> testAuth(@AuthenticationPrincipal UserPrincipal principal) {
+        return ResponseEntity.ok(
+                "User Id: " + principal.getId());
     }
 
     @GetMapping("/admin")

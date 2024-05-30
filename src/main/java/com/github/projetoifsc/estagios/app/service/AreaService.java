@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.app.service;
 
 import com.github.projetoifsc.estagios.app.model.response.AreaView;
-import com.github.projetoifsc.estagios.app.service.handler.RequestHandlerChain;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IAreaUseCases;
 import com.github.projetoifsc.estagios.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @Service
 public class AreaService {
 
-    IAreaUseCases areaUseCases;
-    Mapper mapper;
+    private final IAreaUseCases areaUseCases;
+    private final Mapper mapper;
+
 
     @Autowired
     public AreaService(IAreaUseCases areaUseCases, Mapper mapper) {
@@ -29,9 +30,8 @@ public class AreaService {
         this.mapper = mapper;
     }
 
-    RequestHandlerChain requestHandlerChain = new RequestHandlerChain();
 
-    public List<AreaView> getAll() {
+    public List<AreaView> getAll(UserPrincipal userPrincipal) {
         var areas = areaUseCases.getAll();
         return areas.stream()
                 .map(area -> mapper.map(area, AreaView.class))
@@ -39,10 +39,9 @@ public class AreaService {
     }
 
 
-    public AreaView getById(String id) {
+    public AreaView getById(UserPrincipal userPrincipal, String id) {
         var area= areaUseCases.getById(id);
-        var mapped = mapper.map(area, AreaView.class);
-        return mapped;
+        return mapper.map(area, AreaView.class);
     }
 
 

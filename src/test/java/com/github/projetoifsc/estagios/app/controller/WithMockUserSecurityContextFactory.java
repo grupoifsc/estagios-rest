@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.controller;
-import com.github.projetoifsc.estagios.app.security.UserPrincipal;
-import com.github.projetoifsc.estagios.app.security.UserPrincipalAuthenticationToken;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipalAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;

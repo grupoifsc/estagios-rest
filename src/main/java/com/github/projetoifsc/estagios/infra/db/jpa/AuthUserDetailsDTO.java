@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.projetoifsc.estagios.app.interfaces.CustomUserDetails;
+import com.github.projetoifsc.estagios.app.security.auth.CustomUserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;

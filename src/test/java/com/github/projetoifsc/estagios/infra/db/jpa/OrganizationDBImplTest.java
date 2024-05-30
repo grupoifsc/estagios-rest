@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.interfaces.JobPrivateSummaryProjection;
-import com.github.projetoifsc.estagios.app.interfaces.JobPublicSummaryProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateSummaryProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicSummaryProjection;
 import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
 import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.core.IOrganization;

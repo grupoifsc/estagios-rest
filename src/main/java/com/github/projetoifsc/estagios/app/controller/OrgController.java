@@ -1,11 +1,11 @@
 package com.github.projetoifsc.estagios.app.controller;
 
+import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
 import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
-import com.github.projetoifsc.estagios.app.security.UserPrincipal;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.service.OrgService;
 import com.github.projetoifsc.estagios.app.utils.HttpErrorMessages;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
-import com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,12 +20,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import static com.github.projetoifsc.estagios.app.utils.swagger.SwaggerTags.AUTHORIZATION;
+import static com.github.projetoifsc.estagios.app.configs.OpenApiConfig.AUTHORIZATION;
 
 
 @RestController
 @RequestMapping(
-		value = SwaggerTags.BASE_URL + "/organizacoes",
+		value = OpenApiConfig.BASE_URL + "/organizacoes",
 		produces = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML,
 				MediaTypes.APPLICATION_HAL, MediaTypes.APPLICATION_HAL_FORMS } )
 
@@ -41,7 +41,7 @@ public class OrgController {
 
 
 	@PostMapping(value = "", consumes = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML } )
-	@Operation(summary="Cadastrar", description="Cadastro de Nova Organização", tags={SwaggerTags.ORGS}, operationId="userPost")
+	@Operation(summary="Cadastrar", description="Cadastro de Nova Organização", tags={OpenApiConfig.ORGS}, operationId="userPost")
 //	@ApiResponses({
 //			@ApiResponse(responseCode = "201"),
 //			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -59,7 +59,7 @@ public class OrgController {
 
 
 	@GetMapping("/{id}")
-	@Operation(summary="Ver Perfil", description="Ver Perfil Privado da organização", tags={SwaggerTags.ORGS}, operationId="getPerfil", security = {@SecurityRequirement(name = AUTHORIZATION)})
+	@Operation(summary="Ver Perfil", description="Ver Perfil Privado da organização", tags={OpenApiConfig.ORGS}, operationId="getPerfil", security = {@SecurityRequirement(name = AUTHORIZATION)})
 //	@ApiResponses({
 //	    @ApiResponse(responseCode = "200"),
 //	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -72,14 +72,14 @@ public class OrgController {
 			@PathVariable String id
 	) {
 		return new ResponseEntity<>(
-				service.getAuthUserPerfil(id),
+				service.getAuthUserPerfil(userPrincipal, id),
 				HttpStatus.OK
 		);
 	}
 
 	
 	@PutMapping(value = "/{id}", consumes = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML } )
-	@Operation(summary="Atualizar perfil", description="Atualizar perfil da organização", tags={SwaggerTags.ORGS}, operationId="putPerfil", security = {@SecurityRequirement(name = securityName)})
+	@Operation(summary="Atualizar perfil", description="Atualizar perfil da organização", tags={OpenApiConfig.ORGS}, operationId="putPerfil", security = {@SecurityRequirement(name = securityName)})
 //	@ApiResponses({
 //	    @ApiResponse(responseCode = "200"),
 //	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -93,7 +93,7 @@ public class OrgController {
 			@RequestBody NewUserRequest updatedUser
 	)  {
 		return new ResponseEntity<>(
-				service.updateAuthUserPerfil(id, updatedUser),
+				service.updateAuthUserPerfil(userPrincipal, id, updatedUser),
 				HttpStatus.OK
 		);
 	}
@@ -101,7 +101,7 @@ public class OrgController {
 	
 	
 	@DeleteMapping("/{id}")
-	@Operation(summary="Deletar Perfil", description="Deletar perfil da organização e todos os seus dados (vagas de estágio, áreas, etc)", tags={SwaggerTags.ORGS}, operationId="deletePerfil", security = {@SecurityRequirement(name = securityName)})
+	@Operation(summary="Deletar Perfil", description="Deletar perfil da organização e todos os seus dados (vagas de estágio, áreas, etc)", tags={OpenApiConfig.ORGS}, operationId="deletePerfil", security = {@SecurityRequirement(name = securityName)})
 //	@ApiResponses({
 //	    @ApiResponse(responseCode = "204"),
 //	    @ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -112,7 +112,7 @@ public class OrgController {
 	public ResponseEntity<IOrganization> deleteAuthUserPerfil (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable String id) {
-		service.deleteAuthUserPerfil(id);
+		service.deleteAuthUserPerfil(userPrincipal, id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
@@ -131,7 +131,7 @@ public class OrgController {
 
 
 	@GetMapping("/educacionais")
-	@Operation(summary="Ver Instituições de Ensino", description="Lista de todas as instituições de ensino cadastradas no sistema", tags={SwaggerTags.ORGS}, operationId="getSchools", security = {@SecurityRequirement(name = securityName)})
+	@Operation(summary="Ver Instituições de Ensino", description="Lista de todas as instituições de ensino cadastradas no sistema", tags={OpenApiConfig.ORGS}, operationId="getSchools", security = {@SecurityRequirement(name = securityName)})
 //	@ApiResponses({
 //			@ApiResponse(responseCode = "200"),
 //			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -142,14 +142,14 @@ public class OrgController {
 			@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 		return new ResponseEntity<>(
-				service.getAllSchools(),
+				service.getAllSchools(userPrincipal),
 				HttpStatus.OK
 		);
 	}
 
 
 	@GetMapping("/{id}/public")
-	@Operation(summary="Perfil público da organização", description="Ver Perfil Público da organização", tags={SwaggerTags.ORGS}, operationId="getUserPublicProfile", security = {@SecurityRequirement(name = securityName)})
+	@Operation(summary="Perfil público da organização", description="Ver Perfil Público da organização", tags={OpenApiConfig.ORGS}, operationId="getUserPublicProfile", security = {@SecurityRequirement(name = securityName)})
 	@ApiResponses({
 			@ApiResponse(responseCode = "200"),
 			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.BAD_REQUEST_MSG) })} ),
@@ -162,7 +162,7 @@ public class OrgController {
 			@PathVariable String id
 	) {
 		return new ResponseEntity<>(
-				service.getUserPublicProfile(id),
+				service.getUserPublicProfile(userPrincipal, id),
 				HttpStatus.OK
 		);
 	}

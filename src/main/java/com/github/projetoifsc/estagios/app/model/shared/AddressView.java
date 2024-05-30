@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.app.model.shared;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.projetoifsc.estagios.app.interfaces.AddressProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.AddressProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.validation.annotation.Validated;

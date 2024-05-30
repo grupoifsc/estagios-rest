@@ -1,6 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.app.interfaces.*;
+import com.github.projetoifsc.estagios.app.model.interfaces.*;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.core.IJobDB;
 import com.github.projetoifsc.estagios.core.IJobEntryData;

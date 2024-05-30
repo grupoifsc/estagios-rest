@@ -1,6 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.app.interfaces.*;
+import com.github.projetoifsc.estagios.app.model.interfaces.*;
 import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.utils.JsonParser;
 import com.github.projetoifsc.estagios.utils.Mapper;
@@ -17,7 +18,7 @@ import java.util.*;
 // TODO: única forma que achei de fazer funcionar sem tornar muitas classes públicas foi coloca
 // a anotação do Spring aqui... e assim perde toda a modularidade... aff... Fica aí o problema pra resolver
 @Component
-class OrganizationDBImpl implements IOrganizationDB {
+public class OrganizationDBImpl implements IOrganizationDB {
 
     private final OrganizationRepository organizationRepository;
     private final JobRepository jobRepository;
@@ -198,7 +199,7 @@ class OrganizationDBImpl implements IOrganizationDB {
     // TODO: colocar em outro DBImpl (DAO)
     @Override
     public List<IJob> getExclusiveReceivedJobsSummaryForOrg(String organizationId) {
-        return jobRepository.findAllByExclusiveReceiversId(Long.parseLong(organizationId),JobPublicSummaryProjection.class)
+        return jobRepository.findAllByExclusiveReceiversId(Long.parseLong(organizationId), JobPublicSummaryProjection.class)
                 .stream().map(r -> (IJob) r).toList();
     }
 
