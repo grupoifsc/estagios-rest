@@ -1,6 +1,5 @@
 package com.github.projetoifsc.estagios.app.security.auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,17 +8,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomUserDetailService implements UserDetailsService {
 
-    private final AuthenticationService authenticationService;
+    private final AuthUserService authUserService;
 
-
-    public CustomUserDetailService(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
+    public CustomUserDetailService(AuthUserService authUserService) {
+        this.authUserService = authUserService;
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = authenticationService.findByUsername(username).orElseThrow();
+        var user = authUserService.findByUsername(username).orElseThrow();
         return new UserPrincipal(
                 user.getId(),
                 user.getUsername(),

@@ -2,13 +2,13 @@ package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 
 class OrganizationWriteOperations {
 
-    IOrganizationDB organizationRepository;
+    IOrganizationDAO organizationRepository;
 
-    public OrganizationWriteOperations(IOrganizationDB organizationRepository) {
+    public OrganizationWriteOperations(IOrganizationDAO organizationRepository) {
         this.organizationRepository = organizationRepository;
     }
 

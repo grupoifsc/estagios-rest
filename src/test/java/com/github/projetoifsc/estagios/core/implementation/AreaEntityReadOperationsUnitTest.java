@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IAreaDB;
+import com.github.projetoifsc.estagios.core.IAreaDAO;
 import com.github.projetoifsc.estagios.core.dto.AreaImpl;
 import com.github.projetoifsc.estagios.core.IArea;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 
 public class AreaEntityReadOperationsUnitTest {
 
-    IAreaDB areaRepository = mock();
+    IAreaDAO areaRepository = mock();
     AreaReadOperations service = new AreaReadOperations(areaRepository);
 
     @Test

@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IJobDB;
+import com.github.projetoifsc.estagios.core.IJobDAO;
 import org.springframework.data.domain.Page;
 
 import static com.github.projetoifsc.estagios.core.implementation.OrganizationValidation.isSelf;
@@ -14,10 +14,10 @@ import java.util.Set;
 
 class JobReadOperations {
 
-    private final IJobDB jobDB;
-    private final IOrganizationDB organizationDB;
+    private final IJobDAO jobDB;
+    private final IOrganizationDAO organizationDB;
 
-    public JobReadOperations(IJobDB jobDB, IOrganizationDB organizationDB) {
+    public JobReadOperations(IJobDAO jobDB, IOrganizationDAO organizationDB) {
         this.jobDB = jobDB;
         this.organizationDB = organizationDB;
     }

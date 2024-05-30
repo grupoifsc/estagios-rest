@@ -10,4 +10,5 @@ public interface IJobEntryData extends IJob {
     String getContactId();
 //    void setContactId(String contactId);
     String getAddressId();
+
 }

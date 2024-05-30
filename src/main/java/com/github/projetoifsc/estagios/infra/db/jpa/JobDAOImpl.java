@@ -2,11 +2,11 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.app.model.interfaces.*;
 import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IJobDB;
+import com.github.projetoifsc.estagios.core.IJobDAO;
 import com.github.projetoifsc.estagios.core.IJobEntryData;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.utils.JsonParser;
-import com.github.projetoifsc.estagios.utils.Mapper;
+import com.github.projetoifsc.estagios.app.utils.JsonParser;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @Component
-class JobDBImpl implements IJobDB {
+class JobDAOImpl implements IJobDAO {
 
     OrganizationRepository orgRepository;
     JobRepository jobRepository;
@@ -31,7 +31,7 @@ class JobDBImpl implements IJobDB {
     JsonParser jsonParser;
 
     @Autowired
-    public JobDBImpl(OrganizationRepository orgRepository, JobRepository jobRepository, AreaRepository areaRepository, ContactRepository contactRepository, AddressRepository addressRepository, ApprovedJobRepository approvedJobRepository, RejectedJobRepository rejectedJobRepository, Mapper mapper, JsonParser jsonParser) {
+    public JobDAOImpl(OrganizationRepository orgRepository, JobRepository jobRepository, AreaRepository areaRepository, ContactRepository contactRepository, AddressRepository addressRepository, ApprovedJobRepository approvedJobRepository, RejectedJobRepository rejectedJobRepository, Mapper mapper, JsonParser jsonParser) {
         this.orgRepository = orgRepository;
         this.jobRepository = jobRepository;
         this.areaRepository = areaRepository;

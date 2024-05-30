@@ -1,9 +1,8 @@
-package com.github.projetoifsc.estagios.app.configs;
+package com.github.projetoifsc.estagios.app.security;
 
 import com.github.projetoifsc.estagios.app.security.auth.CustomUserDetailService;
+import com.github.projetoifsc.estagios.app.security.auth.DelegatedAuthenticationEntryPoint;
 import com.github.projetoifsc.estagios.app.security.auth.JwtAuthenticationFilter;
-import com.github.projetoifsc.estagios.app.security.auth.UnauthorizedHandler;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,14 +26,14 @@ public class WebSecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomUserDetailService customUserDetailService;
     private final PasswordEncoder passwordEncoder;
-    private final UnauthorizedHandler unauthorizedHandler;
+    private final DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint;
 
 
-    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, UnauthorizedHandler unauthorizedHandler) {
+    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.customUserDetailService = customUserDetailService;
         this.passwordEncoder = passwordEncoder;
-        this.unauthorizedHandler = unauthorizedHandler;
+        this.delegatedAuthenticationEntryPoint = delegatedAuthenticationEntryPoint;
     }
 
 
@@ -49,12 +48,13 @@ public class WebSecurityConfig {
              .sessionManagement(sessionManagementConfigurer
                              -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
              .formLogin(AbstractHttpConfigurer::disable)
-             .exceptionHandling(h -> h.authenticationEntryPoint(unauthorizedHandler))
+             .exceptionHandling(h -> h.authenticationEntryPoint(delegatedAuthenticationEntryPoint))
              .authorizeHttpRequests(registry -> registry
                 .requestMatchers(GET, "/swagger-ui/**").permitAll()
                 .requestMatchers(GET, "/v3/api-docs/**").permitAll()
-                .requestMatchers(POST, "/api/v1/auth/login").permitAll()
+                .requestMatchers("/teste/**").permitAll()
                 .requestMatchers(POST, "/api/v1/organizacoes").permitAll()
+                .requestMatchers(POST, "/api/v1/auth/login").permitAll()
                 .requestMatchers(POST, "/api/v1/auth/token").permitAll()
                 .requestMatchers(GET, "/api/v1/auth/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

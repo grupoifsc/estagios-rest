@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 public class OrganizationEntityReadOperationsUnitTest {
 
-    IOrganizationDB organizationRepository = mock();
+    IOrganizationDAO organizationRepository = mock();
     OrganizationReadOperations service = new OrganizationReadOperations(organizationRepository);
 
     IOrganization organizationA;

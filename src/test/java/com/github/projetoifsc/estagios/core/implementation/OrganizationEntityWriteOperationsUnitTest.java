@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
-import com.github.projetoifsc.estagios.utils.Mapper;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ public class OrganizationEntityWriteOperationsUnitTest {
 
     Mapper mapper = new Mapper();
 
-    IOrganizationDB organizationRepository = mock();
+    IOrganizationDAO organizationRepository = mock();
 
     OrganizationWriteOperations service = new OrganizationWriteOperations(organizationRepository);
 

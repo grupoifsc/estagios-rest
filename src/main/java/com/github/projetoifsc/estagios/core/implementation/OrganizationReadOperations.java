@@ -1,14 +1,14 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import org.springframework.data.domain.Page;
 
 class OrganizationReadOperations {
 
-    IOrganizationDB organizationRepository;
+    IOrganizationDAO organizationRepository;
 
-    public OrganizationReadOperations(IOrganizationDB organizationRepository) {
+    public OrganizationReadOperations(IOrganizationDAO organizationRepository) {
         this.organizationRepository = organizationRepository;
     }
 

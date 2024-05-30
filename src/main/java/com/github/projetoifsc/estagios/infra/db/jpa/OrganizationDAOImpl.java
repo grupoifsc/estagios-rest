@@ -2,8 +2,8 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.app.model.interfaces.*;
 import com.github.projetoifsc.estagios.core.*;
-import com.github.projetoifsc.estagios.utils.JsonParser;
-import com.github.projetoifsc.estagios.utils.Mapper;
+import com.github.projetoifsc.estagios.app.utils.JsonParser;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ import java.util.*;
 // TODO: única forma que achei de fazer funcionar sem tornar muitas classes públicas foi coloca
 // a anotação do Spring aqui... e assim perde toda a modularidade... aff... Fica aí o problema pra resolver
 @Component
-public class OrganizationDBImpl implements IOrganizationDB {
+public class OrganizationDAOImpl implements IOrganizationDAO {
 
     private final OrganizationRepository organizationRepository;
     private final JobRepository jobRepository;
@@ -28,7 +28,7 @@ public class OrganizationDBImpl implements IOrganizationDB {
     private final JsonParser jsonParser;
 
     @Autowired
-    public OrganizationDBImpl(OrganizationRepository organizationRepository, JobRepository jobRepository, AddressRepository addressRepository, ContactRepository contactRepository, UserCredentialsRepository userCredentialsRepository, Mapper mapper, JsonParser jsonParser) {
+    public OrganizationDAOImpl(OrganizationRepository organizationRepository, JobRepository jobRepository, AddressRepository addressRepository, ContactRepository contactRepository, UserCredentialsRepository userCredentialsRepository, Mapper mapper, JsonParser jsonParser) {
         this.organizationRepository = organizationRepository;
         this.jobRepository = jobRepository;
         this.addressRepository = addressRepository;

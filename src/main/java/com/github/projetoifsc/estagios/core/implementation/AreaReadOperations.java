@@ -1,15 +1,15 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IAreaDB;
+import com.github.projetoifsc.estagios.core.IAreaDAO;
 import com.github.projetoifsc.estagios.core.IArea;
 
 import java.util.List;
 
 class AreaReadOperations {
 
-    IAreaDB areaRepository;
+    IAreaDAO areaRepository;
 
-    public AreaReadOperations(IAreaDB areaRepository) {
+    public AreaReadOperations(IAreaDAO areaRepository) {
         this.areaRepository = areaRepository;
     }
 

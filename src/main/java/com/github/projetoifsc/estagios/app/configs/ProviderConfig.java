@@ -4,7 +4,6 @@ import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.core.implementation.AreaUseCases;
 import com.github.projetoifsc.estagios.core.implementation.JobUseCases;
 import com.github.projetoifsc.estagios.core.implementation.OrganizationUseCases;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,20 +12,20 @@ public class ProviderConfig {
 
 
     @Bean
-    public IOrganizationUseCases defaultOrganizationUseCases(IOrganizationDB iOrganizationDB) {
-        return new OrganizationUseCases(iOrganizationDB);
+    public IOrganizationUseCases defaultOrganizationUseCases(IOrganizationDAO iOrganizationDAO) {
+        return new OrganizationUseCases(iOrganizationDAO);
     }
 
 
     @Bean
-    public IAreaUseCases defaultAreaUseCases(IAreaDB iAreaDB) {
-        return new AreaUseCases(iAreaDB);
+    public IAreaUseCases defaultAreaUseCases(IAreaDAO iAreaDAO) {
+        return new AreaUseCases(iAreaDAO);
     }
 
 
     @Bean
-    public IJobUseCases defaultJobUseCases(IJobDB iJobDB, IOrganizationDB iOrganizationDB) {
-        return new JobUseCases(iJobDB, iOrganizationDB);
+    public IJobUseCases defaultJobUseCases(IJobDAO iJobDAO, IOrganizationDAO iOrganizationDAO) {
+        return new JobUseCases(iJobDAO, iOrganizationDAO);
     }
 
 

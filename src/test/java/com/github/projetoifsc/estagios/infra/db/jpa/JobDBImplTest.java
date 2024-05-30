@@ -5,8 +5,8 @@ import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateDetailsPro
 import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicDetailsProjection;
 import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
 import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.utils.JsonParser;
-import com.github.projetoifsc.estagios.utils.Mapper;
+import com.github.projetoifsc.estagios.app.utils.JsonParser;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +28,16 @@ class JobDBImplTest {
             new JobMocker(new Faker(new Locale("pt-Br")));
 
     @Autowired
-    JobDBImpl jobDBImpl;
+    JobDAOImpl jobDBImpl;
 
     @Autowired
     JobRepository jobRepository;
 
     @Autowired
-    OrganizationDBImpl organizationDB;
+    OrganizationDAOImpl organizationDB;
 
     @Autowired
-    AreaDBImpl areaDB;
+    AreaDAOImpl areaDB;
 
     @Autowired
     Mapper mapper;

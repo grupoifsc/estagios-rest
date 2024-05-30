@@ -28,6 +28,8 @@ public class JwtDecoder {
 
     public DecodedJWT decodeRefreshToken(String token) {
         return JWT.require(Algorithm.HMAC256(jwtProperties.getRefreshTokenSecretKey()))
+                .withClaimPresence("sub")
+                .withClaimPresence("a")
                 .build()
                 .verify(token);
     }

@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.app.model.response;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.utils.Mapper;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;

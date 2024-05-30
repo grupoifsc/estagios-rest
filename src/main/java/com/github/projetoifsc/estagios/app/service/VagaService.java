@@ -6,8 +6,7 @@ import com.github.projetoifsc.estagios.app.model.response.VagaPrivateSummaryView
 import com.github.projetoifsc.estagios.app.model.response.VagaPublicDetailsView;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IJobUseCases;
-import com.github.projetoifsc.estagios.utils.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;

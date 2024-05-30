@@ -8,7 +8,7 @@ public class AreaUseCases implements IAreaUseCases {
 
     AreaReadOperations readOperations;
 
-    public AreaUseCases(IAreaDB areaRepository) {
+    public AreaUseCases(IAreaDAO areaRepository) {
         readOperations = new AreaReadOperations(areaRepository);
     }
 

@@ -10,13 +10,25 @@ spring:
     generate-ddl: true
     show-sql: true
 
-
+# CUSTOM SECURITY PROPERTIES
 security:
   jwt:
     access-token-expiration-minutes: 60
     refresh-token-expiration-minutes: 1440
     access-token-secret-key: verysecretkeyohmygodwhyisitsosecretdonttellanybody
     refresh-token-secret-key: anotherverysecretaccesskeydonteverletitleak
+
+
+#DEFAULT SERVER.ERROR CONFIGS
+server:
+  error:
+    include-binding-errors: never
+    include-exception: false
+    include-message: never
+    include-stacktrace: never
+    whitelabel:
+      enabled: true
+    path: /error
 
 
 #spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect

@@ -1,4 +1,4 @@
-package com.github.projetoifsc.estagios.utils;
+package com.github.projetoifsc.estagios.app.utils;
 
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;

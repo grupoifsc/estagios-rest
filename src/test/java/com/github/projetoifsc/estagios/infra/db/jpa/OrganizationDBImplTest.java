@@ -6,8 +6,8 @@ import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicSummaryProj
 import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
 import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.utils.JsonParser;
-import com.github.projetoifsc.estagios.utils.Mapper;
+import com.github.projetoifsc.estagios.app.utils.JsonParser;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ class OrganizationDBImplTest {
     OrganizationRepository repository;
 
     @Autowired
-    OrganizationDBImpl organizationDB;
+    OrganizationDAOImpl organizationDB;
 
     @Autowired
     Mapper mapper;

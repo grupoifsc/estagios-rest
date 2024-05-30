@@ -6,14 +6,15 @@ import com.github.projetoifsc.estagios.core.*;
 class JobWriteOperations {
 
     JobReadOperations jobReadOperations;
-    IJobDB traineeshipRepository;
-    IOrganizationDB organizationRepository;
+    IJobDAO traineeshipRepository;
+    IOrganizationDAO organizationRepository;
 
-    public JobWriteOperations(JobReadOperations jobReadOperations, IJobDB traineeshipRepository, IOrganizationDB organizationRepository) {
+    public JobWriteOperations(JobReadOperations jobReadOperations, IJobDAO traineeshipRepository, IOrganizationDAO organizationRepository) {
         this.jobReadOperations = jobReadOperations;
         this.traineeshipRepository = traineeshipRepository;
         this.organizationRepository = organizationRepository;
     }
+
 
     public IJob create(String organizationId, IJobEntryData traineeship) {
         var organization = organizationRepository.findById(organizationId);

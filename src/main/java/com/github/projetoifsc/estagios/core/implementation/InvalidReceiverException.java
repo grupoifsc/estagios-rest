@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-class InvalidReceiverException extends IllegalArgumentException {
+public class InvalidReceiverException extends IllegalArgumentException {
 
     public InvalidReceiverException(String message) {
         super(message);

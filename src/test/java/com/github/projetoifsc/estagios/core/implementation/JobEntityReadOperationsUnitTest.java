@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IJobDB;
+import com.github.projetoifsc.estagios.core.IJobDAO;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +18,8 @@ import static org.mockito.Mockito.*;
 
 public class JobEntityReadOperationsUnitTest {
 
-    IJobDB traineeshipRepository = mock();
-    IOrganizationDB organizationRepository = mock();
+    IJobDAO traineeshipRepository = mock();
+    IOrganizationDAO organizationRepository = mock();
 
     JobReadOperations service = new JobReadOperations(traineeshipRepository, organizationRepository);
 

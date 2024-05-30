@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.app.views;
 
 import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
-import com.github.projetoifsc.estagios.utils.JsonParser;
+import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import org.junit.jupiter.api.Test;
 
 

@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.core;
 
 import java.util.List;
 
-public interface IJobDB {
+public interface IJobDAO {
 
     IJob getBasicInfoById(String id);
     String saveAndGetId(IJobEntryData newJob);

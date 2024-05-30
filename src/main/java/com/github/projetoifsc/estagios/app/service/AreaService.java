@@ -3,8 +3,7 @@ package com.github.projetoifsc.estagios.app.service;
 import com.github.projetoifsc.estagios.app.model.response.AreaView;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IAreaUseCases;
-import com.github.projetoifsc.estagios.utils.Mapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

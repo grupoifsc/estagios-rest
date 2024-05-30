@@ -11,7 +11,7 @@ public class JobUseCases implements IJobUseCases {
     private final JobReadOperations readOperations;
     private final JobWriteOperations writeOperations;
 
-    public JobUseCases(IJobDB jobRepository, IOrganizationDB organizationRepository) {
+    public JobUseCases(IJobDAO jobRepository, IOrganizationDAO organizationRepository) {
         readOperations = new JobReadOperations(jobRepository, organizationRepository);
         writeOperations = new JobWriteOperations(readOperations, jobRepository, organizationRepository);
     }

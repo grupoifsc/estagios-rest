@@ -14,8 +14,8 @@ import static org.mockito.Mockito.when;
 
 public class JobEntityWriteOperationsUnitTest {
 
-    IJobDB jobRepository = mock();
-    IOrganizationDB organizationRepository = mock();
+    IJobDAO jobRepository = mock();
+    IOrganizationDAO organizationRepository = mock();
     JobReadOperations jobReadOperations;
 
     JobWriteOperations service = new JobWriteOperations(jobReadOperations, jobRepository, organizationRepository);

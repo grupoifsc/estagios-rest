@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.utils.JsonParser;
+import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;

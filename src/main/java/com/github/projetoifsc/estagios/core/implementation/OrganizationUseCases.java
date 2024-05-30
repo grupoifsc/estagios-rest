@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDB;
+import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import org.springframework.data.domain.Page;
 
@@ -12,7 +12,7 @@ public class OrganizationUseCases implements IOrganizationUseCases {
     OrganizationWriteOperations writeUC;
     OrganizationReadOperations readUC;
 
-    public OrganizationUseCases(IOrganizationDB organizationDB) {
+    public OrganizationUseCases(IOrganizationDAO organizationDB) {
         this.readUC = new OrganizationReadOperations(organizationDB);
         this.writeUC = new OrganizationWriteOperations(organizationDB);
     }

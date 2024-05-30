@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.core.implementation;
 /**
  * When user has no authorized access to a resource
  */
-class UnauthorizedAccessException extends RuntimeException {
+public class UnauthorizedAccessException extends RuntimeException {
 
     public UnauthorizedAccessException(String message) {
         super(message);

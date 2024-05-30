@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.core.IArea;
-import com.github.projetoifsc.estagios.core.IAreaDB;
+import com.github.projetoifsc.estagios.core.IAreaDAO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-class AreaDBImpl implements IAreaDB {
+class AreaDAOImpl implements IAreaDAO {
 
     AreaRepository areaRepository;
 
     @Autowired
-    public AreaDBImpl(AreaRepository areaRepository) {
+    public AreaDAOImpl(AreaRepository areaRepository) {
         this.areaRepository = areaRepository;
     }
 
