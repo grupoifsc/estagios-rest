@@ -15,7 +15,7 @@ class JwtIssuer {
 
     private final JwtProperties jwtProperties;
 
-    @Autowired
+
     public JwtIssuer(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
     }
@@ -39,5 +39,6 @@ class JwtIssuer {
                 .withExpiresAt(Instant.now().plus(Duration.of(jwtProperties.getRefreshTokenExpirationMinutes(), ChronoUnit.MINUTES)))
                 .sign(Algorithm.HMAC256(jwtProperties.getRefreshTokenSecretKey()));
     }
+
 
 }

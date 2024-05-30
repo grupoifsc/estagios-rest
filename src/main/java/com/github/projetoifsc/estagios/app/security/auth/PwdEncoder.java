@@ -8,9 +8,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 class PwdEncoder {
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }

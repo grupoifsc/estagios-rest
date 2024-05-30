@@ -10,11 +10,13 @@ spring:
     generate-ddl: true
     show-sql: true
 
+
 security:
   jwt:
     access-token-expiration-minutes: 60
     refresh-token-expiration-minutes: 1440
     access-token-secret-key: verysecretkeyohmygodwhyisitsosecretdonttellanybody
     refresh-token-secret-key: anotherverysecretaccesskeydonteverletitleak
+
 
 #spring.jpa.database-platform=org.hibernate.dialect.MySQL5InnoDBDialect

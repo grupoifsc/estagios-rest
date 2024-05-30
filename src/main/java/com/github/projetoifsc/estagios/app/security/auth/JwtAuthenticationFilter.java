@@ -15,16 +15,17 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Component
-class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtDecoder jwtDecoder;
     private final JwtToPrincipalConverter jwtToPrincipalConverter;
 
-    @Autowired
+
     public JwtAuthenticationFilter(JwtDecoder jwtDecoder, JwtToPrincipalConverter jwtToPrincipalConverter) {
         this.jwtDecoder = jwtDecoder;
         this.jwtToPrincipalConverter = jwtToPrincipalConverter;
     }
+
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -39,6 +40,7 @@ class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+
     private Optional<String> extractTokenFromRequest(HttpServletRequest request) {
         var token = request.getHeader("Authorization");
         if(StringUtils.hasText(token) && token.startsWith("Bearer ")) {
@@ -46,5 +48,6 @@ class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return Optional.empty();
     }
+
 
 }

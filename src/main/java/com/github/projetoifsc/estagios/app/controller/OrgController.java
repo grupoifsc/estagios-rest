@@ -31,10 +31,11 @@ import static com.github.projetoifsc.estagios.app.configs.OpenApiConfig.AUTHORIZ
 
 public class OrgController {
 
-	OrgService service;
+
+	private final OrgService service;
 	private final String securityName = AUTHORIZATION;
 
-	@Autowired
+
 	public OrgController(OrgService service) {
 		this.service = service;
 	}

@@ -48,4 +48,5 @@ public record UserPrincipal (String id, String username, String password, Collec
         return CustomUserDetails.super.isEnabled();
     }
 
+
 }

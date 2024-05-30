@@ -37,12 +37,13 @@ import static com.github.projetoifsc.estagios.app.utils.validation.PaginationVal
 						MediaTypes.APPLICATION_HAL, MediaTypes.APPLICATION_HAL_FORMS })
 public class VagaController {
 
-	VagaService service;
+	private final VagaService service;
 
-	@Autowired
+
 	public VagaController(VagaService service) {
 		this.service = service;
 	}
+
 
 	@PostMapping(value = "/vagas", consumes = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML })
 	@Operation(summary="Criar Vaga", description="Criar Nova Vaga de Estágio", tags= {OpenApiConfig.VAGAS}, operationId="postVaga")
@@ -102,6 +103,7 @@ public class VagaController {
 		service.delete(userPrincipal, vagaId);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
+
 
 	@GetMapping("/vagas/{id}/public")
 	@Operation(summary="Ver Vaga", description="Ver o perfil público de uma vaga. Autorizado apenas ao criador ou destinatários da vaga.", tags= {OpenApiConfig.VAGAS}, operationId="getVaga")

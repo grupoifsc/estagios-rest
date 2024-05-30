@@ -29,12 +29,12 @@ import java.util.List;
 
 public class AreaController {
 
-	AreaService service;
+	private final AreaService service;
 
-	@Autowired
 	public AreaController(AreaService service) {
 		this.service = service;
 	}
+
 
 	@GetMapping("/areas")
 	@Operation(summary="Ver Todas", description="Ver todas as áreas", tags={OpenApiConfig.AREAS}, operationId="getAllAreas")
@@ -59,5 +59,6 @@ public class AreaController {
 				HttpStatus.OK
 		);
 	}
-	
+
+
 }

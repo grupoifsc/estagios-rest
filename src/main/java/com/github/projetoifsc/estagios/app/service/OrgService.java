@@ -20,8 +20,6 @@ public class OrgService {
     private final Mapper mapper;
     private final PasswordEncoder passwordEncoder;
 
-
-    @Autowired
     OrgService(IOrganizationUseCases organizationUseCases, Mapper mapper, PasswordEncoder passwordEncoder) {
         this.organizationUseCases = organizationUseCases;
         this.mapper = mapper;

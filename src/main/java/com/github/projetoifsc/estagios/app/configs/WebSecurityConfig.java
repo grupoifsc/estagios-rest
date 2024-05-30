@@ -30,7 +30,6 @@ public class WebSecurityConfig {
     private final UnauthorizedHandler unauthorizedHandler;
 
 
-    @Autowired
     public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, UnauthorizedHandler unauthorizedHandler) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.customUserDetailService = customUserDetailService;

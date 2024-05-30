@@ -29,7 +29,6 @@ public class AuthenticationService {
     private final String USER_EMAIL = "user@teste.com";
 
 
-    @Autowired
     public AuthenticationService(AuthenticationManager authenticationManager, JwtIssuer jwtIssuer, JwtDecoder jwtDecoder, JwtToPrincipalConverter jwtToPrincipalConverter, PasswordEncoder passwordEncoder, IAuthenticationDAO authenticationDB) {
         this.authenticationManager = authenticationManager;
         this.jwtIssuer = jwtIssuer;

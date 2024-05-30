@@ -11,22 +11,23 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ProviderConfig {
 
-//    @Autowired
+
     @Bean
     public IOrganizationUseCases defaultOrganizationUseCases(IOrganizationDB iOrganizationDB) {
         return new OrganizationUseCases(iOrganizationDB);
     }
 
-    @Autowired
+
     @Bean
     public IAreaUseCases defaultAreaUseCases(IAreaDB iAreaDB) {
         return new AreaUseCases(iAreaDB);
     }
 
-    @Autowired
+
     @Bean
     public IJobUseCases defaultJobUseCases(IJobDB iJobDB, IOrganizationDB iOrganizationDB) {
         return new JobUseCases(iJobDB, iOrganizationDB);
     }
+
 
 }

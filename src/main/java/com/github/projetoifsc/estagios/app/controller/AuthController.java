@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.github.projetoifsc.estagios.app.configs.OpenApiConfig.AUTHORIZATION;
 
-
-
 @RestController
 @RequestMapping(
         value = OpenApiConfig.BASE_URL + "/auth"
@@ -29,10 +27,11 @@ public class AuthController {
 
     private final AuthenticationService authenticationService;
 
-    @Autowired
+
     public AuthController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
+
 
     @PostMapping(value = "/login")
     public TokenResponse login(
@@ -40,6 +39,7 @@ public class AuthController {
     ) {
         return authenticationService.attemptLogin(loginRequest);
     }
+
 
     @PostMapping(value = "/token")
     public TokenResponse refreshToken(
@@ -56,10 +56,12 @@ public class AuthController {
                 "User Id: " + principal.getId());
     }
 
+
     @GetMapping("/admin")
     @Operation(security = {@SecurityRequirement(name = AUTHORIZATION)})
     public String adminTest(@AuthenticationPrincipal UserPrincipal principal) {
         return "You are a admin!";
     }
+
 
 }

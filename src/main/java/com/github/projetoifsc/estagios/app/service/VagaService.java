@@ -9,13 +9,9 @@ import com.github.projetoifsc.estagios.core.IJobUseCases;
 import com.github.projetoifsc.estagios.utils.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-
-
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
 import java.util.List;
-
 
 @Service
 public class VagaService {
@@ -23,8 +19,6 @@ public class VagaService {
     private final Mapper mapper;
     private final IJobUseCases jobUseCases;
 
-
-    @Autowired
     public VagaService(Mapper mapper, IJobUseCases jobUseCases) {
         this.mapper = mapper;
         this.jobUseCases = jobUseCases;

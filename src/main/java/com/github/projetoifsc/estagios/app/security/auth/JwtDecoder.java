@@ -7,14 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-class JwtDecoder {
+public class JwtDecoder {
 
     private final JwtProperties jwtProperties;
 
-    @Autowired
+
     public JwtDecoder(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
     }
+
 
     public DecodedJWT decodeAccessToken(String token) {
         return JWT.require(Algorithm.HMAC256(jwtProperties.getAccessTokenSecretKey()))
@@ -24,10 +25,12 @@ class JwtDecoder {
                 .verify(token);
     }
 
+
     public DecodedJWT decodeRefreshToken(String token) {
         return JWT.require(Algorithm.HMAC256(jwtProperties.getRefreshTokenSecretKey()))
                 .build()
                 .verify(token);
     }
+
 
 }

@@ -23,8 +23,6 @@ public class AreaService {
     private final IAreaUseCases areaUseCases;
     private final Mapper mapper;
 
-
-    @Autowired
     public AreaService(IAreaUseCases areaUseCases, Mapper mapper) {
         this.areaUseCases = areaUseCases;
         this.mapper = mapper;
@@ -43,13 +41,6 @@ public class AreaService {
         var area= areaUseCases.getById(id);
         return mapper.map(area, AreaView.class);
     }
-
-
-    private AreaView addHateoasLinks(AreaView area) {
-        // TODO
-        return null;
-    }
-
 
 
 }
