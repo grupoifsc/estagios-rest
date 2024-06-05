@@ -16,8 +16,7 @@ public class DelegatedAuthenticationEntryPoint implements AuthenticationEntryPoi
 
     private final HandlerExceptionResolver resolver;
 
-    public DelegatedAuthenticationEntryPoint(
-            @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+    public DelegatedAuthenticationEntryPoint(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
         this.resolver = resolver;
     }
 
