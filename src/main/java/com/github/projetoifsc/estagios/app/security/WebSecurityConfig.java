@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -60,6 +61,7 @@ public class WebSecurityConfig {
                 .requestMatchers(POST, "/api/v1/organizacoes").permitAll()
                 .requestMatchers("/api/v1/organizacoes/**").authenticated()
                 .requestMatchers("/api/v1/areas/**").authenticated()
+                .requestMatchers("/api/v1/vagas/**").authenticated()
                 .requestMatchers(GET, "/api/v1/auth/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
              )

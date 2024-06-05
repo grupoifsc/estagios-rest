@@ -3,8 +3,8 @@ package com.github.projetoifsc.estagios.app.security.ratelimit;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component
-@ConfigurationProperties("rate-limit")
+//@Component
+//@ConfigurationProperties("rate-limit")
 public class RateLimitProperties {
 
 //    @Value()

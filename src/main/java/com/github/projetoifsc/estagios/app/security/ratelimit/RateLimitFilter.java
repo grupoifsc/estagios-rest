@@ -22,7 +22,9 @@ public class RateLimitFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var requestURI = request.getRequestURI();
+        System.out.println("Entered rateLimitFilter");
         if (requestURI.startsWith("/api/")) {
+            System.out.println("Must apply RateLimitFilter");
             var userIP = request.getRemoteAddr();
             Bucket bucket = rateLimiterService.resolveBucket(userIP);
             ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
