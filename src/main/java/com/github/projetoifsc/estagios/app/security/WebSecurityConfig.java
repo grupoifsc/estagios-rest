@@ -3,6 +3,7 @@ package com.github.projetoifsc.estagios.app.security;
 import com.github.projetoifsc.estagios.app.security.auth.CustomUserDetailService;
 import com.github.projetoifsc.estagios.app.security.auth.DelegatedAuthenticationEntryPoint;
 import com.github.projetoifsc.estagios.app.security.auth.JwtAuthenticationFilter;
+import com.github.projetoifsc.estagios.app.security.ratelimit.RateLimitFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,23 +15,29 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
+//@EnableCaching
 public class WebSecurityConfig {
 
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final RateLimitFilter rateLimitFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final CustomUserDetailService customUserDetailService;
     private final PasswordEncoder passwordEncoder;
     private final DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint;
 
-
-    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
+    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, RateLimitFilter rateLimitFilter, ExceptionHandlerFilter exceptionHandlerFilter, CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.rateLimitFilter = rateLimitFilter;
+        this.exceptionHandlerFilter = exceptionHandlerFilter;
         this.customUserDetailService = customUserDetailService;
         this.passwordEncoder = passwordEncoder;
         this.delegatedAuthenticationEntryPoint = delegatedAuthenticationEntryPoint;
@@ -39,28 +46,24 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        http
-             .cors(AbstractHttpConfigurer::disable)
-             .csrf(AbstractHttpConfigurer::disable)
-             .securityMatcher("/**") // map current config to given resource path
-             .sessionManagement(sessionManagementConfigurer
-                             -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-             .formLogin(AbstractHttpConfigurer::disable)
-             .exceptionHandling(h -> h.authenticationEntryPoint(delegatedAuthenticationEntryPoint))
-             .authorizeHttpRequests(registry -> registry
-                .requestMatchers(GET, "/swagger-ui/**").permitAll()
-                .requestMatchers(GET, "/v3/api-docs/**").permitAll()
-                .requestMatchers("/teste/**").permitAll()
+        return http
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(rateLimitFilter, DisableEncodeUrlFilter.class)
+            .addFilterBefore(exceptionHandlerFilter, RateLimitFilter.class)
+            .cors(AbstractHttpConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable)
+            .securityMatcher("/**") // map current config to given resource path
+            .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .formLogin(AbstractHttpConfigurer::disable)
+            .exceptionHandling(h -> h.authenticationEntryPoint(delegatedAuthenticationEntryPoint))
+            .authorizeHttpRequests(registry -> registry
                 .requestMatchers(POST, "/api/v1/organizacoes").permitAll()
-                .requestMatchers(POST, "/api/v1/auth/login").permitAll()
-                .requestMatchers(POST, "/api/v1/auth/token").permitAll()
+                .requestMatchers("/api/v1/organizacoes/**").authenticated()
+                .requestMatchers("/api/v1/areas/**").authenticated()
                 .requestMatchers(GET, "/api/v1/auth/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-         );
-
-         return http.build();
+                .anyRequest().permitAll()
+             )
+            .build();
     }
 
 
