@@ -3,8 +3,8 @@ package com.github.projetoifsc.estagios.app.model.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.projetoifsc.estagios.app.model.interfaces.OrgPublicProfileProjection;
-import com.github.projetoifsc.estagios.app.model.shared.AddressView;
-import com.github.projetoifsc.estagios.app.model.shared.ContactView;
+import com.github.projetoifsc.estagios.app.model.shared.AddressModel;
+import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
 import com.github.projetoifsc.estagios.app.utils.hateoas.UserHateoasHelper;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 @JsonPropertyOrder(value = {"id", "nome", "instituicao_de_ensino",
         "info", "contato_principal", "endereco", "website", "redes_sociais", "_links"})
 @Validated
-public class OrgPublicProfileBasicInfoView extends OrgBasicInfoView implements OrgPublicProfileProjection {
+public class PublicOrgProfileResponse extends BasicOrgResponse implements OrgPublicProfileProjection {
 
     @JsonProperty(value = "info", required = true)
     @Schema(description = "Informações sobre a organização", requiredMode = Schema.RequiredMode.REQUIRED, example = "Uma organização sem bancos", maxLength = 500)
@@ -31,10 +31,10 @@ public class OrgPublicProfileBasicInfoView extends OrgBasicInfoView implements O
     @JsonProperty(value = "contato_principal", required = true)
     @NotNull
     @Valid
-    private ContactPublicView mainContact;
+    private PublicContactResponse mainContact;
 
     @JsonProperty(value = "endereco", required = true)
-    private AdressPublicView mainAddress;
+    private PublicAddressResponse mainAddress;
 
 
     @Override
@@ -65,20 +65,20 @@ public class OrgPublicProfileBasicInfoView extends OrgBasicInfoView implements O
     }
 
     @Override
-    public @NotNull @Valid ContactView getMainContact() {
+    public @NotNull @Valid ContactModel getMainContact() {
         return mainContact;
     }
 
-    public void setMainContact(@NotNull @Valid ContactPublicView mainContact) {
+    public void setMainContact(@NotNull @Valid PublicContactResponse mainContact) {
         this.mainContact = mainContact;
     }
 
     @Override
-    public AddressView getMainAddress() {
+    public AddressModel getMainAddress() {
         return mainAddress;
     }
 
-    public void setMainAddress(AdressPublicView mainAddress) {
+    public void setMainAddress(PublicAddressResponse mainAddress) {
         this.mainAddress = mainAddress;
     }
 

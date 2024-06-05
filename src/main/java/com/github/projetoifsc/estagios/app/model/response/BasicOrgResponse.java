@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 @Schema(name = "Organização", description = "Sumário da Organização")
 @Validated
 @JsonPropertyOrder(value = {"id", "nome", "instituicao_de_ensino"})
-public class OrgBasicInfoView extends View implements OrgBasicInfoProjection {
+public class BasicOrgResponse extends Response implements OrgBasicInfoProjection {
 
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     @Schema(description = "Id", example="123", accessMode = Schema.AccessMode.READ_ONLY, requiredMode = Schema.RequiredMode.NOT_REQUIRED)

@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.app.utils.mock;
 
-import com.github.projetoifsc.estagios.app.model.response.AdressPublicView;
-import com.github.projetoifsc.estagios.app.model.response.ContactPublicView;
-import com.github.projetoifsc.estagios.app.model.response.VagaPrivateDetailsView;
+import com.github.projetoifsc.estagios.app.model.response.PublicAddressResponse;
+import com.github.projetoifsc.estagios.app.model.response.PublicContactResponse;
+import com.github.projetoifsc.estagios.app.model.response.PrivateJobDetailsResponse;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,10 +11,10 @@ import java.util.List;
 
 public class VagaMock {
 
-    private static final VagaPrivateDetailsView vaga1 = new VagaPrivateDetailsView();
-    private static final VagaPrivateDetailsView vaga2 = new VagaPrivateDetailsView();
-    private static final VagaPrivateDetailsView vaga3 = new VagaPrivateDetailsView();
-    private static final List<VagaPrivateDetailsView> vagas = new ArrayList<>(
+    private static final PrivateJobDetailsResponse vaga1 = new PrivateJobDetailsResponse();
+    private static final PrivateJobDetailsResponse vaga2 = new PrivateJobDetailsResponse();
+    private static final PrivateJobDetailsResponse vaga3 = new PrivateJobDetailsResponse();
+    private static final List<PrivateJobDetailsResponse> vagas = new ArrayList<>(
             List.of(vaga1, vaga2, vaga3)
     );
 
@@ -40,8 +40,8 @@ public class VagaMock {
         vaga1.setDuracaoMeses(5);
         vaga1.setDataFinal(LocalDate.now().plusMonths(5));
         vaga1.setDataInicio(LocalDate.now());
-        vaga1.setAddress(new AdressPublicView());
-        vaga1.setContact(new ContactPublicView());
+        vaga1.setAddress(new PublicAddressResponse());
+        vaga1.setContact(new PublicContactResponse());
     }
 
     private static void createVaga02() {
@@ -60,8 +60,8 @@ public class VagaMock {
         vaga2.setDuracaoMeses(12);
         vaga2.setDataFinal(LocalDate.now().plusMonths(12));
         vaga2.setDataInicio(LocalDate.now());
-        vaga2.setAddress(new AdressPublicView());
-        vaga2.setContact(new ContactPublicView());
+        vaga2.setAddress(new PublicAddressResponse());
+        vaga2.setContact(new PublicContactResponse());
     }
 
     private static void createVaga03() {
@@ -80,20 +80,20 @@ public class VagaMock {
         vaga3.setDuracaoMeses(10);
         vaga3.setDataFinal(LocalDate.now().plusMonths(10));
         vaga3.setDataInicio(LocalDate.now());
-        vaga3.setAddress(new AdressPublicView());
-        vaga3.setContact(new ContactPublicView());
+        vaga3.setAddress(new PublicAddressResponse());
+        vaga3.setContact(new PublicContactResponse());
     }
 
-    public static VagaPrivateDetailsView getOne() {
+    public static PrivateJobDetailsResponse getOne() {
         return vagas.get(0);
     }
 
-    public static List<VagaPrivateDetailsView> getList() {
+    public static List<PrivateJobDetailsResponse> getList() {
         return vagas;
     }
 
-    public static VagaPrivateDetailsView getInvalid() {
-        return new VagaPrivateDetailsView();
+    public static PrivateJobDetailsResponse getInvalid() {
+        return new PrivateJobDetailsResponse();
     }
 
 

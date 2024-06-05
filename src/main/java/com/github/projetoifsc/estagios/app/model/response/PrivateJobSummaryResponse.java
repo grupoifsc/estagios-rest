@@ -9,7 +9,7 @@ import com.github.projetoifsc.estagios.app.model.interfaces.OrgBasicInfoProjecti
 @JsonPropertyOrder(value = {"id", "titulo",
         "requisitos", "periodo", "carga_horaria", "remuneracao",
         "nivel", "formato", "modificado_em", "_links"})
-public class VagaPrivateSummaryView extends VagaPublicSummaryView implements JobPrivateSummaryProjection {
+public class PrivateJobSummaryResponse extends PublicJobSummaryResponse implements JobPrivateSummaryProjection {
 
     @JsonIgnore
     private OrgBasicInfoProjection owner;

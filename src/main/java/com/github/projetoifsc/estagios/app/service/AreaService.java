@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.model.response.AreaView;
+import com.github.projetoifsc.estagios.app.model.response.PublicAreaResponse;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IAreaUseCases;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
@@ -28,17 +28,17 @@ public class AreaService {
     }
 
 
-    public List<AreaView> getAll(UserPrincipal userPrincipal) {
+    public List<PublicAreaResponse> getAll(UserPrincipal userPrincipal) {
         var areas = areaUseCases.getAll();
         return areas.stream()
-                .map(area -> mapper.map(area, AreaView.class))
+                .map(area -> mapper.map(area, PublicAreaResponse.class))
                 .toList();
     }
 
 
-    public AreaView getById(UserPrincipal userPrincipal, String id) {
+    public PublicAreaResponse getById(UserPrincipal userPrincipal, String id) {
         var area= areaUseCases.getById(id);
-        return mapper.map(area, AreaView.class);
+        return mapper.map(area, PublicAreaResponse.class);
     }
 
 

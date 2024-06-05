@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 import com.github.javafaker.Faker;
 import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicDetailsProjection;
-import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
+import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
@@ -56,7 +56,7 @@ class JobDBImplTest {
 
     @Test
     void saveAndGetIdWithoutOtherEntities() {
-        var entryData = mapper.map(jobEntity, NewVagaRequest.class);
+        var entryData = mapper.map(jobEntity, NewJobRequest.class);
         var savedId = jobDBImpl.saveAndGetId(entryData);
         assertNotEquals(savedId, "0");
     }
@@ -92,7 +92,7 @@ class JobDBImplTest {
 //        jobEntity.setAddress(mappedAddress);
 //        jobEntity.setContact(mappedContact);
 
-        var entryData = mapper.map(jobEntity, NewVagaRequest.class);
+        var entryData = mapper.map(jobEntity, NewJobRequest.class);
         var savedId = jobDBImpl.saveAndGetId(entryData);
         assertNotEquals("0", savedId);
 

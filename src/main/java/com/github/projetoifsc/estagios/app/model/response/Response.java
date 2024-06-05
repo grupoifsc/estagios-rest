@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import java.io.Serializable;
 
 @Validated
-public abstract class View extends RepresentationModel<View> implements Serializable, Validatable {
+public abstract class Response extends RepresentationModel<Response> implements Serializable, Validatable {
 
   //  @Override
     @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "_links")

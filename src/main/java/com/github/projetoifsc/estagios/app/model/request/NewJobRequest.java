@@ -21,7 +21,7 @@ import java.util.List;
         "nivel", "formato", "areas_ids", "imagem", "destinatarios_ids", "duracao_meses",
         "data_inicio", "data_final", "contato", "endereco",
         "criado_em", "modificado_em", "_links"})
-public class NewVagaRequest implements IJobEntryData {
+public class NewJobRequest implements IJobEntryData {
 
     @JsonIgnore
     private IOrganization owner;

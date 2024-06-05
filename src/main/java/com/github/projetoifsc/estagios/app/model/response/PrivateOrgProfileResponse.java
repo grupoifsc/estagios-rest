@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.*;
 import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
-import com.github.projetoifsc.estagios.app.model.shared.ContactView;
+import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CNPJ;
@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 		"instituicao_de_ensino", "info", "contato_principal", "contato_candidaturas",
 		"endereco", "website", "redes_sociais", "criado_em", "atualizado_em", "_links"})
 @Validated
-public class OrgPrivateProfileResponse extends OrgPublicProfileBasicInfoView implements OrgPrivateProfileProjection {
+public class PrivateOrgProfileResponse extends PublicOrgProfileResponse implements OrgPrivateProfileProjection {
 
 	@JsonProperty(required = true)
 	@Schema(description = "Identificador para autenticação", requiredMode = Schema.RequiredMode.REQUIRED, example = "nobanks")
@@ -30,7 +30,7 @@ public class OrgPrivateProfileResponse extends OrgPublicProfileBasicInfoView imp
 
 	@JsonProperty(value = "contato_candidaturas")
 	@Valid
-	private ContactView applianceContact;
+	private ContactModel applianceContact;
 
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY,requiredMode = Schema.RequiredMode.NOT_REQUIRED)
 	@JsonProperty(value = "criado_em", access = JsonProperty.Access.READ_ONLY)
@@ -62,11 +62,11 @@ public class OrgPrivateProfileResponse extends OrgPublicProfileBasicInfoView imp
 	}
 
 	@Override
-	public @Valid ContactView getApplianceContact() {
+	public @Valid ContactModel getApplianceContact() {
 		return applianceContact;
 	}
 
-	public void setApplianceContact(@Valid ContactView applianceContact) {
+	public void setApplianceContact(@Valid ContactModel applianceContact) {
 		this.applianceContact = applianceContact;
 	}
 

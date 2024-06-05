@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.model.request;
 
-public class LoginRequest {
+public class AuthLoginRequest {
 
     private String email;
     private String password;

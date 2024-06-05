@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.app.controller;
 
 import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
-import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
+import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.service.OrgService;
 import com.github.projetoifsc.estagios.app.utils.HttpErrorMessages;
@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +49,7 @@ public class OrgController {
 //			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = HttpErrorMessages.TOO_MANY_REQUESTS_MSG) })} )
 //	})
 	public ResponseEntity<IOrganization> createNewUser (
-			@RequestBody NewUserRequest newUser
+			@RequestBody NewOrgProfileRequest newUser
 	) {
 		return new ResponseEntity<>(
 				service.create(newUser),
@@ -91,7 +90,7 @@ public class OrgController {
 	public ResponseEntity<IOrganization> updateAuthUserPerfil (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable String id,
-			@RequestBody NewUserRequest updatedUser
+			@RequestBody NewOrgProfileRequest updatedUser
 	)  {
 		return new ResponseEntity<>(
 				service.updateAuthUserPerfil(userPrincipal, id, updatedUser),

@@ -17,7 +17,7 @@ import org.springframework.hateoas.Links;
 		"nivel", "formato", "areas", "imagem", "destinatarios", "duracao_meses",
 		"data_inicio", "data_final", "contato", "endereco",
 		"criado_em", "modificado_em", "_links"})
-public class VagaPrivateDetailsView extends VagaPublicDetailsView implements JobPrivateDetailsProjection {
+public class PrivateJobDetailsResponse extends PublicJobDetailsResponse implements JobPrivateDetailsProjection {
 
 	@JsonIgnore
 	private OrgBasicInfoProjection owner;

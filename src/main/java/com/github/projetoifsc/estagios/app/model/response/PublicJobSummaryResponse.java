@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @JsonPropertyOrder(value = {"id", "titulo", "criado_por", "descricao",
         "requisitos", "carga_horaria", "remuneracao",
         "modificado_em", "_links"})
-public class VagaPublicSummaryView extends VagaBasicView implements JobPublicSummaryProjection {
+public class PublicJobSummaryResponse extends BasicJobResponse implements JobPublicSummaryProjection {
 
 //    @JsonProperty("id")
 //    @Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1")

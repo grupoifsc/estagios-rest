@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(name="Vaga")
 @Validated
 @JsonPropertyOrder(value = {"id", "criado_por", "_links"})
-public class VagaBasicView extends View implements IJob {
+public class BasicJobResponse extends Response implements IJob {
 
 	private final Mapper mapper = new Mapper();
 
@@ -28,7 +28,7 @@ public class VagaBasicView extends View implements IJob {
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	@NotNull
 	@Valid
-	protected OrgBasicInfoViewWithoutLinks owner;
+	protected BasicOrgWithoutLinksResponse owner;
 
 	@Override
 	public String getId() {
@@ -47,7 +47,7 @@ public class VagaBasicView extends View implements IJob {
 
 	@Override
 	public void setOwner(IOrganization owner) {
-		this.owner = mapper.map(owner, OrgBasicInfoViewWithoutLinks.class);
+		this.owner = mapper.map(owner, BasicOrgWithoutLinksResponse.class);
 	}
 
 

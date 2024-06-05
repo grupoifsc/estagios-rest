@@ -24,7 +24,7 @@ import java.util.List;
         "nivel", "formato", "areas", "imagem", "duracao_meses",
         "data_inicio", "data_final", "contato", "endereco",
         "criado_em", "modificado_em", "_links"})
-public class VagaPublicDetailsView extends VagaPublicSummaryView implements JobPublicDetailsProjection {
+public class PublicJobDetailsResponse extends PublicJobSummaryResponse implements JobPublicDetailsProjection {
 
     @JsonProperty(value = "descricao", required = true)
     @Schema(example="Vaga para desenhista etc etc et etc etc etc", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -65,11 +65,11 @@ public class VagaPublicDetailsView extends VagaPublicSummaryView implements JobP
 
     @JsonProperty("contato")
     @Schema(description = "Contato para candidatura. Se deixado em branco, será considerado e exibido o contato definido no perfil da instituição ou empresa", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
-    private ContactPublicView contact;
+    private PublicContactResponse contact;
 
     @JsonProperty("endereco")
     @Schema(description = "Endereço da vaga. Se deixado em branco, será considerado e exibido o contato definido no perfil da instituição ou empresa", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
-    private AdressPublicView address;
+    private PublicAddressResponse address;
 
     @Schema(accessMode = Schema.AccessMode.READ_ONLY )
     @JsonProperty("criado_em")
@@ -170,7 +170,7 @@ public class VagaPublicDetailsView extends VagaPublicSummaryView implements JobP
         return contact;
     }
 
-    public void setContact(ContactPublicView contact) {
+    public void setContact(PublicContactResponse contact) {
         this.contact = contact;
     }
 
@@ -179,7 +179,7 @@ public class VagaPublicDetailsView extends VagaPublicSummaryView implements JobP
         return address;
     }
 
-    public void setAddress(AdressPublicView address) {
+    public void setAddress(PublicAddressResponse address) {
         this.address = address;
     }
 

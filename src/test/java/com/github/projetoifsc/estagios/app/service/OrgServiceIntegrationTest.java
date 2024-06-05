@@ -1,10 +1,10 @@
 package com.github.projetoifsc.estagios.app.service;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
-import com.github.projetoifsc.estagios.app.model.response.AdressPublicView;
-import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
-import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfileBasicInfoView;
+import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
+import com.github.projetoifsc.estagios.app.model.response.PublicAddressResponse;
+import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
+import com.github.projetoifsc.estagios.app.model.response.PublicOrgProfileResponse;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.infra.db.jpa.GeradorCnpj;
@@ -39,7 +39,7 @@ class OrgServiceIntegrationTest {
     @BeforeEach
     void setUp() {
         var mockedEntity = mocker.generateWithIdAsZero();
-        var view = mapper.map(mockedEntity, NewUserRequest.class);
+        var view = mapper.map(mockedEntity, NewOrgProfileRequest.class);
         entity = orgService.create(view);
         userPrincipal = new UserPrincipal(entity.getId(), null,null, null);
     }
@@ -50,7 +50,7 @@ class OrgServiceIntegrationTest {
         jsonParser.printValue(dto);
         
 
-        var mapped = mapper.map(dto, OrgPrivateProfileResponse.class);
+        var mapped = mapper.map(dto, PrivateOrgProfileResponse.class);
         jsonParser.printValue(mapped);
 
     }
@@ -60,7 +60,7 @@ class OrgServiceIntegrationTest {
         var dto = orgService.getUserPublicProfile(userPrincipal, entity.getId());
         jsonParser.printValue(dto);
 
-        var mapped = mapper.map(dto, OrgPublicProfileBasicInfoView.class);
+        var mapped = mapper.map(dto, PublicOrgProfileResponse.class);
         jsonParser.printValue(mapped);
 
     }
@@ -69,14 +69,14 @@ class OrgServiceIntegrationTest {
     @Test
     void save() {
 
-        var mainAddr = new AdressPublicView();
+        var mainAddr = new PublicAddressResponse();
         mainAddr.setBairro("Rio Vermelho - Atualizado");
         mainAddr.setCidade("Fpolis");
         mainAddr.setPais("Brasil");
         mainAddr.setEstado("SC");
         mainAddr.setRua("Anthonio Thiago Nunes");
 
-        var org = new NewUserRequest();
+        var org = new NewOrgProfileRequest();
         //org.setId("63");
         org.setNome("Ju Atualizado");
         org.setMainAddress(mainAddr);
@@ -92,7 +92,7 @@ class OrgServiceIntegrationTest {
         System.out.println("O que veio salvo lá do banco de dados: ");
         jsonParser.printValue(saved);
 
-        var mapped = mapper.map(saved, OrgPrivateProfileResponse.class);
+        var mapped = mapper.map(saved, PrivateOrgProfileResponse.class);
         System.out.println("O objeto mapeado para ser devolvido: ");
         jsonParser.printValue(mapped);
 
@@ -110,7 +110,7 @@ class OrgServiceIntegrationTest {
     @Test
     void update() {
 
-        var org = new NewUserRequest();
+        var org = new NewOrgProfileRequest();
         org.setId(entity.getId());
         org.setNome("Ju Via Update");
         org.setIe(true);
@@ -125,7 +125,7 @@ class OrgServiceIntegrationTest {
         System.out.println("O que veio salvo lá do banco de dados: ");
         jsonParser.printValue(saved);
 
-        var mapped = mapper.map(saved, OrgPrivateProfileResponse.class);
+        var mapped = mapper.map(saved, PrivateOrgProfileResponse.class);
         System.out.println("O objeto mapeado para ser devolvido: ");
         jsonParser.printValue(mapped);
 

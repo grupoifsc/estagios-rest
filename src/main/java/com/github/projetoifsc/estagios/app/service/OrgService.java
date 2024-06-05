@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
-import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
+import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
+import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
-import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfileBasicInfoView;
+import com.github.projetoifsc.estagios.app.model.response.PublicOrgProfileResponse;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
@@ -26,29 +26,29 @@ public class OrgService {
     }
 
 
-    public IOrganization create(NewUserRequest newUserRequest) {
-        newUserRequest.setPassword(passwordEncoder.encode(newUserRequest.getPassword()));
-        var createdUser = organizationUseCases.createProfile(newUserRequest);
-        return mapper.map(createdUser, OrgPrivateProfileResponse.class);
+    public IOrganization create(NewOrgProfileRequest newOrgProfileRequest) {
+        newOrgProfileRequest.setPassword(passwordEncoder.encode(newOrgProfileRequest.getPassword()));
+        var createdUser = organizationUseCases.createProfile(newOrgProfileRequest);
+        return mapper.map(createdUser, PrivateOrgProfileResponse.class);
     }
 
 
     public IOrganization getAuthUserPerfil(UserPrincipal userPrincipal, String targetId) {
         var org = organizationUseCases.getPrivateProfile(userPrincipal.getId(), targetId);
-        return mapper.map(org, OrgPrivateProfileResponse.class);
+        return mapper.map(org, PrivateOrgProfileResponse.class);
     }
 
 
     public IOrganization getUserPublicProfile(UserPrincipal userPrincipal, String targetId) {
         var org = organizationUseCases.getPublicProfile(userPrincipal.getId(), targetId);
-        return mapper.map(org, OrgPublicProfileBasicInfoView.class);
+        return mapper.map(org, PublicOrgProfileResponse.class);
     }
 
 
-    public IOrganization updateAuthUserPerfil(UserPrincipal userPrincipal, String targetId, NewUserRequest updatedUserData) {
+    public IOrganization updateAuthUserPerfil(UserPrincipal userPrincipal, String targetId, NewOrgProfileRequest updatedUserData) {
         updatedUserData.setPassword(passwordEncoder.encode(updatedUserData.getPassword()));
         var org = organizationUseCases.updateProfile(userPrincipal.getId(), targetId, updatedUserData);
-        return mapper.map(org, OrgPrivateProfileResponse.class);
+        return mapper.map(org, PrivateOrgProfileResponse.class);
     }
 
 
@@ -60,7 +60,7 @@ public class OrgService {
     public Page<IOrganization> getAllSchools(UserPrincipal userPrincipal) {
         var orgs = organizationUseCases.getSchools();
         return orgs.map(
-                org -> mapper.map(org, OrgPublicProfileBasicInfoView.class)
+                org -> mapper.map(org, PublicOrgProfileResponse.class)
         );
     }
 

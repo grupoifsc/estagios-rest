@@ -3,8 +3,8 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 import com.github.javafaker.Faker;
 import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateSummaryProjection;
 import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicSummaryProjection;
-import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
-import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfileResponse;
+import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
+import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
@@ -68,7 +68,7 @@ class OrganizationDBImplTest {
 
     @Test
     void findByUsernameReturnsBasicInfoOrNull() {
-        var ent = mapper.map(org, OrgPrivateProfileResponse.class);
+        var ent = mapper.map(org, PrivateOrgProfileResponse.class);
         var dto = organizationDB.findByUsername(ent.getUsername());
 
         jsonParser.printValue(dto);
@@ -78,7 +78,7 @@ class OrganizationDBImplTest {
     @Test
     void saveReturnsPrivateProfile() {
         var entity = new OrgMocker().generateWithIdAsZero();
-        var newUser = mapper.map(entity, NewUserRequest.class);
+        var newUser = mapper.map(entity, NewOrgProfileRequest.class);
         newUser.setEmail("teste@teste.com");
         newUser.setPassword("minhaSenha");
         jsonParser.printValue(newUser);

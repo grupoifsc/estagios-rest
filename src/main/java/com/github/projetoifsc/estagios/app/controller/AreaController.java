@@ -1,13 +1,12 @@
 package com.github.projetoifsc.estagios.app.controller;
 
 import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
-import com.github.projetoifsc.estagios.app.model.response.AreaView;
+import com.github.projetoifsc.estagios.app.model.response.PublicAreaResponse;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.service.AreaService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,7 +37,7 @@ public class AreaController {
 
 	@GetMapping("/areas")
 	@Operation(summary="Ver Todas", description="Ver todas as áreas", tags={OpenApiConfig.AREAS}, operationId="getAllAreas")
-	public ResponseEntity<List<AreaView>> getAllAreas (
+	public ResponseEntity<List<PublicAreaResponse>> getAllAreas (
 			@AuthenticationPrincipal UserPrincipal userPrincipal
 	) {
 		return new ResponseEntity<>(
@@ -50,7 +49,7 @@ public class AreaController {
 
 	@GetMapping("/areas/{id}")
 	@Operation(summary="Ver", description="Ver uma área", tags={OpenApiConfig.AREAS}, operationId="getArea")
-	public ResponseEntity<AreaView> verArea (
+	public ResponseEntity<PublicAreaResponse> verArea (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable String id
 	) {

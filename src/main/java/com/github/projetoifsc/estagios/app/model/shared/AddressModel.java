@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @Schema(name = "Endereço", description = "Endereço")
-public class AddressView implements AddressProjection {
+public class AddressModel implements AddressProjection {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;

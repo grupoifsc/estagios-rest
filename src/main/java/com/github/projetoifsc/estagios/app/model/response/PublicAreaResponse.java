@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
 @JsonPropertyOrder(value = {"id", "nome", "_links"})
-public class AreaView extends View implements IArea {
+public class PublicAreaResponse extends Response implements IArea {
 
     @JsonProperty(value = "id", access = JsonProperty.Access.READ_ONLY)
     @Schema(example = "1")
@@ -18,10 +18,10 @@ public class AreaView extends View implements IArea {
     @NotBlank
     private String name;
 
-    public AreaView() {
+    public PublicAreaResponse() {
     }
 
-    public AreaView(String id, String name) {
+    public PublicAreaResponse(String id, String name) {
         this.id = id;
         this.name = name;
     }

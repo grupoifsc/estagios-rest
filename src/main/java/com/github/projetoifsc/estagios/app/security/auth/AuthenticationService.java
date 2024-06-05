@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.app.security.auth;
 
-import com.github.projetoifsc.estagios.app.model.request.RefreshTokenRequest;
-import com.github.projetoifsc.estagios.app.model.request.LoginRequest;
-import com.github.projetoifsc.estagios.app.model.response.TokenResponse;
+import com.github.projetoifsc.estagios.app.model.request.AuthRefreshTokenRequest;
+import com.github.projetoifsc.estagios.app.model.request.AuthLoginRequest;
+import com.github.projetoifsc.estagios.app.model.response.AuthTokenResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,11 +27,11 @@ public class AuthenticationService {
     }
 
 
-    public TokenResponse attemptLogin(LoginRequest loginRequest) {
+    public AuthTokenResponse attemptLogin(AuthLoginRequest authLoginRequest) {
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
+                        authLoginRequest.getEmail(),
+                        authLoginRequest.getPassword()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -42,8 +42,8 @@ public class AuthenticationService {
     }
 
 
-    public TokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        return Optional.of(refreshTokenRequest.getRefreshToken())
+    public AuthTokenResponse refreshToken(AuthRefreshTokenRequest authRefreshTokenRequest) {
+        return Optional.of(authRefreshTokenRequest.getRefreshToken())
                 .map(jwtDecoder::decodeRefreshToken)
                 .map(jwtToPrincipalConverter::convert)
                 .map(this::generateTokensForPrincipal)
@@ -51,7 +51,7 @@ public class AuthenticationService {
     }
 
 
-    private TokenResponse generateTokensForPrincipal(UserPrincipal principal) {
+    private AuthTokenResponse generateTokensForPrincipal(UserPrincipal principal) {
         var roles = principal.getAuthorities()
                 .stream().map(GrantedAuthority::getAuthority)
                 .toList();
@@ -63,7 +63,7 @@ public class AuthenticationService {
 
         var refreshToken = jwtIssuer.issueRefreshToken(principal.getId(), roles);
 
-        var tokenResponse = new TokenResponse();
+        var tokenResponse = new AuthTokenResponse();
         tokenResponse.setAccessToken(accessToken);
         tokenResponse.setRefreshToken(refreshToken);
         return tokenResponse;

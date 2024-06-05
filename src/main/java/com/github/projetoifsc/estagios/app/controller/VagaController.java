@@ -1,17 +1,16 @@
 package com.github.projetoifsc.estagios.app.controller;
 
 import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
-import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
-import com.github.projetoifsc.estagios.app.model.response.VagaPrivateDetailsView;
-import com.github.projetoifsc.estagios.app.model.response.VagaPrivateSummaryView;
-import com.github.projetoifsc.estagios.app.model.response.VagaPublicDetailsView;
+import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
+import com.github.projetoifsc.estagios.app.model.response.PrivateJobDetailsResponse;
+import com.github.projetoifsc.estagios.app.model.response.PrivateJobSummaryResponse;
+import com.github.projetoifsc.estagios.app.model.response.PublicJobDetailsResponse;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.service.VagaService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,9 +52,9 @@ public class VagaController {
 //			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
 //			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 //	})
-	public ResponseEntity<VagaPrivateDetailsView> create (
+	public ResponseEntity<PrivateJobDetailsResponse> create (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
-			@RequestBody NewVagaRequest vaga
+			@RequestBody NewJobRequest vaga
 	) {
 		return new ResponseEntity<>(
 				service.create(userPrincipal, vaga),
@@ -74,10 +73,10 @@ public class VagaController {
 //			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 //			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 //	})
-	public ResponseEntity<VagaPrivateDetailsView> update(
+	public ResponseEntity<PrivateJobDetailsResponse> update(
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId,
-			@RequestBody NewVagaRequest vaga
+			@RequestBody NewJobRequest vaga
 	) {
 		return new ResponseEntity<>(
 				service.update(userPrincipal, vagaId, vaga),
@@ -96,7 +95,7 @@ public class VagaController {
 //			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 //			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 //	})
-	public ResponseEntity<VagaPrivateDetailsView> delete(
+	public ResponseEntity<PrivateJobDetailsResponse> delete(
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId
 	) {
@@ -115,7 +114,7 @@ public class VagaController {
 //		@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 //	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 //	})
-	public ResponseEntity<VagaPublicDetailsView> getPublicProfile (
+	public ResponseEntity<PublicJobDetailsResponse> getPublicProfile (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId
 	) {
@@ -136,7 +135,7 @@ public class VagaController {
 //			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 //			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 //	})
-	public ResponseEntity<VagaPrivateDetailsView> getPrivateProfile (
+	public ResponseEntity<PrivateJobDetailsResponse> getPrivateProfile (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId
 	) {
@@ -157,7 +156,7 @@ public class VagaController {
 //		@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 //	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 //	})
-	public ResponseEntity<List<VagaPublicDetailsView>> getAllReceivedByUser (
+	public ResponseEntity<List<PublicJobDetailsResponse>> getAllReceivedByUser (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@RequestParam(value = "titulo", defaultValue = "", required = false) String titulo,
 			@RequestParam(value = "areas", defaultValue = "", required = false) String areas,
@@ -195,7 +194,7 @@ public class VagaController {
 //			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
 //			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
 //	})
-	public ResponseEntity<Page<VagaPrivateSummaryView>> getAllCreatedByUser (
+	public ResponseEntity<Page<PrivateJobSummaryResponse>> getAllCreatedByUser (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@RequestParam(value= "limit", defaultValue = DEFAULT_LIMIT_VALUE) Integer limit,
 			@RequestParam(value= "page", defaultValue = DEFAULT_PAGE_VALUE) Integer page,

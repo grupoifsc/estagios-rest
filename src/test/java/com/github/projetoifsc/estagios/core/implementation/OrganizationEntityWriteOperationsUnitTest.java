@@ -1,5 +1,5 @@
 package com.github.projetoifsc.estagios.core.implementation;
-import com.github.projetoifsc.estagios.app.model.request.NewUserRequest;
+import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
@@ -23,13 +23,13 @@ public class OrganizationEntityWriteOperationsUnitTest {
 
     IOrganization organizationA;
     IOrganization organizationB;
-    NewUserRequest newUser;
+    NewOrgProfileRequest newUser;
 
     @BeforeEach
     void setUp() {
         organizationA = new OrganizationImpl("1", false);
         organizationB = new OrganizationImpl("2", true);
-        newUser = mapper.map(organizationA, NewUserRequest.class);
+        newUser = mapper.map(organizationA, NewOrgProfileRequest.class);
     }
 
 
@@ -55,7 +55,7 @@ public class OrganizationEntityWriteOperationsUnitTest {
 
     @Test
     void updatedProfileHasSameIdAsOrganization() {
-        newUser = mapper.map(organizationB, NewUserRequest.class);
+        newUser = mapper.map(organizationB, NewOrgProfileRequest.class);
         when(organizationRepository.save(newUser)).thenReturn(organizationB);
 
         assertEquals(

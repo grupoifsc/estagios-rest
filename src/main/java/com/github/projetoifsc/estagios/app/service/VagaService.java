@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
-import com.github.projetoifsc.estagios.app.model.response.VagaPrivateDetailsView;
-import com.github.projetoifsc.estagios.app.model.response.VagaPrivateSummaryView;
-import com.github.projetoifsc.estagios.app.model.response.VagaPublicDetailsView;
+import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
+import com.github.projetoifsc.estagios.app.model.response.PrivateJobDetailsResponse;
+import com.github.projetoifsc.estagios.app.model.response.PrivateJobSummaryResponse;
+import com.github.projetoifsc.estagios.app.model.response.PublicJobDetailsResponse;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IJobUseCases;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
@@ -24,20 +24,20 @@ public class VagaService {
     }
 
 
-    public VagaPrivateDetailsView create(UserPrincipal userPrincipal, NewVagaRequest newVagaRequest) {
-        var savedVaga = jobUseCases.create(userPrincipal.getId(), newVagaRequest);
+    public PrivateJobDetailsResponse create(UserPrincipal userPrincipal, NewJobRequest newJobRequest) {
+        var savedVaga = jobUseCases.create(userPrincipal.getId(), newJobRequest);
         return mapper.map(
                 savedVaga,
-                VagaPrivateDetailsView.class
+                PrivateJobDetailsResponse.class
         );
     }
 
 
-    public VagaPrivateDetailsView update(UserPrincipal userPrincipal, String vagaId, NewVagaRequest newVagaRequest) {
-        var updatedVaga = jobUseCases.update(userPrincipal.getId(), vagaId, newVagaRequest);
+    public PrivateJobDetailsResponse update(UserPrincipal userPrincipal, String vagaId, NewJobRequest newJobRequest) {
+        var updatedVaga = jobUseCases.update(userPrincipal.getId(), vagaId, newJobRequest);
         return mapper.map(
                 updatedVaga,
-                VagaPrivateDetailsView.class
+                PrivateJobDetailsResponse.class
         );
     }
 
@@ -47,38 +47,38 @@ public class VagaService {
     }
 
 
-    public VagaPublicDetailsView getPublicProfile(UserPrincipal userPrincipal, String vagaId) {
+    public PublicJobDetailsResponse getPublicProfile(UserPrincipal userPrincipal, String vagaId) {
         var vaga = jobUseCases.getOnePublicDetails(userPrincipal.getId(), vagaId);
         return mapper.map(
                 vaga,
-                VagaPublicDetailsView.class
+                PublicJobDetailsResponse.class
         );
     }
 
 
-    public VagaPrivateDetailsView getPrivateProfile(UserPrincipal userPrincipal, String vagaId) {
+    public PrivateJobDetailsResponse getPrivateProfile(UserPrincipal userPrincipal, String vagaId) {
         var vaga = jobUseCases.getOnePrivateDetails(userPrincipal.getId(), vagaId);
         return mapper.map(
                 vaga,
-                VagaPrivateDetailsView.class
+                PrivateJobDetailsResponse.class
         );
     }
 
 
-     public List<VagaPublicDetailsView> getAllReceivedByUser(UserPrincipal userPrincipal, String targetUserId, HashMap<String, String> filterArgs) {
+     public List<PublicJobDetailsResponse> getAllReceivedByUser(UserPrincipal userPrincipal, String targetUserId, HashMap<String, String> filterArgs) {
         var vagas = jobUseCases.getAllReceivedSummary(userPrincipal.getId(), targetUserId);
         return vagas.stream().map(vaga -> mapper.map(
                 vaga,
-                VagaPublicDetailsView.class
+                PublicJobDetailsResponse.class
         )).toList();
     }
 
 
-    public Page<VagaPrivateSummaryView> getAllCreatedByUser(UserPrincipal userPrincipal, String targetUserId, Integer page, Integer limit) {
+    public Page<PrivateJobSummaryResponse> getAllCreatedByUser(UserPrincipal userPrincipal, String targetUserId, Integer page, Integer limit) {
         var vagas = jobUseCases.getAllCreatedSummary(userPrincipal.getId(), targetUserId);
         return vagas.map(vaga -> mapper.map(
                 vaga,
-                VagaPrivateSummaryView.class
+                PrivateJobSummaryResponse.class
         ));
     }
 

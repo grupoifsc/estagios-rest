@@ -1,11 +1,6 @@
 package com.github.projetoifsc.estagios.app.utils.hateoas;
 
-import com.github.projetoifsc.estagios.app.controller.OrgController;
 import com.github.projetoifsc.estagios.app.controller.VagaController;
-import com.github.projetoifsc.estagios.app.model.request.NewVagaRequest;
-import com.github.projetoifsc.estagios.app.model.response.VagaBasicView;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 public class VagaHateoasHelper {
 

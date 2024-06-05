@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.app.model.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.projetoifsc.estagios.app.model.shared.AddressView;
+import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
 
-public class AdressPublicView extends AddressView {
+public class PublicContactResponse extends ContactModel {
 
     @JsonIgnore
     private String id;

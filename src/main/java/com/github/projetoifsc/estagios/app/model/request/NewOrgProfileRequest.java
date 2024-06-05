@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
-import com.github.projetoifsc.estagios.app.model.response.AdressPublicView;
-import com.github.projetoifsc.estagios.app.model.response.ContactPublicView;
-import com.github.projetoifsc.estagios.app.model.shared.ContactView;
+import com.github.projetoifsc.estagios.app.model.response.PublicAddressResponse;
+import com.github.projetoifsc.estagios.app.model.response.PublicContactResponse;
+import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
         "instituicao_de_ensino", "info", "contato_principal", "contato_candidaturas",
         "endereco", "website", "redes_sociais"})
 @Validated
-public class NewUserRequest implements INewUser {
+public class NewOrgProfileRequest implements INewUser {
 
     @JsonIgnore
     private String id;
@@ -61,16 +61,16 @@ public class NewUserRequest implements INewUser {
     @JsonProperty(value = "contato_principal", required = true)
     @NotNull
     @Valid
-    private ContactPublicView mainContact;
+    private PublicContactResponse mainContact;
 
     @JsonProperty(value = "endereco", required = true)
     @NotNull
     @Valid
-    private AdressPublicView mainAddress;
+    private PublicAddressResponse mainAddress;
 
     @JsonProperty(value = "contato_candidaturas")
     @Valid
-    private ContactView applianceContact;
+    private ContactModel applianceContact;
 
 
     @Override
@@ -149,29 +149,29 @@ public class NewUserRequest implements INewUser {
     }
 
     @Override
-    public @NotNull @Valid ContactPublicView getMainContact() {
+    public @NotNull @Valid PublicContactResponse getMainContact() {
         return mainContact;
     }
 
-    public void setMainContact(@NotNull @Valid ContactPublicView mainContact) {
+    public void setMainContact(@NotNull @Valid PublicContactResponse mainContact) {
         this.mainContact = mainContact;
     }
 
     @Override
-    public @NotNull @Valid AdressPublicView getMainAddress() {
+    public @NotNull @Valid PublicAddressResponse getMainAddress() {
         return mainAddress;
     }
 
-    public void setMainAddress(@NotNull @Valid AdressPublicView mainAddress) {
+    public void setMainAddress(@NotNull @Valid PublicAddressResponse mainAddress) {
         this.mainAddress = mainAddress;
     }
 
     @Override
-    public @Valid ContactView getApplianceContact() {
+    public @Valid ContactModel getApplianceContact() {
         return applianceContact;
     }
 
-    public void setApplianceContact(@Valid ContactView applianceContact) {
+    public void setApplianceContact(@Valid ContactModel applianceContact) {
         this.applianceContact = applianceContact;
     }
 }

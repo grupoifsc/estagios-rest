@@ -1,11 +1,11 @@
 package com.github.projetoifsc.estagios.app.controller;
 
 import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
-import com.github.projetoifsc.estagios.app.model.request.RefreshTokenRequest;
+import com.github.projetoifsc.estagios.app.model.request.AuthRefreshTokenRequest;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.security.auth.AuthenticationService;
-import com.github.projetoifsc.estagios.app.model.request.LoginRequest;
-import com.github.projetoifsc.estagios.app.model.response.TokenResponse;
+import com.github.projetoifsc.estagios.app.model.request.AuthLoginRequest;
+import com.github.projetoifsc.estagios.app.model.response.AuthTokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
@@ -33,18 +33,18 @@ public class AuthController {
 
 
     @PostMapping(value = "/login")
-    public TokenResponse login(
-            @RequestBody @Validated LoginRequest loginRequest
+    public AuthTokenResponse login(
+            @RequestBody @Validated AuthLoginRequest authLoginRequest
     ) {
-        return authenticationService.attemptLogin(loginRequest);
+        return authenticationService.attemptLogin(authLoginRequest);
     }
 
 
     @PostMapping(value = "/token")
-    public TokenResponse refreshToken(
-            @RequestBody @Validated RefreshTokenRequest refreshTokenRequest
+    public AuthTokenResponse refreshToken(
+            @RequestBody @Validated AuthRefreshTokenRequest authRefreshTokenRequest
             ) {
-        return authenticationService.refreshToken(refreshTokenRequest);
+        return authenticationService.refreshToken(authRefreshTokenRequest);
     }
 
 

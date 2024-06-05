@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @Schema(name = "Contato")
-public class ContactView implements ContactProjection {
+public class ContactModel implements ContactProjection {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;

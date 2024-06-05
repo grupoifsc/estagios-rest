@@ -2,9 +2,7 @@ package com.github.projetoifsc.estagios.app.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
-
-public class TokenResponse {
+public class AuthTokenResponse {
 
     @JsonProperty(value = "access_token")
     private String accessToken;
