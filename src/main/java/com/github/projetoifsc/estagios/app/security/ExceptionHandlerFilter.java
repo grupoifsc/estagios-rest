@@ -12,11 +12,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
-/**
- * Filter used to catch exceptions thrown by other filters in SecurityChainFilter. Needs to be added in chain before filters whose exceptions are expected to be caught.
- * <br> Doesn't work with Spring Security Authentication filters (use HttpSecurity.exceptionHandling() instead).
- * <br> See: <a href="https://stackoverflow.com/a/34633687/21626367">https://stackoverflow.com/a/34633687/21626367</a>
- */
+
 @Component
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 

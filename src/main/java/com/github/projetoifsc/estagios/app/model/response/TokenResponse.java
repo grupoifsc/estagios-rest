@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public class TokenResponse implements Serializable {
+public class TokenResponse {
 
     @JsonProperty(value = "access_token")
     private String accessToken;

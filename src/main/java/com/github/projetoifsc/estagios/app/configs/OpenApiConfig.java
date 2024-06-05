@@ -56,9 +56,7 @@ public class OpenApiConfig {
 				.addTagsItem( new Tag()
 						.name(VAGAS)
 						.description("")
-				)
-
-				;
+				);
 	}
 
 }

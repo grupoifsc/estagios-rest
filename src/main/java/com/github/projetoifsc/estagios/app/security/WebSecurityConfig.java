@@ -35,7 +35,9 @@ public class WebSecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint;
 
-    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, RateLimitFilter rateLimitFilter, ExceptionHandlerFilter exceptionHandlerFilter, CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
+    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter
+            , RateLimitFilter rateLimitFilter, ExceptionHandlerFilter exceptionHandlerFilter
+            , CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.rateLimitFilter = rateLimitFilter;
         this.exceptionHandlerFilter = exceptionHandlerFilter;
@@ -49,8 +51,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
         return http
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(rateLimitFilter, DisableEncodeUrlFilter.class)
-            .addFilterBefore(exceptionHandlerFilter, RateLimitFilter.class)
+ //           .addFilterBefore(rateLimitFilter, DisableEncodeUrlFilter.class)
+ //           .addFilterBefore(exceptionHandlerFilter, RateLimitFilter.class)
             .cors(AbstractHttpConfigurer::disable)
             .csrf(AbstractHttpConfigurer::disable)
             .securityMatcher("/**") // map current config to given resource path
