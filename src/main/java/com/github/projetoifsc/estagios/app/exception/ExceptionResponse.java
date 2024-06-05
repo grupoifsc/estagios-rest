@@ -11,6 +11,7 @@ import java.util.Date;
  */
 public class ExceptionResponse implements Serializable {
 
+
     private final String status;
     private final HttpStatus code;
     private final String message;
