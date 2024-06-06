@@ -151,7 +151,7 @@ class OrganizationDAOImplTest {
 
     @Test
     void getAllAddresses() {
-        String id = "197";
+        String id = "397";
         var addresses = organizationDB.getAllAddresses(id);
         System.out.println(addresses.size());
         System.out.println(jsonParser.valueAsString(addresses));
@@ -159,7 +159,7 @@ class OrganizationDAOImplTest {
 
     @Test
     void getAllContacts() {
-        String id = "197";
+        String id = "397";
         var contacts = organizationDB.getAllContacts(id);
         System.out.println(contacts.size());
         System.out.println(jsonParser.valueAsString(contacts));

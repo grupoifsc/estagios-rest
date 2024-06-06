@@ -2,14 +2,20 @@ package com.github.projetoifsc.estagios.app.service;
 
 import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
 import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
+import com.github.projetoifsc.estagios.app.model.shared.AddressModel;
+import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.model.response.PublicOrgProfileResponse;
+import com.github.projetoifsc.estagios.core.IAddress;
+import com.github.projetoifsc.estagios.core.IContact;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OrgService {
@@ -63,5 +69,20 @@ public class OrgService {
         );
     }
 
+
+    public List<IAddress> getAllUserAddresses(UserPrincipal userPrincipal, String id) {
+        var addresses = organizationUseCases.getAddresses(userPrincipal.getId(), id);
+        return addresses.stream().map(
+                addr -> (IAddress) mapper.map(addr, AddressModel.class)
+        ).toList();
+    }
+
+
+    public List<IContact> getAllUserContacts(UserPrincipal userPrincipal, String id) {
+        var contacts = organizationUseCases.getContacts(userPrincipal.getId(), id);
+        return contacts.stream().map(
+                contact -> (IContact) mapper.map(contact, ContactModel.class)
+        ).toList();
+    }
 
 }

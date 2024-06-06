@@ -5,6 +5,8 @@ import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.service.OrgService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
+import com.github.projetoifsc.estagios.core.IAddress;
+import com.github.projetoifsc.estagios.core.IContact;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.github.projetoifsc.estagios.app.configs.OpenApiConfig.AUTHORIZATION;
 
@@ -114,6 +118,34 @@ public class OrgController {
 	) {
 		return new ResponseEntity<>(
 				service.getUserPublicProfile(userPrincipal, id),
+				HttpStatus.OK
+		);
+	}
+
+
+	@GetMapping("/{id}/addresses")
+	@Operation(summary="Endereços Cadastrados", description="Ver todos os endereços cadastrados para a organização", tags={OpenApiConfig.ORGS}, operationId="getUserAddresses", security = {@SecurityRequirement(name = securityName)})
+	@ApiResponses({@ApiResponse(responseCode = "200")})
+	public ResponseEntity<List<IAddress>> getAllUserAddresses(
+			@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@PathVariable String id
+	) {
+		return new ResponseEntity<>(
+				service.getAllUserAddresses(userPrincipal, id),
+				HttpStatus.OK
+		);
+	}
+
+
+	@GetMapping("/{id}/contacts")
+	@Operation(summary="Contatos Cadastrados", description="Ver todos os contatos cadastrados para a organização", tags={OpenApiConfig.ORGS}, operationId="getUserContacts", security = {@SecurityRequirement(name = securityName)})
+	@ApiResponses({@ApiResponse(responseCode = "200")})
+	public ResponseEntity<List<IContact>> getAllUserContacts(
+			@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@PathVariable String id
+	) {
+		return new ResponseEntity<>(
+				service.getAllUserContacts(userPrincipal, id),
 				HttpStatus.OK
 		);
 	}
