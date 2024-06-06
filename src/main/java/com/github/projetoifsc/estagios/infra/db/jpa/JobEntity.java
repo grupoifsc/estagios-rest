@@ -40,7 +40,7 @@ class JobEntity implements IJob {
     // https://www.baeldung.com/jpa-many-to-many
     // Pode ser útil para ver as vagas aceitas!
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "ies_received_jobs",
+    @JoinTable(name = "ies_exclusive_jobs",
         joinColumns = @JoinColumn(name = "job_id"),
         inverseJoinColumns = @JoinColumn(name = "org_id")
     )
@@ -58,10 +58,7 @@ class JobEntity implements IJob {
 
 
     @OneToMany(mappedBy = "job")
-    Set<ApprovedJobEntity> approvals;
-
-    @OneToMany(mappedBy = "job")
-    Set<RejectedJobEntity> rejections;
+    Set<ModeratedJobsEntity> moderatedJobs;
 
 
     // Solução: https://stackoverflow.com/questions/27930449/jpa-many-to-one-relation-need-to-save-only-id
@@ -305,6 +302,30 @@ class JobEntity implements IJob {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setOwner(OrganizationEntity owner) {
+        this.owner = owner;
+    }
+
+    public Set<ModeratedJobsEntity> getModeratedJobs() {
+        return moderatedJobs;
+    }
+
+    public void setModeratedJobs(Set<ModeratedJobsEntity> moderatedJobs) {
+        this.moderatedJobs = moderatedJobs;
+    }
+
+    public FormatEntity getFormatEntity() {
+        return formatEntity;
+    }
+
+    public void setFormatEntity(FormatEntity formatEntity) {
+        this.formatEntity = formatEntity;
     }
 
 }

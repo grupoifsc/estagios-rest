@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "priority", discriminatorType = DiscriminatorType.INTEGER)
-@Table(name = "adresses")
+@Table(name = "addresses")
 class AddressEntity implements IAddress {
 
     @Id

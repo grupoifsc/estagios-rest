@@ -25,3 +25,11 @@ VALUES
     (2, "vespertino"),
     (3, "noturno")
 ;
+
+
+INSERT INTO
+    mod_status (id, name)
+VALUES
+    (1, "aprovado"),
+    (2, "rejeitado")
+;

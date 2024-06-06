@@ -7,34 +7,41 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "rejected_jobs", uniqueConstraints = {
+@Table(name = "ies_moderated_jobs", uniqueConstraints = {
         @UniqueConstraint(name="UniqueJobAndOrgRejection", columnNames = {"job_id", "org_id"})
 })
 @EntityListeners(AuditingEntityListener.class)
-class RejectedJobEntity {
+class ModeratedJobsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id", insertable = false, updatable = false)
     private JobEntity job;
 
     @Column(name = "job_id")
     private long jobId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "org_id", insertable = false, updatable = false)
     private OrganizationEntity organization;
 
     @Column(name = "org_id")
     private long orgId;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", insertable = false, updatable = false)
+    private ModerationStatusEntity status;
+
+    @Column(name = "status_id")
+    private short statusId;
+
     @LastModifiedDate
-    @Column(name = "last_rejected_at")
-    private LocalDateTime lastRejectedAt;
+    @Column(name = "modified_at")
+    private LocalDateTime modifiedAt;
 
 
     public Long getId() {
@@ -77,12 +84,28 @@ class RejectedJobEntity {
         this.organization = organization;
     }
 
-    public LocalDateTime getLastRejectedAt() {
-        return lastRejectedAt;
+    public ModerationStatusEntity getStatus() {
+        return status;
     }
 
-    public void setLastRejectedAt(LocalDateTime lastRejectedAt) {
-        this.lastRejectedAt = lastRejectedAt;
+    public void setStatus(ModerationStatusEntity status) {
+        this.status = status;
+    }
+
+    public short getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(short statusId) {
+        this.statusId = statusId;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
 

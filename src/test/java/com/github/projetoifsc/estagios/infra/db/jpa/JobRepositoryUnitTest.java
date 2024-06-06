@@ -27,10 +27,10 @@ class JobRepositoryUnitTest {
     JsonParser jsonParser;
 
     @Autowired
-    RejectedJobRepository rejectedJobRepository;
+    ModeratedJobRepository moderatedJobRepository;
 
-    @Autowired
-    ApprovedJobRepository approvedJobRepository;
+//    @Autowired
+//    ApprovedJobRepository approvedJobRepository;
 
     JobMocker jobMocker = new JobMocker(new Faker(new Locale("pt-BR")));
 
@@ -87,46 +87,46 @@ class JobRepositoryUnitTest {
 
     @Test
     void saveApproved() {
-        var approved = new ApprovedJobEntity();
-        approved.setJobId(34);
-        approved.setOrgId(378);
-        var saved = approvedJobRepository.save(approved);
-        jsonParser.printValue(saved);
+//        var approved = new ApprovedJobEntity();
+//        approved.setJobId(34);
+//        approved.setOrgId(378);
+//        var saved = approvedJobRepository.save(approved);
+//        jsonParser.printValue(saved);
     }
 
     @Test
     void saveRejected() {
-        var rejected = new RejectedJobEntity();
+        var rejected = new ModeratedJobsEntity();
         rejected.setJobId(36);
         rejected.setOrgId(378);
-        var saved = rejectedJobRepository.save(rejected);
+        var saved = moderatedJobRepository.save(rejected);
         jsonParser.printValue(saved);
     }
 
 
     @Test
     void deleteApproved() {
-        approvedJobRepository.deleteById(1L);
+        //approvedJobRepository.deleteById(1L);
     }
 
     @Test
     void deleteRejected() {
-        rejectedJobRepository.deleteById(1L);
+        moderatedJobRepository.deleteById(1L);
     }
 
 
     @Test
     void findByApprovals() {
         var orgId = 379;
-        var approved = repository.findAllByApprovalsOrganizationId(orgId, JobPublicSummaryProjection.class);
-        jsonParser.printValue(approved);
+//        var approved = repository.findAllByApprovalsOrganizationId(orgId, JobPublicSummaryProjection.class);
+//        jsonParser.printValue(approved);
     }
 
     @Test
     void findByRejection() {
         var orgId = 378;
-        var rejected = repository.findAllByRejectionsOrganizationId(orgId, JobPublicSummaryProjection.class);
-        jsonParser.printValue(rejected);
+//        var rejected = repository.findAllByRejectionsOrganizationId(orgId, JobPublicSummaryProjection.class);
+//        jsonParser.printValue(rejected);
     }
 
 }
