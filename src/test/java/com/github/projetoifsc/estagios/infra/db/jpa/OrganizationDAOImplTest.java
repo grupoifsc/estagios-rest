@@ -1,8 +1,6 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateSummaryProjection;
-import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicSummaryProjection;
 import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
 import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
 import com.github.projetoifsc.estagios.core.IOrganization;
@@ -20,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 
 @SpringBootTest
-class OrganizationDBImplTest {
+class OrganizationDAOImplTest {
 
     OrgMocker orgMocker = new OrgMocker(new Faker(new Locale("pt-BR")), new GeradorCnpj());
 
@@ -151,5 +149,20 @@ class OrganizationDBImplTest {
         System.out.println(jsonParser.valueAsString(receivers));
     }
 
+    @Test
+    void getAllAddresses() {
+        String id = "197";
+        var addresses = organizationDB.getAllAddresses(id);
+        System.out.println(addresses.size());
+        System.out.println(jsonParser.valueAsString(addresses));
+    }
+
+    @Test
+    void getAllContacts() {
+        String id = "197";
+        var contacts = organizationDB.getAllContacts(id);
+        System.out.println(contacts.size());
+        System.out.println(jsonParser.valueAsString(contacts));
+    }
 
 }

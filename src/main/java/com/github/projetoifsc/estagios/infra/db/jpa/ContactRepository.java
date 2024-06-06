@@ -7,7 +7,7 @@ import java.util.Optional;
 
 interface ContactRepository extends CrudRepository<ContactEntity, Long> {
 
-    List<ContactEntity> findByOwner(OrganizationEntity owner);
+    List<ContactEntity> findByOwnerId(long ownerId);
     Optional<ContactMainEntity> findFirstContactMainByOwner(OrganizationEntity owner);
     Optional<ContactApplianceEntity> findFirstContactApplianceByOwner(OrganizationEntity owner);
 

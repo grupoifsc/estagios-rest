@@ -13,7 +13,7 @@ interface AddressRepository extends CrudRepository<AddressEntity, Long> {
 
     Optional<AddressMainEntity> findFirstAddressMainByOwner(OrganizationEntity owner);
 
-    List<AddressEntity> findByOwner(OrganizationEntity owner);
+    List<AddressEntity> findByOwnerId(long ownerId);
 
     void deleteAllByOwner(OrganizationEntity owner);
 

@@ -188,6 +188,14 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
     @Override
+    public List<IOrganization> getExclusiveReceiversForJob(String id) {
+        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), OrgBasicInfoProjection.class)
+                .stream().map(org -> (IOrganization) org).toList();
+    }
+
+
+
+    @Override
     public IAddress getMainAddress(String orgId) {
         return addressRepository.findFirstByOwnerId(Long.parseLong(orgId))
                 .orElseThrow(EntityNotFoundException::new);
@@ -203,18 +211,14 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
     @Override
     public List<IAddress> getAllAddresses(String orgId) {
-        return List.of();
+        return addressRepository.findByOwnerId(Long.parseLong(orgId))
+                .stream().map(addrr -> (IAddress) addrr).toList();
     }
 
     @Override
     public List<IContact> getAllContacts(String orgId) {
-        return List.of();
-    }
-
-    @Override
-    public List<IOrganization> getExclusiveReceiversForJob(String id) {
-        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), OrgBasicInfoProjection.class)
-                .stream().map(org -> (IOrganization) org).toList();
+        return contactRepository.findByOwnerId(Long.parseLong(orgId))
+                .stream().map(contact -> (IContact) contact).toList();
     }
 
 
