@@ -9,6 +9,8 @@ import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +56,7 @@ class JobDAOImpl implements IJobDAO {
 
     @Override
     @Transactional
-    public IJob getBasicInfoById(String id) {
+    public IJob getBasicInfo(String id) {
         var job = getOptionalOrThrow(
                 Long.parseLong(id),
                 jobId -> jobRepository.findById(jobId, JobBasicInfoProjection.class));
@@ -90,6 +92,11 @@ class JobDAOImpl implements IJobDAO {
 
 
         // TODO Logic: deve falhar se uma área não existir?
+        // Sim, deve falhar!
+        // Este dado não precisa estar no IJobEntry no Core!
+        // Ou então... tudo deve estar no Core na verdade...
+        // Para deixar bem amarradinho...
+        // É um pouco irritante? Sim, mas é assim que é...
         var areasIds = newJob.getAreasIds()
                 .stream().map(Long::parseLong).toList();
         if(!areasIds.isEmpty()) {
@@ -160,7 +167,7 @@ class JobDAOImpl implements IJobDAO {
     }
 
     @Override
-    public List<IJob> findAllPublicJobs() {
+    public List<IJob> findAllPublicJobsSummary() {
         return jobRepository.findAllByExclusiveReceiversEmpty(JobPublicSummaryProjection.class)
                 .stream().map(job -> (IJob) job).toList();
     }
@@ -174,7 +181,7 @@ class JobDAOImpl implements IJobDAO {
 
 
     @Override
-    public void setJobApprovedByOrg(String traineeshipId, String organizationId) {
+    public IJob setJobApprovedByOrg(String traineeshipId, String organizationId) {
         var jobId = Long.parseLong(traineeshipId);
         var orgId = Long.parseLong(organizationId);
 
@@ -192,19 +199,20 @@ class JobDAOImpl implements IJobDAO {
 //        approvedJob.setJobId(jobId);
 //        approvedJob.setOrgId(orgId);
         ///approvedJobRepository.save(approvedJob);
+        return null;
 
     }
 
 
     @Override
-    public void setJobReprovedByOrg(String traineeshipId, String organizationId) {
+    public IJob setJobRejectedByOrg(String traineeshipId, String organizationId) {
         var jobId = Long.parseLong(traineeshipId);
         var orgId = Long.parseLong(organizationId);
 
         var existingRejectedRecord = moderatedJobRepository.findByJobIdAndOrganizationId(jobId, orgId);
         if(existingRejectedRecord.isPresent()){
             System.out.println("Job already rejected by institution");
-            return;
+            return null;
         }
 
 //        var approvedJob = approvedJobRepository.findByJobIdAndOrganizationId(jobId, orgId);
@@ -215,19 +223,19 @@ class JobDAOImpl implements IJobDAO {
         rejectedJob.setJobId(jobId);
         rejectedJob.setOrgId(orgId);
         moderatedJobRepository.save(rejectedJob);
-
+        return null;
     }
 
 
     @Override
-    public List<IJob> getAllApprovedSummaryByOrg(String orgId) {
+    public List<IJob> getAllApprovedSummaryFromOrg(String orgId) {
 //        return jobRepository.findAllByApprovalsOrganizationId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
 //                .stream().map(job -> (IJob) job).toList();
     return null;
     }
 
     @Override
-    public List<IJob> getAllReprovedSummaryByOrg(String orgId) {
+    public List<IJob> getAllRejectedSummaryFromOrg(String orgId) {
 //        return jobRepository.findAllByRejectionsOrganizationId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
 //                .stream().map(job -> (IJob) job).toList();
     return null;
@@ -240,6 +248,25 @@ class JobDAOImpl implements IJobDAO {
 //                .stream().map(job -> (IJob) job).toList();
         return null;
     }
+
+    @Override
+    public Page<IJob> getAllCreatedJobsSummaryFromOrg(String orgId) {
+        return jobRepository.findAllByOwnerId(Long.parseLong(orgId), PageRequest.of(0, 100), JobPrivateSummaryProjection.class)
+                .map(job -> (IJob) job);
+    }
+
+    @Override
+    public List<IJob> getAllPendingSummaryFromOrg(String orgId) {
+        return List.of();
+    }
+
+
+    @Override
+    public List<IJob> getExclusiveReceivedJobsSummaryForOrg(String orgId) {
+        return jobRepository.findAllByExclusiveReceiversId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
+                .stream().map(r -> (IJob) r).toList();
+    }
+
 
 
 }

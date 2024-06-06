@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-
 public class JobUseCases implements IJobUseCases {
 
     private final JobReadOperations readOperations;
@@ -14,26 +13,6 @@ public class JobUseCases implements IJobUseCases {
     public JobUseCases(IJobDAO jobRepository, IOrganizationDAO organizationRepository) {
         readOperations = new JobReadOperations(jobRepository, organizationRepository);
         writeOperations = new JobWriteOperations(readOperations, jobRepository, organizationRepository);
-    }
-
-    @Override
-    public Page<IJob> getAllCreatedSummary(String loggedId, String targetId) {
-        return readOperations.getAllCreatedSummary(loggedId, targetId);
-    }
-
-    @Override
-    public List<IJob> getAllReceivedSummary(String loggedId, String targetId) {
-        return readOperations.getAllReceivedSummary(loggedId, targetId);
-    }
-
-    @Override
-    public IJob getOnePrivateDetails(String organizationId, String traineeshipId) {
-        return readOperations.getOnePrivateDetails(organizationId, traineeshipId);
-    }
-
-    @Override
-    public IJob getOnePublicDetails(String organizationId, String traineeshipId) {
-        return readOperations.getOnePublicDetails(organizationId, traineeshipId);
     }
 
     @Override
@@ -52,18 +31,49 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
-    public void aprove(String organizationId, String traineeshipId) {
-        writeOperations.approve(organizationId, traineeshipId);
+    public IJob getOnePublicDetails(String organizationId, String traineeshipId) {
+        return readOperations.getOnePublicDetails(organizationId, traineeshipId);
     }
 
     @Override
-    public void reject(String organizationId, String traineeshipId) {
-        writeOperations.reject(organizationId, traineeshipId);
+    public IJob getOnePrivateDetails(String organizationId, String traineeshipId) {
+        return readOperations.getOnePrivateDetails(organizationId, traineeshipId);
     }
 
     @Override
-    public List<IJob> getAllAprovedSummary(String loggedId, String targetId) {
+    public IJob approve(String organizationId, String traineeshipId) {
+        return writeOperations.approve(organizationId, traineeshipId);
+    }
+
+    @Override
+    public IJob reject(String organizationId, String traineeshipId) {
+        return writeOperations.reject(organizationId, traineeshipId);
+    }
+
+    @Override
+    public List<IJob> getAllApprovedSummary(String loggedId, String targetId) {
         return readOperations.getAllApprovedSummary(loggedId, targetId);
+    }
+
+    @Override
+    public Page<IJob> getAllCreatedSummary(String loggedId, String targetId) {
+        return readOperations.getAllCreatedSummary(loggedId, targetId);
+    }
+
+    @Override
+    public List<IJob> getAllPendingSummary(String loggedId, String targetId) {
+        return readOperations.getAllPendingSummary(loggedId, targetId);
+    }
+
+    @Override
+    public List<IJob> getAllRejectedSummary(String loggedId, String targetId) {
+        return readOperations.getAllRejectedSummary(loggedId, targetId);
+    }
+
+
+    @Override
+    public List<IJob> filterAllApprovedSummary(String loggedId, String targetId) {
+        return List.of();
     }
 
 }

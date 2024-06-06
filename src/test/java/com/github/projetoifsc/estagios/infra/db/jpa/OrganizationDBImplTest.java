@@ -31,6 +31,9 @@ class OrganizationDBImplTest {
     OrganizationDAOImpl organizationDB;
 
     @Autowired
+    JobDAOImpl jobDB;
+
+    @Autowired
     Mapper mapper;
 
     @Autowired
@@ -126,7 +129,7 @@ class OrganizationDBImplTest {
     @Test
     void getCreatedJobsReturnsJobsSummaryPrivateInfo() {
         String id = "195";
-        var createdJobs = organizationDB.getAllCreatedJobsSummaryFromOrg(id);
+        var createdJobs = jobDB.getAllCreatedJobsSummaryFromOrg(id);
         createdJobs.getContent().forEach(
                 job -> {
                     assertInstanceOf(JobPrivateSummaryProjection.class, job);
@@ -138,7 +141,7 @@ class OrganizationDBImplTest {
     @Test
     void getExclusiveReceivedJobsReturnsJobsSummaryPublicInfo() {
         String id = "274";
-        var createdJobs = organizationDB.getExclusiveReceivedJobsSummaryForOrg(id);
+        var createdJobs = jobDB.getExclusiveReceivedJobsSummaryForOrg(id);
         createdJobs.forEach(
                 job -> {
                     assertInstanceOf(JobPublicSummaryProjection.class, job);

@@ -26,4 +26,8 @@ class OrganizationValidation {
         return organization.getIe();
     }
 
+    public static boolean isIE(IOrganization organization) {
+        return organization.getIe();
+    }
+
 }

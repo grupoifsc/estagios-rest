@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OrganizationEntityWriteOperationsUnitTest {
+public class OrganizationWriteOperationsUnitTest {
 
     Mapper mapper = new Mapper();
 

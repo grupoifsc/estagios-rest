@@ -103,9 +103,9 @@ class JobDBImplTest {
 
     @Test
     void getBasicInfoByIdReturnsEntityOrThrowsException() {
-        assertDoesNotThrow(() -> jobDBImpl.getBasicInfoById("2"));
-        assertThrows(Exception.class, () -> jobDBImpl.getBasicInfoById("0"));
-        assertInstanceOf(IJob.class, jobDBImpl.getBasicInfoById("2"));
+        assertDoesNotThrow(() -> jobDBImpl.getBasicInfo("2"));
+        assertThrows(Exception.class, () -> jobDBImpl.getBasicInfo("0"));
+        assertInstanceOf(IJob.class, jobDBImpl.getBasicInfo("2"));
     }
 
 
@@ -141,7 +141,7 @@ class JobDBImplTest {
 
     @Test
     void findAllPublicJobs() {
-        var vagas = jobDBImpl.findAllPublicJobs();
+        var vagas = jobDBImpl.findAllPublicJobsSummary();
         var listaString = vagas.stream().map(
                 job -> jsonParser.valueAsString(job)
         ).toList();
@@ -166,12 +166,12 @@ class JobDBImplTest {
 
     @Test
     void rejectJob() {
-        jobDBImpl.setJobReprovedByOrg("36", "379");
+        jobDBImpl.setJobRejectedByOrg("36", "379");
     }
 
     @Test
     void getAllApprovedByOrganization() {
-        var approved = jobDBImpl.getAllApprovedSummaryByOrg("379");
+        var approved = jobDBImpl.getAllApprovedSummaryFromOrg("379");
         System.out.println(approved.size());
         jsonParser.printValue(approved);
     }

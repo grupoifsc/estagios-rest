@@ -5,25 +5,35 @@ import com.github.projetoifsc.estagios.core.*;
 class JobWriteOperations {
 
     JobReadOperations jobReadOperations;
-    IJobDAO traineeshipRepository;
-    IOrganizationDAO organizationRepository;
+    IJobDAO jobDB;
+    IOrganizationDAO organizationDB;
 
-    public JobWriteOperations(JobReadOperations jobReadOperations, IJobDAO traineeshipRepository, IOrganizationDAO organizationRepository) {
+    public JobWriteOperations(JobReadOperations jobReadOperations, IJobDAO jobDB, IOrganizationDAO organizationDB) {
         this.jobReadOperations = jobReadOperations;
-        this.traineeshipRepository = traineeshipRepository;
-        this.organizationRepository = organizationRepository;
+        this.jobDB = jobDB;
+        this.organizationDB = organizationDB;
     }
 
 
     public IJob create(String organizationId, IJobEntryData traineeship) {
-        var organization = organizationRepository.findById(organizationId);
+        var organization = organizationDB.findById(organizationId);
         return saveOrUpdate(organization, traineeship);
+    }
+
+    private IJob saveOrUpdate(IOrganization organization, IJobEntryData traineeship) {
+        traineeship.setOwner(organization);
+        if(traineeship.getReceiversIds() != null && !traineeship.getReceiversIds().isEmpty()) {
+            var receiversList = organizationDB.findAllById(traineeship.getReceiversIds());
+            ReceiverValidation.validateReceivers(receiversList);
+        }
+        var id = jobDB.saveAndGetId(traineeship);
+        return jobDB.getPrivateDetails(id);
     }
 
 
     public IJob update(String organizationId, String traineeshipId, IJobEntryData newData) {
-        var traineeship = traineeshipRepository.getBasicInfoById(traineeshipId);
-        var organization = organizationRepository.findById(organizationId);
+        var traineeship = jobDB.getBasicInfo(traineeshipId);
+        var organization = organizationDB.findById(organizationId);
 
         if ( OrganizationValidation.isOwner(organization, traineeship) ) {
             newData.setId(traineeshipId);
@@ -36,11 +46,11 @@ class JobWriteOperations {
 
 
     public void delete(String organizationId, String traineeshipId) {
-        var traineeship = traineeshipRepository.getBasicInfoById(traineeshipId);
-        var organization = organizationRepository.findById(organizationId);
+        var traineeship = jobDB.getBasicInfo(traineeshipId);
+        var organization = organizationDB.findById(organizationId);
 
         if ( OrganizationValidation.isOwner(organization, traineeship) ) {
-            traineeshipRepository.delete(traineeship.getId());
+            jobDB.delete(traineeship.getId());
             return;
         }
 
@@ -49,34 +59,34 @@ class JobWriteOperations {
     }
 
 
-
-    private IJob saveOrUpdate(IOrganization organization, IJobEntryData traineeship) {
-        traineeship.setOwner(organization);
-        if(traineeship.getReceiversIds() != null && !traineeship.getReceiversIds().isEmpty()) {
-            var receiversList = organizationRepository.findAllById(traineeship.getReceiversIds());
-            ReceiverValidation.validateReceivers(receiversList);
-        }
-        var id = traineeshipRepository.saveAndGetId(traineeship);
-        return traineeshipRepository.getPrivateDetails(id);
+    public IJob approve(String organizationId, String traineeshipId) {
+        var org = organizationDB.findById(organizationId);
+        var job = jobDB.getBasicInfo(traineeshipId);
+        if(canModerate(org, job))
+            return jobDB.setJobApprovedByOrg(traineeshipId, organizationId);
+        var errorMessage = "Not allowed to moderate this resource";
+        throw new UnauthorizedAccessException(errorMessage);
     }
 
 
-    public void approve(String organizationId, String traineeshipId) {
-        var received = jobReadOperations.getAllReceivedSummary(organizationId, organizationId);
-        var ids = received.stream().map(IJob::getId).toList();
-        if(ids.contains(traineeshipId)) {
-            traineeshipRepository.setJobApprovedByOrg(traineeshipId, organizationId);
+    // TODO Refactor: pode substituir por métodos como isPublic() e um isReceiver() -> Este teria que ser chamada ao banco de dados...
+    private boolean canModerate(IOrganization org, IJob job) {
+        if(OrganizationValidation.isIE(org) && !OrganizationValidation.isOwner(org, job)) {
+            var receivedJobs = jobReadOperations.getAllReceivedSummary(org);
+            return receivedJobs.contains(job);
         }
+        return false;
     }
 
 
-    public void reject(String organizationId, String traineeshipId) {
-        var received = jobReadOperations.getAllReceivedSummary(organizationId, organizationId);
-        var ids = received.stream().map(IJob::getId).toList();
-        if(ids.contains(traineeshipId)) {
-            traineeshipRepository.setJobReprovedByOrg(traineeshipId, organizationId);
-        }
-    }
+    public IJob reject(String organizationId, String traineeshipId) {
+        var org = organizationDB.findById(organizationId);
+        var job = jobDB.getBasicInfo(traineeshipId);
+        if(canModerate(org, job))
+            return jobDB.setJobRejectedByOrg(traineeshipId, organizationId);
+        var errorMessage = "Not allowed to moderate this resource";
+        throw new UnauthorizedAccessException(errorMessage);
+     }
 
 
 }

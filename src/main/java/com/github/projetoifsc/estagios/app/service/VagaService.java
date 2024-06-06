@@ -65,12 +65,14 @@ public class VagaService {
     }
 
 
+    // TODO Refactor: Método não estará mais disponível
      public List<PublicJobDetailsResponse> getAllReceivedByUser(UserPrincipal userPrincipal, String targetUserId, HashMap<String, String> filterArgs) {
-        var vagas = jobUseCases.getAllReceivedSummary(userPrincipal.getId(), targetUserId);
-        return vagas.stream().map(vaga -> mapper.map(
-                vaga,
-                PublicJobDetailsResponse.class
-        )).toList();
+//        var vagas = jobUseCases.getAllReceivedSummary(userPrincipal.getId(), targetUserId);
+//        return vagas.stream().map(vaga -> mapper.map(
+//                vaga,
+//                PublicJobDetailsResponse.class
+//        )).toList();
+         return null;
     }
 
 

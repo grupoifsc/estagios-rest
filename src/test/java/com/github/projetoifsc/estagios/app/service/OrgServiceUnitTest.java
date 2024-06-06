@@ -127,7 +127,7 @@ class OrgServiceUnitTest {
     @Test
     void whenGetSchoolsRetunsPageWithPublicView() {
 
-        when(organizationUseCases.getSchools())
+        when(organizationUseCases.getAllSchools())
                 .thenReturn(new PageImpl<>(new ArrayList<>(
                         List.of(
                         generateProjection(), generateProjection(), generateProjection()

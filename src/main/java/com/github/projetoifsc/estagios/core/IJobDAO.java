@@ -1,21 +1,29 @@
 package com.github.projetoifsc.estagios.core;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface IJobDAO {
 
-    IJob getBasicInfoById(String id);
     String saveAndGetId(IJobEntryData newJob);
-    void delete(String ITraineeship);
-    List<IOrganization> getExclusiveReceiversForJob(String ITraineeship);
-    IJob getPublicDetails(String ITraineeship);
-    IJob getPrivateDetails(String ITraineeship);
-    List<IJob> findAllPublicJobs();
+    void delete(String id);
 
-    void setJobApprovedByOrg(String traineeshipId, String organizationId);
-    void setJobReprovedByOrg(String traineeshipId, String organizationId);
+    IJob getBasicInfo(String id);
+    IJob getPublicDetails(String id);
+    IJob getPrivateDetails(String id);
 
-    List<IJob> getAllApprovedSummaryByOrg(String loggedId);
-    List<IJob> getAllReprovedSummaryByOrg(String orgId);
+    List<IOrganization> getExclusiveReceiversForJob(String id);
+
+    List<IJob> findAllPublicJobsSummary();
+
+    IJob setJobApprovedByOrg(String jobId, String orgId);
+    IJob setJobRejectedByOrg(String jobId, String orgId);
+
+    Page<IJob> getAllCreatedJobsSummaryFromOrg(String orgId);
+    List<IJob> getAllPendingSummaryFromOrg(String orgId);
+    List<IJob> getAllApprovedSummaryFromOrg(String orgId);
+    List<IJob> getAllRejectedSummaryFromOrg(String orgId);
+    List<IJob> getExclusiveReceivedJobsSummaryForOrg(String orgId);
 
 }

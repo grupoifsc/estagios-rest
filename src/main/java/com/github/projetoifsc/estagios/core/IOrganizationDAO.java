@@ -7,14 +7,13 @@ import java.util.List;
 
 public interface IOrganizationDAO {
 
+    IOrganization save(INewUser organization);
+    void delete(String organization);
+
     IOrganization findById(String id);
+    IOrganization findByUsername(String username);
 
     List<IOrganization> findAllById(List<String> receiversIds);
-
-    IOrganization findByUsername(String username);
-    IOrganization save(INewUser organization);
-
-    void delete(String organization);
 
     IOrganization getOnePublicProfile(String organization);
     IOrganization getOnePrivateProfile(String organization);
@@ -24,10 +23,7 @@ public interface IOrganizationDAO {
     IAddress getMainAddress(String orgId);
     IContact getMainContact(String orgId);
 
-    
-    //  TODO Refactor: Mover queries relacionadas com vagas para outro DB
-    Page<IJob> getAllCreatedJobsSummaryFromOrg(String organization);
-    List<IJob> getExclusiveReceivedJobsSummaryForOrg(String organization);
-
+    List<IAddress> getAllAddresses(String orgId);
+    List<IContact> getAllContacts(String orgId);
 
 }

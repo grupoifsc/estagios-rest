@@ -181,20 +181,6 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
     @Override
-    public Page<IJob> getAllCreatedJobsSummaryFromOrg(String organizationId) {
-        return jobRepository.findAllByOwnerId(Long.parseLong(organizationId), PageRequest.of(0, 100), JobPrivateSummaryProjection.class)
-                .map(job -> (IJob) job);
-    }
-
-
-    @Override
-    public List<IJob> getExclusiveReceivedJobsSummaryForOrg(String organizationId) {
-        return jobRepository.findAllByExclusiveReceiversId(Long.parseLong(organizationId), JobPublicSummaryProjection.class)
-                .stream().map(r -> (IJob) r).toList();
-    }
-
-
-    @Override
     public Page<IOrganization> getAllSchoolsPublicProfile() {
         var page = organizationRepository.findAllByIe(true, PageRequest.of(0, 20), OrgPublicProfileProjection.class);
         return page.map(org -> (IOrganization) org);
@@ -213,6 +199,16 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
         var optional = organizationRepository.findById(Long.parseLong(orgId), OrganizationEntity.class);
         var entity = optional.orElseThrow(EntityNotFoundException::new);
         return entity.getMainContact();
+    }
+
+    @Override
+    public List<IAddress> getAllAddresses(String orgId) {
+        return List.of();
+    }
+
+    @Override
+    public List<IContact> getAllContacts(String orgId) {
+        return List.of();
     }
 
 

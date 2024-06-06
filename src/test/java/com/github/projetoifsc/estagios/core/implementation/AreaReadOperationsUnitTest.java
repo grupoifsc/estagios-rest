@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.*;
 
-public class AreaEntityReadOperationsUnitTest {
+public class AreaReadOperationsUnitTest {
 
     IAreaDAO areaRepository = mock();
     AreaReadOperations service = new AreaReadOperations(areaRepository);

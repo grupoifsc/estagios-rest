@@ -6,16 +6,21 @@ import java.util.List;
 
 public interface IJobUseCases {
 
-    Page<IJob> getAllCreatedSummary(String loggedId, String targetId);
-    List<IJob> getAllReceivedSummary(String loggedId, String targetId);
-    IJob getOnePrivateDetails(String organizationId, String traineeshipId);
-    IJob getOnePublicDetails(String organizationId, String traineeshipId);
     IJob create(String organizationId, IJobEntryData traineeship);
     IJob update(String organizationId, String traineeshipId, IJobEntryData newData);
     void delete(String organizationId, String traineeshipId);
 
-    void aprove(String organizationId, String traineeshipId);
-    void reject(String organizationId, String traineeshipId);
-    List<IJob> getAllAprovedSummary(String loggedId, String targetId);
+    IJob getOnePublicDetails(String organizationId, String traineeshipId);
+    IJob getOnePrivateDetails(String organizationId, String traineeshipId);
+
+    IJob approve(String organizationId, String traineeshipId);
+    IJob reject(String organizationId, String traineeshipId);
+
+    Page<IJob> getAllCreatedSummary(String loggedId, String targetId);
+    List<IJob> getAllApprovedSummary(String loggedId, String targetId);
+    List<IJob> getAllRejectedSummary(String loggedId, String targetId);
+    List<IJob> getAllPendingSummary(String loggedId, String targetId);
+
+    List<IJob> filterAllApprovedSummary(String loggedId, String targetId);
 
 }

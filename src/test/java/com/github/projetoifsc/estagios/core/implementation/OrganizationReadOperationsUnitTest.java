@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.*;
 
-public class OrganizationEntityReadOperationsUnitTest {
+public class OrganizationReadOperationsUnitTest {
 
     IOrganizationDAO organizationRepository = mock();
     OrganizationReadOperations service = new OrganizationReadOperations(organizationRepository);
@@ -31,22 +31,12 @@ public class OrganizationEntityReadOperationsUnitTest {
     @Test
     void getSchoolsCallsSchoolsPublicProfileAndReturnsList() {
         when(organizationRepository.getAllSchoolsPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", true))));
-        assertInstanceOf(PageImpl.class, service.getSchools());
+        assertInstanceOf(PageImpl.class, service.getAllSchools());
     }
 
 
     @Test
-    void seePrivateProfileReturnsInterface() {
-        when(organizationRepository.getOnePrivateProfile(organizationA.getId())).thenReturn(organizationA);
-
-        assertInstanceOf(IOrganization.class, service.getPrivateProfile(
-                organizationA.getId(),
-                organizationA.getId()
-        ));
-    }
-
-    @Test
-    void tryToSeeOtherOrganizationPrivateProfileThrowsUnauthorized() {
+    void givenNotSelf_whenSeePrivateDetails_thenThrowException() {
         assertThrows(UnauthorizedAccessException.class, ()->
                 service.getPrivateProfile(
                         organizationA.getId(),
@@ -57,29 +47,20 @@ public class OrganizationEntityReadOperationsUnitTest {
 
 
     @Test
-    void seePublicProfileReturnsInterface() {
-        when(organizationRepository.getOnePublicProfile(organizationA.getId())).thenReturn(organizationA);
-
-        assertDoesNotThrow(()->service.getPublicProfile(
+    void givenNotSelf_whenSeeAddressesOrContacts_thenThrowException() {
+        assertThrows(UnauthorizedAccessException.class, ()->
+                service.getAddresses(
                         organizationA.getId(),
-                        organizationA.getId()
+                        organizationB.getId()
                 )
         );
-    }
-
-
-    @Test
-    void canSeeAnyOrganizationPublicProfile() {
-        when(organizationRepository.getOnePublicProfile(organizationB.getId())).thenReturn(organizationB);
-
-        assertDoesNotThrow(()->service.getPublicProfile(
+        assertThrows(UnauthorizedAccessException.class, ()->
+                service.getContacts(
                         organizationA.getId(),
                         organizationB.getId()
                 )
         );
     }
-
-
 
 
 }

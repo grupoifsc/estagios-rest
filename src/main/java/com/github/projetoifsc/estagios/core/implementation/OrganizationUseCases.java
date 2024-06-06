@@ -1,10 +1,10 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
-import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.IOrganizationDAO;
-import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
+import com.github.projetoifsc.estagios.core.*;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 
 public class OrganizationUseCases implements IOrganizationUseCases {
@@ -33,8 +33,8 @@ public class OrganizationUseCases implements IOrganizationUseCases {
     }
 
     @Override
-    public Page<IOrganization> getSchools() {
-        return readUC.getSchools();
+    public IOrganization getPublicProfile(String loggedId, String targetId) {
+        return readUC.getPublicProfile(loggedId, targetId);
     }
 
     @Override
@@ -43,8 +43,18 @@ public class OrganizationUseCases implements IOrganizationUseCases {
     }
 
     @Override
-    public IOrganization getPublicProfile(String loggedId, String targetId) {
-        return readUC.getPublicProfile(loggedId, targetId);
+    public Page<IOrganization> getAllSchools() {
+        return readUC.getAllSchools();
+    }
+
+    @Override
+    public List<IAddress> getAddresses(String loggedId, String targetId) {
+        return readUC.getAddresses(loggedId, targetId);
+    }
+
+    @Override
+    public List<IContact> getContacts(String loggedId, String targetId) {
+        return readUC.getContacts(loggedId, targetId);
     }
 
 }
