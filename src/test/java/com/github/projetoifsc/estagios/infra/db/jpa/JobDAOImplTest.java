@@ -3,6 +3,7 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 import com.github.javafaker.Faker;
 import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicSummaryProjection;
 import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Rollback(value = false)
-class JobDBImplTest {
+class JobDAOImplTest {
 
     JobMocker mocker =
             new JobMocker(new Faker(new Locale("pt-Br")));
@@ -98,9 +99,6 @@ class JobDBImplTest {
 
     }
 
-
-
-
     @Test
     void getBasicInfoByIdReturnsEntityOrThrowsException() {
         assertDoesNotThrow(() -> jobDBImpl.getBasicInfo("2"));
@@ -139,51 +137,73 @@ class JobDBImplTest {
         assertInstanceOf(JobPrivateDetailsProjection.class, privateProjection);
     }
 
-    @Test
-    void findAllPublicJobs() {
-        var vagas = jobDBImpl.findAllPublicJobsSummary();
-        var listaString = vagas.stream().map(
-                job -> jsonParser.valueAsString(job)
-        ).toList();
-        System.out.println(vagas);
-        System.out.println(listaString);
-    }
-
-
-    @Test
-    void getExclusiveReceiversForJob() {
-        String id = "8";
-        var receivers = jobDBImpl.getExclusiveReceiversForJob(id);
-        System.out.println(jsonParser.valueAsString(receivers));
-    }
-
 
     @Test
     void approveJob() {
-        jobDBImpl.setJobApprovedByOrg("36", "378");
+        jobDBImpl.setJobApprovedByOrg("34", "378");
     }
-
 
     @Test
     void rejectJob() {
-        jobDBImpl.setJobRejectedByOrg("36", "379");
+        jobDBImpl.setJobRejectedByOrg("36", "378");
     }
 
+
     @Test
-    void getAllApprovedByOrganization() {
-        var approved = jobDBImpl.getAllApprovedSummaryFromOrg("379");
+    void getAllPublic() {
+        var vagas = jobDBImpl.findAllPublicJobsSummary();
+        System.out.println(vagas.size());
+        jsonParser.printValue(vagas);
+    }
+
+
+    @Test
+    void getAllApproved() {
+        var id = "378";
+        var approved = jobDBImpl.getAllApprovedSummaryFromOrg(id);
         System.out.println(approved.size());
         jsonParser.printValue(approved);
     }
 
+    @Test
+    void getAllRejected() {
+        var id = "378";
+        var vagas = jobDBImpl.getAllRejectedSummaryFromOrg(id);
+        System.out.println(vagas.size());
+        jsonParser.printValue(vagas);
+    }
+
+
+    @Test
+    void getAllPending() {
+        var id = "378";
+        var vagas = jobDBImpl.getAllPendingSummaryFromOrg(id);
+        System.out.println(vagas.size());
+        jsonParser.printValue(vagas);
+    }
+
+    @Test
+    void getAllCreated() {
+        var id = "198";
+        var vagas = jobDBImpl.getAllCreatedJobsSummaryFromOrg(id);
+        System.out.println(vagas.getNumberOfElements());
+        jsonParser.printValue(vagas);
+    }
 
     @Test
     void getAllAvailable() {
-        var id = "379";
+        var id = "378";
         var available = jobDBImpl.getAllAvailableByOrg(id);
         System.out.println(available.size());
         jsonParser.printValue(available);
+    }
 
+    @Test
+    void getExclusiveReceivedJobsReturnsJobsSummaryPublicInfo() {
+        String id = "195";
+        var received = jobDBImpl.getExclusiveReceivedJobsSummaryForOrg(id);
+        System.out.println(received.size());
+        jsonParser.printValue(received);
     }
 
 

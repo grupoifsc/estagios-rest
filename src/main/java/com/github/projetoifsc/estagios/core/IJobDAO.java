@@ -13,8 +13,6 @@ public interface IJobDAO {
     IJob getPublicDetails(String id);
     IJob getPrivateDetails(String id);
 
-    List<IOrganization> getExclusiveReceiversForJob(String id);
-
     List<IJob> findAllPublicJobsSummary();
 
     IJob setJobApprovedByOrg(String jobId, String orgId);

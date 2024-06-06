@@ -59,7 +59,7 @@ public class JobReadOperationsUnitTest {
                 .thenReturn(school);
         when(jobDB.getBasicInfo(traineeship.getId()))
                 .thenReturn(traineeship);
-        when(jobDB.getExclusiveReceiversForJob(traineeship.getId()))
+        when(organizationDB.getExclusiveReceiversForJob(traineeship.getId()))
                 .thenReturn(List.of(school));
         when(jobDB.getPublicDetails(traineeship.getId()))
                 .thenReturn(traineeship);
@@ -78,7 +78,7 @@ public class JobReadOperationsUnitTest {
                 .thenReturn(organization);
         when(jobDB.getPublicDetails(traineeship.getId()))
                 .thenReturn(traineeship);
-        when(jobDB.getExclusiveReceiversForJob(traineeship.getId()))
+        when(organizationDB.getExclusiveReceiversForJob(traineeship.getId()))
                 .thenReturn(List.of(otherOrganization));
 
         assertThrows(UnauthorizedAccessException.class,

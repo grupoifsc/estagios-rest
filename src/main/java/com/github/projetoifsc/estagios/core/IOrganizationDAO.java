@@ -26,4 +26,6 @@ public interface IOrganizationDAO {
     List<IAddress> getAllAddresses(String orgId);
     List<IContact> getAllContacts(String orgId);
 
+    List<IOrganization> getExclusiveReceiversForJob(String jobId);
+
 }

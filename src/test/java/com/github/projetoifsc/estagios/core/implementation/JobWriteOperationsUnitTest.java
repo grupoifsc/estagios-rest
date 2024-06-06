@@ -70,10 +70,10 @@ public class JobWriteOperationsUnitTest {
 
         var created = service.create(organization.getId(), job);
 
-        when(jobRepository.getExclusiveReceiversForJob(created.getId()))
+        when(organizationRepository.getExclusiveReceiversForJob(created.getId()))
                 .thenReturn(List.of(schoolA, schoolB));
 
-        var receivers = jobRepository.getExclusiveReceiversForJob(created.getId());
+        var receivers = organizationRepository.getExclusiveReceiversForJob(created.getId());
 
         assertTrue(receivers.contains(schoolA));
         assertTrue(receivers.contains(schoolB));
@@ -139,10 +139,10 @@ public class JobWriteOperationsUnitTest {
 
         var updated = service.update(organization.getId(), job.getId(), job);
 
-        when(jobRepository.getExclusiveReceiversForJob(updated.getId()))
+        when(organizationRepository.getExclusiveReceiversForJob(updated.getId()))
                 .thenReturn(List.of(schoolA, schoolB));
 
-        var receivers = jobRepository.getExclusiveReceiversForJob(updated.getId());
+        var receivers = organizationRepository.getExclusiveReceiversForJob(updated.getId());
 
         assertTrue(receivers.contains(schoolA));
         assertTrue(receivers.contains(schoolB));

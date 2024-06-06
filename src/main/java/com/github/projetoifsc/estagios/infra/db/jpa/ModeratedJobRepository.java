@@ -12,4 +12,5 @@ interface ModeratedJobRepository extends CrudRepository<ModeratedJobsEntity, Lon
     Optional<ModeratedJobsEntity> findByJobIdAndOrganizationId(long jobId, long orgId);
     List<ModeratedJobsEntity> findAllByOrganizationId(long orgId);
 
+
 }

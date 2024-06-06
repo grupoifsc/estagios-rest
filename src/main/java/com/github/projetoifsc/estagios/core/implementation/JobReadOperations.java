@@ -23,7 +23,7 @@ class JobReadOperations {
         var organization = organizationDB.findById(organizationId);
         var traineeship = jobDB.getPublicDetails(traineeshipId);
 
-        var exclusiveReceivers = jobDB.getExclusiveReceiversForJob(traineeshipId);
+        var exclusiveReceivers = organizationDB.getExclusiveReceiversForJob(traineeshipId);
 
         if (OrganizationValidation.isOwner(organization, traineeship)
                 || OrganizationValidation.isReceiver(organization, exclusiveReceivers)) {

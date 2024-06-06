@@ -4,11 +4,9 @@ import com.github.projetoifsc.estagios.app.model.interfaces.*;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.core.IJobDAO;
 import com.github.projetoifsc.estagios.core.IJobEntryData;
-import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -21,31 +19,26 @@ import java.util.function.Function;
 @Component
 class JobDAOImpl implements IJobDAO {
 
-    OrganizationRepository orgRepository;
-    JobRepository jobRepository;
-    AreaRepository areaRepository;
-    ContactRepository contactRepository;
-    AddressRepository addressRepository;
-    //ApprovedJobRepository approvedJobRepository;
-    ModeratedJobRepository moderatedJobRepository;
-    Mapper mapper;
+    private final OrganizationRepository orgRepository;
+    private final JobRepository jobRepository;
+    private final AreaRepository areaRepository;
+    private final ContactRepository contactRepository;
+    private final AddressRepository addressRepository;
+    private final ModeratedJobRepository moderatedJobRepository;
+    private final Mapper mapper;
+    private final JsonParser jsonParser;
 
-    JsonParser jsonParser;
-
-    @Autowired
-    public JobDAOImpl(OrganizationRepository orgRepository, JobRepository jobRepository, AreaRepository areaRepository, ContactRepository contactRepository, AddressRepository addressRepository
-                      //, ApprovedJobRepository approvedJobRepository
-            , ModeratedJobRepository moderatedJobRepository, Mapper mapper, JsonParser jsonParser) {
+    JobDAOImpl(OrganizationRepository orgRepository, JobRepository jobRepository, AreaRepository areaRepository, ContactRepository contactRepository, AddressRepository addressRepository, ModeratedJobRepository moderatedJobRepository, Mapper mapper, JsonParser jsonParser) {
         this.orgRepository = orgRepository;
         this.jobRepository = jobRepository;
         this.areaRepository = areaRepository;
         this.contactRepository = contactRepository;
         this.addressRepository = addressRepository;
-      //  this.approvedJobRepository = approvedJobRepository;
         this.moderatedJobRepository = moderatedJobRepository;
         this.mapper = mapper;
         this.jsonParser = jsonParser;
     }
+
 
     private <T, R> R getOptionalOrThrow(T input, Function<T, Optional<R>> getOptional) {
         Function<T, R> pipeline = getOptional
@@ -131,7 +124,6 @@ class JobDAOImpl implements IJobDAO {
         jobRepository.delete(job);
     }
 
-
     @Override
     @Transactional
     public IJob getPublicDetails(String id) {
@@ -166,6 +158,41 @@ class JobDAOImpl implements IJobDAO {
         return job;
     }
 
+
+    @Override
+    public IJob setJobApprovedByOrg(String traineeshipId, String organizationId) {
+        var moderatedJobsEntity = getModeratedEntity(traineeshipId, organizationId);
+        moderatedJobsEntity.setStatusId(ModerationStatusEnum.APPROVED.getId());
+        moderatedJobRepository.save(moderatedJobsEntity);
+        return jobRepository.findById(Long.parseLong(traineeshipId), JobPrivateDetailsProjection.class).orElse(null);
+    }
+
+    private ModeratedJobsEntity getModeratedEntity(String traineeshipId, String organizationId) {
+        ModeratedJobsEntity moderatedJobsEntity;
+
+        var jobId = Long.parseLong(traineeshipId);
+        var orgId = Long.parseLong(organizationId);
+
+        var existingRecord = moderatedJobRepository.findByJobIdAndOrganizationId(jobId, orgId);
+
+        if(existingRecord.isPresent()) {
+            moderatedJobsEntity = existingRecord.get();
+        } else {
+            moderatedJobsEntity = new ModeratedJobsEntity();
+            moderatedJobsEntity.setJobId(jobId);
+            moderatedJobsEntity.setOrgId(orgId);
+        }
+        return moderatedJobsEntity;
+    }
+
+    @Override
+    public IJob setJobRejectedByOrg(String traineeshipId, String organizationId) {
+        var moderatedJobsEntity = getModeratedEntity(traineeshipId, organizationId);
+        moderatedJobsEntity.setStatusId(ModerationStatusEnum.REJECTED.getId());
+        moderatedJobRepository.save(moderatedJobsEntity);
+        return jobRepository.findById(Long.parseLong(traineeshipId), JobPrivateDetailsProjection.class).orElse(null);
+    }
+
     @Override
     public List<IJob> findAllPublicJobsSummary() {
         return jobRepository.findAllByExclusiveReceiversEmpty(JobPublicSummaryProjection.class)
@@ -174,79 +201,23 @@ class JobDAOImpl implements IJobDAO {
 
 
     @Override
-    public List<IOrganization> getExclusiveReceiversForJob(String id) {
-        return orgRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), OrgBasicInfoProjection.class)
-                .stream().map(org -> (IOrganization) org).toList();
-    }
-
-
-    @Override
-    public IJob setJobApprovedByOrg(String traineeshipId, String organizationId) {
-        var jobId = Long.parseLong(traineeshipId);
-        var orgId = Long.parseLong(organizationId);
-
-//        var existingApprovedRecord = approvedJobRepository.findByJobIdAndOrganizationId(jobId, orgId);
-//        if(existingApprovedRecord.isPresent()){
-//            System.out.println("Job already approved by institution");
-//            return;
-//        }
-
-        var rejectedJob = moderatedJobRepository.findByJobIdAndOrganizationId(jobId, orgId);
-        rejectedJob.ifPresent(
-                moderatedJobsEntity -> moderatedJobRepository.delete(moderatedJobsEntity));
-
-//        var approvedJob = new ApprovedJobEntity();
-//        approvedJob.setJobId(jobId);
-//        approvedJob.setOrgId(orgId);
-        ///approvedJobRepository.save(approvedJob);
-        return null;
-
-    }
-
-
-    @Override
-    public IJob setJobRejectedByOrg(String traineeshipId, String organizationId) {
-        var jobId = Long.parseLong(traineeshipId);
-        var orgId = Long.parseLong(organizationId);
-
-        var existingRejectedRecord = moderatedJobRepository.findByJobIdAndOrganizationId(jobId, orgId);
-        if(existingRejectedRecord.isPresent()){
-            System.out.println("Job already rejected by institution");
-            return null;
-        }
-
-//        var approvedJob = approvedJobRepository.findByJobIdAndOrganizationId(jobId, orgId);
-//        approvedJob.ifPresent(
-//                approvedJobEntity -> approvedJobRepository.delete(approvedJobEntity));
-
-        var rejectedJob = new ModeratedJobsEntity();
-        rejectedJob.setJobId(jobId);
-        rejectedJob.setOrgId(orgId);
-        moderatedJobRepository.save(rejectedJob);
-        return null;
-    }
-
-
-    @Override
     public List<IJob> getAllApprovedSummaryFromOrg(String orgId) {
-//        return jobRepository.findAllByApprovalsOrganizationId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
-//                .stream().map(job -> (IJob) job).toList();
-    return null;
+        return jobRepository.findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(
+                Long.parseLong(orgId), ModerationStatusEnum.APPROVED.getId(), JobPrivateSummaryProjection.class)
+                .stream().map(job -> (IJob) job).toList();
     }
 
     @Override
     public List<IJob> getAllRejectedSummaryFromOrg(String orgId) {
-//        return jobRepository.findAllByRejectionsOrganizationId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
-//                .stream().map(job -> (IJob) job).toList();
-    return null;
+        return jobRepository.findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(
+                        Long.parseLong(orgId), ModerationStatusEnum.REJECTED.getId(), JobPrivateSummaryProjection.class)
+                .stream().map(job -> (IJob) job).toList();
     }
 
-
-    public List<IJob> getAllAvailableByOrg(String orgId) {
-//        var id = Long.parseLong(orgId);
-//        return jobRepository.findDistinctByApprovalsOrganizationIdOrOwnerId(id, id, JobPublicSummaryProjection.class)
-//                .stream().map(job -> (IJob) job).toList();
-        return null;
+    @Override
+    public List<IJob> getAllPendingSummaryFromOrg(String orgId) {
+        return jobRepository.findAllByExclusiveReceiversEmptyOrExclusiveReceiversId(Long.parseLong(orgId), JobPrivateSummaryProjection.class)
+                .stream().map(job -> (IJob) job).toList();
     }
 
     @Override
@@ -255,18 +226,18 @@ class JobDAOImpl implements IJobDAO {
                 .map(job -> (IJob) job);
     }
 
-    @Override
-    public List<IJob> getAllPendingSummaryFromOrg(String orgId) {
-        return List.of();
+    public List<IJob> getAllAvailableByOrg(String orgId) {
+        var organizationId = Long.parseLong(orgId);
+        var approvedStatusId = ModerationStatusEnum.APPROVED.getId();
+        return jobRepository.findAllByOwnerIdOrModeratedJobsOrgIdAndModeratedJobsStatusId(
+                organizationId, organizationId, approvedStatusId, JobPrivateSummaryProjection.class
+        ).stream().map(job -> (IJob) job).toList();
     }
-
 
     @Override
     public List<IJob> getExclusiveReceivedJobsSummaryForOrg(String orgId) {
         return jobRepository.findAllByExclusiveReceiversId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
                 .stream().map(r -> (IJob) r).toList();
     }
-
-
 
 }

@@ -126,31 +126,6 @@ class OrganizationDBImplTest {
 
     }
 
-    @Test
-    void getCreatedJobsReturnsJobsSummaryPrivateInfo() {
-        String id = "195";
-        var createdJobs = jobDB.getAllCreatedJobsSummaryFromOrg(id);
-        createdJobs.getContent().forEach(
-                job -> {
-                    assertInstanceOf(JobPrivateSummaryProjection.class, job);
-                    jsonParser.printValue(job);
-                }
-        );
-    }
-
-    @Test
-    void getExclusiveReceivedJobsReturnsJobsSummaryPublicInfo() {
-        String id = "274";
-        var createdJobs = jobDB.getExclusiveReceivedJobsSummaryForOrg(id);
-        createdJobs.forEach(
-                job -> {
-                    assertInstanceOf(JobPublicSummaryProjection.class, job);
-                    jsonParser.printValue(job);
-                }
-        );
-    }
-
-
 
     @Test
     void getAllSchoolsPublicProfileIsPaginated() {
@@ -167,5 +142,14 @@ class OrganizationDBImplTest {
         var mainAddr = organizationDB.getMainAddress(id);
         jsonParser.printValue(mainAddr);
     }
+
+    @Test
+    void getAllExclusiveReceiversForJob() {
+        String id = "8";
+        var receivers = organizationDB.getExclusiveReceiversForJob(id);
+        System.out.println(receivers.size());
+        System.out.println(jsonParser.valueAsString(receivers));
+    }
+
 
 }

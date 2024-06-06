@@ -211,5 +211,11 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
         return List.of();
     }
 
+    @Override
+    public List<IOrganization> getExclusiveReceiversForJob(String id) {
+        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), OrgBasicInfoProjection.class)
+                .stream().map(org -> (IOrganization) org).toList();
+    }
+
 
 }
