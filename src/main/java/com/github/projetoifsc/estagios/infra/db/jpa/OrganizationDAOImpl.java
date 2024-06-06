@@ -40,7 +40,6 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
     @Override
-   // @Transactional
     public IOrganization findById(String id) {
         var optional = organizationRepository.findById(Long.parseLong(id), OrgBasicInfoProjection.class);
         return (IOrganization) optional.orElseThrow(EntityNotFoundException::new);
@@ -107,7 +106,7 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
 
-        // TODO: Olha uma dependẽncia escondida aqui!
+        // TODO Refactor: Olha uma dependẽncia escondida aqui!
         saveAddressAndContact((INewUser) organization, savedEntity);
 
         var dto = organizationRepository.findById(Long.parseLong(savedEntity.getId()), OrgPrivateProfileProjection.class);
@@ -168,7 +167,6 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
     @Override
-//    @Transactional
     public IOrganization getOnePublicProfile(String id) {
         var organizationProfile = organizationRepository.findById(Long.parseLong(id), OrgPublicProfileProjection.class);
         return organizationProfile.orElseThrow(EntityNotFoundException::new);
@@ -176,26 +174,19 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
     @Override
-//    @Transactional
     public IOrganization getOnePrivateProfile(String id) {
         var organizationProfile = organizationRepository.findById(Long.parseLong(id), OrgPrivateProfileProjection.class);
         return organizationProfile.orElseThrow(EntityNotFoundException::new);
     }
 
 
-    // TODO: Métodos que retornam Jobs deviam estar em outro DBImpl
-
-    // TODO: ver versão resumida no getAll e depois sim versão detalhada
-    // TODO Aceitar Pageable!
     @Override
-   // @Transactional
     public Page<IJob> getAllCreatedJobsSummaryFromOrg(String organizationId) {
         return jobRepository.findAllByOwnerId(Long.parseLong(organizationId), PageRequest.of(0, 100), JobPrivateSummaryProjection.class)
                 .map(job -> (IJob) job);
     }
 
 
-    // TODO: colocar em outro DBImpl (DAO)
     @Override
     public List<IJob> getExclusiveReceivedJobsSummaryForOrg(String organizationId) {
         return jobRepository.findAllByExclusiveReceiversId(Long.parseLong(organizationId), JobPublicSummaryProjection.class)

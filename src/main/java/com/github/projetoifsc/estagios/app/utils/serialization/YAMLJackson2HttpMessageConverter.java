@@ -9,11 +9,11 @@ import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 
 public class YAMLJackson2HttpMessageConverter extends AbstractJackson2HttpMessageConverter{
 
-	public YAMLJackson2HttpMessageConverter() { // TODO Entender sobre Jackson Converter e serialization
+	public YAMLJackson2HttpMessageConverter() {
 		super(new YAMLMapper()
-				.setSerializationInclusion( // Tipo de dados que serão serializados
-						JsonInclude.Include.USE_DEFAULTS), // Dados não nulos
-				MediaType.parseMediaType( MediaTypes.APPLICATION_YAML ) // TODO Entender sobre MediaTye.parseMediaType()
+				.setSerializationInclusion(
+						JsonInclude.Include.USE_DEFAULTS),
+				MediaType.parseMediaType( MediaTypes.APPLICATION_YAML )
 			);
 	}
 

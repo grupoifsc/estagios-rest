@@ -82,9 +82,4 @@ public class PublicOrgProfileResponse extends BasicOrgResponse implements OrgPub
         this.mainAddress = mainAddress;
     }
 
-    @Override
-    public void addHypermediaLinks() {
-        UserHateoasHelper.addUserPublicProfileLinks(this);
-    }
-
 }

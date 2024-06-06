@@ -43,7 +43,6 @@ public class PrivateOrgProfileResponse extends PublicOrgProfileResponse implemen
 	private LocalDateTime updatedAt;
 
 
-//	@Override
 	public @NotBlank String getUsername() {
 		return username;
 	}

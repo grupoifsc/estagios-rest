@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.app.security.auth;
 
+import com.github.projetoifsc.estagios.app.service.AuthUserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

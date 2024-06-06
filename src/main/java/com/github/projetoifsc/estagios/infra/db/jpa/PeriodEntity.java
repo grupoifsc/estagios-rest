@@ -12,13 +12,4 @@ class PeriodEntity {
 
     private String name;
 
-
-    @Override
-    public String toString() {
-        return "Period{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
 }

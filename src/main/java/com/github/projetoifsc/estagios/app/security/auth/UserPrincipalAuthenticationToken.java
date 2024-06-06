@@ -12,17 +12,14 @@ public class UserPrincipalAuthenticationToken extends AbstractAuthenticationToke
         setAuthenticated(true);
     }
 
-
     @Override
     public Object getCredentials() {
         return null;
     }
 
-
     @Override
     public UserPrincipal getPrincipal() {
         return userPrincipal;
     }
-
 
 }

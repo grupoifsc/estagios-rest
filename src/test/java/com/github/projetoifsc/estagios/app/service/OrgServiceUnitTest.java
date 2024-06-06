@@ -4,7 +4,7 @@ import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfilePro
 import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
 import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
 import com.github.projetoifsc.estagios.app.model.response.PublicOrgProfileResponse;
-import com.github.projetoifsc.estagios.app.security.auth.PwdEncoder;
+import com.github.projetoifsc.estagios.app.configs.PwdEncoder;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;

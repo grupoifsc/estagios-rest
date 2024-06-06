@@ -1,5 +1,8 @@
-package com.github.projetoifsc.estagios.app.security.auth;
+package com.github.projetoifsc.estagios.app.service;
 
+import com.github.projetoifsc.estagios.app.security.auth.CustomUserDetails;
+import com.github.projetoifsc.estagios.app.security.auth.IAuthenticationDAO;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

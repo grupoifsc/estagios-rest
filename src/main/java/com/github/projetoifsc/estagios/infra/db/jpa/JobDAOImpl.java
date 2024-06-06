@@ -67,8 +67,10 @@ class JobDAOImpl implements IJobDAO {
     }
 
 
-    // Infelizmente, o método save estava retornando um objeto com dados que não estavam atualizados (criado_em)
-    // Como não consegui arrumar, achei melhor deixar o save retornando apenas o novo id
+    /**
+     * Infelizmente, o método save estava retornando um objeto com dados que não estavam atualizados (criado_em)
+     * Como não consegui arrumar, achei melhor deixar o save retornando apenas o novo id
+     */
     @Override
     public String saveAndGetId(IJobEntryData newJob) {
         var org = mapper.map(newJob.getOwner(), OrganizationEntity.class);
@@ -85,7 +87,7 @@ class JobDAOImpl implements IJobDAO {
         }
 
 
-        // TODO: deve falhar se uma área não existir?
+        // TODO Logic: deve falhar se uma área não existir?
         var areasIds = newJob.getAreasIds()
                 .stream().map(Long::parseLong).toList();
         if(!areasIds.isEmpty()) {
@@ -94,7 +96,6 @@ class JobDAOImpl implements IJobDAO {
         }
 
 
-        // ContactId
         var contactId = newJob.getContactId();
         if(contactId != null) {
             var contact = contactRepository.findById(Long.parseLong(contactId))
@@ -153,7 +154,6 @@ class JobDAOImpl implements IJobDAO {
             job.getContact().getId();
         if(job.getAddress() != null)
             job.getAddress().getId();
-//        jsonParser.printValue(job);
         return job;
     }
 
@@ -164,7 +164,6 @@ class JobDAOImpl implements IJobDAO {
     }
 
 
-    // TODO: Isto era para estar em outro lugar?
     @Override
     public List<IOrganization> getExclusiveReceiversForJob(String id) {
         return orgRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), OrgBasicInfoProjection.class)
@@ -231,7 +230,6 @@ class JobDAOImpl implements IJobDAO {
     }
 
 
-    // TODO: pensar melhor se é Available, Rejected, Approved, To Moderate, etc...
     public List<IJob> getAllAvailableByOrg(String orgId) {
         var id = Long.parseLong(orgId);
         return jobRepository.findDistinctByApprovalsOrganizationIdOrOwnerId(id, id, JobPublicSummaryProjection.class)

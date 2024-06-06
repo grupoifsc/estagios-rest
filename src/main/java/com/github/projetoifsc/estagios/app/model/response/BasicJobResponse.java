@@ -51,9 +51,4 @@ public class BasicJobResponse extends Response implements IJob {
 	}
 
 
-	@Override
-	public void addHypermediaLinks() {
-		//
-	}
-
 }

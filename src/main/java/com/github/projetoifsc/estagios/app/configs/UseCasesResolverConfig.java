@@ -8,20 +8,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ProviderConfig {
-
+public class UseCasesResolverConfig {
 
     @Bean
     public IOrganizationUseCases defaultOrganizationUseCases(IOrganizationDAO iOrganizationDAO) {
         return new OrganizationUseCases(iOrganizationDAO);
     }
 
-
     @Bean
     public IAreaUseCases defaultAreaUseCases(IAreaDAO iAreaDAO) {
         return new AreaUseCases(iAreaDAO);
     }
-
 
     @Bean
     public IJobUseCases defaultJobUseCases(IJobDAO iJobDAO, IOrganizationDAO iOrganizationDAO) {

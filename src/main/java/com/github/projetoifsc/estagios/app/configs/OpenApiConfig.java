@@ -19,23 +19,22 @@ public class OpenApiConfig {
     public static final String ORGS = "Organizações";
     public static final String VAGAS = "Vagas";
     public static final String AREAS = "Áreas";
+	public static final String AUTH = "Autenticação";
 
-//	private final String SECURITY_SCHEME_NAME = "bearerAuth";
 
     @Bean
     public OpenAPI customOpenApi() {
 		return new OpenAPI()
-//				.addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
 				.components(
-						new Components()
-								.addSecuritySchemes(AUTHORIZATION,
-										new SecurityScheme()
-												.name(AUTHORIZATION)
-												.type(SecurityScheme.Type.HTTP)
-												.scheme("bearer")
-												.bearerFormat("JWT")
-												.in(SecurityScheme.In.HEADER)
-								)
+			new Components()
+					.addSecuritySchemes(AUTHORIZATION,
+							new SecurityScheme()
+									.name(AUTHORIZATION)
+									.type(SecurityScheme.Type.HTTP)
+									.scheme("bearer")
+									.bearerFormat("JWT")
+									.in(SecurityScheme.In.HEADER)
+					)
 				)
 				.info(new Info() 
 					.title("API para Vagas de Estágio")
@@ -50,11 +49,19 @@ public class OpenApiConfig {
 					.summary("Um serviço web para conectar empresas e instituições de ensino em torno de um objetivo em comum: divulgar vagas de estágio à comunidade estudantil")
 				)
 				.addTagsItem( new Tag()
+						.name(AREAS)
+						.description("")
+				)
+				.addTagsItem( new Tag()
 						.name(ORGS)
 						.description("")
 				)
 				.addTagsItem( new Tag()
 						.name(VAGAS)
+						.description("")
+				)
+				.addTagsItem( new Tag()
+						.name(AUTH)
 						.description("")
 				);
 	}

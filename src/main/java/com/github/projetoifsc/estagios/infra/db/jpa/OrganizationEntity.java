@@ -12,11 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
-
-//  Auditable:
-//  https://codersathi.com/auto-generate-created-and-modified-date-time-in-spring-boot/
 
 
 @Entity(name = "Organization")
@@ -87,7 +83,6 @@ class OrganizationEntity implements IOrganization {
         this.redesSociais = redesSociais;
     }
 
-    // TODO: tenho que fazer direito esse negócio de id...
     @Override
     public String getId() {
         return Long.toString(id);
@@ -214,4 +209,5 @@ class OrganizationEntity implements IOrganization {
     public void setUserCredentials(UserCredentialsEntity userCredentials) {
         this.userCredentials = userCredentials;
     }
+
 }

@@ -10,6 +10,8 @@ import com.github.projetoifsc.estagios.app.service.VagaService;
 import com.github.projetoifsc.estagios.app.utils.MediaTypes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,12 +25,7 @@ import java.util.List;
 import static com.github.projetoifsc.estagios.app.utils.validation.PaginationValidation.DEFAULT_LIMIT_VALUE;
 import static com.github.projetoifsc.estagios.app.utils.validation.PaginationValidation.DEFAULT_PAGE_VALUE;
 
-//@SecurityScheme(
-//		name = "bearerToken",
-//		type = SecuritySchemeType.HTTP,
-//		scheme = "bearer",
-//		bearerFormat = "JWT"
-//)
+
 @SecurityRequirement(name = OpenApiConfig.AUTHORIZATION)
 @RestController
 @RequestMapping(value = OpenApiConfig.BASE_URL,
@@ -46,12 +43,7 @@ public class VagaController {
 
 	@PostMapping(value = "/vagas", consumes = { MediaTypes.APPLICATION_JSON, MediaTypes.APPLICATION_XML, MediaTypes.APPLICATION_YAML })
 	@Operation(summary="Criar Vaga", description="Criar Nova Vaga de Estágio", tags= {OpenApiConfig.VAGAS}, operationId="postVaga")
-//	@ApiResponses({
-//			@ApiResponse(responseCode = "201"),
-//			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
-//			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
-//			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
-//	})
+	@ApiResponses({@ApiResponse(responseCode = "201")})
 	public ResponseEntity<PrivateJobDetailsResponse> create (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@RequestBody NewJobRequest vaga
@@ -65,14 +57,7 @@ public class VagaController {
 
 	@PutMapping("/vagas/{id}")
 	@Operation(summary="Atualizar Vaga", description="Atualizar uma vaga de estágio", tags= {OpenApiConfig.VAGAS}, operationId="putVaga")
-//	@ApiResponses({
-//			@ApiResponse(responseCode = "200"),
-//			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
-//			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
-//			@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
-//			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
-//			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
-//	})
+	@ApiResponses({@ApiResponse(responseCode = "200")})
 	public ResponseEntity<PrivateJobDetailsResponse> update(
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId,
@@ -87,14 +72,7 @@ public class VagaController {
 
 	@DeleteMapping("/vagas/{id}")
 	@Operation(summary="Deletar Vaga", description="Deletar uma vaga de estágio e todos os dados relacionados a ela", tags= {OpenApiConfig.VAGAS}, operationId="deleteVaga")
-//	@ApiResponses({
-//			@ApiResponse(responseCode = "204"),
-//			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
-//			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
-//			@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
-//			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
-//			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
-//	})
+	@ApiResponses({@ApiResponse(responseCode = "204")})
 	public ResponseEntity<PrivateJobDetailsResponse> delete(
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId
@@ -106,14 +84,7 @@ public class VagaController {
 
 	@GetMapping("/vagas/{id}/public")
 	@Operation(summary="Ver Vaga", description="Ver o perfil público de uma vaga. Autorizado apenas ao criador ou destinatários da vaga.", tags= {OpenApiConfig.VAGAS}, operationId="getVaga")
-//	@ApiResponses({
-//		@ApiResponse(responseCode = "200"),
-//		@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
-//		@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
-//		@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
-//		@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
-//	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
-//	})
+	@ApiResponses({@ApiResponse(responseCode = "200")})
 	public ResponseEntity<PublicJobDetailsResponse> getPublicProfile (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId
@@ -127,14 +98,7 @@ public class VagaController {
 
 	@GetMapping("/vagas/{id}")
 	@Operation(summary="Ver Perfil Privado de Vaga", description="Ver perfil privado de uma vaga. Autorizado apenas ao criador da vaga.", tags= {OpenApiConfig.VAGAS}, operationId="getVagaPrivate")
-//	@ApiResponses({
-//			@ApiResponse(responseCode = "200"),
-//			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
-//			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
-//			@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
-//			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
-//			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
-//	})
+	@ApiResponses({@ApiResponse(responseCode = "200")})
 	public ResponseEntity<PrivateJobDetailsResponse> getPrivateProfile (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId
@@ -148,14 +112,7 @@ public class VagaController {
 
 	@GetMapping("/entidades/{id}/vagas/recebidas")
 	@Operation(summary="Vagas recebidas", description="Ver as vagas recebidas pelo usuário autenticado", tags= {OpenApiConfig.VAGAS}, operationId="getVagasRecebidas")
-//	@ApiResponses({
-//		@ApiResponse(responseCode = "200"),
-//		@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
-//		@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
-//		@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
-//		@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
-//	    @ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
-//	})
+	@ApiResponses({@ApiResponse(responseCode = "200")})
 	public ResponseEntity<List<PublicJobDetailsResponse>> getAllReceivedByUser (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@RequestParam(value = "titulo", defaultValue = "", required = false) String titulo,
@@ -186,14 +143,7 @@ public class VagaController {
 
 	@GetMapping("/entidades/{id}/vagas")
 	@Operation(summary="Vagas Criadas", description="Ver as vagas criadas pelo usuário autenticado.", tags= { OpenApiConfig.VAGAS}, operationId="getVagasCriadas")
-//	@ApiResponses({
-//			@ApiResponse(responseCode = "200"),
-//			@ApiResponse(responseCode = "400", content = {@Content(examples= { @ExampleObject(value = BAD_REQUEST_MSG) })} ),
-//			@ApiResponse(responseCode = "401", content = {@Content(examples= { @ExampleObject(value = UNAUTHORIZED_MSG) })} ),
-//			@ApiResponse(responseCode = "403", content = {@Content(examples= { @ExampleObject(value = FORBIDDEN_MSG) })} ),
-//			@ApiResponse(responseCode = "404", content = {@Content(examples= { @ExampleObject(value = NOT_FOUND_MSG) })} ),
-//			@ApiResponse(responseCode = "429", content = {@Content(examples= { @ExampleObject(value = TOO_MANY_REQUESTS_MSG) })} )
-//	})
+	@ApiResponses({@ApiResponse(responseCode = "200")})
 	public ResponseEntity<Page<PrivateJobSummaryResponse>> getAllCreatedByUser (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@RequestParam(value= "limit", defaultValue = DEFAULT_LIMIT_VALUE) Integer limit,

@@ -1,7 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganization;
-import com.github.projetoifsc.estagios.core.implementation.InvalidReceiverException;
 
 import java.util.List;
 

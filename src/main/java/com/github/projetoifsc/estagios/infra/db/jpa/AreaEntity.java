@@ -1,13 +1,8 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.core.IArea;
-import com.github.projetoifsc.estagios.core.IOrganization;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -44,14 +39,6 @@ class AreaEntity implements IArea {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Area{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 
 }

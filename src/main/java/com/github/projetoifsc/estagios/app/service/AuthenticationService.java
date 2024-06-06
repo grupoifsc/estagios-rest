@@ -1,8 +1,12 @@
-package com.github.projetoifsc.estagios.app.security.auth;
+package com.github.projetoifsc.estagios.app.service;
 
 import com.github.projetoifsc.estagios.app.model.request.AuthRefreshTokenRequest;
 import com.github.projetoifsc.estagios.app.model.request.AuthLoginRequest;
 import com.github.projetoifsc.estagios.app.model.response.AuthTokenResponse;
+import com.github.projetoifsc.estagios.app.security.auth.JwtDecoder;
+import com.github.projetoifsc.estagios.app.security.auth.JwtIssuer;
+import com.github.projetoifsc.estagios.app.security.auth.JwtToPrincipalConverter;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

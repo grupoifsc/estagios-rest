@@ -17,7 +17,7 @@ class AuthenticationDAOImpl implements IAuthenticationDAO {
         this.userCredentialsRepository = userCredentialsRepository;
     }
 
-    // TODO: Checar se está funcionando mesmo quando retorna nullo
+    // TODO Test: Checar se está funcionando mesmo quando retorna nullo
     public Optional<CustomUserDetails> findByUsername(String username) {
         return userCredentialsRepository.findByEmail(username)
                 .map(this::mapAuthUserToCustomUserDetails);

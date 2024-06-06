@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,10 +32,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ExceptionResponse> handleAll(Exception ex, WebRequest webRequest) {
         return buildErrorResponseEntity(ex, webRequest.getDescription(false), exceptionsStatusCodes.getOrDefault(ex.getClass(), HttpStatus.INTERNAL_SERVER_ERROR));
-    }
-
-    public final ResponseEntity<ExceptionResponse> handleAll(Exception ex, String description) {
-        return buildErrorResponseEntity(ex, description, exceptionsStatusCodes.getOrDefault(ex.getClass(), HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 
@@ -65,7 +60,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
     public final ResponseEntity<ExceptionResponse> handleNotFound(Exception ex, WebRequest webRequest) {
         return buildErrorResponseEntity(ex, webRequest.getDescription(false), HttpStatus.NOT_FOUND);
     }
-
 
     public ResponseEntity<ExceptionResponse> buildErrorResponseEntity(Exception ex, String details, HttpStatus code) {
         var exceptionResponse = new ExceptionResponse(

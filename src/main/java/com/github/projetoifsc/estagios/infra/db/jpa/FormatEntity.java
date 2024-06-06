@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 // Mas sincronização automática, pelo que eu entendi, não é possível =/
 //https://www.baeldung.com/jpa-persisting-enums-in-jpa
 
-
 @Entity
 @Table(name = "formats")
 class FormatEntity {

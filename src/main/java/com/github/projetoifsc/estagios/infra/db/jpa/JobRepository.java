@@ -24,8 +24,6 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     <T> List<T> findAllByApprovalsOrganizationId(long orgId, Class<T> type);
     <T> List<T> findAllByRejectionsOrganizationId(long orgId, Class<T> type);
 
-    // TODO: vai ter que ser um findAll para os que ainda não foram aprovados ou reprovados!
-
     <T> List<T> findDistinctByApprovalsOrganizationIdOrOwnerId(long orgId, long ownerId, Class<T> type);
 
 }

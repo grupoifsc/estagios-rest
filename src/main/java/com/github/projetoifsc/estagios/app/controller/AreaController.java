@@ -14,12 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@SecurityScheme(
-//		name = "bearerToken",
-//		type = SecuritySchemeType.HTTP,
-//		scheme = "bearer",
-//		bearerFormat = "JWT"
-//)
+
 @SecurityRequirement(name = OpenApiConfig.AUTHORIZATION)
 @RestController
 @RequestMapping(value = OpenApiConfig.BASE_URL,

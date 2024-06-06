@@ -30,26 +30,13 @@ public class ValidationHelper {
 		if(violations.isEmpty()) {
 			return;
 		}
-		
-//		List<String> errors = new ArrayList<>();
-			
+
 		String message = "";
 		
 		for (ConstraintViolation<T> violation : violations) {
 			message = message.concat(violation.toString());
 		}
-		
-//		violations.forEach(violation -> 			
-//			errors.add(
-//					"{ "
-//					+ "\"field\" : \"" + violation.getPropertyPath() + "\", "
-//					+ "\"error\" : \"" + violation.getMessage() + "\", "
-//					+ "\"given\" : \"" + violation.getInvalidValue() + "\" "
-//					+ "}" 
-//			));
-				
-//		System.out.println(errors);
-		
+
 		throw new InvalidException(message);
 		
 	}

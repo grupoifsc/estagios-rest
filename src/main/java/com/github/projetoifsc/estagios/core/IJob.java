@@ -1,6 +1,5 @@
 package com.github.projetoifsc.estagios.core;
 
-import java.util.List;
 
 public interface IJob {
 
@@ -8,6 +7,5 @@ public interface IJob {
     void setId(String id);
     IOrganization getOwner();
     void setOwner(IOrganization user);
-//    List<IArea> getAreas();
 
 }

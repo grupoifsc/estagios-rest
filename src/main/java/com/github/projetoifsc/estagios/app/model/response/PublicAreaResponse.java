@@ -42,10 +42,4 @@ public class PublicAreaResponse extends Response implements IArea {
         this.name = name;
     }
 
-
-    @Override
-    public void addHypermediaLinks() {
-        // TODO
-    }
-
 }

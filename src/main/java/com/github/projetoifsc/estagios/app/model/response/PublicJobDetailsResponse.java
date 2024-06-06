@@ -81,6 +81,7 @@ public class PublicJobDetailsResponse extends PublicJobSummaryResponse implement
     @Valid
     private List<IArea> areas = new ArrayList<>();
 
+
     @Override
     public List<IArea> getAreas() {
         return areas;
@@ -98,7 +99,6 @@ public class PublicJobDetailsResponse extends PublicJobSummaryResponse implement
     public void setDescricao(@NotBlank String descricao) {
         this.descricao = descricao;
     }
-
 
     @Override
     @Min(1)

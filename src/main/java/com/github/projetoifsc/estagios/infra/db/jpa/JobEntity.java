@@ -1,6 +1,5 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.core.IArea;
 import com.github.projetoifsc.estagios.core.IJob;
 import com.github.projetoifsc.estagios.core.IOrganization;
 import jakarta.persistence.*;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 
-// TODO: Considerar a possibilidade de usar Views ao invés de projections muito elaboradas
+// TODO DB: Considerar a possibilidade de usar Views ao invés de projections muito elaboradas
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -307,6 +306,5 @@ class JobEntity implements IJob {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 
 }

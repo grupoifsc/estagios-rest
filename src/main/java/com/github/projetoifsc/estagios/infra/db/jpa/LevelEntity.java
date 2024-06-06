@@ -12,12 +12,4 @@ class LevelEntity {
 
     private String name;
 
-    @Override
-    public String toString() {
-        return "Level{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
-
 }

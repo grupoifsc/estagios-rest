@@ -2,7 +2,6 @@ package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.*;
 
-
 class JobWriteOperations {
 
     JobReadOperations jobReadOperations;
@@ -63,7 +62,6 @@ class JobWriteOperations {
 
 
     public void approve(String organizationId, String traineeshipId) {
-        //  Checar SE: organizationId is receiver de traineeshipId
         var received = jobReadOperations.getAllReceivedSummary(organizationId, organizationId);
         var ids = received.stream().map(IJob::getId).toList();
         if(ids.contains(traineeshipId)) {
@@ -73,7 +71,6 @@ class JobWriteOperations {
 
 
     public void reject(String organizationId, String traineeshipId) {
-        //  Checar SE: organizationId is receiver de traineeshipId
         var received = jobReadOperations.getAllReceivedSummary(organizationId, organizationId);
         var ids = received.stream().map(IJob::getId).toList();
         if(ids.contains(traineeshipId)) {

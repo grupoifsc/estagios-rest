@@ -5,5 +5,4 @@ import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("2")
-class ContactApplianceEntity extends ContactEntity {
-}
+class ContactApplianceEntity extends ContactEntity { }

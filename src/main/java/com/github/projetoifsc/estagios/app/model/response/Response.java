@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.Serializable;
@@ -13,19 +14,13 @@ import java.io.Serializable;
 @Validated
 public abstract class Response extends RepresentationModel<Response> implements Serializable, Validatable {
 
-  //  @Override
+
+    // TODO BugFix: Para algumas subclasses a propriedade _links não está aparecendo de forma padronizada
+    @Override
     @JsonProperty(access = JsonProperty.Access.READ_ONLY, value = "_links")
     @Schema(hidden = true)
     public Links getLinks() {
-        var link = Link.of("http://link.com", "self");
-        return Links.of(link);
-        //return super.getLinks();
+        return super.getLinks();
     }
-
-    @JsonProperty(value = "_teste")
-    public String getTeste() { return "Estou vindo de View...";}
-
-    public abstract void addHypermediaLinks();
-
 
 }

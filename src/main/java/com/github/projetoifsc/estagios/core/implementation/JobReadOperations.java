@@ -30,9 +30,7 @@ class JobReadOperations {
         throw new UnauthorizedAccessException(errorMessage);
     }
 
-    // TODO 22/05 ARRUMAR
-    // TODO Ver se o Set vai estar funcionando aqui, se o equals vai estar correto...
-    // Aqui tem o problema da paginação... Vai ficar estranho, vai ficar desencontrado
+
     public List<IJob> getAllReceivedSummary(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId)) {
             Set<IJob> set = new HashSet<>();

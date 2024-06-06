@@ -1,6 +1,5 @@
 package com.github.projetoifsc.estagios.core;
 
-
 import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
 import org.springframework.data.domain.Page;
 
@@ -26,7 +25,7 @@ public interface IOrganizationDAO {
     IContact getMainContact(String orgId);
 
     
-    //  TODO: Mover queries relacionadas com vagas para outro DB
+    //  TODO Refactor: Mover queries relacionadas com vagas para outro DB
     Page<IJob> getAllCreatedJobsSummaryFromOrg(String organization);
     List<IJob> getExclusiveReceivedJobsSummaryForOrg(String organization);
 

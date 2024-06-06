@@ -56,10 +56,4 @@ public class BasicOrgResponse extends Response implements OrgBasicInfoProjection
     }
 
 
-
-
-    @Override
-    public void addHypermediaLinks() {
-        // TODO: implement Logic To HyperMedia Links here?
-    }
 }

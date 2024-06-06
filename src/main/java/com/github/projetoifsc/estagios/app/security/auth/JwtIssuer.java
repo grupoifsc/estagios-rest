@@ -18,7 +18,6 @@ public class JwtIssuer {
         this.jwtProperties = jwtProperties;
     }
 
-
     public String issueAccessToken(String userId, List<String> roles) {
         return JWT.create()
                 .withSubject(userId)

@@ -17,16 +17,10 @@ import java.time.LocalDateTime;
         "modificado_em", "_links"})
 public class PublicJobSummaryResponse extends BasicJobResponse implements JobPublicSummaryProjection {
 
-//    @JsonProperty("id")
-//    @Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1")
-//    private String id;
-
-
     @JsonProperty("titulo")
     @Schema(example="Vaga de desenhista Junior")
     @NotBlank
     private String titulo;
-
 
     @JsonProperty(value = "requisitos")
     @Schema(example="Conhecimento em Adobe Photoshop, Técnicas básicas de desenho digital", description = "Separe os requisitos com víruglas", requiredMode = Schema.RequiredMode.NOT_REQUIRED, nullable = true)
@@ -104,16 +98,6 @@ public class PublicJobSummaryResponse extends BasicJobResponse implements JobPub
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-//    @Override
-//    public String getId() {
-//        return id;
-//    }
-//
-//    @Override
-//    public void setId(String id) {
-//        this.id = id;
-//    }
 
 
 }
