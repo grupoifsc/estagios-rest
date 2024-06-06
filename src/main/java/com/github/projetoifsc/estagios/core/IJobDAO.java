@@ -19,6 +19,7 @@ public interface IJobDAO {
     IJob setJobRejectedByOrg(String jobId, String orgId);
 
     Page<IJob> getAllCreatedJobsSummaryFromOrg(String orgId);
+    List<IJob> getAllAvailableSummaryFromOrg(String orgId);
     List<IJob> getAllPendingSummaryFromOrg(String orgId);
     List<IJob> getAllApprovedSummaryFromOrg(String orgId);
     List<IJob> getAllRejectedSummaryFromOrg(String orgId);

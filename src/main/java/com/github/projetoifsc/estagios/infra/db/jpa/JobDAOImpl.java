@@ -164,7 +164,7 @@ class JobDAOImpl implements IJobDAO {
         var moderatedJobsEntity = getModeratedEntity(traineeshipId, organizationId);
         moderatedJobsEntity.setStatusId(ModerationStatusEnum.APPROVED.getId());
         moderatedJobRepository.save(moderatedJobsEntity);
-        return jobRepository.findById(Long.parseLong(traineeshipId), JobPrivateDetailsProjection.class).orElse(null);
+        return jobRepository.findById(Long.parseLong(traineeshipId), JobPublicDetailsProjection.class).orElse(null);
     }
 
     private ModeratedJobsEntity getModeratedEntity(String traineeshipId, String organizationId) {
@@ -190,7 +190,7 @@ class JobDAOImpl implements IJobDAO {
         var moderatedJobsEntity = getModeratedEntity(traineeshipId, organizationId);
         moderatedJobsEntity.setStatusId(ModerationStatusEnum.REJECTED.getId());
         moderatedJobRepository.save(moderatedJobsEntity);
-        return jobRepository.findById(Long.parseLong(traineeshipId), JobPrivateDetailsProjection.class).orElse(null);
+        return jobRepository.findById(Long.parseLong(traineeshipId), JobPublicDetailsProjection.class).orElse(null);
     }
 
     @Override
@@ -203,34 +203,35 @@ class JobDAOImpl implements IJobDAO {
     @Override
     public List<IJob> getAllApprovedSummaryFromOrg(String orgId) {
         return jobRepository.findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(
-                Long.parseLong(orgId), ModerationStatusEnum.APPROVED.getId(), JobPrivateSummaryProjection.class)
+                Long.parseLong(orgId), ModerationStatusEnum.APPROVED.getId(), JobPublicSummaryProjection.class)
                 .stream().map(job -> (IJob) job).toList();
     }
 
     @Override
     public List<IJob> getAllRejectedSummaryFromOrg(String orgId) {
         return jobRepository.findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(
-                        Long.parseLong(orgId), ModerationStatusEnum.REJECTED.getId(), JobPrivateSummaryProjection.class)
+                        Long.parseLong(orgId), ModerationStatusEnum.REJECTED.getId(), JobPublicSummaryProjection.class)
                 .stream().map(job -> (IJob) job).toList();
     }
 
     @Override
     public List<IJob> getAllPendingSummaryFromOrg(String orgId) {
-        return jobRepository.findAllByExclusiveReceiversEmptyOrExclusiveReceiversId(Long.parseLong(orgId), JobPrivateSummaryProjection.class)
+        return jobRepository.findAllByExclusiveReceiversEmptyOrExclusiveReceiversId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
                 .stream().map(job -> (IJob) job).toList();
     }
 
     @Override
     public Page<IJob> getAllCreatedJobsSummaryFromOrg(String orgId) {
-        return jobRepository.findAllByOwnerId(Long.parseLong(orgId), PageRequest.of(0, 100), JobPrivateSummaryProjection.class)
+        return jobRepository.findAllByOwnerId(Long.parseLong(orgId), PageRequest.of(0, 100), JobPublicSummaryProjection.class)
                 .map(job -> (IJob) job);
     }
 
-    public List<IJob> getAllAvailableByOrg(String orgId) {
+    @Override
+    public List<IJob> getAllAvailableSummaryFromOrg(String orgId) {
         var organizationId = Long.parseLong(orgId);
         var approvedStatusId = ModerationStatusEnum.APPROVED.getId();
         return jobRepository.findAllByOwnerIdOrModeratedJobsOrgIdAndModeratedJobsStatusId(
-                organizationId, organizationId, approvedStatusId, JobPrivateSummaryProjection.class
+                organizationId, organizationId, approvedStatusId, JobPublicSummaryProjection.class
         ).stream().map(job -> (IJob) job).toList();
     }
 

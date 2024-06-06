@@ -17,10 +17,11 @@ public interface IJobUseCases {
     IJob reject(String organizationId, String traineeshipId);
 
     Page<IJob> getAllCreatedSummary(String loggedId, String targetId);
+    List<IJob> getAllAvailableSummary(String loggedId, String targetId);
     List<IJob> getAllApprovedSummary(String loggedId, String targetId);
     List<IJob> getAllRejectedSummary(String loggedId, String targetId);
     List<IJob> getAllPendingSummary(String loggedId, String targetId);
 
-    List<IJob> filterAllApprovedSummary(String loggedId, String targetId);
+    List<IJob> filterAllAvailableSummary(String loggedId, String targetId);
 
 }

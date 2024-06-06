@@ -138,10 +138,13 @@ public class JobReadOperationsUnitTest {
         when(organizationDB.findById(school.getId())).thenReturn(school);
         when(organizationDB.findById(enterprise.getId())).thenReturn(enterprise);
 
+        assertDoesNotThrow(()->service.getAllAvailableSummary(school.getId(), school.getId()));
         assertDoesNotThrow(()->service.getAllApprovedSummary(school.getId(), school.getId()));
         assertDoesNotThrow(()->service.getAllRejectedSummary(school.getId(), school.getId()));
         assertDoesNotThrow(()->service.getAllPendingSummary(school.getId(), school.getId()));
 
+        assertThrows(UnauthorizedAccessException.class,
+                ()->service.getAllAvailableSummary(school.getId(), enterprise.getId()));
         assertThrows(UnauthorizedAccessException.class,
                 ()->service.getAllApprovedSummary(school.getId(), enterprise.getId()));
         assertThrows(UnauthorizedAccessException.class,
@@ -167,6 +170,8 @@ public class JobReadOperationsUnitTest {
         assertThrows(UnauthorizedAccessException.class,
                 ()->service.getAllPendingSummary(enterprise.getId(), enterprise.getId()));
     }
+
+
 
 
 }

@@ -193,7 +193,7 @@ class JobDAOImplTest {
     @Test
     void getAllAvailable() {
         var id = "378";
-        var available = jobDBImpl.getAllAvailableByOrg(id);
+        var available = jobDBImpl.getAllAvailableSummaryFromOrg(id);
         System.out.println(available.size());
         jsonParser.printValue(available);
     }

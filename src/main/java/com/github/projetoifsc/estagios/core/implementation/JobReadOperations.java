@@ -68,9 +68,7 @@ class JobReadOperations {
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
-    // TODO DB: Aqui tbm tem lógica de negócio... Isto é: são as vagas que ainda não foram aprovadas ou rejeitadas e são "recebidas"
-    // Resolver isso aqui na lógica é muito ruim, já que a chamada ao banco podia ser bem mais efetiva...
-    // Se jogar lógica para o banco, o método getAllReceived tbm pode ir para lá...
+
     public List<IJob> getAllPendingSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
@@ -79,6 +77,7 @@ class JobReadOperations {
     }
 
 
+    // TODO DB: Aqui tbm tem lógica de negócio... Isto é: são as vagas que ainda não foram aprovadas ou rejeitadas e são "recebidas"
     //  TODO DB: Jogar esta lógica lá para o banco de dados...
     public List<IJob> getAllReceivedSummary(IOrganization org) {
         if(OrganizationValidation.isIE(org)) {
@@ -90,6 +89,14 @@ class JobReadOperations {
             return received;
         }
         throw new UnauthorizedAccessException("Must be IE to get received jobs");
+    }
+
+
+    public List<IJob> getAllAvailableSummary(String loggedId, String targetId) {
+        var org = organizationDB.findById(loggedId);
+        if(isSelf(loggedId, targetId) && isIE(org))
+            return jobDB.getAllAvailableSummaryFromOrg(loggedId);
+        throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
 

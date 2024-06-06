@@ -61,6 +61,11 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
+    public List<IJob> getAllAvailableSummary(String loggedId, String targetId) {
+        return readOperations.getAllAvailableSummary(loggedId, targetId);
+    }
+
+    @Override
     public List<IJob> getAllPendingSummary(String loggedId, String targetId) {
         return readOperations.getAllPendingSummary(loggedId, targetId);
     }
@@ -72,7 +77,7 @@ public class JobUseCases implements IJobUseCases {
 
 
     @Override
-    public List<IJob> filterAllApprovedSummary(String loggedId, String targetId) {
+    public List<IJob> filterAllAvailableSummary(String loggedId, String targetId) {
         return List.of();
     }
 
