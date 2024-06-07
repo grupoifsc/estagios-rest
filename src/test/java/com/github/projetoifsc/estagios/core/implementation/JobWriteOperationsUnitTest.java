@@ -1,6 +1,8 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.*;
+import com.github.projetoifsc.estagios.core.dto.JobPublicSummaryImpl;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import com.github.projetoifsc.estagios.core.models.IJobEntryData;
@@ -21,6 +23,8 @@ public class JobWriteOperationsUnitTest {
     JobReadOperations jobReadOperations = mock();
 
     JobWriteOperations service = new JobWriteOperations(jobReadOperations, jobRepository, organizationRepository);
+
+    Mapper mapper = new Mapper();
 
     IJobEntryData job;
     IOrganization organization;
@@ -203,6 +207,10 @@ public class JobWriteOperationsUnitTest {
         );
     }
 
+    private JobPublicSummaryImpl getPublicJob() {
+        return mapper.map(job, JobPublicSummaryImpl.class);
+    }
+
 
     @Test
     void tryApproveOrReject_IfNotIe_ThrowsException() {
@@ -217,13 +225,13 @@ public class JobWriteOperationsUnitTest {
         when(jobRepository.getBasicInfo(job.getId()))
                 .thenReturn(job);
         when(jobRepository.setJobApprovedByOrg(job.getId(), school.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobRepository.setJobApprovedByOrg(job.getId(), notSchool.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobRepository.setJobRejectedByOrg(job.getId(), school.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobRepository.setJobRejectedByOrg(job.getId(), notSchool.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobReadOperations.getAllReceivedSummary(school))
                 .thenReturn(List.of(job));
         when(jobReadOperations.getAllReceivedSummary(notSchool))
@@ -250,9 +258,9 @@ public class JobWriteOperationsUnitTest {
         when(jobRepository.getBasicInfo(job.getId()))
                 .thenReturn(job);
         when(jobRepository.setJobApprovedByOrg(job.getId(), school.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobRepository.setJobRejectedByOrg(job.getId(), school.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobReadOperations.getAllReceivedSummary(school))
                 .thenReturn(List.of(job));
 
@@ -279,13 +287,13 @@ public class JobWriteOperationsUnitTest {
         when(jobRepository.getBasicInfo(job.getId()))
                 .thenReturn(job);
         when(jobRepository.setJobApprovedByOrg(job.getId(), receiver.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobRepository.setJobApprovedByOrg(job.getId(), notReceiver.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobRepository.setJobRejectedByOrg(job.getId(), receiver.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobRepository.setJobRejectedByOrg(job.getId(), notReceiver.getId()))
-                .thenReturn(job);
+                .thenReturn(getPublicJob());
         when(jobReadOperations.getAllReceivedSummary(receiver))
                 .thenReturn(List.of(job));
         when(jobReadOperations.getAllReceivedSummary(notReceiver))

@@ -4,64 +4,32 @@ import com.github.projetoifsc.estagios.core.models.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-public class JobImpl implements IJobEntryData {
-
-    private String id;
-    private IOrganization owner;
-    private List<String> receivers = new ArrayList<>();
-    private List<IArea> areas = new ArrayList<>();
-
+public class JobPrivateDetailsImpl implements JobPrivateDetailsProjection {
     @Override
     public String getId() {
-        return id;
+        return "";
     }
 
     @Override
     public void setId(String id) {
-        this.id = id;
+
     }
 
     @Override
     public OrgBasicInfoProjection getOwner() {
-        return (OrgBasicInfoProjection) owner;
+        return null;
     }
 
     @Override
-    public void setOwner(IOrganization owner) {
-        this.owner = owner;
+    public void setOwner(IOrganization user) {
+
     }
 
     @Override
-    public List<String> getAreasIds() {
-        return List.of();
-    }
-
-    @Override
-    public List<String> getReceiversIds() {
-        return receivers;
-    }
-
-    @Override
-    public void setReceiversIds(List<String> receivers) {
-        this.receivers = receivers;
-    }
-
-    @Override
-    public String getContactId() {
-        return "";
-    }
-
-    @Override
-    public String getAddressId() {
-        return "";
-    }
-
-    //@Override
     public List<IArea> getAreas() {
-        return areas;
+        return List.of();
     }
 
     @Override
@@ -148,5 +116,4 @@ public class JobImpl implements IJobEntryData {
     public List<OrgBasicInfoProjection> getExclusiveReceivers() {
         return List.of();
     }
-
 }

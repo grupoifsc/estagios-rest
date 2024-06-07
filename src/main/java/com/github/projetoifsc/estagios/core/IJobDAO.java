@@ -1,7 +1,6 @@
 package com.github.projetoifsc.estagios.core;
 
-import com.github.projetoifsc.estagios.core.models.IJob;
-import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -12,20 +11,20 @@ public interface IJobDAO {
     void delete(String id);
 
     IJob getBasicInfo(String id);
-    IJob getPublicDetails(String id);
-    IJob getPrivateDetails(String id);
+    JobPublicDetailsProjection getPublicDetails(String id);
+    JobPrivateDetailsProjection getPrivateDetails(String id);
 
-    List<IJob> findAllPublicJobsSummary();
+    List<JobPublicSummaryProjection> findAllPublicJobsSummary();
 
-    IJob setJobApprovedByOrg(String jobId, String orgId);
-    IJob setJobRejectedByOrg(String jobId, String orgId);
+    JobPublicSummaryProjection setJobApprovedByOrg(String jobId, String orgId);
+    JobPublicSummaryProjection setJobRejectedByOrg(String jobId, String orgId);
 
-    Page<IJob> getAllCreatedJobsSummaryFromOrg(String orgId);
-    List<IJob> getAllAvailableSummaryFromOrg(String orgId);
-    List<IJob> getAllPendingSummaryFromOrg(String orgId);
-    List<IJob> getAllApprovedSummaryFromOrg(String orgId);
-    List<IJob> getAllRejectedSummaryFromOrg(String orgId);
-    List<IJob> getExclusiveReceivedJobsSummaryForOrg(String orgId);
+    Page<JobPrivateSummaryProjection> getAllCreatedJobsSummaryFromOrg(String orgId);
+    List<JobPublicSummaryProjection> getAllAvailableSummaryFromOrg(String orgId);
+    List<JobPublicSummaryProjection> getAllPendingSummaryFromOrg(String orgId);
+    List<JobPublicSummaryProjection> getAllApprovedSummaryFromOrg(String orgId);
+    List<JobPublicSummaryProjection> getAllRejectedSummaryFromOrg(String orgId);
+    List<JobPublicSummaryProjection> getExclusiveReceivedJobsSummaryForOrg(String orgId);
 
     boolean isJobOfferedToOrg(String jobId, String orgId);
 

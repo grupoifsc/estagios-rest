@@ -2,7 +2,8 @@ package com.github.projetoifsc.estagios.core.models;
 
 import java.util.List;
 
-public interface IJobEntryData extends IJob {
+
+public interface IJobEntryData extends JobPrivateDetailsProjection {
 
     List<String> getAreasIds();
     List<String> getReceiversIds();

@@ -1,10 +1,9 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.core.models.JobBasicInfoProjection;
-import com.github.projetoifsc.estagios.core.models.JobPublicSummaryProjection;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
+import com.github.projetoifsc.estagios.core.models.JobPublicSummaryProjection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,7 +71,7 @@ class JobRepositoryUnitTest {
 
     @Test
     void findAllByExclusiveReceiversEmpty() {
-        var jobs = repository.findAllByExclusiveReceiversEmpty(JobBasicInfoProjection.class);
+        var jobs = repository.findAllByExclusiveReceiversEmpty(IJob.class);
         System.out.println(jobs.size());
         jsonParser.printValue(jobs);
     }
@@ -80,7 +79,7 @@ class JobRepositoryUnitTest {
 
     @Test
     void findAllByExclusiveReceiversId() {
-        var jobs = repository.findAllByExclusiveReceiversId(272L, JobBasicInfoProjection.class);
+        var jobs = repository.findAllByExclusiveReceiversId(272L, IJob.class);
         System.out.println(jobs.size());
         jsonParser.printValue(jobs);
     }

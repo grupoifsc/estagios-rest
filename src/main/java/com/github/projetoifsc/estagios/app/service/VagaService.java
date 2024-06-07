@@ -75,22 +75,25 @@ public class VagaService {
 
 
     public Page<PublicJobSummaryResponse> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var available = jobUseCases.getAllAvailableSummary(userPrincipal.getId(), userPrincipal.getId())
+        var available = jobUseCases.getAllAvailableSummary(userPrincipal.getId(), userPrincipal.getId());
+        var mapped = available
                 .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
-        return new PageImpl<>(available);
+        return new PageImpl<>(mapped);
     }
 
 
     public Page<PublicJobSummaryResponse> getAuthUserRejectedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var rejected = jobUseCases.getAllRejectedSummary(userPrincipal.getId(), userPrincipal.getId())
+        var rejected = jobUseCases.getAllRejectedSummary(userPrincipal.getId(), userPrincipal.getId());
+        var mapped = rejected
                 .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
-        return new PageImpl<>(rejected);
+        return new PageImpl<>(mapped);
     }
 
     public Page<PublicJobSummaryResponse> getAuthUserPendingJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var pending = jobUseCases.getAllPendingSummary(userPrincipal.getId(), userPrincipal.getId())
+        var pending = jobUseCases.getAllPendingSummary(userPrincipal.getId(), userPrincipal.getId());
+        var mapped = pending
                 .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
-        return new PageImpl<>(pending);
+        return new PageImpl<>(mapped);
     }
 
     public PublicJobSummaryResponse approve(UserPrincipal userPrincipal, String jobId) {

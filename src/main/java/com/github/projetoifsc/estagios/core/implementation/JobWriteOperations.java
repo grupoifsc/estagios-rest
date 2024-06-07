@@ -1,12 +1,8 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.projetoifsc.estagios.app.configs.ObjectMapperConfig;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.*;
-import com.github.projetoifsc.estagios.core.models.IJob;
-import com.github.projetoifsc.estagios.core.models.IJobEntryData;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.core.models.*;
 
 class JobWriteOperations {
 
@@ -22,12 +18,12 @@ class JobWriteOperations {
     }
 
 
-    public IJob create(String organizationId, IJobEntryData traineeship) {
+    public JobPrivateDetailsProjection create(String organizationId, IJobEntryData traineeship) {
         var organization = organizationDB.findById(organizationId);
         return saveOrUpdate(organization, traineeship);
     }
 
-    private IJob saveOrUpdate(IOrganization organization, IJobEntryData traineeship) {
+    private JobPrivateDetailsProjection saveOrUpdate(IOrganization organization, IJobEntryData traineeship) {
         traineeship.setOwner(organization);
         if(traineeship.getReceiversIds() != null && !traineeship.getReceiversIds().isEmpty()) {
             var receiversList = organizationDB.findAllById(traineeship.getReceiversIds());
@@ -41,7 +37,7 @@ class JobWriteOperations {
     // TODO BugFix: Resolver incronguência que ocorre quando uma vaga antes pública
     //  se torna exclusiva, mas já foi aprovada por IEs para as quais a vaga não é mais
     //  ofertada
-    public IJob update(String organizationId, String traineeshipId, IJobEntryData newData) {
+    public JobPrivateDetailsProjection update(String organizationId, String traineeshipId, IJobEntryData newData) {
         var traineeship = jobDB.getBasicInfo(traineeshipId);
         var organization = organizationDB.findById(organizationId);
 
@@ -69,7 +65,7 @@ class JobWriteOperations {
     }
 
 
-    public IJob approve(String organizationId, String traineeshipId) {
+    public JobPublicSummaryProjection approve(String organizationId, String traineeshipId) {
         var org = organizationDB.findById(organizationId);
         var job = jobDB.getBasicInfo(traineeshipId);
         if(canModerate(org, job))
@@ -87,7 +83,7 @@ class JobWriteOperations {
     }
 
 
-    public IJob reject(String organizationId, String traineeshipId) {
+    public JobPublicSummaryProjection reject(String organizationId, String traineeshipId) {
         var org = organizationDB.findById(organizationId);
         var job = jobDB.getBasicInfo(traineeshipId);
         if(canModerate(org, job))

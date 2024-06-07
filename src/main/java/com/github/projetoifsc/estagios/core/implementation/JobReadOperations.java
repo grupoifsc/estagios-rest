@@ -1,8 +1,7 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.*;
-import com.github.projetoifsc.estagios.core.models.IJob;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.core.models.*;
 import org.springframework.data.domain.Page;
 
 import static com.github.projetoifsc.estagios.core.implementation.OrganizationValidation.*;
@@ -21,7 +20,7 @@ class JobReadOperations {
     }
 
 
-    public IJob getOnePublicDetails(String organizationId, String traineeshipId) {
+    public JobPublicDetailsProjection getOnePublicDetails(String organizationId, String traineeshipId) {
         var organization = organizationDB.findById(organizationId);
         var traineeship = jobDB.getPublicDetails(traineeshipId);
 
@@ -36,7 +35,7 @@ class JobReadOperations {
         throw new UnauthorizedAccessException(errorMessage);
     }
 
-    public IJob getOnePrivateDetails(String organizationId, String traineeshipId) {
+    public JobPrivateDetailsProjection getOnePrivateDetails(String organizationId, String traineeshipId) {
         var organization = organizationDB.findById(organizationId);
         var job = jobDB.getPrivateDetails(traineeshipId);
 
@@ -49,21 +48,21 @@ class JobReadOperations {
     }
 
 
-    public Page<IJob> getAllCreatedSummary(String loggedId, String targetId) {
+    public Page<JobPrivateSummaryProjection> getAllCreatedSummary(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId))
             return jobDB.getAllCreatedJobsSummaryFromOrg(targetId);
         var errorMessage = "Organizations can only access their own created jobs";
         throw new UnauthorizedAccessException(errorMessage);
     }
 
-    public List<IJob> getAllApprovedSummary(String loggedId, String targetId) {
+    public List<JobPublicSummaryProjection> getAllApprovedSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
             return jobDB.getAllApprovedSummaryFromOrg(loggedId);
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
-    public List<IJob> getAllRejectedSummary(String loggedId, String targetId) {
+    public List<JobPublicSummaryProjection> getAllRejectedSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
             return jobDB.getAllRejectedSummaryFromOrg(loggedId);
@@ -71,7 +70,7 @@ class JobReadOperations {
     }
 
 
-    public List<IJob> getAllPendingSummary(String loggedId, String targetId) {
+    public List<JobPublicSummaryProjection> getAllPendingSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
             return jobDB.getAllPendingSummaryFromOrg(loggedId);
@@ -94,7 +93,7 @@ class JobReadOperations {
     }
 
 
-    public List<IJob> getAllAvailableSummary(String loggedId, String targetId) {
+    public List<JobPublicSummaryProjection> getAllAvailableSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
             return jobDB.getAllAvailableSummaryFromOrg(loggedId);

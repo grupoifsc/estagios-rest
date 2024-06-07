@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.projetoifsc.estagios.core.models.IJobEntryData;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.core.models.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ import java.util.List;
 public class NewJobRequest implements IJobEntryData {
 
     @JsonIgnore
-    private IOrganization owner;
+    private OrgBasicInfoProjection owner;
 
     @JsonProperty(value = "descricao", required = true)
     @Schema(example="Vaga para desenhista etc etc et etc etc etc", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -193,13 +193,18 @@ public class NewJobRequest implements IJobEntryData {
     }
 
     @Override
-    public IOrganization getOwner() {
+    public OrgBasicInfoProjection getOwner() {
         return owner;
     }
 
     @Override
+    public List<IArea> getAreas() {
+        return List.of();
+    }
+
+    @Override
     public void setOwner(IOrganization owner) {
-        this.owner = owner;
+        this.owner = (OrgBasicInfoProjection) owner;
     }
 
     public @NotBlank String getTitulo() {
@@ -222,6 +227,31 @@ public class NewJobRequest implements IJobEntryData {
     @Min(1)
     public int getCargaHorariaSemanal() {
         return cargaHorariaSemanal;
+    }
+
+    @Override
+    public LocalDateTime getCreatedAt() {
+        return null;
+    }
+
+    @Override
+    public LocalDateTime getUpdatedAt() {
+        return null;
+    }
+
+    @Override
+    public AddressProjection getAddress() {
+        return null;
+    }
+
+    @Override
+    public ContactProjection getContact() {
+        return null;
+    }
+
+    @Override
+    public List<OrgBasicInfoProjection> getExclusiveReceivers() {
+        return List.of();
     }
 
     public void setCargaHorariaSemanal(@NotNull @Min(1) int cargaHorariaSemanal) {
