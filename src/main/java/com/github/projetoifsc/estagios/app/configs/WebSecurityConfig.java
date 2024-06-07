@@ -8,6 +8,7 @@ import com.github.projetoifsc.estagios.app.security.ratelimit.RateLimitFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,6 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -27,6 +34,7 @@ import static org.springframework.http.HttpMethod.POST;
 public class WebSecurityConfig {
 
 
+    private final CorsConfigurationSource corsConfigurationSource;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final RateLimitFilter rateLimitFilter;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
@@ -34,7 +42,8 @@ public class WebSecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint;
 
-    public WebSecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, RateLimitFilter rateLimitFilter, ExceptionHandlerFilter exceptionHandlerFilter, CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
+    public WebSecurityConfig(CorsConfigurationSource corsConfigurationSource, JwtAuthenticationFilter jwtAuthenticationFilter, RateLimitFilter rateLimitFilter, ExceptionHandlerFilter exceptionHandlerFilter, CustomUserDetailService customUserDetailService, PasswordEncoder passwordEncoder, DelegatedAuthenticationEntryPoint delegatedAuthenticationEntryPoint) {
+        this.corsConfigurationSource = corsConfigurationSource;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.rateLimitFilter = rateLimitFilter;
         this.exceptionHandlerFilter = exceptionHandlerFilter;
@@ -46,10 +55,10 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
         return http
+            .cors(Customizer.withDefaults())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(rateLimitFilter, LogoutFilter.class)
             .addFilterBefore(exceptionHandlerFilter, RateLimitFilter.class)
-            .cors(AbstractHttpConfigurer::disable)
             .csrf(AbstractHttpConfigurer::disable)
             .securityMatcher("/**") // map current config to given resource path
             .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -65,6 +74,7 @@ public class WebSecurityConfig {
              )
             .build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
