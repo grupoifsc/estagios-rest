@@ -3,7 +3,7 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 import com.github.javafaker.Faker;
 import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
 import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,7 +70,7 @@ class OrganizationDAOImplTest {
     @Test
     void findByUsernameReturnsBasicInfoOrNull() {
         var ent = mapper.map(org, PrivateOrgProfileResponse.class);
-        var dto = organizationDB.findByUsername(ent.getUsername());
+        var dto = organizationDB.findByUsername(ent.getUserCredentials().getEmail());
 
         jsonParser.printValue(dto);
 
@@ -99,16 +99,16 @@ class OrganizationDAOImplTest {
     @Test
     void getPublicProfile() {
 
-        var dto = organizationDB.getOnePublicProfile(org.getId());
+        var dto = organizationDB.getOrgPublicProfile(org.getId());
         jsonParser.printValue(dto);
 
     }
 
 
     @Test
-    void getOnePrivateProfile() {
+    void getOrgPrivateProfile() {
 
-        var dto = organizationDB.getOnePrivateProfile(org.getId());
+        var dto = organizationDB.getOrgPrivateProfile(org.getId());
 
         jsonParser.printValue(dto);
 
@@ -137,7 +137,7 @@ class OrganizationDAOImplTest {
     @Test
     void getMainAddressByOwnerId() {
         String id = "195";
-        var mainAddr = organizationDB.getMainAddress(id);
+        var mainAddr = organizationDB.getOrgMainAddress(id);
         jsonParser.printValue(mainAddr);
     }
 
@@ -152,15 +152,15 @@ class OrganizationDAOImplTest {
     @Test
     void getAllAddresses() {
         String id = "397";
-        var addresses = organizationDB.getAllAddresses(id);
+        var addresses = organizationDB.getAllAddressesFromOrg(id);
         System.out.println(addresses.size());
         System.out.println(jsonParser.valueAsString(addresses));
     }
 
     @Test
-    void getAllContacts() {
+    void getAllContactsFromOrg() {
         String id = "397";
-        var contacts = organizationDB.getAllContacts(id);
+        var contacts = organizationDB.getAllContactsFromOrg(id);
         System.out.println(contacts.size());
         System.out.println(jsonParser.valueAsString(contacts));
     }

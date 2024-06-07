@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.core.dto;
 
-import com.github.projetoifsc.estagios.core.IArea;
-import com.github.projetoifsc.estagios.core.IJobEntryData;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IArea;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.app.model.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.projetoifsc.estagios.core.IJob;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IJob;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

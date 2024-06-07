@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.model.interfaces.AddressProjection;
+import com.github.projetoifsc.estagios.core.models.AddressProjection;
 
 class AddressProjectionImplTest implements AddressProjection {
 

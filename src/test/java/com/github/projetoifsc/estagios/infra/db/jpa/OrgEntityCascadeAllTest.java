@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
 import com.github.projetoifsc.estagios.app.service.OrgService;
 import com.github.projetoifsc.estagios.app.model.response.PublicAddressResponse;
 import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;

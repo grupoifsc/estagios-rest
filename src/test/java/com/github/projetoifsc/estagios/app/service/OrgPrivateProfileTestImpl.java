@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.model.interfaces.AddressProjection;
-import com.github.projetoifsc.estagios.app.model.interfaces.ContactProjection;
-import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.core.models.AddressProjection;
+import com.github.projetoifsc.estagios.core.models.ContactProjection;
+import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +25,11 @@ class OrgPrivateProfileTestImpl implements OrgPrivateProfileProjection {
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public UserCredentialsProjection getUserCredentials() {
+        return null;
     }
 
     @Override

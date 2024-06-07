@@ -6,9 +6,6 @@ import com.github.projetoifsc.estagios.app.model.shared.AddressModel;
 import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.model.response.PublicOrgProfileResponse;
-import com.github.projetoifsc.estagios.core.IAddress;
-import com.github.projetoifsc.estagios.core.IContact;
-import com.github.projetoifsc.estagios.core.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.springframework.data.domain.Page;
@@ -31,38 +28,38 @@ public class OrgService {
     }
 
 
-    public IOrganization create(NewOrgProfileRequest newOrgProfileRequest) {
+    public PrivateOrgProfileResponse create(NewOrgProfileRequest newOrgProfileRequest) {
         newOrgProfileRequest.setPassword(passwordEncoder.encode(newOrgProfileRequest.getPassword()));
         var createdUser = organizationUseCases.createProfile(newOrgProfileRequest);
         return mapper.map(createdUser, PrivateOrgProfileResponse.class);
     }
 
 
-    public IOrganization getAuthUserPerfil(UserPrincipal userPrincipal, String targetId) {
-        var org = organizationUseCases.getPrivateProfile(userPrincipal.getId(), targetId);
+    public PrivateOrgProfileResponse getAuthUserPerfil(UserPrincipal userPrincipal) {
+        var org = organizationUseCases.getPrivateProfile(userPrincipal.getId(), userPrincipal.getId());
         return mapper.map(org, PrivateOrgProfileResponse.class);
     }
 
 
-    public IOrganization getUserPublicProfile(UserPrincipal userPrincipal, String targetId) {
+    public PublicOrgProfileResponse getUserPublicProfile(UserPrincipal userPrincipal, String targetId) {
         var org = organizationUseCases.getPublicProfile(userPrincipal.getId(), targetId);
         return mapper.map(org, PublicOrgProfileResponse.class);
     }
 
 
-    public IOrganization updateAuthUserPerfil(UserPrincipal userPrincipal, String targetId, NewOrgProfileRequest updatedUserData) {
+    public PrivateOrgProfileResponse updateAuthUserPerfil(UserPrincipal userPrincipal, NewOrgProfileRequest updatedUserData) {
         updatedUserData.setPassword(passwordEncoder.encode(updatedUserData.getPassword()));
-        var org = organizationUseCases.updateProfile(userPrincipal.getId(), targetId, updatedUserData);
+        var org = organizationUseCases.updateProfile(userPrincipal.getId(), userPrincipal.getId(), updatedUserData);
         return mapper.map(org, PrivateOrgProfileResponse.class);
     }
 
 
-    public void deleteAuthUserPerfil(UserPrincipal userPrincipal, String targetId) {
-        organizationUseCases.deleteProfile(userPrincipal.getId(), targetId);
+    public void deleteAuthUserPerfil(UserPrincipal userPrincipal) {
+        organizationUseCases.deleteProfile(userPrincipal.getId(), userPrincipal.getId());
     }
 
 
-    public Page<IOrganization> getAllSchools(UserPrincipal userPrincipal) {
+    public Page<PublicOrgProfileResponse> getAllSchools(UserPrincipal userPrincipal) {
         var orgs = organizationUseCases.getAllSchools();
         return orgs.map(
                 org -> mapper.map(org, PublicOrgProfileResponse.class)
@@ -70,19 +67,20 @@ public class OrgService {
     }
 
 
-    public List<IAddress> getAllUserAddresses(UserPrincipal userPrincipal, String id) {
-        var addresses = organizationUseCases.getAddresses(userPrincipal.getId(), id);
+    public List<AddressModel> getAuthUserAddresses(UserPrincipal userPrincipal) {
+        var addresses = organizationUseCases.getAddresses(userPrincipal.getId(), userPrincipal.getId());
         return addresses.stream().map(
-                addr -> (IAddress) mapper.map(addr, AddressModel.class)
+                addr -> mapper.map(addr, AddressModel.class)
         ).toList();
     }
 
 
-    public List<IContact> getAllUserContacts(UserPrincipal userPrincipal, String id) {
-        var contacts = organizationUseCases.getContacts(userPrincipal.getId(), id);
+    public List<ContactModel> getAuthUserContacts(UserPrincipal userPrincipal) {
+        var contacts = organizationUseCases.getContacts(userPrincipal.getId(), userPrincipal.getId());
         return contacts.stream().map(
-                contact -> (IContact) mapper.map(contact, ContactModel.class)
+                contact -> mapper.map(contact, ContactModel.class)
         ).toList();
     }
+
 
 }

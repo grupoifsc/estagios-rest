@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.core.IAddress;
-import com.github.projetoifsc.estagios.core.IContact;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IAddress;
+import com.github.projetoifsc.estagios.core.models.IContact;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

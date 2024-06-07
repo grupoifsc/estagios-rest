@@ -1,11 +1,10 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.interfaces.JobPrivateDetailsProjection;
-import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicDetailsProjection;
-import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicSummaryProjection;
+import com.github.projetoifsc.estagios.core.models.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.JobPublicDetailsProjection;
 import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
-import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;

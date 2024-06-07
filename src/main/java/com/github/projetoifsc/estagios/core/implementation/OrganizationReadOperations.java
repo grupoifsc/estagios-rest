@@ -1,8 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IAddress;
-import com.github.projetoifsc.estagios.core.IContact;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.*;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import org.springframework.data.domain.Page;
 
@@ -16,34 +14,34 @@ class OrganizationReadOperations {
         this.organizationRepository = organizationRepository;
     }
 
-    public IOrganization getPublicProfile(String loggedId, String targetId) {
-        return organizationRepository.getOnePublicProfile(targetId);
+    public OrgPublicProfileProjection getPublicProfile(String loggedId, String targetId) {
+        return organizationRepository.getOrgPublicProfile(targetId);
     }
 
 
-    public IOrganization getPrivateProfile(String loggedId, String targetId) {
+    public OrgPrivateProfileProjection getPrivateProfile(String loggedId, String targetId) {
         if(OrganizationValidation.isSelf(loggedId, targetId))
-            return organizationRepository.getOnePrivateProfile(targetId);
+            return organizationRepository.getOrgPrivateProfile(targetId);
         var exceptionMessage = "Organizations can only see their own private profiles";
         throw new UnauthorizedAccessException(exceptionMessage);
     }
 
 
-    public Page<IOrganization> getAllSchools() {
+    public Page<OrgPublicProfileProjection> getAllSchools() {
         return this.organizationRepository.getAllSchoolsPublicProfile();
     }
 
 
-    public List<IAddress> getAddresses(String loggedId, String targetId) {
+    public List<AddressProjection> getAddresses(String loggedId, String targetId) {
         if(OrganizationValidation.isSelf(loggedId, targetId))
-            return organizationRepository.getAllAddresses(targetId);
+            return organizationRepository.getAllAddressesFromOrg(targetId);
         var exceptionMessage = "Organizations can only see their own private profiles";
         throw new UnauthorizedAccessException(exceptionMessage);
     }
 
-    public List<IContact> getContacts(String loggedId, String targetId) {
+    public List<ContactProjection> getContacts(String loggedId, String targetId) {
         if(OrganizationValidation.isSelf(loggedId, targetId))
-            return organizationRepository.getAllContacts(targetId);
+            return organizationRepository.getAllContactsFromOrg(targetId);
         var exceptionMessage = "Organizations can only see their own private profiles";
         throw new UnauthorizedAccessException(exceptionMessage);
     }

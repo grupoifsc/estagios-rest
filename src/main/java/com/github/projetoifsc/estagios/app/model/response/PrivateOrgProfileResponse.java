@@ -1,27 +1,28 @@
 package com.github.projetoifsc.estagios.app.model.response;
 
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.*;
-import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
+import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.validation.annotation.Validated;
-import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.LocalDateTime;
 
 @Schema(name="Perfil Privado", description = "Perfil privado da instituição ou empresa")
-@JsonPropertyOrder(value = {"id", "username", "nome", "cnpj",
+@JsonPropertyOrder(value = {"id", "user_credentials", "nome", "cnpj",
 		"instituicao_de_ensino", "info", "contato_principal", "contato_candidaturas",
 		"endereco", "website", "redes_sociais", "criado_em", "atualizado_em", "_links"})
 @Validated
 public class PrivateOrgProfileResponse extends PublicOrgProfileResponse implements OrgPrivateProfileProjection {
 
-	@JsonProperty(required = true)
-	@Schema(description = "Identificador para autenticação", requiredMode = Schema.RequiredMode.REQUIRED, example = "nobanks")
-	@NotBlank
-	private String username;
+	@JsonProperty("user_credentials")
+	private UserCredentialsResponse userCredentials;
 
 	@JsonProperty(required = true)
 	@Schema(description = "CNPJ válido da instituição ou empresa", requiredMode = Schema.RequiredMode.REQUIRED, example="18009962000177")
@@ -43,12 +44,13 @@ public class PrivateOrgProfileResponse extends PublicOrgProfileResponse implemen
 	private LocalDateTime updatedAt;
 
 
-	public @NotBlank String getUsername() {
-		return username;
+	@Override
+	public UserCredentialsProjection getUserCredentials() {
+		return userCredentials;
 	}
 
-	public void setUsername(@NotBlank String username) {
-		this.username = username;
+	public void setUserCredentials(UserCredentialsResponse userCredentials) {
+		this.userCredentials = userCredentials;
 	}
 
 	@Override
@@ -87,4 +89,34 @@ public class PrivateOrgProfileResponse extends PublicOrgProfileResponse implemen
 		this.updatedAt = updatedAt;
 	}
 
+
+	public static class UserCredentialsResponse implements UserCredentialsProjection {
+
+		@JsonProperty(required = true)
+		@Schema(description = "Identificador para autenticação", requiredMode = Schema.RequiredMode.REQUIRED, example = "nobanks")
+		@Email
+		private String email;
+
+		@JsonIgnore
+		private String pwd;
+
+		@Override
+		public String getEmail() {
+			return email;
+		}
+
+		@Override
+		public String getPwd() {
+			return pwd;
+		}
+
+		public void setEmail(@Email String email) {
+			this.email = email;
+		}
+
+		public void setPwd(String pwd) {
+			this.pwd = pwd;
+		}
+
+	}
 }

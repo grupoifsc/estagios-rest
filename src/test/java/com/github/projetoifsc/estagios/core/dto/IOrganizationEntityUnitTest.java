@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.dto;
 
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

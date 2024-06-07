@@ -6,7 +6,7 @@ import com.github.projetoifsc.estagios.app.model.response.PublicAddressResponse;
 import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
 import com.github.projetoifsc.estagios.app.model.response.PublicOrgProfileResponse;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import com.github.projetoifsc.estagios.infra.db.jpa.GeradorCnpj;
 import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
@@ -46,7 +46,7 @@ class OrgServiceIntegrationTest {
 
     @Test
     void getPrivateProfile() {
-        var dto = orgService.getAuthUserPerfil(userPrincipal, entity.getId());
+        var dto = orgService.getAuthUserPerfil(userPrincipal);
         jsonParser.printValue(dto);
         
 
@@ -102,7 +102,7 @@ class OrgServiceIntegrationTest {
     @Test
     void delete() {
 
-        orgService.deleteAuthUserPerfil(userPrincipal, entity.getId());
+        orgService.deleteAuthUserPerfil(userPrincipal);
 
     }
 
@@ -121,7 +121,7 @@ class OrgServiceIntegrationTest {
         System.out.println("Imprimindo o objeto local: ");
         jsonParser.printValue(org);
 
-        var saved = orgService.updateAuthUserPerfil(userPrincipal, org.getId(), org);
+        var saved = orgService.updateAuthUserPerfil(userPrincipal, org);
         System.out.println("O que veio salvo lá do banco de dados: ");
         jsonParser.printValue(saved);
 

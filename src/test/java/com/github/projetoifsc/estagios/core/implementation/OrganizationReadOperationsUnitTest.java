@@ -1,6 +1,7 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.dto.OrgPublicProfileImpl;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +31,8 @@ public class OrganizationReadOperationsUnitTest {
 
     @Test
     void getSchoolsCallsSchoolsPublicProfileAndReturnsList() {
-        when(organizationRepository.getAllSchoolsPublicProfile()).thenReturn(new PageImpl<>(List.of(new OrganizationImpl("1", true), new OrganizationImpl("2", true))));
+        when(organizationRepository.getAllSchoolsPublicProfile())
+                .thenReturn(new PageImpl<>(List.of(new OrgPublicProfileImpl("1", true), new OrgPublicProfileImpl("2", true))));
         assertInstanceOf(PageImpl.class, service.getAllSchools());
     }
 

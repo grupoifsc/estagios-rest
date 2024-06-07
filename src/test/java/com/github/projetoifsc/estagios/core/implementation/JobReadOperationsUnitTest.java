@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
-import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.core.IJobDAO;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;

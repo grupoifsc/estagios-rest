@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IAreaDAO;
-import com.github.projetoifsc.estagios.core.IArea;
+import com.github.projetoifsc.estagios.core.models.IArea;
 
 import java.util.List;
 

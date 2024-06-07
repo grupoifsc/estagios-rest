@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IAreaDAO;
-import com.github.projetoifsc.estagios.core.dto.AreaImpl;
-import com.github.projetoifsc.estagios.core.IArea;
+import com.github.projetoifsc.estagios.core.dto.IAreaImpl;
+import com.github.projetoifsc.estagios.core.models.IArea;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,13 +17,13 @@ public class AreaReadOperationsUnitTest {
 
     @Test
     void getAllAreasReturnList() {
-        when(areaRepository.getAll()).thenReturn(List.of(new AreaImpl("1", "Educação"), new AreaImpl("2", "Engenharia")));
+        when(areaRepository.getAll()).thenReturn(List.of(new IAreaImpl("1", "Educação"), new IAreaImpl("2", "Engenharia")));
         assertInstanceOf(List.class, service.getAll());
     }
 
     @Test
     void getOneReturnArea() {
-        when(areaRepository.getById("1")).thenReturn(new AreaImpl("1", "Educação"));
+        when(areaRepository.getById("1")).thenReturn(new IAreaImpl("1", "Educação"));
 
         assertInstanceOf(IArea.class, service.getById("1"));
     }

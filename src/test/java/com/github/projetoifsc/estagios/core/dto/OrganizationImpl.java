@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.core.dto;
 
-import com.github.projetoifsc.estagios.core.IAddress;
-import com.github.projetoifsc.estagios.core.IContact;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IAddress;
+import com.github.projetoifsc.estagios.core.models.IContact;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 
 public class OrganizationImpl implements IOrganization {
 
@@ -29,14 +29,8 @@ public class OrganizationImpl implements IOrganization {
         return isSchool;
     }
 
-    //@Override
-    public IContact getMainContact() {
-        return null;
-    }
-
-    //@Override
-    public IAddress getMainAddress() {
-        return null;
+    public void setIe(boolean school) {
+        isSchool = school;
     }
 
 }

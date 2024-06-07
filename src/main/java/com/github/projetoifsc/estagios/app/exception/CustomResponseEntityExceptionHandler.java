@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.app.exception;
 
+import com.github.projetoifsc.estagios.app.model.response.wrapper.ExceptionResponse;
 import com.github.projetoifsc.estagios.app.security.ratelimit.RateLimitException;
 import com.github.projetoifsc.estagios.core.implementation.InvalidReceiverException;
 import com.github.projetoifsc.estagios.core.implementation.UnauthorizedAccessException;
@@ -63,10 +64,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     public ResponseEntity<ExceptionResponse> buildErrorResponseEntity(Exception ex, String details, HttpStatus code) {
         var exceptionResponse = new ExceptionResponse(
-                "error",
-                code,
-                ex.getMessage(),
-                details
+                code, ex.getMessage(), details
         );
         return new ResponseEntity<>(exceptionResponse,code);
     }

@@ -3,10 +3,11 @@ package com.github.projetoifsc.estagios.app.model.request;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
+import com.github.projetoifsc.estagios.core.models.IOrganizationEntryData;
 import com.github.projetoifsc.estagios.app.model.response.PublicAddressResponse;
 import com.github.projetoifsc.estagios.app.model.response.PublicContactResponse;
 import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
+import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -15,12 +16,14 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
+
 @Schema(name="Perfil Privado", description = "Perfil privado da instituição ou empresa")
 @JsonPropertyOrder(value = {"nome", "email", "senha", "cnpj",
         "instituicao_de_ensino", "info", "contato_principal", "contato_candidaturas",
         "endereco", "website", "redes_sociais"})
 @Validated
-public class NewOrgProfileRequest implements INewUser {
+public class NewOrgProfileRequest implements OrgPrivateProfileProjection {
 
     @JsonIgnore
     private String id;
@@ -76,6 +79,11 @@ public class NewOrgProfileRequest implements INewUser {
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public UserCredentialsProjection getUserCredentials() {
+        return null;
     }
 
     @Override
@@ -160,6 +168,16 @@ public class NewOrgProfileRequest implements INewUser {
     @Override
     public @NotNull @Valid PublicAddressResponse getMainAddress() {
         return mainAddress;
+    }
+
+    @Override
+    public LocalDateTime getCreatedAt() {
+        return null;
+    }
+
+    @Override
+    public LocalDateTime getUpdatedAt() {
+        return null;
     }
 
     public void setMainAddress(@NotNull @Valid PublicAddressResponse mainAddress) {

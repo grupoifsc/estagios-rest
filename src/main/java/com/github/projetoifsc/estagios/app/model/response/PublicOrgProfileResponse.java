@@ -2,10 +2,9 @@ package com.github.projetoifsc.estagios.app.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.github.projetoifsc.estagios.app.model.interfaces.OrgPublicProfileProjection;
+import com.github.projetoifsc.estagios.core.models.OrgPublicProfileProjection;
 import com.github.projetoifsc.estagios.app.model.shared.AddressModel;
 import com.github.projetoifsc.estagios.app.model.shared.ContactModel;
-import com.github.projetoifsc.estagios.app.utils.hateoas.UserHateoasHelper;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

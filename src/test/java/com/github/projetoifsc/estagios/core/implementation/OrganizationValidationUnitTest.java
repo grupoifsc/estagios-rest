@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import org.junit.jupiter.api.BeforeEach;

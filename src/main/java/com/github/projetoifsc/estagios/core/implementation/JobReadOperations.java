@@ -1,6 +1,8 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.*;
+import com.github.projetoifsc.estagios.core.models.IJob;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import org.springframework.data.domain.Page;
 
 import static com.github.projetoifsc.estagios.core.implementation.OrganizationValidation.*;

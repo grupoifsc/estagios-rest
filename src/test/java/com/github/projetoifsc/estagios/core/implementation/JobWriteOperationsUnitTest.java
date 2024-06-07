@@ -3,6 +3,8 @@ package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

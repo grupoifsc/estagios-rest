@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
-import com.github.projetoifsc.estagios.core.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
@@ -34,29 +34,9 @@ public class OrganizationWriteOperationsUnitTest {
 
 
     @Test
-    void createProfileReturnsInterface() {
-        when(organizationRepository.save(newUser)).thenReturn(organizationA);
-
-        assertInstanceOf(IOrganization.class, service.createProfile(newUser));
-    }
-
-
-    @Test
-    void updateProfileReturnsInterface() {
-        when(organizationRepository.save(newUser)).thenReturn(organizationA);
-
-        assertInstanceOf(IOrganization.class, service.updateProfile(
-                        organizationA.getId(),
-                        organizationA.getId(),
-                        newUser)
-        );
-    }
-
-
-    @Test
     void updatedProfileHasSameIdAsOrganization() {
         newUser = mapper.map(organizationB, NewOrgProfileRequest.class);
-        when(organizationRepository.save(newUser)).thenReturn(organizationB);
+        when(organizationRepository.save(newUser)).thenReturn(newUser);
 
         assertEquals(
                 organizationA.getId(),

@@ -1,7 +1,12 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.projetoifsc.estagios.app.configs.ObjectMapperConfig;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.*;
+import com.github.projetoifsc.estagios.core.models.IJob;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.IOrganization;
 
 class JobWriteOperations {
 

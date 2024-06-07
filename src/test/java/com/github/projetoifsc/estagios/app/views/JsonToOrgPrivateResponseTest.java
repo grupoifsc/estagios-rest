@@ -41,7 +41,7 @@ class JsonToOrgPrivateResponseTest {
 
         var mapped = jsonParser.parseString(jsonString, PrivateOrgProfileResponse.class);
 
-        System.out.println(mapped.getUsername());
+        System.out.println(mapped.getUserCredentials().getEmail());
         System.out.println(mapped.getRedesSociais());
 
     }

@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.core.IArea;
+import com.github.projetoifsc.estagios.core.models.IArea;
 import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

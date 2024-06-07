@@ -1,13 +1,13 @@
 package com.github.projetoifsc.estagios.core;
 
-import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
+import com.github.projetoifsc.estagios.core.models.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IOrganizationDAO {
 
-    IOrganization save(INewUser organization);
+    OrgPrivateProfileProjection save(OrgPrivateProfileProjection organization);
     void delete(String organization);
 
     IOrganization findById(String id);
@@ -15,16 +15,16 @@ public interface IOrganizationDAO {
 
     List<IOrganization> findAllById(List<String> receiversIds);
 
-    IOrganization getOnePublicProfile(String organization);
-    IOrganization getOnePrivateProfile(String organization);
+    OrgPublicProfileProjection getOrgPublicProfile(String organization);
+    OrgPrivateProfileProjection getOrgPrivateProfile(String organization);
 
-    Page<IOrganization> getAllSchoolsPublicProfile();
+    Page<OrgPublicProfileProjection> getAllSchoolsPublicProfile();
 
-    IAddress getMainAddress(String orgId);
-    IContact getMainContact(String orgId);
+    IAddress getOrgMainAddress(String orgId);
+    IContact getOrgMainContact(String orgId);
 
-    List<IAddress> getAllAddresses(String orgId);
-    List<IContact> getAllContacts(String orgId);
+    List<AddressProjection> getAllAddressesFromOrg(String orgId);
+    List<ContactProjection> getAllContactsFromOrg(String orgId);
 
     List<IOrganization> getExclusiveReceiversForJob(String jobId);
 

@@ -3,15 +3,13 @@ package com.github.projetoifsc.estagios.app.service;
 import com.github.javafaker.Faker;
 import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
-import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.infra.db.jpa.JobMocker;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -83,7 +81,7 @@ class VagaServiceIntegrationTest {
     @Test
     void getAllCreated() {
         String id = "195";
-        var vagas = service.getAllCreatedByUser(userPrincipal, id, 0, 50);
+        var vagas = service.getAuthUserCreatedJobs(userPrincipal, 0, 50);
         jsonParser.printValue(vagas.getContent());
     }
 

@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.interfaces.JobBasicInfoProjection;
-import com.github.projetoifsc.estagios.app.model.interfaces.JobPublicSummaryProjection;
-import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.models.JobBasicInfoProjection;
+import com.github.projetoifsc.estagios.core.models.JobPublicSummaryProjection;
+import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

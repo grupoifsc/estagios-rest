@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.core.IArea;
+import com.github.projetoifsc.estagios.core.models.IArea;
 
 public class AreaMocker {
 

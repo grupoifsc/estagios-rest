@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
+import com.github.projetoifsc.estagios.core.models.*;
 import com.github.projetoifsc.estagios.core.*;
 import org.springframework.data.domain.Page;
 
@@ -18,12 +18,12 @@ public class OrganizationUseCases implements IOrganizationUseCases {
     }
 
     @Override
-    public IOrganization createProfile(INewUser organization) {
+    public OrgPrivateProfileProjection createProfile(OrgPrivateProfileProjection organization) {
         return writeUC.createProfile(organization);
     }
 
     @Override
-    public IOrganization updateProfile(String loggedId, String targetId, INewUser organization) {
+    public OrgPrivateProfileProjection updateProfile(String loggedId, String targetId, OrgPrivateProfileProjection organization) {
         return writeUC.updateProfile(loggedId, targetId, organization);
     }
 
@@ -33,27 +33,27 @@ public class OrganizationUseCases implements IOrganizationUseCases {
     }
 
     @Override
-    public IOrganization getPublicProfile(String loggedId, String targetId) {
+    public OrgPublicProfileProjection getPublicProfile(String loggedId, String targetId) {
         return readUC.getPublicProfile(loggedId, targetId);
     }
 
     @Override
-    public IOrganization getPrivateProfile(String loggedId, String targetId) {
+    public OrgPrivateProfileProjection getPrivateProfile(String loggedId, String targetId) {
         return readUC.getPrivateProfile(loggedId, targetId);
     }
 
     @Override
-    public Page<IOrganization> getAllSchools() {
+    public Page<OrgPublicProfileProjection> getAllSchools() {
         return readUC.getAllSchools();
     }
 
     @Override
-    public List<IAddress> getAddresses(String loggedId, String targetId) {
+    public List<AddressProjection> getAddresses(String loggedId, String targetId) {
         return readUC.getAddresses(loggedId, targetId);
     }
 
     @Override
-    public List<IContact> getContacts(String loggedId, String targetId) {
+    public List<ContactProjection> getContacts(String loggedId, String targetId) {
         return readUC.getContacts(loggedId, targetId);
     }
 

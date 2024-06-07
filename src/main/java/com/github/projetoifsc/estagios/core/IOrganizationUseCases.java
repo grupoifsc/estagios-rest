@@ -1,22 +1,22 @@
 package com.github.projetoifsc.estagios.core;
 
-import com.github.projetoifsc.estagios.app.model.interfaces.INewUser;
+import com.github.projetoifsc.estagios.core.models.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IOrganizationUseCases {
 
-    IOrganization createProfile(INewUser organization);
-    IOrganization updateProfile(String loggedId, String targetId, INewUser organization);
+    OrgPrivateProfileProjection createProfile(OrgPrivateProfileProjection organization);
+    OrgPrivateProfileProjection updateProfile(String loggedId, String targetId, OrgPrivateProfileProjection organization);
     void deleteProfile(String loggedId, String targetId);
 
-    IOrganization getPublicProfile(String loggedId, String targetId);
-    IOrganization getPrivateProfile(String loggedId, String targetId);
+    OrgPublicProfileProjection getPublicProfile(String loggedId, String targetId);
+    OrgPrivateProfileProjection getPrivateProfile(String loggedId, String targetId);
 
-    Page<IOrganization> getAllSchools();
+    Page<OrgPublicProfileProjection> getAllSchools();
 
-    List<IAddress> getAddresses(String loggedId, String targetId);
-    List<IContact> getContacts(String loggedId, String targetId);
+    List<AddressProjection> getAddresses(String loggedId, String targetId);
+    List<ContactProjection> getContacts(String loggedId, String targetId);
 
 }

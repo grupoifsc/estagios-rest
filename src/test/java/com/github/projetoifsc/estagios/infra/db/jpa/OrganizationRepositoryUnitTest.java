@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.interfaces.OrgBasicInfoProjection;
-import com.github.projetoifsc.estagios.app.model.interfaces.OrgPrivateProfileProjection;
-import com.github.projetoifsc.estagios.app.model.interfaces.OrgPublicProfileProjection;
+import com.github.projetoifsc.estagios.core.models.OrgBasicInfoProjection;
+import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.core.models.OrgPublicProfileProjection;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.Test;

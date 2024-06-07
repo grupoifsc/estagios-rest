@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.core.IArea;
+import com.github.projetoifsc.estagios.core.models.IArea;
 import com.github.projetoifsc.estagios.core.IAreaDAO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

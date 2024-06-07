@@ -9,11 +9,9 @@ import java.util.Optional;
 @Repository
 interface AddressRepository extends CrudRepository<AddressEntity, Long> {
 
-    Optional<AddressMainEntity> findFirstByOwnerId(long id);
+    Optional<AddressMainEntity> findFirstAddressMainByOwnerId(long id);
 
-    Optional<AddressMainEntity> findFirstAddressMainByOwner(OrganizationEntity owner);
-
-    List<AddressEntity> findByOwnerId(long ownerId);
+    <T> List<T> findByOwnerId(long ownerId, Class<T> type);
 
     void deleteAllByOwner(OrganizationEntity owner);
 

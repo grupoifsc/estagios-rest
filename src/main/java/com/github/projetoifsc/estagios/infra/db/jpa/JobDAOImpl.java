@@ -1,11 +1,14 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.app.model.interfaces.*;
-import com.github.projetoifsc.estagios.core.IJob;
+import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.core.IJobDAO;
-import com.github.projetoifsc.estagios.core.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
+import com.github.projetoifsc.estagios.core.models.JobBasicInfoProjection;
+import com.github.projetoifsc.estagios.core.models.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.JobPublicSummaryProjection;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

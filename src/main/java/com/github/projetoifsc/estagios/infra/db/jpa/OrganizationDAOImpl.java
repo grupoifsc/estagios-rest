@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.app.model.interfaces.*;
 import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
+import com.github.projetoifsc.estagios.core.models.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -90,7 +90,7 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     // Aqui vamos usar transaction para salvar os objetos "menores" tbm!
     @Override
     @Transactional
-    public IOrganization save(INewUser organization) {
+    public OrgPrivateProfileProjection save(OrgPrivateProfileProjection organization) {
         var entity = mapper.map(organization, OrganizationEntity.class);
         jsonParser.printValue(entity);
         var savedEntity = organizationRepository.save(entity);
@@ -107,21 +107,21 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
         // TODO Refactor: Olha uma dependẽncia escondida aqui!
-        saveAddressAndContact((INewUser) organization, savedEntity);
+        saveAddressAndContact((IOrganizationEntryData) organization, savedEntity);
 
         var dto = organizationRepository.findById(Long.parseLong(savedEntity.getId()), OrgPrivateProfileProjection.class);
-        return (IOrganization) dto.orElse(null);
+        return dto.orElse(null);
     }
 
 
-    private void saveAddressAndContact(INewUser dto, OrganizationEntity organization) {
+    private void saveAddressAndContact(IOrganizationEntryData dto, OrganizationEntity organization) {
         saveMainAddress(dto, organization);
         saveMainContact(dto, organization);
         saveApplianceContact(dto, organization);
     }
 
 
-    private void saveMainContact(INewUser dto, OrganizationEntity org) {
+    private void saveMainContact(IOrganizationEntryData dto, OrganizationEntity org) {
         var mainContact = contactRepository.findFirstContactMainByOwner(org)
                 .orElse(new ContactMainEntity());
 
@@ -133,7 +133,7 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     }
 
 
-    private void saveApplianceContact(INewUser dto, OrganizationEntity org) {
+    private void saveApplianceContact(IOrganizationEntryData dto, OrganizationEntity org) {
         var applianceContact = contactRepository.findFirstContactApplianceByOwner(org)
                 .orElse(new ContactApplianceEntity());
 
@@ -145,8 +145,8 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     }
 
 
-    void saveMainAddress(INewUser dto, OrganizationEntity org) {
-        var mainAddress = addressRepository.findFirstAddressMainByOwner(org)
+    void saveMainAddress(IOrganizationEntryData dto, OrganizationEntity org) {
+        var mainAddress = addressRepository.findFirstAddressMainByOwnerId(Long.parseLong(org.getId()))
                     .orElse(new AddressMainEntity());
 
         if (dto.getMainAddress() != null)
@@ -156,7 +156,6 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
         addressRepository.save(mainAddress);
     }
 
-
     @Override
     @Transactional
     public void delete(String id) {
@@ -165,61 +164,51 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
         organizationRepository.delete(entity);
     }
 
-
     @Override
-    public IOrganization getOnePublicProfile(String id) {
+    public OrgPublicProfileProjection getOrgPublicProfile(String id) {
         var organizationProfile = organizationRepository.findById(Long.parseLong(id), OrgPublicProfileProjection.class);
         return organizationProfile.orElseThrow(EntityNotFoundException::new);
     }
 
-
     @Override
-    public IOrganization getOnePrivateProfile(String id) {
+    public OrgPrivateProfileProjection getOrgPrivateProfile(String id) {
         var organizationProfile = organizationRepository.findById(Long.parseLong(id), OrgPrivateProfileProjection.class);
         return organizationProfile.orElseThrow(EntityNotFoundException::new);
     }
 
-
     @Override
-    public Page<IOrganization> getAllSchoolsPublicProfile() {
-        var page = organizationRepository.findAllByIe(true, PageRequest.of(0, 20), OrgPublicProfileProjection.class);
-        return page.map(org -> (IOrganization) org);
+    public Page<OrgPublicProfileProjection> getAllSchoolsPublicProfile() {
+        return organizationRepository.findAllByIe(true, PageRequest.of(0, 20), OrgPublicProfileProjection.class);
     }
-
 
     @Override
     public List<IOrganization> getExclusiveReceiversForJob(String id) {
-        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), OrgBasicInfoProjection.class)
-                .stream().map(org -> (IOrganization) org).toList();
+        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), IOrganization.class);
     }
 
 
-
     @Override
-    public IAddress getMainAddress(String orgId) {
-        return addressRepository.findFirstByOwnerId(Long.parseLong(orgId))
+    public IAddress getOrgMainAddress(String orgId) {
+        return addressRepository.findFirstAddressMainByOwnerId(Long.parseLong(orgId))
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-
+    // TODO Refactor: Contatos e Endereços está um lamaçal, precisa refatorar
     @Override
-    public IContact getMainContact(String orgId) {
+    public IContact getOrgMainContact(String orgId) {
         var optional = organizationRepository.findById(Long.parseLong(orgId), OrganizationEntity.class);
         var entity = optional.orElseThrow(EntityNotFoundException::new);
         return entity.getMainContact();
     }
 
     @Override
-    public List<IAddress> getAllAddresses(String orgId) {
-        return addressRepository.findByOwnerId(Long.parseLong(orgId))
-                .stream().map(addrr -> (IAddress) addrr).toList();
+    public List<AddressProjection> getAllAddressesFromOrg(String orgId) {
+        return addressRepository.findByOwnerId(Long.parseLong(orgId), AddressProjection.class);
     }
 
     @Override
-    public List<IContact> getAllContacts(String orgId) {
-        return contactRepository.findByOwnerId(Long.parseLong(orgId))
-                .stream().map(contact -> (IContact) contact).toList();
+    public List<ContactProjection> getAllContactsFromOrg(String orgId) {
+        return contactRepository.findByOwnerId(Long.parseLong(orgId), ContactProjection.class);
     }
-
 
 }

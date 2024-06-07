@@ -1,6 +1,7 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.*;
+import com.github.projetoifsc.estagios.core.models.IArea;
 
 import java.util.List;
 

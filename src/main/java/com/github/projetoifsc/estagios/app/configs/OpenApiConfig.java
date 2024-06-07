@@ -16,10 +16,13 @@ public class OpenApiConfig {
 
     public static final String AUTHORIZATION = "Authorization";
     public static final String BASE_URL = "/api/v1";
+
+	public static final String AUTH = "Autenticação";
+	public static final String AUTH_USER_PROFILE = "Seu Perfil";
+	public static final String AUTH_USER_VAGAS = "Suas Vagas";
     public static final String ORGS = "Organizações";
     public static final String VAGAS = "Vagas";
     public static final String AREAS = "Áreas";
-	public static final String AUTH = "Autenticação";
 
 
     @Bean
@@ -49,6 +52,18 @@ public class OpenApiConfig {
 					.summary("Um serviço web para conectar empresas e instituições de ensino em torno de um objetivo em comum: divulgar vagas de estágio à comunidade estudantil")
 				)
 				.addTagsItem( new Tag()
+						.name(AUTH)
+						.description("")
+				)
+				.addTagsItem( new Tag()
+						.name(AUTH_USER_PROFILE)
+						.description("")
+				)
+				.addTagsItem( new Tag()
+						.name(AUTH_USER_VAGAS)
+						.description("")
+				)
+				.addTagsItem( new Tag()
 						.name(AREAS)
 						.description("")
 				)
@@ -59,11 +74,8 @@ public class OpenApiConfig {
 				.addTagsItem( new Tag()
 						.name(VAGAS)
 						.description("")
-				)
-				.addTagsItem( new Tag()
-						.name(AUTH)
-						.description("")
 				);
+
 	}
 
 }

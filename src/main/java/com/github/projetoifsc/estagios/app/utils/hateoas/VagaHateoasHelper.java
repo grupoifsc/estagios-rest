@@ -1,10 +1,10 @@
 package com.github.projetoifsc.estagios.app.utils.hateoas;
 
-import com.github.projetoifsc.estagios.app.controller.VagaController;
+import com.github.projetoifsc.estagios.app.controller.VagasController;
 
 public class VagaHateoasHelper {
 
-    private static Class<VagaController> vagaController = VagaController.class;
+    private static Class<VagasController> vagaController = VagasController.class;
 
 //    public static void addPublicProfileLinks(VagaBasicView vaga) {
 //

@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.app.utils.serialization;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 

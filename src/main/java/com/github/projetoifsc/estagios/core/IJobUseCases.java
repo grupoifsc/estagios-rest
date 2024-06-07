@@ -1,5 +1,7 @@
 package com.github.projetoifsc.estagios.core;
 
+import com.github.projetoifsc.estagios.core.models.IJob;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
