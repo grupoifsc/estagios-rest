@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
+import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.*;
 
 class JobWriteOperations {
@@ -7,6 +8,7 @@ class JobWriteOperations {
     JobReadOperations jobReadOperations;
     IJobDAO jobDB;
     IOrganizationDAO organizationDB;
+    JsonParser jsonParser = new JsonParser();
 
     public JobWriteOperations(JobReadOperations jobReadOperations, IJobDAO jobDB, IOrganizationDAO organizationDB) {
         this.jobReadOperations = jobReadOperations;
@@ -31,6 +33,9 @@ class JobWriteOperations {
     }
 
 
+    // TODO BugFix: Resolver incronguência que ocorre quando uma vaga antes pública
+    //  se torna exclusiva, mas já foi aprovada por IEs para as quais a vaga não é mais
+    //  ofertada
     public IJob update(String organizationId, String traineeshipId, IJobEntryData newData) {
         var traineeship = jobDB.getBasicInfo(traineeshipId);
         var organization = organizationDB.findById(organizationId);
@@ -69,11 +74,9 @@ class JobWriteOperations {
     }
 
 
-    // TODO Refactor: pode substituir por métodos como isPublic() e um isReceiver() -> Este teria que ser chamada ao banco de dados...
     private boolean canModerate(IOrganization org, IJob job) {
         if(OrganizationValidation.isIE(org) && !OrganizationValidation.isOwner(org, job)) {
-            var receivedJobs = jobReadOperations.getAllReceivedSummary(org);
-            return receivedJobs.contains(job);
+            return jobDB.isJobOfferedToOrg(job.getId(), org.getId());
         }
         return false;
     }

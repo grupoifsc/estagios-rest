@@ -4,13 +4,13 @@ import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
 import com.github.projetoifsc.estagios.app.model.response.PrivateJobDetailsResponse;
 import com.github.projetoifsc.estagios.app.model.response.PrivateJobSummaryResponse;
 import com.github.projetoifsc.estagios.app.model.response.PublicJobDetailsResponse;
+import com.github.projetoifsc.estagios.app.model.response.PublicJobSummaryResponse;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IJobUseCases;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
-import java.util.List;
 
 @Service
 public class VagaService {
@@ -65,17 +65,6 @@ public class VagaService {
     }
 
 
-    // TODO Refactor: Método não estará mais disponível
-     public List<PublicJobDetailsResponse> getAllReceivedByUser(UserPrincipal userPrincipal, String targetUserId, HashMap<String, String> filterArgs) {
-//        var vagas = jobUseCases.getAllReceivedSummary(userPrincipal.getId(), targetUserId);
-//        return vagas.stream().map(vaga -> mapper.map(
-//                vaga,
-//                PublicJobDetailsResponse.class
-//        )).toList();
-         return null;
-    }
-
-
     public Page<PrivateJobSummaryResponse> getAllCreatedByUser(UserPrincipal userPrincipal, String targetUserId, Integer page, Integer limit) {
         var vagas = jobUseCases.getAllCreatedSummary(userPrincipal.getId(), targetUserId);
         return vagas.map(vaga -> mapper.map(
@@ -84,5 +73,39 @@ public class VagaService {
         ));
     }
 
+
+    public Page<PublicJobSummaryResponse> getAllAvailableForUser(UserPrincipal userPrincipal, String id, Integer page, Integer limit) {
+        var available = jobUseCases.getAllAvailableSummary(userPrincipal.getId(), id)
+                .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
+        return new PageImpl<>(available);
+    }
+
+    public Page<PublicJobSummaryResponse> getAllApprovedByUser(UserPrincipal userPrincipal, String id, Integer page, Integer limit) {
+        var approved = jobUseCases.getAllApprovedSummary(userPrincipal.getId(), id)
+                .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
+        return new PageImpl<>(approved);
+    }
+
+    public Page<PublicJobSummaryResponse> getAllRejectedByUser(UserPrincipal userPrincipal, String id, Integer page, Integer limit) {
+        var rejected = jobUseCases.getAllRejectedSummary(userPrincipal.getId(), id)
+                .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
+        return new PageImpl<>(rejected);
+    }
+
+    public Page<PublicJobSummaryResponse> getAllPendingForUser(UserPrincipal userPrincipal, String id, Integer page, Integer limit) {
+        var pending = jobUseCases.getAllPendingSummary(userPrincipal.getId(), id)
+                .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
+        return new PageImpl<>(pending);
+    }
+
+    public PublicJobSummaryResponse approve(UserPrincipal userPrincipal, String jobId) {
+        var approved = jobUseCases.approve(userPrincipal.getId(), jobId);
+        return mapper.map(approved, PublicJobSummaryResponse.class);
+    }
+
+    public PublicJobSummaryResponse reject(UserPrincipal userPrincipal, String jobId) {
+        var rejected = jobUseCases.reject(userPrincipal.getId(), jobId);
+        return mapper.map(rejected, PublicJobSummaryResponse.class);
+    }
 
 }

@@ -21,7 +21,10 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     <T> List<T> findAllByExclusiveReceiversEmpty(Class<T> type);
     <T> List<T> findAllByExclusiveReceiversId(long id, Class<T> type);
 
-    <T> List<T> findAllByExclusiveReceiversEmptyOrExclusiveReceiversId(long id, Class<T> type);
+    <T> List<T> findAllByOwnerIdNotAndIdNotInAndExclusiveReceiversEmptyOrExclusiveReceiversId(long ownerId, List<Long> ids, long receiverId, Class<T> type);
+
+
+    boolean existsByIdAndExclusiveReceiversEmptyOrExclusiveReceiversId(long jobId, long orgId);
 
     <T> List<T> findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(long ownerId, short statusId, Class<T> type);
 
@@ -32,5 +35,6 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
 //    <T> List<T> findAllByRejectionsOrganizationId(long orgId, Class<T> type);
 //
 //    <T> List<T> findDistinctByApprovalsOrganizationIdOrOwnerId(long orgId, long ownerId, Class<T> type);
+
 
 }

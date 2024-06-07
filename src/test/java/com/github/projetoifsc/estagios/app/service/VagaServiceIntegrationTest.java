@@ -89,13 +89,13 @@ class VagaServiceIntegrationTest {
 
 
 
-    @Test
-    void getAllReceived() {
-        String id = "274";
-        var vagas = service.getAllReceivedByUser(userPrincipal, id, new HashMap<>());
-        System.out.println(vagas.size());
-        vagas.forEach(v -> System.out.println(v.getId()));
-        jsonParser.printValue(vagas);
-    }
+//    @Test
+//    void getAllReceived() {
+//        String id = "274";
+//        var vagas = service.getAllReceivedByUser(userPrincipal, id, new HashMap<>());
+//        System.out.println(vagas.size());
+//        vagas.forEach(v -> System.out.println(v.getId()));
+//        jsonParser.printValue(vagas);
+//    }
 
 }

@@ -25,4 +25,6 @@ public interface IJobDAO {
     List<IJob> getAllRejectedSummaryFromOrg(String orgId);
     List<IJob> getExclusiveReceivedJobsSummaryForOrg(String orgId);
 
+    boolean isJobOfferedToOrg(String jobId, String orgId);
+
 }

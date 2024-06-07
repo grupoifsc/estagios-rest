@@ -216,7 +216,10 @@ class JobDAOImpl implements IJobDAO {
 
     @Override
     public List<IJob> getAllPendingSummaryFromOrg(String orgId) {
-        return jobRepository.findAllByExclusiveReceiversEmptyOrExclusiveReceiversId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
+        var orgLongId = Long.parseLong(orgId);
+        var moderatedIds = moderatedJobRepository.findAllByOrganizationId(orgLongId).map(ModeratedJobsEntity::getJobId).toList();
+        jsonParser.printValue(moderatedIds);
+        return jobRepository.findAllByOwnerIdNotAndIdNotInAndExclusiveReceiversEmptyOrExclusiveReceiversId(orgLongId, moderatedIds, orgLongId, JobPublicSummaryProjection.class)
                 .stream().map(job -> (IJob) job).toList();
     }
 
@@ -239,6 +242,13 @@ class JobDAOImpl implements IJobDAO {
     public List<IJob> getExclusiveReceivedJobsSummaryForOrg(String orgId) {
         return jobRepository.findAllByExclusiveReceiversId(Long.parseLong(orgId), JobPublicSummaryProjection.class)
                 .stream().map(r -> (IJob) r).toList();
+    }
+
+    @Override
+    public boolean isJobOfferedToOrg(String jobId, String orgId) {
+        var jobLongId = Long.parseLong(jobId);
+        var orgLongId = Long.parseLong(orgId);
+        return jobRepository.existsByIdAndExclusiveReceiversEmptyOrExclusiveReceiversId(jobLongId, orgLongId);
     }
 
 }

@@ -176,7 +176,7 @@ class JobDAOImplTest {
 
     @Test
     void getAllPending() {
-        var id = "378";
+        var id = "397";
         var vagas = jobDBImpl.getAllPendingSummaryFromOrg(id);
         System.out.println(vagas.size());
         jsonParser.printValue(vagas);
@@ -205,6 +205,15 @@ class JobDAOImplTest {
         System.out.println(received.size());
         jsonParser.printValue(received);
     }
+
+    @Test
+    void isJobOfferedToOrg() {
+        var orgId = "397";
+        var jobId = "8";
+        var response = jobDBImpl.isJobOfferedToOrg(jobId, orgId);
+        System.out.println("Is Job Offered To Org? " + response);
+    }
+
 
 
 }
