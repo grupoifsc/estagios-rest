@@ -55,6 +55,12 @@ class JobDAOImpl implements IJobDAO {
         return job;
     }
 
+    @Override
+    public List<IJob> getBasicInfo(List<String> traineeshipIds) {
+        var longIds = traineeshipIds.stream().map(Long::parseLong).toList();
+        return jobRepository.findByIdIn(longIds);
+    }
+
     private JobEntity findEntityById(String id) {
         return getOptionalOrThrow(
                 Long.parseLong(id),
@@ -159,36 +165,48 @@ class JobDAOImpl implements IJobDAO {
 
     @Override
     public JobPublicSummaryProjection setJobApprovedByOrg(String traineeshipId, String organizationId) {
-        var moderatedJobsEntity = getModeratedEntity(traineeshipId, organizationId);
-        moderatedJobsEntity.setStatusId(ModerationStatusEnum.APPROVED.getId());
-        moderatedJobRepository.save(moderatedJobsEntity);
+        //var moderatedJobsEntity = getModeratedEntity(traineeshipId, organizationId);
+        this.approve(Long.parseLong(organizationId), Long.parseLong(traineeshipId));
         return jobRepository.findById(Long.parseLong(traineeshipId), JobPublicSummaryProjection.class).orElse(null);
     }
 
-    private ModeratedJobsEntity getModeratedEntity(String traineeshipId, String organizationId) {
-        ModeratedJobsEntity moderatedJobsEntity;
-
-        var jobId = Long.parseLong(traineeshipId);
-        var orgId = Long.parseLong(organizationId);
-
-        var existingRecord = moderatedJobRepository.findByJobIdAndOrganizationId(jobId, orgId);
-
-        if(existingRecord.isPresent()) {
-            moderatedJobsEntity = existingRecord.get();
-        } else {
-            moderatedJobsEntity = new ModeratedJobsEntity();
-            moderatedJobsEntity.setJobId(jobId);
-            moderatedJobsEntity.setOrgId(orgId);
-        }
-        return moderatedJobsEntity;
+    private void approve(long orgId, long jobId) {
+        var moderatedJobsEntity = new ModeratedJobsEntity();
+        moderatedJobsEntity.setOrgId(orgId);
+        moderatedJobsEntity.setJobId(jobId);
+        moderatedJobsEntity.setStatusId(ModerationStatusEnum.APPROVED.getId());
+        moderatedJobRepository.save(moderatedJobsEntity);
     }
+
+    private void reject(long orgId, long jobId) {
+        var moderatedJobsEntity = new ModeratedJobsEntity();
+        moderatedJobsEntity.setOrgId(orgId);
+        moderatedJobsEntity.setJobId(jobId);
+        moderatedJobsEntity.setStatusId(ModerationStatusEnum.REJECTED.getId());
+        moderatedJobRepository.save(moderatedJobsEntity);
+    }
+
 
     @Override
     public JobPublicSummaryProjection setJobRejectedByOrg(String traineeshipId, String organizationId) {
-        var moderatedJobsEntity = getModeratedEntity(traineeshipId, organizationId);
-        moderatedJobsEntity.setStatusId(ModerationStatusEnum.REJECTED.getId());
-        moderatedJobRepository.save(moderatedJobsEntity);
+        this.reject(Long.parseLong(organizationId), Long.parseLong(traineeshipId));
         return jobRepository.findById(Long.parseLong(traineeshipId), JobPublicSummaryProjection.class).orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public void setJobApprovedByOrg(List<IJob> jobs, String organizationId) {
+        for(IJob job : jobs) {
+            this.approve(Long.parseLong(organizationId), Long.parseLong(job.getId()));
+        }
+    }
+
+    @Override
+    @Transactional
+    public void setJobRejectedByOrg(List<IJob> jobs, String organizationId) {
+        for(IJob job : jobs) {
+            this.reject(Long.parseLong(organizationId), Long.parseLong(job.getId()));
+        }
     }
 
     @Override
@@ -258,6 +276,16 @@ class JobDAOImpl implements IJobDAO {
         return jobRepository
                 .existsByIdAndExclusiveReceiversEmptyOrExclusiveReceiversId(
                         jobLongId, orgLongId);
+    }
+
+    @Override
+    public ModerationProjection getModerationInfo(String orgId, String jobId) {
+        return moderatedJobRepository
+                .findByJobIdAndOrganizationId(
+                        Long.parseLong(jobId),
+                        Long.parseLong(orgId),
+                        ModerationProjection.class )
+                .orElseThrow(EntityNotFoundException::new);
     }
 
 }

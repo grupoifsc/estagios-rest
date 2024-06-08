@@ -2,6 +2,7 @@ package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.core.models.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 
 import static com.github.projetoifsc.estagios.core.implementation.OrganizationValidation.*;
@@ -100,5 +101,20 @@ class JobReadOperations {
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
+
+    public ModerationProjection getModerationInfo(String orgId, String jobId) {
+        var org = organizationDB.findById(orgId);
+        if(isIE(org)) {
+            try{
+                return jobDB.getModerationInfo(orgId, jobId);
+            }
+            catch (EntityNotFoundException enf) {
+                var job = jobDB.getBasicInfo(jobId);
+                return Moderation.resolve(org, job);
+            }
+        }
+        var errorMessage = "Only IEs can see moderation info";
+        throw new InvalidReceiverException(errorMessage);
+    }
 
 }

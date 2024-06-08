@@ -238,10 +238,10 @@ public class JobWriteOperationsUnitTest {
                 .thenReturn(List.of(job));
 
 
-        assertDoesNotThrow(() -> service.approve(school.getId(), job.getId()));
-        assertDoesNotThrow(() -> service.reject(school.getId(), job.getId()));
-        assertThrows(Exception.class, () -> service.approve(notSchool.getId(), job.getId()));
-        assertThrows(Exception.class, () -> service.reject(notSchool.getId(), job.getId()));
+        assertDoesNotThrow(() -> service.approve(school.getId(), List.of(job.getId())));
+        assertDoesNotThrow(() -> service.reject(school.getId(), List.of(job.getId())));
+        assertThrows(Exception.class, () -> service.approve(notSchool.getId(), List.of(job.getId())));
+        assertThrows(Exception.class, () -> service.reject(notSchool.getId(), List.of(job.getId())));
 
     }
 
@@ -265,12 +265,12 @@ public class JobWriteOperationsUnitTest {
                 .thenReturn(List.of(job));
 
         job.setOwner(organization);
-        assertDoesNotThrow(() -> service.approve(school.getId(), job.getId()));
-        assertDoesNotThrow(() -> service.reject(school.getId(), job.getId()));
+        assertDoesNotThrow(() -> service.approve(school.getId(), List.of(job.getId())));
+        assertDoesNotThrow(() -> service.reject(school.getId(), List.of(job.getId())));
 
         job.setOwner(school);
-        assertThrows(Exception.class, () -> service.approve(school.getId(), job.getId()));
-        assertThrows(Exception.class, () -> service.reject(school.getId(), job.getId()));
+        assertThrows(Exception.class, () -> service.approve(school.getId(), List.of(job.getId())));
+        assertThrows(Exception.class, () -> service.reject(school.getId(), List.of(job.getId())));
 
     }
 
@@ -300,10 +300,10 @@ public class JobWriteOperationsUnitTest {
                 .thenReturn(List.of(new JobImpl()));
 
 
-        assertDoesNotThrow(() -> service.approve(receiver.getId(), job.getId()));
-        assertDoesNotThrow(() -> service.reject(receiver.getId(), job.getId()));
-        assertThrows(Exception.class, () -> service.approve(notReceiver.getId(), job.getId()));
-        assertThrows(Exception.class, () -> service.reject(notReceiver.getId(), job.getId()));
+        assertDoesNotThrow(() -> service.approve(receiver.getId(), List.of(job.getId())));
+        assertDoesNotThrow(() -> service.reject(receiver.getId(), List.of(job.getId())));
+        assertThrows(Exception.class, () -> service.approve(notReceiver.getId(), List.of(job.getId())));
+        assertThrows(Exception.class, () -> service.reject(notReceiver.getId(), List.of(job.getId())));
 
     }
 

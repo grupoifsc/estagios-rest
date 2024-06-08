@@ -4,6 +4,8 @@ import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.core.models.*;
 
+import java.util.List;
+
 class JobWriteOperations {
 
     JobReadOperations jobReadOperations;
@@ -65,13 +67,18 @@ class JobWriteOperations {
     }
 
 
-    public JobPublicSummaryProjection approve(String organizationId, String traineeshipId) {
+    public void approve(String organizationId, List<String> traineeshipIds) {
         var org = organizationDB.findById(organizationId);
-        var job = jobDB.getBasicInfo(traineeshipId);
-        if(canModerate(org, job))
-            return jobDB.setJobApprovedByOrg(traineeshipId, organizationId);
-        var errorMessage = "Not allowed to moderate this resource";
-        throw new UnauthorizedAccessException(errorMessage);
+        var jobs = jobDB.getBasicInfo(traineeshipIds);
+
+        var errors = jobs.stream().filter(job -> !canModerate(org, job)).map(IJob::getId).toList();
+        if(!errors.isEmpty()) {
+            var errorMessage = "Not allowed to moderate the resource(s): " + errors.toString();
+            throw new UnauthorizedAccessException(errorMessage);
+        }
+
+        jobDB.setJobApprovedByOrg(jobs, organizationId);
+
     }
 
 
@@ -83,14 +90,19 @@ class JobWriteOperations {
     }
 
 
-    public JobPublicSummaryProjection reject(String organizationId, String traineeshipId) {
+    public void reject(String organizationId, List<String> traineeshipIds) {
         var org = organizationDB.findById(organizationId);
-        var job = jobDB.getBasicInfo(traineeshipId);
-        if(canModerate(org, job))
-            return jobDB.setJobRejectedByOrg(traineeshipId, organizationId);
-        var errorMessage = "Not allowed to moderate this resource";
-        throw new UnauthorizedAccessException(errorMessage);
-     }
+        var jobs = jobDB.getBasicInfo(traineeshipIds);
+
+        var errors = jobs.stream().filter(job -> !canModerate(org, job)).map(IJob::getId).toList();
+        if(!errors.isEmpty()) {
+            var errorMessage = "Not allowed to moderate the resource(s): " + errors.toString();
+            throw new UnauthorizedAccessException(errorMessage);
+        }
+
+        jobDB.setJobRejectedByOrg(jobs, organizationId);
+
+    }
 
 
 }

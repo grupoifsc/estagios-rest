@@ -14,8 +14,8 @@ public interface IJobUseCases {
     JobPublicDetailsProjection getOnePublicDetails(String organizationId, String traineeshipId);
     JobPrivateDetailsProjection getOnePrivateDetails(String organizationId, String traineeshipId);
 
-    JobPublicSummaryProjection approve(String organizationId, String traineeshipId);
-    JobPublicSummaryProjection reject(String organizationId, String traineeshipId);
+    void approve(String organizationId, List<String> traineeshipIds);
+    void reject(String organizationId, List<String> traineeshipIds);
 
     Page<JobPrivateSummaryProjection> getAllCreatedSummary(String loggedId, String targetId);
     List<JobPublicSummaryProjection> getAllAvailableSummary(String loggedId, String targetId);
@@ -23,5 +23,9 @@ public interface IJobUseCases {
     List<JobPublicSummaryProjection> getAllPendingSummary(String loggedId, String targetId);
 
     List<JobPublicSummaryProjection> filterAllAvailableSummary(String loggedId, String targetId);
+
+    ModerationProjection getModerationInfo(String organizationId, String traineeshipId);
+
+
 
 }

@@ -28,6 +28,11 @@ public class JobPrivateSummaryImpl implements JobPrivateSummaryProjection {
     }
 
     @Override
+    public LocalDateTime getCreatedAt() {
+        return null;
+    }
+
+    @Override
     public short getPeriodId() {
         return 0;
     }

@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
+import com.github.projetoifsc.estagios.core.models.IJob;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
@@ -17,6 +18,8 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
 
     <T> Optional<T> findById(long id, Class<T> type);
 
+    <T> Optional<T> findByIdAndModeratedJobsOrgId(long id, long orgId, Class<T> type);
+
     <T> Page<T> findAllByOwnerId(long id, Pageable pageable, Class<T> type);
     <T> List<T> findAllByExclusiveReceiversEmpty(Class<T> type);
     <T> List<T> findAllByExclusiveReceiversId(long id, Class<T> type);
@@ -29,6 +32,8 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     <T> List<T> findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(long ownerId, short statusId, Class<T> type);
 
     <T> List<T> findAllByOwnerIdOrModeratedJobsOrgIdAndModeratedJobsStatusId(long ownerId, long orgId, short statusId, Class<T> type);
+
+    List<IJob> findByIdIn(List<Long> traineeshipIds);
 
 
 //    <T> List<T> findAllByApprovalsOrganizationId(long orgId, Class<T> type);

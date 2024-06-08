@@ -128,4 +128,22 @@ class JobRepositoryUnitTest {
 //        jsonParser.printValue(rejected);
     }
 
+    @Test
+    void getWithModerationInfo() {
+        var orgId = 195L;
+        var jobId = 37;
+        var result = repository.findByIdAndModeratedJobsOrgId(
+                jobId, orgId, JobPublicSummaryProjection.class
+        );
+        jsonParser.printValue(result.orElse(null));
+    }
+
+    @Test
+    void getSummaryWithoutModInput() {
+        var orgId = 195L;
+        var jobId = 37;
+        var result = repository
+                .findById(jobId, JobPublicSummaryProjection.class);
+        jsonParser.printValue(result.orElse(null));
+    }
 }

@@ -60,7 +60,6 @@ class JobEntity implements IJob {
     @OneToMany(mappedBy = "job")
     Set<ModeratedJobsEntity> moderatedJobs;
 
-
     // Solução: https://stackoverflow.com/questions/27930449/jpa-many-to-one-relation-need-to-save-only-id
     // Funciona, pois acusa falha de restrição de FK quando insere um valor que não existe na tabela relacionada
     // Não funciona caso, na mesma transação, deseje salvar E selecionar a tabela relacionada

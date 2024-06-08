@@ -11,6 +11,8 @@ public interface IJobDAO {
     void delete(String id);
 
     IJob getBasicInfo(String id);
+    List<IJob> getBasicInfo(List<String> traineeshipIds);
+
     JobPublicDetailsProjection getPublicDetails(String id);
     JobPrivateDetailsProjection getPrivateDetails(String id);
 
@@ -18,6 +20,8 @@ public interface IJobDAO {
 
     JobPublicSummaryProjection setJobApprovedByOrg(String jobId, String orgId);
     JobPublicSummaryProjection setJobRejectedByOrg(String jobId, String orgId);
+    void setJobApprovedByOrg(List<IJob> jobs, String organizationId);
+    void setJobRejectedByOrg(List<IJob> jobs, String organizationId);
 
     Page<JobPrivateSummaryProjection> getAllCreatedJobsSummaryFromOrg(String orgId);
     List<JobPublicSummaryProjection> getAllAvailableSummaryFromOrg(String orgId);
@@ -27,5 +31,7 @@ public interface IJobDAO {
     List<JobPublicSummaryProjection> getExclusiveReceivedJobsSummaryForOrg(String orgId);
 
     boolean isJobOfferedToOrg(String jobId, String orgId);
+
+    ModerationProjection getModerationInfo(String orgId, String jobId);
 
 }

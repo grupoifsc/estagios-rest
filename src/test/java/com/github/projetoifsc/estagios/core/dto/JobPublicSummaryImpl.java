@@ -1,8 +1,6 @@
 package com.github.projetoifsc.estagios.core.dto;
 
-import com.github.projetoifsc.estagios.core.models.IOrganization;
-import com.github.projetoifsc.estagios.core.models.JobPublicSummaryProjection;
-import com.github.projetoifsc.estagios.core.models.OrgBasicInfoProjection;
+import com.github.projetoifsc.estagios.core.models.*;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +23,11 @@ public class JobPublicSummaryImpl implements JobPublicSummaryProjection {
     @Override
     public void setOwner(IOrganization user) {
 
+    }
+
+    @Override
+    public LocalDateTime getCreatedAt() {
+        return null;
     }
 
     @Override
@@ -51,4 +54,5 @@ public class JobPublicSummaryImpl implements JobPublicSummaryProjection {
     public LocalDateTime getUpdatedAt() {
         return null;
     }
+
 }

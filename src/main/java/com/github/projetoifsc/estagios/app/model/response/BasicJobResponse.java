@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDateTime;
+
 
 @Schema(name="Vaga")
 @Validated
@@ -48,6 +50,11 @@ public class BasicJobResponse extends Response implements IJob {
 	@Override
 	public void setOwner(IOrganization owner) {
 		this.owner = mapper.map(owner, BasicOrgWithoutLinksResponse.class);
+	}
+
+	@Override
+	public LocalDateTime getCreatedAt() {
+		return null;
 	}
 
 

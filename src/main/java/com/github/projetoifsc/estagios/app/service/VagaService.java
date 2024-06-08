@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class VagaService {
 
@@ -96,14 +98,14 @@ public class VagaService {
         return new PageImpl<>(mapped);
     }
 
-    public PublicJobSummaryResponse approve(UserPrincipal userPrincipal, String jobId) {
-        var approved = jobUseCases.approve(userPrincipal.getId(), jobId);
-        return mapper.map(approved, PublicJobSummaryResponse.class);
+    public void approve(UserPrincipal userPrincipal, List<String> jobIds) {
+        jobUseCases.approve(userPrincipal.getId(), jobIds);
+        //return mapper.map(approved, PublicJobSummaryResponse.class);
     }
 
-    public PublicJobSummaryResponse reject(UserPrincipal userPrincipal, String jobId) {
-        var rejected = jobUseCases.reject(userPrincipal.getId(), jobId);
-        return mapper.map(rejected, PublicJobSummaryResponse.class);
+    public void reject(UserPrincipal userPrincipal, List<String> jobIds) {
+        jobUseCases.reject(userPrincipal.getId(), jobIds);
+        //return mapper.map(rejected, PublicJobSummaryResponse.class);
     }
 
 }

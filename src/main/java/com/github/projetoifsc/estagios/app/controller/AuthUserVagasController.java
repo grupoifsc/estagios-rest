@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.github.projetoifsc.estagios.app.configs.OpenApiConfig.AUTH_USER_VAGAS;
 import static com.github.projetoifsc.estagios.app.utils.validation.PaginationValidation.DEFAULT_LIMIT_VALUE;
 import static com.github.projetoifsc.estagios.app.utils.validation.PaginationValidation.DEFAULT_PAGE_VALUE;
@@ -63,16 +65,15 @@ public class AuthUserVagasController {
     }
 
 
-    @PutMapping("/disponiveis/{jobId}")
+    @PutMapping("/disponiveis")
     @Operation(summary="Aprovar Vaga", description="Aprovar uma " +
             "oferta de vaga", tags= {AUTH_USER_VAGAS}, operationId="postVagasAprovadas")
-    public ResponseEntity<SuccessResponse<PublicJobSummaryResponse>> approve (
+    public ResponseEntity<SuccessResponse<Void>> approve (
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @PathVariable String jobId
+            @RequestBody List<String> jobIds
     ) {
-        return responseEntity.successResponse(
-                service.approve(userPrincipal, jobId)
-        );
+        service.approve(userPrincipal, jobIds);
+        return responseEntity.successResponse(null);
     }
 
 
@@ -91,16 +92,15 @@ public class AuthUserVagasController {
     }
 
 
-    @PutMapping("/rejeitadas/{jobId}")
-    @Operation(summary="Rejeitar Vaga", description="Rejeitar uma oferta de vaga",
+    @PutMapping("/rejeitadas")
+    @Operation(summary="Rejeitar Vagas", description="Rejeitar uma oferta de vaga",
             tags= {AUTH_USER_VAGAS}, operationId="postVagasRejeitadas")
-    public ResponseEntity<SuccessResponse<PublicJobSummaryResponse>> reject (
+    public ResponseEntity<SuccessResponse<Void>> reject (
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @PathVariable String jobId
+            @RequestBody List<String> jobIds
     ) {
-        return responseEntity.successResponse(
-                service.reject(userPrincipal, jobId)
-        );
+        service.reject(userPrincipal, jobIds);
+        return responseEntity.successResponse(null);
     }
 
 

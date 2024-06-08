@@ -42,13 +42,13 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
-    public JobPublicSummaryProjection approve(String organizationId, String traineeshipId) {
-        return writeOperations.approve(organizationId, traineeshipId);
+    public void approve(String organizationId, List<String> traineeshipIds) {
+        writeOperations.approve(organizationId, traineeshipIds);
     }
 
     @Override
-    public JobPublicSummaryProjection reject(String organizationId, String traineeshipId) {
-        return writeOperations.reject(organizationId, traineeshipId);
+    public void reject(String organizationId, List<String> traineeshipIds) {
+        writeOperations.reject(organizationId, traineeshipIds);
     }
 
     @Override
@@ -75,6 +75,12 @@ public class JobUseCases implements IJobUseCases {
     @Override
     public List<JobPublicSummaryProjection> filterAllAvailableSummary(String loggedId, String targetId) {
         return List.of();
+    }
+
+
+    @Override
+    public ModerationProjection getModerationInfo(String organizationId, String traineeshipId) {
+        return readOperations.getModerationInfo(organizationId, traineeshipId);
     }
 
 }
