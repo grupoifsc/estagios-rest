@@ -17,6 +17,7 @@ public class WithMockUserSecurityContextFactory implements WithSecurityContextFa
                 .toList();
         var principal = new UserPrincipal(
                 String.valueOf(annotation.userId()),
+                true,
                 "fake@email.com",
                 "senha",
                 authorities

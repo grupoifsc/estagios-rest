@@ -5,11 +5,16 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public record UserPrincipal (String id, String username, String password, Collection<? extends GrantedAuthority> authorities) implements CustomUserDetails {
+public record UserPrincipal (String id, Boolean ie, String username, String password, Collection<? extends GrantedAuthority> authorities) implements CustomUserDetails {
 
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public Boolean getIe() {
+        return ie;
     }
 
     @Override

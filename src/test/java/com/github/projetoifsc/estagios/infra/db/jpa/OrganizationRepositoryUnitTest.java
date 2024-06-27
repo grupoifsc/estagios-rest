@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.core.models.OrgBasicInfoProjection;
-import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
-import com.github.projetoifsc.estagios.core.models.OrgPublicProfileProjection;
+import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPublicProfileProjection;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class OrganizationRepositoryUnitTest {
     Mapper mapper;
 
 
-    OrganizationEntity entity;
+    OrgEntity entity;
 
 
     @Test
@@ -70,7 +70,7 @@ class OrganizationRepositoryUnitTest {
     @Test
     @Transactional
     void findById() {
-        var projection = repository.findById(195L, OrganizationEntity.class);
+        var projection = repository.findById(195L, OrgEntity.class);
         var org = projection.orElse(null);
         jsonParser.printValue(org);
     }
@@ -101,7 +101,7 @@ class OrganizationRepositoryUnitTest {
 
     @Test
     void findAllProjectedByByExclusiveReceivedJobsId() {
-        var orgs = repository.findAllByExclusiveReceivedJobsId(4L, OrgBasicInfoProjection.class);
+        var orgs = repository.findAllByExclusiveReceivedJobsId(4L, OrgSummaryProjection.class);
         jsonParser.printValue(orgs);
     }
 
@@ -113,7 +113,7 @@ class OrganizationRepositoryUnitTest {
         var org_id = "395";
        // var user_id = 3L;
 
-        var org = repository.findByUserCredentialsEmail(email, OrganizationEntity.class).orElseThrow();
+        var org = repository.findByUserCredentialsEmail(email, OrgEntity.class).orElseThrow();
         jsonParser.printValue(org.getUserCredentials());
         jsonParser.printValue(org.getId());
         assertEquals(org.getId(), org_id);
@@ -126,7 +126,7 @@ class OrganizationRepositoryUnitTest {
         var org_id = "395";
         var user_id = 3L;
 
-        var org = repository.findByUserCredentialsId(user_id, OrganizationEntity.class).orElseThrow();
+        var org = repository.findByUserCredentialsId(user_id, OrgEntity.class).orElseThrow();
         var credentials = org.getUserCredentials();
         jsonParser.printValue(credentials);
         //jsonParser.printValue(org.getUserCredentials());

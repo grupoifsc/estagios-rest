@@ -1,7 +1,10 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.*;
-import com.github.projetoifsc.estagios.core.models.*;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -52,34 +55,34 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
-    public Page<JobPrivateSummaryProjection> getAllCreatedSummary(String loggedId, String targetId) {
-        return readOperations.getAllCreatedSummary(loggedId, targetId);
+    public Page<JobPrivateDetailsProjection> getAllCreatedDetails(String loggedId, String targetId) {
+        return readOperations.getAllCreatedDetails(loggedId, targetId);
     }
 
     @Override
-    public List<JobPublicSummaryProjection> getAllAvailableSummary(String loggedId, String targetId) {
+    public List<JobPublicDetailsProjection> getAllAvailableSummary(String loggedId, String targetId) {
         return readOperations.getAllAvailableSummary(loggedId, targetId);
     }
 
     @Override
-    public List<JobPublicSummaryProjection> getAllPendingSummary(String loggedId, String targetId) {
+    public List<JobPublicDetailsProjection> getAllPendingSummary(String loggedId, String targetId) {
         return readOperations.getAllPendingSummary(loggedId, targetId);
     }
 
     @Override
-    public List<JobPublicSummaryProjection> getAllRejectedSummary(String loggedId, String targetId) {
+    public List<JobPublicDetailsProjection> getAllRejectedSummary(String loggedId, String targetId) {
         return readOperations.getAllRejectedSummary(loggedId, targetId);
     }
 
 
     @Override
-    public List<JobPublicSummaryProjection> filterAllAvailableSummary(String loggedId, String targetId) {
+    public List<JobPublicDetailsProjection> filterAllAvailableSummary(String loggedId, String targetId) {
         return List.of();
     }
 
 
     @Override
-    public ModerationProjection getModerationInfo(String organizationId, String traineeshipId) {
+    public ModerationDetailsProjection getModerationInfo(String organizationId, String traineeshipId) {
         return readOperations.getModerationInfo(organizationId, traineeshipId);
     }
 

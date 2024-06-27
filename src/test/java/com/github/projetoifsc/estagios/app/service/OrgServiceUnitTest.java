@@ -1,10 +1,10 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.core.dto.OrgPublicProfileImpl;
-import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
-import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
-import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
-import com.github.projetoifsc.estagios.app.model.response.PublicOrgProfileResponse;
+import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfile;
+import com.github.projetoifsc.estagios.core.dto.IIOrgPublicProfileProjectionImplProjection;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.app.model.request.OrgEntryData;
+import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfile;
 import com.github.projetoifsc.estagios.app.configs.PwdEncoder;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.IOrganizationUseCases;
@@ -30,9 +30,9 @@ class OrgServiceUnitTest {
     IOrganizationUseCases organizationUseCases = Mockito.mock();
     Mapper mapper = new Mapper();
     PasswordEncoder encoder = new PwdEncoder().passwordEncoder();
-    OrgService orgService = new OrgService(organizationUseCases, mapper, encoder);
-
     JsonParser jsonParser = new JsonParser();
+    OrgService orgService = new OrgService(organizationUseCases, mapper, encoder, jsonParser);
+
     OrgPrivateProfileProjection dbProjection;
     OrgMocker orgMocker = new OrgMocker();
     String id;
@@ -41,21 +41,21 @@ class OrgServiceUnitTest {
     @BeforeEach
     void setUp() {
         id = "1";
-        dbProjection = generateProjection();
-        userPrincipal = new UserPrincipal(id, null, null, null);
+        dbProjection = generateProjection(id);
+        userPrincipal = new UserPrincipal(id, true, null, null, null);
     }
 
 
     @Test
     void whenCreateThenReturnOrgPrivateView() {
         var ent = orgMocker.generateWithIdAsZero();
-        var entryData = mapper.map(ent, NewOrgProfileRequest.class);
+        var entryData = mapper.map(ent, OrgEntryData.class);
         dbProjection = generateProjection(entryData);
 
         when(organizationUseCases.createProfile(entryData)).thenReturn(dbProjection);
 
         var result = orgService.create(entryData);
-        assertInstanceOf(PrivateOrgProfileResponse.class, result);
+        assertInstanceOf(OrgPrivateProfile.class, result);
         assertEquals(entryData.getIe(), result.getIe());
 
         var jsonString = jsonParser.valueAsString(result);
@@ -66,13 +66,12 @@ class OrgServiceUnitTest {
 
     @Test
     void whenGetAuthUserPerfilReturnsOrgPrivateView() {
-        dbProjection.setId(id);
 
         when(organizationUseCases.getPrivateProfile(id, id))
                 .thenReturn(dbProjection);
 
         var result = orgService.getAuthUserPerfil(userPrincipal);
-        assertInstanceOf(PrivateOrgProfileResponse.class, result);
+        assertInstanceOf(OrgPrivateProfile.class, result);
 
         var jsonString = jsonParser.valueAsString(result);
         assertTrue(jsonString.contains("username"));
@@ -83,13 +82,13 @@ class OrgServiceUnitTest {
 
     @Test
     void whenGetUserPublicProfileReturnOrgPublicView() {
-        var org = new OrgPublicProfileImpl(id, true);
+        var org = new IIOrgPublicProfileProjectionImplProjection(id, true);
 
         when(organizationUseCases.getPublicProfile(id, id))
                 .thenReturn(org);
 
         var result = orgService.getUserPublicProfile(userPrincipal, id);
-        assertInstanceOf(PublicOrgProfileResponse.class, result);
+        assertInstanceOf(OrgPublicProfile.class, result);
 
         var jsonString = jsonParser.valueAsString(result);
         assertFalse(jsonString.contains("username"));
@@ -101,15 +100,14 @@ class OrgServiceUnitTest {
     @Test
     void whenUpdatePerfilReturnUpdatedOrgPrivateView() {
         var ent = orgMocker.generateWithIdAsZero();
-        var entryData = mapper.map(ent, NewOrgProfileRequest.class);
+        var entryData = mapper.map(ent, OrgEntryData.class);
         dbProjection = generateProjection(entryData);
-        dbProjection.setId(id);
 
         when(organizationUseCases.updateProfile(id, id, entryData))
                 .thenReturn(dbProjection);
 
         var result = orgService.updateAuthUserPerfil(userPrincipal, entryData);
-        assertInstanceOf(PrivateOrgProfileResponse.class, result);
+        assertInstanceOf(OrgPrivateProfile.class, result);
 
         var jsonString = jsonParser.valueAsString(result);
         assertTrue(jsonString.contains("username"));
@@ -131,15 +129,15 @@ class OrgServiceUnitTest {
         when(organizationUseCases.getAllSchools())
                 .thenReturn(new PageImpl<>(new ArrayList<>(
                         List.of(
-                        new OrgPublicProfileImpl("10", true),
-                        new OrgPublicProfileImpl("11", true),
-                        new OrgPublicProfileImpl("12", true)
+                        new IIOrgPublicProfileProjectionImplProjection("10", true),
+                        new IIOrgPublicProfileProjectionImplProjection("11", true),
+                        new IIOrgPublicProfileProjectionImplProjection("12", true)
                 ))));
 
         var result = orgService.getAllSchools(userPrincipal);
 
         result.getContent().forEach(org -> {
-            assertInstanceOf(PublicOrgProfileResponse.class, org);
+            assertInstanceOf(OrgPublicProfile.class, org);
             var jsonString = jsonParser.valueAsString(org);
             assertFalse(jsonString.contains("username"));
         });
@@ -148,14 +146,19 @@ class OrgServiceUnitTest {
     }
 
 
-    private OrgPrivateProfileTestImpl generateProjection() {
+    private OrgPrivateProfileProjectionTestImpl generateProjection() {
         var ent = orgMocker.generateWithIdAsZero();
-        return mapper.map(ent, OrgPrivateProfileTestImpl.class);
+        return mapper.map(ent, OrgPrivateProfileProjectionTestImpl.class);
+    }
+
+    private OrgPrivateProfileProjectionTestImpl generateProjection(String id) {
+        var ent = orgMocker.generateWithIdAsZero();
+        return mapper.map(ent, OrgPrivateProfileProjectionTestImpl.class);
     }
 
 
-    private OrgPrivateProfileTestImpl generateProjection(NewOrgProfileRequest entryData) {
-        return mapper.map(entryData, OrgPrivateProfileTestImpl.class);
+    private OrgPrivateProfileProjectionTestImpl generateProjection(OrgEntryData entryData) {
+        return mapper.map(entryData, OrgPrivateProfileProjectionTestImpl.class);
     }
 
 

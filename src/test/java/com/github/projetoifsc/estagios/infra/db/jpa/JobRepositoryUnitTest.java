@@ -1,9 +1,11 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
+import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
-import com.github.projetoifsc.estagios.core.models.JobPublicSummaryProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobBasicProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +17,9 @@ import java.util.Locale;
 
 @SpringBootTest
 class JobRepositoryUnitTest {
+
+    @Autowired
+    Mapper mapper;
 
     @Autowired
     JobRepository repository;
@@ -40,7 +45,7 @@ class JobRepositoryUnitTest {
     @Transactional
     @Rollback(false)
     void save() {
-        var owner = organizationRepository.findById(352L, OrganizationEntity.class);
+        var owner = organizationRepository.findById(352L, OrgEntity.class);
         var job = jobMocker.generate();
         job.setOwner(owner.get());
         var saved = repository.save(job);
@@ -62,8 +67,8 @@ class JobRepositoryUnitTest {
 
 
     @Test
-    void findAllByOwnerId() {
-        var jobs = repository.findAllByOwnerId(195L, PageRequest.of(0, 50), JobPublicSummaryProjection.class);
+    void findAllByOwnerIdTestingProjections () {
+        var jobs = repository.findAllByOwnerId(195L, PageRequest.of(0, 50), JobPublicDetailsProjection.class);
         System.out.println(jobs.getNumberOfElements());
         jsonParser.printValue(jobs.getContent());
     }
@@ -79,7 +84,7 @@ class JobRepositoryUnitTest {
 
     @Test
     void findAllByExclusiveReceiversId() {
-        var jobs = repository.findAllByExclusiveReceiversId(272L, IJob.class);
+        var jobs = repository.findAllByExclusiveReceiversId(272L, JobBasicProjection.class);
         System.out.println(jobs.size());
         jsonParser.printValue(jobs);
     }
@@ -133,7 +138,7 @@ class JobRepositoryUnitTest {
         var orgId = 195L;
         var jobId = 37;
         var result = repository.findByIdAndModeratedJobsOrgId(
-                jobId, orgId, JobPublicSummaryProjection.class
+                jobId, orgId, JobPublicDetailsProjection.class
         );
         jsonParser.printValue(result.orElse(null));
     }
@@ -143,7 +148,116 @@ class JobRepositoryUnitTest {
         var orgId = 195L;
         var jobId = 37;
         var result = repository
-                .findById(jobId, JobPublicSummaryProjection.class);
+                .findById(jobId, JobPublicDetailsProjection.class);
         jsonParser.printValue(result.orElse(null));
     }
+
+    @Test
+    void getAvailableForOrg() {
+        var orgId = 415L;
+        var status = ModerationStatusEnum.APPROVED;
+        var result = repository.findAllByOwnerIdOrModeratedJobsOrgIdAndModeratedJobsStatusId(
+                orgId, orgId, status.getId(), JobPublicDetailsProjection.class
+        );
+        jsonParser.printValue(result);
+    }
+
+    @Test
+    void findWithQueryAndFetch() {
+        var value = repository.findByIdBasicInfo(15L).orElse(null);
+
+        System.out.println(value.getOwner().getNome());
+        System.out.println(value.getExclusiveReceivers());
+        value.getExclusiveReceivers().forEach(r -> System.out.println(r.getId()));
+        //System.out.println(value.getAddress());
+        //jsonParser.printValue(value.orElse(null));
+        var receivers = value.getExclusiveReceivers().stream()
+                        .map(r -> mapper.map(r, OrgSummaryProjectionDTO.class))
+                                .toList();
+        var owner = mapper.map(value.getOwner(), OrgSummaryProjectionDTO.class);
+        //var job = mapper.map(value, JobBasicProjectionDTO.class);
+        var job = new JobBasicProjectionDTO();
+        job.setId(value.getId());
+        job.setOwner(owner);
+        job.getExclusiveReceivers().addAll(receivers);
+        jsonParser.printValue(job);
+
+    }
+
+
+    @Test
+    void findBasicProjectionById() {
+        var entity = repository.findByIdBasicInfo(15L).orElseThrow();
+        System.out.println(entity.getId());
+    }
+
+
+    @Test
+    void findPublicProjectionById() {
+        var entity = repository.findByIdPublicDetails(15L).orElseThrow();
+        var job = mapper.map(entity, JobPublicDetailsDTO.class);
+        job.setOwner(mapper.map(entity.getOwner(), OrgSummaryProjectionDTO.class));
+        job.setAddress(entity.getAddress() != null ? mapper.map(entity.getAddress(), AddressDetailsDTO.class) : null);
+        job.setContact(mapper.map(entity.getContact(), ContactDetailsDTO.class));
+        jsonParser.printValue(job);
+    }
+
+
+    @Test
+    @Transactional
+    void findPrivateProjectionById() {
+        var entity = repository.findByIdPublicDetails(15L).orElseThrow();
+        var job = mapper.map(entity, JobPrivateDetailsDTO.class);
+        jsonParser.printValue(job);
+    }
+
+    @Test
+    void findAllCreatedByWithPublicProjectionQuery() {
+        var entity = repository.findAllByOwnerId(195L);
+        var jobs = entity.stream()
+                .map(this::mapToPublicDetailsDTO)
+                .toList();
+        jsonParser.printValue(jobs);
+    }
+
+    @Test
+    void findAllApprovedOrRejectedBy_UsingQueryMethod() {
+        var entities = repository.findAllModeratedByOrgAndStatus(397L, (short) 1);
+        var jobs = entities.stream()
+                .map(this::mapToPublicDetailsDTO)
+                .toList();
+        jsonParser.printValue(jobs);
+    }
+
+    @Test
+    void findAllAvailable_UsingQueryMethod() {
+        var entities = repository.findAllCreatedOrModeratedByOrg(378L, ModerationStatusEnum.APPROVED.getId());
+        var jobs = entities.stream()
+                .map(this::mapToPublicDetailsDTO)
+                .toList();
+        System.out.println(jobs.size());
+        jsonParser.printValue(jobs);
+    }
+
+
+    @Test
+    void findAllPending_UsingQueryMethod() {
+        var entities = repository.findAllPending(397L);
+        var jobs = entities.stream()
+                .map(this::mapToPublicDetailsDTO)
+                .toList();
+        System.out.println(jobs.size());
+        jsonParser.printValue(jobs);
+    }
+
+
+
+    private JobPublicDetailsDTO mapToPublicDetailsDTO(JobEntity entity) {
+        var job = mapper.map(entity, JobPublicDetailsDTO.class);
+        job.setOwner(entity.getOwner() != null ? mapper.map(entity.getOwner(), OrgSummaryProjectionDTO.class) : null);
+        job.setAddress(entity.getAddress() != null ? mapper.map(entity.getAddress(), AddressDetailsDTO.class) : null);
+        job.setContact(entity.getContact() != null ? mapper.map(entity.getContact(), ContactDetailsDTO.class) : null);
+        return job;
+    }
+
 }

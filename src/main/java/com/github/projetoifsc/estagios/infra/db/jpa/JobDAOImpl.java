@@ -1,15 +1,22 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.core.models.*;
 import com.github.projetoifsc.estagios.core.IJobDAO;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
+import com.github.projetoifsc.estagios.core.models.IJob;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -25,6 +32,8 @@ class JobDAOImpl implements IJobDAO {
     private final ModeratedJobRepository moderatedJobRepository;
     private final Mapper mapper;
     private final JsonParser jsonParser;
+
+
 
     JobDAOImpl(OrganizationRepository orgRepository, JobRepository jobRepository, AreaRepository areaRepository, ContactRepository contactRepository, AddressRepository addressRepository, ModeratedJobRepository moderatedJobRepository, Mapper mapper, JsonParser jsonParser) {
         this.orgRepository = orgRepository;
@@ -47,7 +56,7 @@ class JobDAOImpl implements IJobDAO {
 
     @Override
     @Transactional
-    public IJob getBasicInfo(String id) {
+    public IJob getJobBasicInfo(String id) {
         var job = getOptionalOrThrow(
                 Long.parseLong(id),
                 jobId -> jobRepository.findById(jobId, IJob.class));
@@ -56,7 +65,7 @@ class JobDAOImpl implements IJobDAO {
     }
 
     @Override
-    public List<IJob> getBasicInfo(List<String> traineeshipIds) {
+    public List<IJob> getJobBasicInfo(List<String> traineeshipIds) {
         var longIds = traineeshipIds.stream().map(Long::parseLong).toList();
         return jobRepository.findByIdIn(longIds);
     }
@@ -74,7 +83,7 @@ class JobDAOImpl implements IJobDAO {
      */
     @Override
     public String saveAndGetId(IJobEntryData newJob) {
-        var org = mapper.map(newJob.getOwner(), OrganizationEntity.class);
+        var org = mapper.map(newJob.getOwner(), OrgEntity.class);
         newJob.setOwner(org);
 
         var newJobEntity = mapper.map(newJob, JobEntity.class);
@@ -83,7 +92,7 @@ class JobDAOImpl implements IJobDAO {
         var receiversId = newJob.getReceiversIds().stream()
                 .map(Long::parseLong).toList();
         if(!receiversId.isEmpty()) {
-            var receiversEntities = orgRepository.findAllByIdIn(receiversId, OrganizationEntity.class);
+            var receiversEntities = orgRepository.findAllByIdIn(receiversId, OrgEntity.class);
             newJobEntity.setExclusiveReceivers(receiversEntities);
         }
 
@@ -130,44 +139,65 @@ class JobDAOImpl implements IJobDAO {
 
     @Override
     @Transactional
-    public JobPublicDetailsProjection getPublicDetails(String id) {
+    public JobPublicDetailsProjection getJobPublicDetails(String id) {
         var job = getOptionalOrThrow(
                 Long.parseLong(id),
-                parsedId -> jobRepository.findById(parsedId, JobPublicDetailsProjection.class)
+                jobRepository::findByIdPublicDetails
         );
-        if(job.getAddress() != null)
-            job.getAddress().getId();
-        if(job.getContact() != null)
-            job.getContact().getId();
-        job.getAreas();
-        job.getOwner().getId();
-        return job;
+        return mapper.map(job, JobPublicDetailsDTO.class);
+//        var job = getOptionalOrThrow(
+//                Long.parseLong(id),
+//                parsedId -> jobRepository.findById(parsedId, JobPublicDetailsProjection.class)
+//        );
+//        if(job.getAddress() != null)
+//            job.getAddress().getId();
+//        if(job.getContact() != null)
+//            job.getContact().getId();
+//        if(job.getAreas() != null) {
+//            job.getAreas().forEach(IArea::getId);
+//        }
+//        if(job.getAddress() != null)
+//            job.getOwner().getId();
+//        job.getFormat();
+//        job.getPeriod();
+//        job.getLevel();
+//        if(job.getOwner() != null)
+//            job.getOwner().getId();
+//        jsonParser.printValue(job);
+//        return job;
     }
+
 
     @Override
     @Transactional
-    public JobPrivateDetailsProjection getPrivateDetails(String id) {
+    public JobPrivateDetailsProjection getJobPrivateDetails(String id) {
         var job = getOptionalOrThrow(
                 Long.parseLong(id),
-                parsedId -> jobRepository.findById(parsedId, JobPrivateDetailsProjection.class)
+                jobRepository::findByIdPublicDetails
         );
+        return mapper.map(job, JobPrivateDetailsDTO.class);
         // Necessário chamar aqui devido ao lazy loading
-        job.getOwner().getId();
-        job.getExclusiveReceivers();
-        job.getAreas();
-        if(job.getContact() != null)
-            job.getContact().getId();
-        if(job.getAddress() != null)
-            job.getAddress().getId();
-        return job;
+//        if(job.getAddress() != null)
+//            job.getAddress().getId();
+//        if(job.getContact() != null)
+//            job.getContact().getId();
+//        if(job.getAreas() != null) {
+//            job.getAreas().forEach(IArea::getId);
+//        }
+//        if(job.getAddress() != null)
+//            job.getOwner().getId();
+//        job.getFormat();
+//        job.getPeriod();
+//        job.getLevel();
+//        return job;
     }
 
 
     @Override
-    public JobPublicSummaryProjection setJobApprovedByOrg(String traineeshipId, String organizationId) {
+    public JobPublicDetailsProjection setJobApprovedByOrg(String traineeshipId, String organizationId) {
         //var moderatedJobsEntity = getModeratedEntity(traineeshipId, organizationId);
         this.approve(Long.parseLong(organizationId), Long.parseLong(traineeshipId));
-        return jobRepository.findById(Long.parseLong(traineeshipId), JobPublicSummaryProjection.class).orElse(null);
+        return jobRepository.findById(Long.parseLong(traineeshipId), JobPublicDetailsProjection.class).orElse(null);
     }
 
     private void approve(long orgId, long jobId) {
@@ -188,9 +218,9 @@ class JobDAOImpl implements IJobDAO {
 
 
     @Override
-    public JobPublicSummaryProjection setJobRejectedByOrg(String traineeshipId, String organizationId) {
+    public JobPublicDetailsProjection setJobRejectedByOrg(String traineeshipId, String organizationId) {
         this.reject(Long.parseLong(organizationId), Long.parseLong(traineeshipId));
-        return jobRepository.findById(Long.parseLong(traineeshipId), JobPublicSummaryProjection.class).orElse(null);
+        return jobRepository.findById(Long.parseLong(traineeshipId), JobPublicDetailsProjection.class).orElse(null);
     }
 
     @Override
@@ -210,63 +240,94 @@ class JobDAOImpl implements IJobDAO {
     }
 
     @Override
-    public List<JobPublicSummaryProjection> findAllPublicJobsSummary() {
-        return jobRepository.findAllByExclusiveReceiversEmpty(JobPublicSummaryProjection.class);
+    public List<JobPublicDetailsProjection> findAllPublicJobsSummary() {
+        return jobRepository.findAllByExclusiveReceiversEmpty(JobPublicDetailsProjection.class);
     }
 
 
     @Override
-    public List<JobPublicSummaryProjection> getAllApprovedSummaryFromOrg(String orgId) {
+    public List<JobPublicDetailsProjection> getAllApprovedSummaryFromOrg(String orgId) {
         return jobRepository.findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(
                 Long.parseLong(orgId),
                 ModerationStatusEnum.APPROVED.getId(),
-                        JobPublicSummaryProjection.class);
+                        JobPublicDetailsProjection.class);
     }
 
     @Override
-    public List<JobPublicSummaryProjection> getAllRejectedSummaryFromOrg(String orgId) {
-        return jobRepository.findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(
+    public List<JobPublicDetailsProjection> getAllRejectedBy(String orgId) {
+        var entities = jobRepository.findAllModeratedByOrgAndStatus(
                 Long.parseLong(orgId),
-                ModerationStatusEnum.REJECTED.getId(),
-                        JobPublicSummaryProjection.class);
+                ModerationStatusEnum.REJECTED.getId());
+        return this.mapToPublicDetailsList(entities);
+    }
+
+    private List<JobPublicDetailsProjection> mapToPublicDetailsList(List<JobEntity> entities) {
+        var jobs = new ArrayList<JobPublicDetailsProjection>();
+        entities.forEach(job ->
+                jobs.add(mapper.map(job, JobPublicDetailsDTO.class))
+        );
+        return jobs;
     }
 
     @Override
-    public List<JobPublicSummaryProjection> getAllPendingSummaryFromOrg(String orgId) {
-        var orgLongId = Long.parseLong(orgId);
+    public List<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId) {
+        var parsedId = Long.parseLong(orgId);
+
+        var entities = jobRepository.findAllPending(parsedId);
+        return this.mapToPublicDetailsList(entities);
         // TODO DB: otimizar query
-        var moderatedIds = moderatedJobRepository
-                .findAllByOrganizationId(orgLongId)
-                .map(ModeratedJobsEntity::getJobId).toList();
-        return jobRepository
-                .findAllByOwnerIdNotAndIdNotInAndExclusiveReceiversEmptyOrExclusiveReceiversId(
-                        orgLongId, moderatedIds, orgLongId,
-                        JobPublicSummaryProjection.class);
+//        var moderatedIds = moderatedJobRepository
+//                .findAllByOrganizationId(orgLongId)
+//                .map(ModeratedJobsEntity::getJobId).toList();
+//        return jobRepository
+//                .findAllByOwnerIdNotAndIdNotInAndExclusiveReceiversEmptyOrExclusiveReceiversId(
+//                        orgLongId, moderatedIds, orgLongId,
+//                        JobPublicDetailsProjection.class);
     }
 
     @Override
-    public Page<JobPrivateSummaryProjection> getAllCreatedJobsSummaryFromOrg(String orgId) {
-        return jobRepository.findAllByOwnerId(
-            Long.parseLong(orgId),
-        PageRequest.of(0, 100),
-            JobPrivateSummaryProjection.class);
+    @Transactional
+    public Page<JobPrivateDetailsProjection> getAllCreatedBy(String orgId) {
+        var parsedId = Long.parseLong(orgId);
+        var entities = jobRepository.findAllByOwnerId(parsedId);
+        if(entities.isEmpty()) {
+            return new PageImpl<JobPrivateDetailsProjection>(List.of(), Pageable.ofSize(10), 10);
+        }
+
+        entities = jobRepository.findAllByOwnerIdWithReceivers(parsedId);
+        var jobs = new ArrayList<JobPrivateDetailsProjection>();
+        entities.forEach(job -> {
+            jobs.add(mapper.map(job, JobPrivateDetailsDTO.class));
+        });
+        return new PageImpl<JobPrivateDetailsProjection>(jobs, Pageable.ofSize(10), 10);
+
+
+
+//        return jobRepository.findAllByOwnerId(
+//            Long.parseLong(orgId),
+//        PageRequest.of(0, 100),
+//            JobPrivateDetailsProjection.class);
+
+
     }
 
     @Override
-    public List<JobPublicSummaryProjection> getAllAvailableSummaryFromOrg(String orgId) {
+    public List<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId) {
         var organizationId = Long.parseLong(orgId);
-        var approvedStatusId = ModerationStatusEnum.APPROVED.getId();
-        return jobRepository
-                .findAllByOwnerIdOrModeratedJobsOrgIdAndModeratedJobsStatusId(
-                organizationId, organizationId,
-                        approvedStatusId, JobPublicSummaryProjection.class);
+        var entities = jobRepository.findAllCreatedOrModeratedByOrg(organizationId, ModerationStatusEnum.APPROVED.getId());
+        return this.mapToPublicDetailsList(entities);
+//        var approvedStatusId = ModerationStatusEnum.APPROVED.getId();
+//        return jobRepository
+//                .findAllByOwnerIdOrModeratedJobsOrgIdAndModeratedJobsStatusId(
+//                organizationId, organizationId,
+//                        approvedStatusId, JobPublicDetailsProjection.class);
     }
 
     @Override
-    public List<JobPublicSummaryProjection> getExclusiveReceivedJobsSummaryForOrg(String orgId) {
+    public List<JobPublicDetailsProjection> getExclusiveReceivedJobsSummaryForOrg(String orgId) {
         return jobRepository
                 .findAllByExclusiveReceiversId(Long.parseLong(orgId),
-                        JobPublicSummaryProjection.class);
+                        JobPublicDetailsProjection.class);
     }
 
     @Override
@@ -279,12 +340,12 @@ class JobDAOImpl implements IJobDAO {
     }
 
     @Override
-    public ModerationProjection getModerationInfo(String orgId, String jobId) {
+    public ModerationDetailsProjection getModerationInfo(String orgId, String jobId) {
         return moderatedJobRepository
                 .findByJobIdAndOrganizationId(
                         Long.parseLong(jobId),
                         Long.parseLong(orgId),
-                        ModerationProjection.class )
+                        ModerationDetailsProjection.class )
                 .orElseThrow(EntityNotFoundException::new);
     }
 

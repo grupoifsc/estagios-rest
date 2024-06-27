@@ -1,8 +1,13 @@
 package com.github.projetoifsc.estagios.app.model.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AuthLoginRequest {
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String email;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public String getEmail() {

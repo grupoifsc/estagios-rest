@@ -1,7 +1,10 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.*;
-import com.github.projetoifsc.estagios.core.models.*;
+import com.github.projetoifsc.estagios.core.models.IOrg;
+import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 
@@ -23,14 +26,14 @@ class JobReadOperations {
 
     public JobPublicDetailsProjection getOnePublicDetails(String organizationId, String traineeshipId) {
         var organization = organizationDB.findById(organizationId);
-        var traineeship = jobDB.getPublicDetails(traineeshipId);
+        var traineeship = jobDB.getJobPublicDetails(traineeshipId);
 
         var exclusiveReceivers = organizationDB.getExclusiveReceiversForJob(traineeshipId);
 
-        if (OrganizationValidation.isOwner(organization, traineeship)
-                || OrganizationValidation.isReceiver(organization, exclusiveReceivers)) {
-            return traineeship;
-        }
+//        if (OrganizationValidation.isOwner(organization, traineeship)
+//                || OrganizationValidation.isReceiver(organization, exclusiveReceivers)) {
+//            return traineeship;
+//        }
 
         var errorMessage = "Organizations can only see traineeships which they own or receive";
         throw new UnauthorizedAccessException(errorMessage);
@@ -38,52 +41,52 @@ class JobReadOperations {
 
     public JobPrivateDetailsProjection getOnePrivateDetails(String organizationId, String traineeshipId) {
         var organization = organizationDB.findById(organizationId);
-        var job = jobDB.getPrivateDetails(traineeshipId);
+        var job = jobDB.getJobPrivateDetails(traineeshipId);
 
-        if (OrganizationValidation.isOwner(organization, job)) {
-            return job;
-        }
+//        if (OrganizationValidation.isOwner(organization, job)) {
+//            return job;
+//        }
 
         var errorMessage = "Organizations can only see private details of traineeships which they own";
         throw new UnauthorizedAccessException(errorMessage);
     }
 
 
-    public Page<JobPrivateSummaryProjection> getAllCreatedSummary(String loggedId, String targetId) {
+    public Page<JobPrivateDetailsProjection> getAllCreatedDetails(String loggedId, String targetId) {
         if(isSelf(loggedId, targetId))
-            return jobDB.getAllCreatedJobsSummaryFromOrg(targetId);
+            return jobDB.getAllCreatedBy(targetId);
         var errorMessage = "Organizations can only access their own created jobs";
         throw new UnauthorizedAccessException(errorMessage);
     }
 
-    public List<JobPublicSummaryProjection> getAllApprovedSummary(String loggedId, String targetId) {
+    public List<JobPublicDetailsProjection> getAllApprovedSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
             return jobDB.getAllApprovedSummaryFromOrg(loggedId);
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
-    public List<JobPublicSummaryProjection> getAllRejectedSummary(String loggedId, String targetId) {
+    public List<JobPublicDetailsProjection> getAllRejectedSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
-            return jobDB.getAllRejectedSummaryFromOrg(loggedId);
+            return jobDB.getAllRejectedBy(loggedId);
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
 
-    public List<JobPublicSummaryProjection> getAllPendingSummary(String loggedId, String targetId) {
+    public List<JobPublicDetailsProjection> getAllPendingSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
-            return jobDB.getAllPendingSummaryFromOrg(loggedId);
+            return jobDB.getAllToBeModeratedBy(loggedId);
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
 
     // TODO DB: Aqui tbm tem lógica de negócio... Isto é: são as vagas que ainda não foram aprovadas ou rejeitadas e são "recebidas"
     //  TODO DB: Jogar esta lógica lá para o banco de dados...
-    public List<IJob> getAllReceivedSummary(IOrganization org) {
+    public List<JobPublicDetailsProjection> getAllReceivedSummary(IOrg org) {
         if(OrganizationValidation.isIE(org)) {
-            var received = new ArrayList<IJob>();
+            var received = new ArrayList<JobPublicDetailsProjection>();
             var exclusiveJobs = jobDB.getExclusiveReceivedJobsSummaryForOrg(org.getId());
             var publicJobs = jobDB.findAllPublicJobsSummary();
             received.addAll(exclusiveJobs);
@@ -94,23 +97,23 @@ class JobReadOperations {
     }
 
 
-    public List<JobPublicSummaryProjection> getAllAvailableSummary(String loggedId, String targetId) {
+    public List<JobPublicDetailsProjection> getAllAvailableSummary(String loggedId, String targetId) {
         var org = organizationDB.findById(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
-            return jobDB.getAllAvailableSummaryFromOrg(loggedId);
+            return jobDB.getAllCreatedOrApprovedBy(loggedId);
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
 
-    public ModerationProjection getModerationInfo(String orgId, String jobId) {
+    public ModerationDetailsProjection getModerationInfo(String orgId, String jobId) {
         var org = organizationDB.findById(orgId);
         if(isIE(org)) {
             try{
                 return jobDB.getModerationInfo(orgId, jobId);
             }
             catch (EntityNotFoundException enf) {
-                var job = jobDB.getBasicInfo(jobId);
-                return Moderation.resolve(org, job);
+                var job = jobDB.getJobBasicInfo(jobId);
+                return ModerationProjection.resolve(org, job);
             }
         }
         var errorMessage = "Only IEs can see moderation info";

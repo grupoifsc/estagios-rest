@@ -1,12 +1,12 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.core.models.JobPrivateDetailsProjection;
-import com.github.projetoifsc.estagios.core.models.JobPublicDetailsProjection;
-import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
+import com.github.projetoifsc.estagios.app.model.request.JobEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ class JobDAOImplTest {
 
     @Test
     void saveAndGetIdWithoutOtherEntities() {
-        var entryData = mapper.map(jobEntity, NewJobRequest.class);
+        var entryData = mapper.map(jobEntity, JobEntryData.class);
         var savedId = jobDBImpl.saveAndGetId(entryData);
         assertNotEquals(savedId, "0");
     }
@@ -67,7 +67,7 @@ class JobDAOImplTest {
     void saveAndGetIdWithRelatedEntities() {
 
         var owner = organizationDB.findById("379");
-        var mappedOwner = mapper.map(owner, OrganizationEntity.class);
+        var mappedOwner = mapper.map(owner, OrgEntity.class);
 
 //        var mainAddress = organizationDB.getMainAddress(owner.getId());
 //        System.out.println(jsonParser.valueAsString(mainAddress));
@@ -78,7 +78,7 @@ class JobDAOImplTest {
 
         var receivers = organizationDB.findAllById(List.of("272", "273", "274"));
         var mappedReceivers = receivers.stream().map(
-                o -> mapper.map(o, OrganizationEntity.class)
+                o -> mapper.map(o, OrgEntity.class)
         ).toList();
 
         var areaA = areaDB.getById("1");
@@ -92,17 +92,17 @@ class JobDAOImplTest {
 //        jobEntity.setAddress(mappedAddress);
 //        jobEntity.setContact(mappedContact);
 
-        var entryData = mapper.map(jobEntity, NewJobRequest.class);
+        var entryData = mapper.map(jobEntity, JobEntryData.class);
         var savedId = jobDBImpl.saveAndGetId(entryData);
         assertNotEquals("0", savedId);
 
     }
 
     @Test
-    void getBasicInfoByIdReturnsEntityOrThrowsException() {
-        assertDoesNotThrow(() -> jobDBImpl.getBasicInfo("2"));
-        assertThrows(Exception.class, () -> jobDBImpl.getBasicInfo("0"));
-        assertInstanceOf(IJob.class, jobDBImpl.getBasicInfo("2"));
+    void getJobBasicInfoByIdReturnsEntityOrThrowsException() {
+        assertDoesNotThrow(() -> jobDBImpl.getJobBasicInfo("2"));
+        assertThrows(Exception.class, () -> jobDBImpl.getJobBasicInfo("0"));
+        assertInstanceOf(IJob.class, jobDBImpl.getJobBasicInfo("2"));
     }
 
 
@@ -114,10 +114,10 @@ class JobDAOImplTest {
 
 
     @Test
-    void getPublicDetails() {
+    void getJobPublicDetails() {
         String id = "8";
         //var publicProjection = jobDBImpl.getPublicDetails(id);
-        var publicProjection = jobDBImpl.getPublicDetails(id);
+        var publicProjection = jobDBImpl.getJobPublicDetails(id);
         var jsonString = jsonParser.valueAsString(publicProjection);
         assertFalse(jsonString.contains("receivers"));
         System.out.println(jsonString);
@@ -125,11 +125,11 @@ class JobDAOImplTest {
     }
 
     @Test
-    void getPrivateDetails() {
+    void getJobPrivateDetails() {
         // É pra devolver tudo.. e pegar tbm as vagas...
         String id = "4";
         //var publicProjection = jobDBImpl.getPublicDetails(id);
-        var privateProjection = jobDBImpl.getPrivateDetails(id);
+        var privateProjection = jobDBImpl.getJobPrivateDetails(id);
         var jsonString = jsonParser.valueAsString(privateProjection);
         assertTrue(jsonString.contains("receivers"));
         System.out.println(jsonString);
@@ -167,7 +167,7 @@ class JobDAOImplTest {
     @Test
     void getAllRejected() {
         var id = "378";
-        var vagas = jobDBImpl.getAllRejectedSummaryFromOrg(id);
+        var vagas = jobDBImpl.getAllRejectedBy(id);
         System.out.println(vagas.size());
         jsonParser.printValue(vagas);
     }
@@ -176,7 +176,7 @@ class JobDAOImplTest {
     @Test
     void getAllPending() {
         var id = "397";
-        var vagas = jobDBImpl.getAllPendingSummaryFromOrg(id);
+        var vagas = jobDBImpl.getAllToBeModeratedBy(id);
         System.out.println(vagas.size());
         jsonParser.printValue(vagas);
     }
@@ -184,16 +184,17 @@ class JobDAOImplTest {
     @Test
     void getAllCreated() {
         var id = "198";
-        var vagas = jobDBImpl.getAllCreatedJobsSummaryFromOrg(id);
+        var vagas = jobDBImpl.getAllCreatedBy(id);
         System.out.println(vagas.getNumberOfElements());
         jsonParser.printValue(vagas);
     }
 
     @Test
     void getAllAvailable() {
-        var id = "378";
-        var available = jobDBImpl.getAllAvailableSummaryFromOrg(id);
+        var id = "415";
+        var available = jobDBImpl.getAllCreatedOrApprovedBy(id);
         System.out.println(available.size());
+        System.out.println(available.get(0).getOwner().getId());
         jsonParser.printValue(available);
     }
 

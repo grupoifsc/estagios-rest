@@ -2,6 +2,7 @@ package com.github.projetoifsc.estagios.app.configs;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,14 +19,30 @@ public class OpenApiConfig {
     public static final String BASE_URL = "/api/v1";
 
 	public static final String AUTH = "Autenticação";
-	public static final String AUTH_USER_PROFILE = "Seu Perfil";
-	public static final String AUTH_USER_VAGAS = "Suas Vagas";
+	public static final String PERFIL = "Seu Perfil";
+	public static final String MODERACAO = "Moderação";
     public static final String ORGS = "Organizações";
     public static final String VAGAS = "Vagas";
     public static final String AREAS = "Áreas";
 
+	@Bean
+	public GroupedOpenApi vagas() {
+		var basePackName = "com.github.projetoifsc.estagios.app.controller.";
+		String[] vagas = {basePackName + "vagas"};
+		return GroupedOpenApi.builder().group("vagas").packagesToScan(vagas)
+				.build();
+	}
 
-    @Bean
+
+	@Bean
+	public GroupedOpenApi orgs() {
+		var basePackName = "com.github.projetoifsc.estagios.app.controller.";
+		String[] orgs = {basePackName + "orgs"};
+		return GroupedOpenApi.builder().group("organizations").packagesToScan(orgs)
+				.build();
+	}
+
+	@Bean
     public OpenAPI customOpenApi() {
 		return new OpenAPI()
 				.components(
@@ -51,31 +68,32 @@ public class OpenApiConfig {
 								.url(""))
 					.summary("Um serviço web para conectar empresas e instituições de ensino em torno de um objetivo em comum: divulgar vagas de estágio à comunidade estudantil")
 				)
-				.addTagsItem( new Tag()
-						.name(AUTH)
-						.description("")
-				)
-				.addTagsItem( new Tag()
-						.name(AUTH_USER_PROFILE)
-						.description("")
-				)
-				.addTagsItem( new Tag()
-						.name(AUTH_USER_VAGAS)
-						.description("")
-				)
-				.addTagsItem( new Tag()
-						.name(AREAS)
-						.description("")
-				)
-				.addTagsItem( new Tag()
-						.name(ORGS)
-						.description("")
-				)
-				.addTagsItem( new Tag()
-						.name(VAGAS)
-						.description("")
-				);
+//				.addTagsItem( new Tag()
+//						.name(AUTH)
+//						.description("Autenticação e autorização")
+//				)
+//				.addTagsItem( new Tag()
+//						.name(PERFIL)
+//						.description("Perfil do usuário autenticado")
+//				)
+//				.addTagsItem( new Tag()
+//						.name(MODERACAO)
+//						.description("Moderação de vagas")
+//				)
+//				.addTagsItem( new Tag()
+//						.name(AREAS)
+//						.description("Ver Áreas de Vagas")
+//				)
+//				.addTagsItem( new Tag()
+//						.name(ORGS)
+//						.description("Perfis de organizações cadastradas")
+//				)
+//				.addTagsItem( new Tag()
+//						.name(VAGAS)
+//						.description("Criação de Vagas")
+//				);
 
+			;
 	}
 
 }

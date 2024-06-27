@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-interface OrganizationRepository extends PagingAndSortingRepository<OrganizationEntity, Long> {
+interface OrganizationRepository extends PagingAndSortingRepository<OrgEntity, Long> {
 
-    OrganizationEntity save(OrganizationEntity org);
+    OrgEntity save(OrgEntity org);
 
     <T> Optional<T> findById(long id, Class<T> projectionClass);
 
@@ -19,14 +19,15 @@ interface OrganizationRepository extends PagingAndSortingRepository<Organization
 
     <T> Optional<T> findByUserCredentialsId(long userId, Class<T> projectionClass);
 
-    void delete(OrganizationEntity org);
+    void delete(OrgEntity org);
     void deleteById(long id);
 
-    <T> Optional<T> findFirstBy(Class<T> projectionClass);
-
+    <T> T findFirstProjectedBy(Class<T> projectionClass);
     <T> Page<T> findAllProjectedBy(Pageable pageable, Class<T> projectionClass);
+
     <T> Page<T> findAllByIe(boolean ie, Pageable pageable, Class<T> projectionClass);
     <T> List<T> findAllByIdIn(List<Long> ids, Class<T> projectionClass);
     <T> List<T> findAllByExclusiveReceivedJobsId(long jobId, Class<T> projectionClass);
+
 
 }

@@ -21,6 +21,7 @@ public class CustomUserDetailService implements UserDetailsService {
         var user = authUserService.findByUsername(username).orElseThrow();
         return new UserPrincipal(
                 user.getId(),
+                user.getIe(),
                 user.getUsername(),
                 user.getPassword(),
                 user.getAuthorities()

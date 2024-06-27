@@ -32,17 +32,24 @@ public class OrgMocker {
         this.geradorCnpj = geradorCnpj;
     }
 
-    public OrganizationEntity generate() {
+    public OrgEntity generate() {
         return randomOrganization();
     }
 
-    public OrganizationEntity generateWithIdAsZero() {
+    public OrgEntity generateWithIdAsZero() {
         var org = randomOrganization();
         org.setId("0");
         return org;
     }
 
-    private OrganizationEntity randomOrganization() {
+    public OrgEntity generateWithGivenId(String id) {
+        var org = randomOrganization();
+        org.setId(id);
+        return org;
+    }
+
+
+    private OrgEntity randomOrganization() {
 
         Company fakeCompany = faker.company();
         nome = fakeCompany.name();
@@ -62,7 +69,7 @@ public class OrgMocker {
 //        criado_em = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 //        atualizado_em = criado_em;
 
-        return new OrganizationEntity(nome, cnpj, ie, info, website, redes_sociais);
+        return new OrgEntity(nome, cnpj, ie, info, website, redes_sociais);
 
 
     }

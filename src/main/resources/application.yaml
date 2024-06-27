@@ -15,6 +15,20 @@ spring:
       write-dates-as-timestamps: false
 
 
+springdoc:
+  swagger-ui:
+    try-it-out-enabled: true
+    filter: true
+    operations-sorter: 'alpha'
+    display-request-duration: true
+    deep-linking: true
+    show-common-extensions: true
+    syntax-highlight:
+      activated: true
+      theme: 'nord'
+  writer-with-default-pretty-printer: true
+
+
 # CUSTOM SECURITY PROPERTIES
 security:
   jwt:

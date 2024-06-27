@@ -1,12 +1,12 @@
 package com.github.projetoifsc.estagios.app.service;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
-import com.github.projetoifsc.estagios.app.model.response.PublicAddressResponse;
-import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
-import com.github.projetoifsc.estagios.app.model.response.PublicOrgProfileResponse;
+import com.github.projetoifsc.estagios.app.model.request.OrgEntryData;
+import com.github.projetoifsc.estagios.app.model.response.Address;
+import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfile;
+import com.github.projetoifsc.estagios.app.model.response.OrgPublicProfile;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrg;
 import com.github.projetoifsc.estagios.infra.db.jpa.GeradorCnpj;
 import com.github.projetoifsc.estagios.infra.db.jpa.OrgMocker;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
@@ -33,15 +33,15 @@ class OrgServiceIntegrationTest {
     OrgMocker mocker = new OrgMocker(new Faker(new Locale("pt-BR")), new GeradorCnpj());
 
     UserPrincipal userPrincipal;
-    IOrganization entity;
+   // IOrg entity;
 
 
     @BeforeEach
     void setUp() {
         var mockedEntity = mocker.generateWithIdAsZero();
-        var view = mapper.map(mockedEntity, NewOrgProfileRequest.class);
-        entity = orgService.create(view);
-        userPrincipal = new UserPrincipal(entity.getId(), null,null, null);
+        var view = mapper.map(mockedEntity, OrgEntryData.class);
+        var entity = orgService.create(view);
+        userPrincipal = new UserPrincipal(entity.getId(), true,null,null, null);
     }
 
     @Test
@@ -50,17 +50,19 @@ class OrgServiceIntegrationTest {
         jsonParser.printValue(dto);
         
 
-        var mapped = mapper.map(dto, PrivateOrgProfileResponse.class);
+        var mapped = mapper.map(dto, OrgPrivateProfile.class);
         jsonParser.printValue(mapped);
 
     }
 
     @Test
     void getPublic() {
+        var entity = new OrgEntryData();
+        entity.setId("2");
         var dto = orgService.getUserPublicProfile(userPrincipal, entity.getId());
         jsonParser.printValue(dto);
 
-        var mapped = mapper.map(dto, PublicOrgProfileResponse.class);
+        var mapped = mapper.map(dto, OrgPublicProfile.class);
         jsonParser.printValue(mapped);
 
     }
@@ -69,14 +71,14 @@ class OrgServiceIntegrationTest {
     @Test
     void save() {
 
-        var mainAddr = new PublicAddressResponse();
+        var mainAddr = new Address();
         mainAddr.setBairro("Rio Vermelho - Atualizado");
         mainAddr.setCidade("Fpolis");
         mainAddr.setPais("Brasil");
         mainAddr.setEstado("SC");
         mainAddr.setRua("Anthonio Thiago Nunes");
 
-        var org = new NewOrgProfileRequest();
+        var org = new OrgEntryData();
         //org.setId("63");
         org.setNome("Ju Atualizado");
         org.setMainAddress(mainAddr);
@@ -92,7 +94,7 @@ class OrgServiceIntegrationTest {
         System.out.println("O que veio salvo lá do banco de dados: ");
         jsonParser.printValue(saved);
 
-        var mapped = mapper.map(saved, PrivateOrgProfileResponse.class);
+        var mapped = mapper.map(saved, OrgPrivateProfile.class);
         System.out.println("O objeto mapeado para ser devolvido: ");
         jsonParser.printValue(mapped);
 
@@ -110,8 +112,8 @@ class OrgServiceIntegrationTest {
     @Test
     void update() {
 
-        var org = new NewOrgProfileRequest();
-        org.setId(entity.getId());
+        var org = new OrgEntryData();
+        org.setId("2");
         org.setNome("Ju Via Update");
         org.setIe(true);
         org.setInfo("updated etc etc etc");
@@ -125,7 +127,7 @@ class OrgServiceIntegrationTest {
         System.out.println("O que veio salvo lá do banco de dados: ");
         jsonParser.printValue(saved);
 
-        var mapped = mapper.map(saved, PrivateOrgProfileResponse.class);
+        var mapped = mapper.map(saved, OrgPrivateProfile.class);
         System.out.println("O objeto mapeado para ser devolvido: ");
         jsonParser.printValue(mapped);
 

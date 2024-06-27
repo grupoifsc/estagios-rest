@@ -13,6 +13,10 @@ interface AddressRepository extends CrudRepository<AddressEntity, Long> {
 
     <T> List<T> findByOwnerId(long ownerId, Class<T> type);
 
-    void deleteAllByOwner(OrganizationEntity owner);
+    void deleteAllByOwner(OrgEntity owner);
+
+    <T> List<T> findAllProjectedBy(Class<T> type);
+    <T> T findFirstProjectedBy(Class<T> type);
+
 
 }

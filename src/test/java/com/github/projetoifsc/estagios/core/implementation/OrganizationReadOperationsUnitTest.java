@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.dto.OrgPublicProfileImpl;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.core.dto.IIOrgPublicProfileProjectionImplProjection;
+import com.github.projetoifsc.estagios.core.models.IOrg;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
-import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
+import com.github.projetoifsc.estagios.core.dto.OrgImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageImpl;
@@ -19,20 +19,20 @@ public class OrganizationReadOperationsUnitTest {
     IOrganizationDAO organizationRepository = mock();
     OrganizationReadOperations service = new OrganizationReadOperations(organizationRepository);
 
-    IOrganization organizationA;
-    IOrganization organizationB;
+    IOrg organizationA;
+    IOrg organizationB;
 
     @BeforeEach
     void setUp() {
-        organizationA = new OrganizationImpl("1", false);
-        organizationB = new OrganizationImpl("2", true);
+        organizationA = new OrgImpl("1", false);
+        organizationB = new OrgImpl("2", true);
     }
 
 
     @Test
     void getSchoolsCallsSchoolsPublicProfileAndReturnsList() {
         when(organizationRepository.getAllSchoolsPublicProfile())
-                .thenReturn(new PageImpl<>(List.of(new OrgPublicProfileImpl("1", true), new OrgPublicProfileImpl("2", true))));
+                .thenReturn(new PageImpl<>(List.of(new IIOrgPublicProfileProjectionImplProjection("1", true), new IIOrgPublicProfileProjectionImplProjection("2", true))));
         assertInstanceOf(PageImpl.class, service.getAllSchools());
     }
 

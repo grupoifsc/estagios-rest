@@ -27,12 +27,12 @@ class ModeratedJobsEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "org_id", insertable = false, updatable = false)
-    private OrganizationEntity organization;
+    private OrgEntity organization;
 
     @Column(name = "org_id")
     private long orgId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id", insertable = false, updatable = false)
     private ModerationStatusEntity status;
 
@@ -76,11 +76,11 @@ class ModeratedJobsEntity {
         this.orgId = orgId;
     }
 
-    public OrganizationEntity getOrganization() {
+    public OrgEntity getOrganization() {
         return organization;
     }
 
-    public void setOrganization(OrganizationEntity organization) {
+    public void setOrganization(OrgEntity organization) {
         this.organization = organization;
     }
 

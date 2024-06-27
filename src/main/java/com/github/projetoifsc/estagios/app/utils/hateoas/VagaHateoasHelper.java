@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.app.utils.hateoas;
 
-import com.github.projetoifsc.estagios.app.controller.VagasController;
+import com.github.projetoifsc.estagios.app.controller.vagas.VagasController;
 
 public class VagaHateoasHelper {
 

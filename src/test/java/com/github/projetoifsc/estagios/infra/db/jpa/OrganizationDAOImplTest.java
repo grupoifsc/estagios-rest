@@ -1,9 +1,9 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
-import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.app.model.request.OrgEntryData;
+import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfile;
+import com.github.projetoifsc.estagios.core.models.IOrg;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +42,7 @@ class OrganizationDAOImplTest {
     private OrganizationRepository organizationRepository;
 
 
-    IOrganization org;
+    IOrg org;
 
     @BeforeEach
     void setUp() {
@@ -69,7 +69,7 @@ class OrganizationDAOImplTest {
 
     @Test
     void findByUsernameReturnsBasicInfoOrNull() {
-        var ent = mapper.map(org, PrivateOrgProfileResponse.class);
+        var ent = mapper.map(org, OrgPrivateProfile.class);
         var dto = organizationDB.findByUsername(ent.getUserCredentials().getEmail());
 
         jsonParser.printValue(dto);
@@ -79,9 +79,10 @@ class OrganizationDAOImplTest {
     @Test
     void saveReturnsPrivateProfile() {
         var entity = new OrgMocker().generateWithIdAsZero();
-        var newUser = mapper.map(entity, NewOrgProfileRequest.class);
-        newUser.setEmail("teste@teste.com");
-        newUser.setPassword("minhaSenha");
+        var newUser = mapper.map(entity, OrgEntryData.class);
+
+        //newUser.setEmail("teste@teste.com");
+        //newUser.setPassword("minhaSenha");
         jsonParser.printValue(newUser);
         var saved = organizationDB.save(newUser);
 

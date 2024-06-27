@@ -1,8 +1,7 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.model.request.AuthRefreshTokenRequest;
 import com.github.projetoifsc.estagios.app.model.request.AuthLoginRequest;
-import com.github.projetoifsc.estagios.app.model.response.AuthTokenResponse;
+import com.github.projetoifsc.estagios.app.model.response.AuthToken;
 import com.github.projetoifsc.estagios.app.security.auth.JwtDecoder;
 import com.github.projetoifsc.estagios.app.security.auth.JwtIssuer;
 import com.github.projetoifsc.estagios.app.security.auth.JwtToPrincipalConverter;
@@ -13,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -31,7 +31,7 @@ public class AuthenticationService {
     }
 
 
-    public AuthTokenResponse attemptLogin(AuthLoginRequest authLoginRequest) {
+    public AuthToken attemptLogin(AuthLoginRequest authLoginRequest) {
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authLoginRequest.getEmail(),
@@ -46,7 +46,7 @@ public class AuthenticationService {
     }
 
 
-    public AuthTokenResponse refreshToken(AuthRefreshTokenRequest authRefreshTokenRequest) {
+    public AuthToken refreshToken(AuthToken authRefreshTokenRequest) {
         return Optional.of(authRefreshTokenRequest.getRefreshToken())
                 .map(jwtDecoder::decodeRefreshToken)
                 .map(jwtToPrincipalConverter::convert)
@@ -55,10 +55,15 @@ public class AuthenticationService {
     }
 
 
-    private AuthTokenResponse generateTokensForPrincipal(UserPrincipal principal) {
-        var roles = principal.getAuthorities()
+    private AuthToken generateTokensForPrincipal(UserPrincipal principal) {
+        var roles = new ArrayList<>(principal.getAuthorities()
                 .stream().map(GrantedAuthority::getAuthority)
-                .toList();
+                .toList());
+
+        System.out.println("Is IE? ");
+        System.out.println(principal.getIe());
+
+        roles.add(principal.getIe() ? "IE" : "EMPRESA");
 
         var accessToken = jwtIssuer.issueAccessToken(
                 principal.getId(),
@@ -67,7 +72,7 @@ public class AuthenticationService {
 
         var refreshToken = jwtIssuer.issueRefreshToken(principal.getId(), roles);
 
-        var tokenResponse = new AuthTokenResponse();
+        var tokenResponse = new AuthToken();
         tokenResponse.setAccessToken(accessToken);
         tokenResponse.setRefreshToken(refreshToken);
         return tokenResponse;

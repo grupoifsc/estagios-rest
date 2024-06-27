@@ -4,5 +4,5 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("2")
+@DiscriminatorValue("other")
 class AddressOtherEntity extends AddressEntity { }

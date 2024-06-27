@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.app.configs;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -16,12 +17,12 @@ public class ObjectMapperConfig {
     @Bean
     @Primary
     public ObjectMapper objectMapper () {
-        System.out.println("Está criando este caralho?");
             return JsonMapper.builder()
             .addModule(new JavaTimeModule())
             .addModule(new Hibernate5JakartaModule())
             .propertyNamingStrategy(PropertyNamingStrategies.LOWER_CASE)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+      //      .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
             .build();
     }
 

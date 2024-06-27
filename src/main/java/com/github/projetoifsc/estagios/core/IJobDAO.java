@@ -1,37 +1,50 @@
 package com.github.projetoifsc.estagios.core;
 
-import com.github.projetoifsc.estagios.core.models.*;
+import com.github.projetoifsc.estagios.core.models.IJob;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IJobDAO {
 
+    // Substituir por save
     String saveAndGetId(IJobEntryData newJob);
+    
     void delete(String id);
 
-    IJob getBasicInfo(String id);
-    List<IJob> getBasicInfo(List<String> traineeshipIds);
+    IJob getJobBasicInfo(String id);
+    List<IJob> getJobBasicInfo(List<String> traineeshipIds);
 
-    JobPublicDetailsProjection getPublicDetails(String id);
-    JobPrivateDetailsProjection getPrivateDetails(String id);
+    JobPublicDetailsProjection getJobPublicDetails(String id);
+    JobPrivateDetailsProjection getJobPrivateDetails(String id);
 
-    List<JobPublicSummaryProjection> findAllPublicJobsSummary();
+    // Find All Available (notCreatedAndApproved)
+    // Find All Aproved
+    // Find All Rejected
+    // Find all created
+    // Find all pending
+    Page<JobPrivateDetailsProjection> getAllCreatedBy(String orgId);
 
-    JobPublicSummaryProjection setJobApprovedByOrg(String jobId, String orgId);
-    JobPublicSummaryProjection setJobRejectedByOrg(String jobId, String orgId);
+    List<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId);
+    List<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId);
+    List<JobPublicDetailsProjection> getAllRejectedBy(String orgId);
+
+    List<JobPublicDetailsProjection> findAllPublicJobsSummary();
+
+    JobPublicDetailsProjection setJobApprovedByOrg(String jobId, String orgId);
+    JobPublicDetailsProjection setJobRejectedByOrg(String jobId, String orgId);
     void setJobApprovedByOrg(List<IJob> jobs, String organizationId);
     void setJobRejectedByOrg(List<IJob> jobs, String organizationId);
 
-    Page<JobPrivateSummaryProjection> getAllCreatedJobsSummaryFromOrg(String orgId);
-    List<JobPublicSummaryProjection> getAllAvailableSummaryFromOrg(String orgId);
-    List<JobPublicSummaryProjection> getAllPendingSummaryFromOrg(String orgId);
-    List<JobPublicSummaryProjection> getAllApprovedSummaryFromOrg(String orgId);
-    List<JobPublicSummaryProjection> getAllRejectedSummaryFromOrg(String orgId);
-    List<JobPublicSummaryProjection> getExclusiveReceivedJobsSummaryForOrg(String orgId);
+    List<JobPublicDetailsProjection> getExclusiveReceivedJobsSummaryForOrg(String orgId);
+    List<JobPublicDetailsProjection> getAllApprovedSummaryFromOrg(String orgId);
 
     boolean isJobOfferedToOrg(String jobId, String orgId);
 
-    ModerationProjection getModerationInfo(String orgId, String jobId);
+    ModerationDetailsProjection getModerationInfo(String orgId, String jobId);
 
 }

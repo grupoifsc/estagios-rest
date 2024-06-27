@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
+import com.github.projetoifsc.estagios.core.models.IFormat;
 import jakarta.persistence.*;
 
 // Enums: https://dev.to/noelopez/spring-rest-working-with-enums-ma
@@ -9,7 +10,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "formats")
-class FormatEntity {
+class FormatEntity implements IFormat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +19,21 @@ class FormatEntity {
     private String name;
 
     @Override
-    public String toString() {
-        return "Format{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    public short getId() {
+        return id;
+    }
+
+    public void setId(short id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

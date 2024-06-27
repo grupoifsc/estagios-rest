@@ -1,8 +1,10 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.core.models.IJob;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrg;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,11 +25,11 @@ class JobEntity implements IJob {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    OrganizationEntity owner;
+    OrgEntity owner;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="areas_jobs",
@@ -44,7 +46,7 @@ class JobEntity implements IJob {
         joinColumns = @JoinColumn(name = "job_id"),
         inverseJoinColumns = @JoinColumn(name = "org_id")
     )
-    List<OrganizationEntity> exclusiveReceivers;
+    List<OrgEntity> exclusiveReceivers;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -65,7 +67,7 @@ class JobEntity implements IJob {
     // Não funciona caso, na mesma transação, deseje salvar E selecionar a tabela relacionada
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "period_id", insertable = false, updatable = false)
-    PeriodEntity periodo;
+    PeriodEntity period;
 
     @Column(name = "period_id")
     short periodId;
@@ -79,7 +81,7 @@ class JobEntity implements IJob {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "format_id", insertable = false,updatable = false)
-    FormatEntity formatEntity;
+    FormatEntity format;
 
     @Column(name = "format_id")
     short formatId;
@@ -121,18 +123,19 @@ class JobEntity implements IJob {
         return String.valueOf(id);
     }
 
+    @Override
     public void setId(String id) {
         this.id = Long.parseLong(id);
     }
 
     @Override
-    public OrganizationEntity getOwner() {
+    public OrgEntity getOwner() {
         return owner;
     }
 
     @Override
-    public void setOwner(IOrganization owner) {
-        this.owner = (OrganizationEntity) owner;
+    public void setOwner(IOrg owner) {
+        this.owner = (OrgEntity) owner;
     }
 
     public List<AreaEntity> getAreas() {
@@ -143,11 +146,11 @@ class JobEntity implements IJob {
         this.areas = areas;
     }
 
-    public List<OrganizationEntity> getExclusiveReceivers() {
+    public List<OrgEntity> getExclusiveReceivers() {
         return exclusiveReceivers;
     }
 
-    public void setExclusiveReceivers(List<OrganizationEntity> exclusiveReceivers) {
+    public void setExclusiveReceivers(List<OrgEntity> exclusiveReceivers) {
         this.exclusiveReceivers = exclusiveReceivers;
     }
 
@@ -167,12 +170,12 @@ class JobEntity implements IJob {
         this.contact = contactEntity;
     }
 
-    public PeriodEntity getPeriodo() {
-        return periodo;
+    public PeriodEntity getPeriod() {
+        return period;
     }
 
-    public void setPeriodo(PeriodEntity periodo) {
-        this.periodo = periodo;
+    public void setPeriod(PeriodEntity period) {
+        this.period = period;
     }
 
     public short getPeriodId() {
@@ -200,11 +203,11 @@ class JobEntity implements IJob {
     }
 
     public FormatEntity getFormat() {
-        return formatEntity;
+        return format;
     }
 
     public void setFormat(FormatEntity formatEntity) {
-        this.formatEntity = formatEntity;
+        this.format = formatEntity;
     }
 
     public short getFormatId() {
@@ -307,7 +310,7 @@ class JobEntity implements IJob {
         this.id = id;
     }
 
-    public void setOwner(OrganizationEntity owner) {
+    public void setOwner(OrgEntity owner) {
         this.owner = owner;
     }
 
@@ -319,12 +322,5 @@ class JobEntity implements IJob {
         this.moderatedJobs = moderatedJobs;
     }
 
-    public FormatEntity getFormatEntity() {
-        return formatEntity;
-    }
-
-    public void setFormatEntity(FormatEntity formatEntity) {
-        this.formatEntity = formatEntity;
-    }
 
 }

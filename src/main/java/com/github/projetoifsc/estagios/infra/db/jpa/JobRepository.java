@@ -3,6 +3,7 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,34 +13,123 @@ import java.util.Optional;
 @Repository
 interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> {
 
+//    WRITE OPERATIONS
+
     JobEntity save(JobEntity jobEntity);
+
     void delete(JobEntity job);
-    void deleteById(long id);
+
+
+//    READ OPERATIONS
+
+    boolean existsByIdAndExclusiveReceiversEmptyOrExclusiveReceiversId(long jobId, long orgId);
+
+    @Query(value =
+        "SELECT j from JobEntity j JOIN FETCH j.owner as owner " +
+            "JOIN FETCH j.exclusiveReceivers as receivers " +
+        "WHERE j.id = :id ")
+    Optional<JobEntity> findByIdBasicInfo(long id);
+
+
+//    @Query(value =
+//        "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+//            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+//            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+//            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+//            "LEFT JOIN FETCH j.exclusiveReceivers as receivers " +
+//        "WHERE j.id = :id")
+//    Optional<JobEntity> findByIdPrivateDetails(long id);
+
+
+    @Query(value =
+        "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+        "WHERE j.id = :id")
+    Optional<JobEntity> findByIdPublicDetails(long id);
 
     <T> Optional<T> findById(long id, Class<T> type);
 
+    List<IJob> findByIdIn(List<Long> traineeshipIds);
+
+    <T> T findFirstProjectedBy(Class<T> projectionClass);
+
+    <T> Page<T> findAllProjectedBy(Pageable pageable, Class<T> projectionClass);
+
+    // Get Moderation Info == Still not used
     <T> Optional<T> findByIdAndModeratedJobsOrgId(long id, long orgId, Class<T> type);
 
     <T> Page<T> findAllByOwnerId(long id, Pageable pageable, Class<T> type);
+
+    // Find all public jobs
     <T> List<T> findAllByExclusiveReceiversEmpty(Class<T> type);
+
+    // Find all that are exclusively received by organization
     <T> List<T> findAllByExclusiveReceiversId(long id, Class<T> type);
 
+    // * Find all pending jobs, to be moderated (depende de uma query em outro repositório)
     <T> List<T> findAllByOwnerIdNotAndIdNotInAndExclusiveReceiversEmptyOrExclusiveReceiversId(long ownerId, List<Long> ids, long receiverId, Class<T> type);
-
-
-    boolean existsByIdAndExclusiveReceiversEmptyOrExclusiveReceiversId(long jobId, long orgId);
 
     <T> List<T> findAllByModeratedJobsOrgIdAndModeratedJobsStatusId(long ownerId, short statusId, Class<T> type);
 
     <T> List<T> findAllByOwnerIdOrModeratedJobsOrgIdAndModeratedJobsStatusId(long ownerId, long orgId, short statusId, Class<T> type);
 
-    List<IJob> findByIdIn(List<Long> traineeshipIds);
 
 
-//    <T> List<T> findAllByApprovalsOrganizationId(long orgId, Class<T> type);
-//    <T> List<T> findAllByRejectionsOrganizationId(long orgId, Class<T> type);
-//
-//    <T> List<T> findDistinctByApprovalsOrganizationIdOrOwnerId(long orgId, long ownerId, Class<T> type);
+    // * Get All Created By
+    @Query(value =
+        "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+        "WHERE j.owner.id = :id")
+    List<JobEntity> findAllByOwnerId(long id);
+
+    @Query(value =
+            "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+                " LEFT JOIN FETCH j.exclusiveReceivers as receivers " +
+            "WHERE j.owner.id = :id")
+    List<JobEntity> findAllByOwnerIdWithReceivers(long id);
+
+
+    // * Find all rejected OR approved by organization
+    @Query(value =
+            "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+                    "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+                    "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+                    "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+                    "LEFT JOIN FETCH j.moderatedJobs as moderatedJobs " +
+            "WHERE moderatedJobs.orgId = :orgId AND moderatedJobs.statusId = :statusId " )
+    List<JobEntity> findAllModeratedByOrgAndStatus(long orgId, short statusId);
+
+
+    // * Get All Available (created By and approved By)
+    @Query(value =
+        "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+            "LEFT JOIN FETCH j.moderatedJobs as moderatedJobs " +
+        "WHERE j.owner.id = :orgId OR (moderatedJobs.orgId = :orgId AND moderatedJobs.statusId = :statusId) " )
+    List<JobEntity> findAllCreatedOrModeratedByOrg(long orgId, short statusId);
+
+
+    // * Find all pending jobs, to be moderated (depende de uma query em outro repositório)
+    // Que são públicos OU que o usuário está na lista de receivers MAS O usuário não moderou a vaga
+    @Query(value =
+        "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+            "LEFT JOIN FETCH j.moderatedJobs as moderatedJobs " +
+            "LEFT JOIN j.exclusiveReceivers as receivers " +
+        "WHERE j.owner.id != :orgId " +
+            "AND (j.moderatedJobs IS EMPTY OR moderatedJobs.orgId != :orgId) " +
+            "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
+    )
+    List<JobEntity> findAllPending (long orgId);
+
 
 
 }

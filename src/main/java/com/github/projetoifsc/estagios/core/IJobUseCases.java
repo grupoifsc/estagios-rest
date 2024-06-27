@@ -1,6 +1,9 @@
 package com.github.projetoifsc.estagios.core;
 
-import com.github.projetoifsc.estagios.core.models.*;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -17,14 +20,14 @@ public interface IJobUseCases {
     void approve(String organizationId, List<String> traineeshipIds);
     void reject(String organizationId, List<String> traineeshipIds);
 
-    Page<JobPrivateSummaryProjection> getAllCreatedSummary(String loggedId, String targetId);
-    List<JobPublicSummaryProjection> getAllAvailableSummary(String loggedId, String targetId);
-    List<JobPublicSummaryProjection> getAllRejectedSummary(String loggedId, String targetId);
-    List<JobPublicSummaryProjection> getAllPendingSummary(String loggedId, String targetId);
+    Page<JobPrivateDetailsProjection> getAllCreatedDetails(String loggedId, String targetId);
+    List<JobPublicDetailsProjection> getAllAvailableSummary(String loggedId, String targetId);
+    List<JobPublicDetailsProjection> getAllRejectedSummary(String loggedId, String targetId);
+    List<JobPublicDetailsProjection> getAllPendingSummary(String loggedId, String targetId);
 
-    List<JobPublicSummaryProjection> filterAllAvailableSummary(String loggedId, String targetId);
+    List<JobPublicDetailsProjection> filterAllAvailableSummary(String loggedId, String targetId);
 
-    ModerationProjection getModerationInfo(String organizationId, String traineeshipId);
+    ModerationDetailsProjection getModerationInfo(String organizationId, String traineeshipId);
 
 
 

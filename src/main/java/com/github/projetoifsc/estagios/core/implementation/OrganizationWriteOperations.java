@@ -1,7 +1,8 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
-import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.core.models.IOrgEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPrivateProfileProjection;
 
 class OrganizationWriteOperations {
 
@@ -12,12 +13,12 @@ class OrganizationWriteOperations {
     }
 
 
-    public OrgPrivateProfileProjection createProfile(OrgPrivateProfileProjection organization) {
+    public OrgPrivateProfileProjection createProfile(IOrgEntryData organization) {
         return organizationRepository.save(organization);
     }
 
 
-    public OrgPrivateProfileProjection updateProfile(String loggedId, String targetId, OrgPrivateProfileProjection organization) {
+    public OrgPrivateProfileProjection updateProfile(String loggedId, String targetId, IOrgEntryData organization) {
         if(OrganizationValidation.isSelf(loggedId, targetId)) {
             organization.setId(targetId);
             return organizationRepository.save(organization);

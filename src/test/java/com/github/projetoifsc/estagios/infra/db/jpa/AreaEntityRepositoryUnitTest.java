@@ -11,7 +11,7 @@ class AreaEntityRepositoryUnitTest {
     AreaRepository areaRepository;
     OrganizationRepository organizationRepository;
 
-    OrganizationEntity organizationEntity;
+    OrgEntity organizationEntity;
     AreaEntity areaEntity;
 
     Faker faker = new Faker();

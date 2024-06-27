@@ -1,15 +1,14 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
+import com.github.projetoifsc.estagios.app.model.request.JobEntryData;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
-import com.github.projetoifsc.estagios.core.dto.JobPublicDetailsImpl;
-import com.github.projetoifsc.estagios.core.dto.JobPublicSummaryImpl;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.core.dto.JobPublicDetailsProjectionImpl;
+import com.github.projetoifsc.estagios.core.models.IOrg;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.core.IJobDAO;
-import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
-import com.github.projetoifsc.estagios.core.dto.JobImpl;
-import com.github.projetoifsc.estagios.core.models.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.dto.OrgImpl;
+import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,18 +25,18 @@ public class JobReadOperationsUnitTest {
 
     JobReadOperations service = new JobReadOperations(jobDB, organizationDB);
 
-    IOrganization school;
-    IOrganization enterprise;
+    IOrg school;
+    IOrg enterprise;
     IJob traineeship;
-    IOrganization organization;
+    IOrg organization;
 
     @BeforeEach
     void setUp() {
-        school = new OrganizationImpl("1", true);
-        enterprise = new OrganizationImpl("2", false);
-        organization = new OrganizationImpl("1", false);
+        school = new OrgImpl("1", true);
+        enterprise = new OrgImpl("2", false);
+        organization = new OrgImpl("1", false);
 
-        traineeship = new JobImpl();
+        traineeship = new JobEntryData();
         traineeship.setId("1");
         traineeship.setOwner(organization);
 
@@ -47,10 +46,10 @@ public class JobReadOperationsUnitTest {
     @Test
     void givenOwnerButNotReceiver_whenSeeJobPublicDetails_thenSucceeds() {
         traineeship.setOwner(organization);
-        var publicDetails =mapper.map(traineeship, JobPublicDetailsImpl.class);
+        var publicDetails =mapper.map(traineeship, JobPublicDetailsProjectionImpl.class);
 
         when(organizationDB.findById(organization.getId())).thenReturn(organization);
-        when(jobDB.getPublicDetails(traineeship.getId())).thenReturn(publicDetails);
+        when(jobDB.getJobPublicDetails(traineeship.getId())).thenReturn(publicDetails);
 
         assertDoesNotThrow(() -> service.getOnePublicDetails(organization.getId(), traineeship.getId()));
     }
@@ -59,17 +58,17 @@ public class JobReadOperationsUnitTest {
     @Test
     void givenReceiverButNotOwner_whenSeeJobPublicDetails_thenSucceeds() {
         traineeship.setOwner(organization);
-        var school = new OrganizationImpl("3", true);
+        var school = new OrgImpl("3", true);
 
 
         when(organizationDB.findById(school.getId()))
                 .thenReturn(school);
-        when(jobDB.getBasicInfo(traineeship.getId()))
+        when(jobDB.getJobBasicInfo(traineeship.getId()))
                 .thenReturn(traineeship);
         when(organizationDB.getExclusiveReceiversForJob(traineeship.getId()))
                 .thenReturn(List.of(school));
-        when(jobDB.getPublicDetails(traineeship.getId()))
-                .thenReturn(mapper.map(traineeship, JobPublicDetailsImpl.class));
+        when(jobDB.getJobPublicDetails(traineeship.getId()))
+                .thenReturn(mapper.map(traineeship, JobPublicDetailsProjectionImpl.class));
 
         assertDoesNotThrow(() -> service.getOnePublicDetails(school.getId(), traineeship.getId()));
     }
@@ -78,13 +77,13 @@ public class JobReadOperationsUnitTest {
     @Test
     void givenNotOwnerOrReceiver_whenSeeJobPublicDetails_thenThrowsException() {
 
-        traineeship.setOwner(new OrganizationImpl("5", true));
-        var otherOrganization = new OrganizationImpl("3", true);
+        traineeship.setOwner(new OrgImpl("5", true));
+        var otherOrganization = new OrgImpl("3", true);
 
         when(organizationDB.findById(organization.getId()))
                 .thenReturn(organization);
-        when(jobDB.getPublicDetails(traineeship.getId()))
-                .thenReturn(mapper.map(traineeship, JobPublicDetailsImpl.class));
+        when(jobDB.getJobPublicDetails(traineeship.getId()))
+                .thenReturn(mapper.map(traineeship, JobPublicDetailsProjectionImpl.class));
         when(organizationDB.getExclusiveReceiversForJob(traineeship.getId()))
                 .thenReturn(List.of(otherOrganization));
 
@@ -99,12 +98,12 @@ public class JobReadOperationsUnitTest {
     @Test
     void givenNotOwner_whenSeeJobPrivateDetails_thenThrowsException() {
         when(organizationDB.findById(organization.getId())).thenReturn(organization);
-        when(jobDB.getPrivateDetails(traineeship.getId())).thenReturn(mapper.map(traineeship, JobPrivateDetailsProjection.class));
+        when(jobDB.getJobPrivateDetails(traineeship.getId())).thenReturn(mapper.map(traineeship, JobPrivateDetailsProjection.class));
 
         traineeship.setOwner(organization);
         assertDoesNotThrow(() -> service.getOnePrivateDetails(organization.getId(), traineeship.getId()));
 
-        traineeship.setOwner(new OrganizationImpl("5", false));
+        traineeship.setOwner(new OrgImpl("5", false));
         assertThrows(Exception.class,
                 () -> service.getOnePrivateDetails(organization.getId(), traineeship.getId()));
     }
@@ -113,8 +112,8 @@ public class JobReadOperationsUnitTest {
     @Test
     void givenNotSelf_whenGetCreatedJobs_thenThrowException() {
         assertThrows(UnauthorizedAccessException.class,
-                ()->service.getAllCreatedSummary(school.getId(), enterprise.getId()));
-        assertDoesNotThrow(()->service.getAllCreatedSummary(school.getId(), school.getId()));
+                ()->service.getAllCreatedDetails(school.getId(), enterprise.getId()));
+        assertDoesNotThrow(()->service.getAllCreatedDetails(school.getId(), school.getId()));
     }
 
 
@@ -126,9 +125,9 @@ public class JobReadOperationsUnitTest {
 
         when(organizationDB.findById(school.getId())).thenReturn(school);
         when(jobDB.getExclusiveReceivedJobsSummaryForOrg(school.getId()))
-                .thenReturn(List.of(new JobPublicSummaryImpl(), new JobPublicSummaryImpl()));
+                .thenReturn(List.of(new JobPublicDetailsProjectionImpl(), new JobPublicDetailsProjectionImpl()));
         when(jobDB.findAllPublicJobsSummary())
-                .thenReturn(List.of(new JobPublicSummaryImpl()));
+                .thenReturn(List.of(new JobPublicDetailsProjectionImpl()));
 
 //        when(jobDB.getAllCreatedJobsSummaryFromOrg(school.getId()))
 //                .thenReturn(new PageImpl<>(List.of(new JobImpl(), new JobImpl())));

@@ -1,13 +1,12 @@
 package com.github.projetoifsc.estagios.app.service;
 
-import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
-import com.github.projetoifsc.estagios.app.model.response.PrivateJobDetailsResponse;
-import com.github.projetoifsc.estagios.app.model.response.PrivateJobSummaryResponse;
-import com.github.projetoifsc.estagios.app.model.response.PublicJobDetailsResponse;
-import com.github.projetoifsc.estagios.app.model.response.PublicJobSummaryResponse;
+import com.github.projetoifsc.estagios.app.model.response.JobPrivateDetails;
+import com.github.projetoifsc.estagios.app.model.response.JobPublicDetails;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
+import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.IJobUseCases;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
+import com.github.projetoifsc.estagios.core.models.IJobEntryData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -19,27 +18,32 @@ public class VagaService {
 
     private final Mapper mapper;
     private final IJobUseCases jobUseCases;
+    private final JsonParser jsonParser;
 
-    public VagaService(Mapper mapper, IJobUseCases jobUseCases) {
+    public VagaService(Mapper mapper, IJobUseCases jobUseCases, JsonParser jsonParser) {
         this.mapper = mapper;
         this.jobUseCases = jobUseCases;
+        this.jsonParser = jsonParser;
     }
 
 
-    public PrivateJobDetailsResponse create(UserPrincipal userPrincipal, NewJobRequest newJobRequest) {
+    public JobPrivateDetails create(UserPrincipal userPrincipal, IJobEntryData newJobRequest) {
         var savedVaga = jobUseCases.create(userPrincipal.getId(), newJobRequest);
-        return mapper.map(
+        jsonParser.printValue(savedVaga);
+        var mapped =  mapper.map(
                 savedVaga,
-                PrivateJobDetailsResponse.class
+                JobPrivateDetails.class
         );
+        jsonParser.printValue(mapped);
+        return mapped;
     }
 
 
-    public PrivateJobDetailsResponse update(UserPrincipal userPrincipal, String vagaId, NewJobRequest newJobRequest) {
+    public JobPrivateDetails update(UserPrincipal userPrincipal, String vagaId, IJobEntryData newJobRequest) {
         var updatedVaga = jobUseCases.update(userPrincipal.getId(), vagaId, newJobRequest);
         return mapper.map(
                 updatedVaga,
-                PrivateJobDetailsResponse.class
+                JobPrivateDetails.class
         );
     }
 
@@ -49,52 +53,52 @@ public class VagaService {
     }
 
 
-    public PublicJobDetailsResponse getPublicProfile(UserPrincipal userPrincipal, String vagaId) {
+    public JobPublicDetails getPublicProfile(UserPrincipal userPrincipal, String vagaId) {
         var vaga = jobUseCases.getOnePublicDetails(userPrincipal.getId(), vagaId);
         return mapper.map(
                 vaga,
-                PublicJobDetailsResponse.class
+                JobPublicDetails.class
         );
     }
 
 
-    public PrivateJobDetailsResponse getPrivateProfile(UserPrincipal userPrincipal, String vagaId) {
+    public JobPrivateDetails getPrivateProfile(UserPrincipal userPrincipal, String vagaId) {
         var vaga = jobUseCases.getOnePrivateDetails(userPrincipal.getId(), vagaId);
         return mapper.map(
                 vaga,
-                PrivateJobDetailsResponse.class
+                JobPrivateDetails.class
         );
     }
 
 
-    public Page<PrivateJobSummaryResponse> getAuthUserCreatedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var vagas = jobUseCases.getAllCreatedSummary(userPrincipal.getId(), userPrincipal.getId());
+    public Page<JobPrivateDetails> getAuthUserCreatedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
+        var vagas = jobUseCases.getAllCreatedDetails(userPrincipal.getId(), userPrincipal.getId());
         return vagas.map(vaga -> mapper.map(
                 vaga,
-                PrivateJobSummaryResponse.class
+                JobPrivateDetails.class
         ));
     }
 
 
-    public Page<PublicJobSummaryResponse> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
+    public Page<JobPublicDetails> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
         var available = jobUseCases.getAllAvailableSummary(userPrincipal.getId(), userPrincipal.getId());
         var mapped = available
-                .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
+                .stream().map(job -> mapper.map(job, JobPublicDetails.class)).toList();
         return new PageImpl<>(mapped);
     }
 
 
-    public Page<PublicJobSummaryResponse> getAuthUserRejectedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
+    public Page<JobPublicDetails> getAuthUserRejectedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
         var rejected = jobUseCases.getAllRejectedSummary(userPrincipal.getId(), userPrincipal.getId());
         var mapped = rejected
-                .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
+                .stream().map(job -> mapper.map(job, JobPublicDetails.class)).toList();
         return new PageImpl<>(mapped);
     }
 
-    public Page<PublicJobSummaryResponse> getAuthUserPendingJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
+    public Page<JobPublicDetails> getAuthUserPendingJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
         var pending = jobUseCases.getAllPendingSummary(userPrincipal.getId(), userPrincipal.getId());
         var mapped = pending
-                .stream().map(job -> mapper.map(job, PublicJobSummaryResponse.class)).toList();
+                .stream().map(job -> mapper.map(job, JobPublicDetails.class)).toList();
         return new PageImpl<>(mapped);
     }
 

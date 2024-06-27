@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.projetoifsc.estagios.core.models.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.app.model.response.OrgPrivateProfile;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPrivateProfileProjection;
 import com.github.projetoifsc.estagios.app.service.OrgService;
-import com.github.projetoifsc.estagios.app.model.response.PublicAddressResponse;
-import com.github.projetoifsc.estagios.app.model.response.PrivateOrgProfileResponse;
+import com.github.projetoifsc.estagios.app.model.response.Address;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
@@ -39,14 +39,14 @@ class OrgEntityCascadeAllTest {
     @Test
     void saveCascadingAll() {
 
-        var mainAddr = new PublicAddressResponse();
+        var mainAddr = new Address();
         mainAddr.setBairro("Kobrasol");
         mainAddr.setCidade("São José");
         mainAddr.setPais("Brasil");
         mainAddr.setEstado("SC");
         mainAddr.setRua("Av. Central");
 
-        var org = new PrivateOrgProfileResponse();
+        var org = new OrgPrivateProfile();
         org.setNome("Nana Vasconcelos");
         org.setMainAddress(mainAddr);
         org.setIe(true);
@@ -61,7 +61,7 @@ class OrgEntityCascadeAllTest {
             System.out.println(e.getMessage());
         }
 
-        var mapped = modelMapper.map(org, OrganizationEntity.class);
+        var mapped = modelMapper.map(org, OrgEntity.class);
 
         var saved = organizationRepository.save(mapped);
         long id = Long.parseLong(saved.getId());

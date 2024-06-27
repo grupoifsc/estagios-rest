@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.core.models.IOrg;
 import com.github.projetoifsc.estagios.core.models.IJob;
 
 import java.util.List;
@@ -12,21 +12,21 @@ class OrganizationValidation {
                 .equalsIgnoreCase(targetId);
     }
 
-    public static boolean isReceiver(IOrganization organization, List<IOrganization> receiversList) {
+    public static boolean isReceiver(IOrg organization, List<IOrg> receiversList) {
         return receiversList.isEmpty() || receiversList.contains(organization);
     }
 
-    public static boolean isOwner(IOrganization organization, IJob traineeship) {
+    public static boolean isOwner(IOrg organization, IJob traineeship) {
         var orgId = organization.getId();
         var jobOwnerId = traineeship.getOwner().getId();
         return isSelf(orgId, jobOwnerId);
     }
 
-    public static boolean isValidReceiver(IOrganization organization) {
+    public static boolean isValidReceiver(IOrg organization) {
         return organization.getIe();
     }
 
-    public static boolean isIE(IOrganization organization) {
+    public static boolean isIE(IOrg organization) {
         return organization.getIe();
     }
 

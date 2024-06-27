@@ -1,6 +1,6 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
+import com.github.projetoifsc.estagios.core.dto.OrgImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -12,9 +12,9 @@ import static org.mockito.Mockito.mockStatic;
 
 public class ReceiverValidationHelperUnitTests {
 
-    private final OrganizationImpl schoolA = new OrganizationImpl("1", true);
-    private final OrganizationImpl schoolB = new OrganizationImpl("2", true);
-    private final OrganizationImpl enterpriseA = new OrganizationImpl("3", false);
+    private final OrgImpl schoolA = new OrgImpl("1", true);
+    private final OrgImpl schoolB = new OrgImpl("2", true);
+    private final OrgImpl enterpriseA = new OrgImpl("3", false);
 
     @BeforeEach
     void setUp() {

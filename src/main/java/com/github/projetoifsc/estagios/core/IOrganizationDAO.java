@@ -1,19 +1,26 @@
 package com.github.projetoifsc.estagios.core;
 
-import com.github.projetoifsc.estagios.core.models.*;
+import com.github.projetoifsc.estagios.core.models.IAddress;
+import com.github.projetoifsc.estagios.core.models.IContact;
+import com.github.projetoifsc.estagios.core.models.IOrg;
+import com.github.projetoifsc.estagios.core.models.IOrgEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.AddressDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ContactDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPublicProfileProjection;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface IOrganizationDAO {
 
-    OrgPrivateProfileProjection save(OrgPrivateProfileProjection organization);
+    OrgPrivateProfileProjection save(IOrgEntryData organization);
     void delete(String organization);
 
-    IOrganization findById(String id);
-    IOrganization findByUsername(String username);
+    IOrg findById(String id);
+    IOrg findByUsername(String username);
 
-    List<IOrganization> findAllById(List<String> receiversIds);
+    List<IOrg> findAllById(List<String> receiversIds);
 
     OrgPublicProfileProjection getOrgPublicProfile(String organization);
     OrgPrivateProfileProjection getOrgPrivateProfile(String organization);
@@ -23,9 +30,9 @@ public interface IOrganizationDAO {
     IAddress getOrgMainAddress(String orgId);
     IContact getOrgMainContact(String orgId);
 
-    List<AddressProjection> getAllAddressesFromOrg(String orgId);
-    List<ContactProjection> getAllContactsFromOrg(String orgId);
+    List<AddressDetailsProjection> getAllAddressesFromOrg(String orgId);
+    List<ContactDetailsProjection> getAllContactsFromOrg(String orgId);
 
-    List<IOrganization> getExclusiveReceiversForJob(String jobId);
+    List<IOrg> getExclusiveReceiversForJob(String jobId);
 
 }

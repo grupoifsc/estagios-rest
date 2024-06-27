@@ -1,6 +1,5 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.core.models.ModerationProjection;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
@@ -15,6 +14,9 @@ interface ModeratedJobRepository extends CrudRepository<ModeratedJobsEntity, Lon
     <T> Optional<T> findByJobIdAndOrganizationId(long jobId, long orgId, Class<T> type);
 
     Streamable<ModeratedJobsEntity> findAllByOrganizationId(long orgId);
+
+    <T> List<T> findAllProjectedBy(Class<T> type);
+    <T> T findFirstProjectedBy(Class<T> type);
 
 
 }

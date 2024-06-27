@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "priority", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "contacts")
 class ContactEntity implements IContact {
 
@@ -20,7 +20,7 @@ class ContactEntity implements IContact {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false, referencedColumnName = "id")
-    OrganizationEntity owner;
+    OrgEntity owner;
 
     String email;
     String telefone;
@@ -29,6 +29,12 @@ class ContactEntity implements IContact {
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
+    @Column(name="type", insertable = false, updatable = false)
+    String type;
+
+    public String getType() {
+        return type;
+    }
 
     @Override
     public String getId() {
@@ -39,11 +45,11 @@ class ContactEntity implements IContact {
         this.id = id;
     }
 
-    public OrganizationEntity getOwner() {
+    public OrgEntity getOwner() {
         return owner;
     }
 
-    public void setOwner(OrganizationEntity owner) {
+    public void setOwner(OrgEntity owner) {
         this.owner = owner;
     }
 

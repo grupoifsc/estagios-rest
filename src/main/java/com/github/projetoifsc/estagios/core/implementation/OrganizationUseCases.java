@@ -1,7 +1,11 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.models.*;
 import com.github.projetoifsc.estagios.core.*;
+import com.github.projetoifsc.estagios.core.models.IOrgEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.AddressDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ContactDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPrivateProfileProjection;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPublicProfileProjection;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -18,12 +22,12 @@ public class OrganizationUseCases implements IOrganizationUseCases {
     }
 
     @Override
-    public OrgPrivateProfileProjection createProfile(OrgPrivateProfileProjection organization) {
+    public OrgPrivateProfileProjection createProfile(IOrgEntryData organization) {
         return writeUC.createProfile(organization);
     }
 
     @Override
-    public OrgPrivateProfileProjection updateProfile(String loggedId, String targetId, OrgPrivateProfileProjection organization) {
+    public OrgPrivateProfileProjection updateProfile(String loggedId, String targetId, IOrgEntryData organization) {
         return writeUC.updateProfile(loggedId, targetId, organization);
     }
 
@@ -48,12 +52,12 @@ public class OrganizationUseCases implements IOrganizationUseCases {
     }
 
     @Override
-    public List<AddressProjection> getAddresses(String loggedId, String targetId) {
+    public List<AddressDetailsProjection> getAddresses(String loggedId, String targetId) {
         return readUC.getAddresses(loggedId, targetId);
     }
 
     @Override
-    public List<ContactProjection> getContacts(String loggedId, String targetId) {
+    public List<ContactDetailsProjection> getContacts(String loggedId, String targetId) {
         return readUC.getContacts(loggedId, targetId);
     }
 

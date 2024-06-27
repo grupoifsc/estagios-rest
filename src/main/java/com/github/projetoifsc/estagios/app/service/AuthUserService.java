@@ -35,11 +35,11 @@ public class AuthUserService {
     public Optional<CustomUserDetails> findMockedByEmail(String email) {
         if(email.equalsIgnoreCase(ADMIN_EMAIL)) {
             var password = passwordEncoder.encode("senha");
-            var user = new UserPrincipal("1", ADMIN_EMAIL, password, List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
+            var user = new UserPrincipal("1", true,ADMIN_EMAIL, password, List.of(new SimpleGrantedAuthority("ROLE_ADMIN")));
             return Optional.of(user);
         }
         var password = passwordEncoder.encode("senha");
-        var user = new UserPrincipal("99", USER_EMAIL, password, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+        var user = new UserPrincipal("99", false, USER_EMAIL, password, List.of(new SimpleGrantedAuthority("ROLE_USER")));
         return Optional.of(user);
     }
 

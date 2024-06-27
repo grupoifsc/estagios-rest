@@ -1,6 +1,5 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,7 +7,8 @@ import jakarta.persistence.*;
 class UserCredentialsEntity {
 
     @Id
-    @Column(name = "org_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     private String email;
@@ -18,9 +18,8 @@ class UserCredentialsEntity {
     private String role;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
     @JoinColumn(name = "org_id")
-    private OrganizationEntity organization;
+    private OrgEntity organization;
 
     public Long getId() {
         return id;
@@ -30,6 +29,7 @@ class UserCredentialsEntity {
         this.id = id;
     }
 
+//    @Override
     public String getEmail() {
         return email;
     }
@@ -38,12 +38,12 @@ class UserCredentialsEntity {
         this.email = email;
     }
 
-    @JsonIgnore
-    public String getPassword() {
+//    @Override
+    public String getPwd() {
         return pwd;
     }
 
-    public void setPassword(String pwd) {
+    public void setPwd(String pwd) {
         this.pwd = pwd;
     }
 
@@ -55,11 +55,11 @@ class UserCredentialsEntity {
         this.role = role;
     }
 
-    public OrganizationEntity getOrganization() {
+    public OrgEntity getOrganization() {
         return organization;
     }
 
-    public void setOrganization(OrganizationEntity organization) {
+    public void setOrganization(OrgEntity organization) {
         this.organization = organization;
     }
 

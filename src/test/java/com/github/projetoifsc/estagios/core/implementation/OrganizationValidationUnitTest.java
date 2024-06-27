@@ -1,8 +1,8 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.core.models.IOrganization;
-import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
-import com.github.projetoifsc.estagios.core.dto.JobImpl;
+import com.github.projetoifsc.estagios.app.model.request.JobEntryData;
+import com.github.projetoifsc.estagios.core.models.IOrg;
+import com.github.projetoifsc.estagios.core.dto.OrgImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,15 +13,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class OrganizationValidationUnitTest {
 
-    private OrganizationImpl enterprise;
-    private OrganizationImpl school;
-    private JobImpl traineeship;
+    private OrgImpl enterprise;
+    private OrgImpl school;
+    private JobEntryData traineeship;
 
     @BeforeEach
     void setUp() {
-        enterprise = new OrganizationImpl("1", false);
-        school = new OrganizationImpl("2", true);
-        traineeship = new JobImpl();
+        enterprise = new OrgImpl("1", false);
+        school = new OrgImpl("2", true);
+        traineeship = new JobEntryData();
     }
 
     @Test
@@ -44,7 +44,7 @@ public class OrganizationValidationUnitTest {
 
     @Test
     void givenOrgAndReceiverList_ifReceiverListIsEmpty_thenOrgIsReceiver() {
-        List<IOrganization> receivers = new ArrayList<>();
+        List<IOrg> receivers = new ArrayList<>();
         assertTrue(OrganizationValidation.isReceiver(enterprise, receivers));
         assertTrue(OrganizationValidation.isReceiver(school, receivers));
 
@@ -52,14 +52,14 @@ public class OrganizationValidationUnitTest {
 
     @Test
     void givenOrgAndReceiverList_ifOrgInList_thenOrgIsReceiver() {
-        List<IOrganization> receivers = new ArrayList<>(List.of(enterprise, school));
+        List<IOrg> receivers = new ArrayList<>(List.of(enterprise, school));
         assertTrue(OrganizationValidation.isReceiver(enterprise, receivers));
         assertTrue(OrganizationValidation.isReceiver(school, receivers));
     }
 
     @Test
     void givenOrgAndReceiverList_ifOrgNotInList_thenIsNotReceiver() {
-        List<IOrganization> receivers = new ArrayList<>(List.of(enterprise));
+        List<IOrg> receivers = new ArrayList<>(List.of(enterprise));
         assertTrue(OrganizationValidation.isReceiver(enterprise, receivers));
         assertFalse(OrganizationValidation.isReceiver(school, receivers));
     }

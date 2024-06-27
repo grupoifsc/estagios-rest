@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "priority", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "addresses")
 class AddressEntity implements IAddress {
 
@@ -21,7 +21,7 @@ class AddressEntity implements IAddress {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
-    OrganizationEntity owner;
+    OrgEntity owner;
 
     String rua;
     String bairro;
@@ -37,6 +37,13 @@ class AddressEntity implements IAddress {
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
+    @Column(name="type", insertable = false, updatable = false)
+    String type;
+
+    public String getType() {
+        return type;
+    }
+
 
     @Override
     public String getId() {
@@ -47,11 +54,11 @@ class AddressEntity implements IAddress {
         this.id = id;
     }
 
-    public OrganizationEntity getOwner() {
+    public OrgEntity getOwner() {
         return owner;
     }
 
-    public void setOwner(OrganizationEntity owner) {
+    public void setOwner(OrgEntity owner) {
         this.owner = owner;
     }
 
@@ -110,4 +117,5 @@ class AddressEntity implements IAddress {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

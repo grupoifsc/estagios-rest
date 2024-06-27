@@ -3,7 +3,11 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
-import com.github.projetoifsc.estagios.core.models.*;
+import com.github.projetoifsc.estagios.core.models.IAddress;
+import com.github.projetoifsc.estagios.core.models.IContact;
+import com.github.projetoifsc.estagios.core.models.IOrg;
+import com.github.projetoifsc.estagios.core.models.IOrgEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,30 +44,30 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
     @Override
-    public IOrganization findById(String id) {
-        var optional = organizationRepository.findById(Long.parseLong(id), OrgBasicInfoProjection.class);
-        return (IOrganization) optional.orElseThrow(EntityNotFoundException::new);
+    public IOrg findById(String id) {
+        var optional = organizationRepository.findById(Long.parseLong(id), OrgSummaryProjection.class);
+        return (IOrg) optional.orElseThrow(EntityNotFoundException::new);
 
     }
 
 
     @Override
-    public List<IOrganization> findAllById(List<String> ids) {
+    public List<IOrg> findAllById(List<String> ids) {
 
         List<Long> longIds = ids.stream()
                 .map(Long::valueOf)
                 .toList();
 
-        var found =  organizationRepository.findAllByIdIn(longIds, OrgBasicInfoProjection.class);
+        var found =  organizationRepository.findAllByIdIn(longIds, OrgSummaryProjection.class);
 
         if(ids.size() == found.size()) {
             return found.stream()
-                    .map(org -> (IOrganization) org)
+                    .map(org -> (IOrg) org)
                     .toList();
         }
 
         List<String> notfound = new ArrayList<>(ids);
-        for(OrgBasicInfoProjection org : found) {
+        for(OrgSummaryProjection org : found) {
             for(String id : notfound) {
                 if(org.getId().equalsIgnoreCase(id)) {
                     notfound.remove(id);
@@ -78,9 +82,9 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
     @Override
-    public IOrganization findByUsername(String username) {
-        var optionalOrganization = organizationRepository.findByUserCredentialsEmail(username, OrgBasicInfoProjection.class);
-        return (IOrganization) optionalOrganization.orElseThrow(EntityNotFoundException::new);
+    public IOrg findByUsername(String username) {
+        var optionalOrganization = organizationRepository.findByUserCredentialsEmail(username, OrgSummaryProjection.class);
+        return (IOrg) optionalOrganization.orElseThrow(EntityNotFoundException::new);
     }
 
 
@@ -90,38 +94,37 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     // Aqui vamos usar transaction para salvar os objetos "menores" tbm!
     @Override
     @Transactional
-    public OrgPrivateProfileProjection save(OrgPrivateProfileProjection organization) {
-        var entity = mapper.map(organization, OrganizationEntity.class);
-        jsonParser.printValue(entity);
+    public OrgPrivateProfileProjection save(IOrgEntryData organization) {
+        var entity = mapper.map(organization, OrgEntity.class);
+
+        entity.setUserCredentials(null);
         var savedEntity = organizationRepository.save(entity);
 
-        var userCredentials = mapper.map(organization, UserCredentialsEntity.class);
+        var userCredentials = mapper.map(organization.getUserCredentials(), UserCredentialsEntity.class);
+
         // TODO: Talvez isso fique melhor lá na camada da API, que é onde controla a Autorização
         userCredentials.setRole(
-                organization.getIe() ? "school" : "user"
+                organization.getIe() ? "IE" : "EMPRESA"
         );
         userCredentials.setOrganization(savedEntity);
-        jsonParser.printValue(userCredentials);
         userCredentialsRepository.save(userCredentials);
 
-
-
         // TODO Refactor: Olha uma dependẽncia escondida aqui!
-        saveAddressAndContact((IOrganizationEntryData) organization, savedEntity);
+        saveAddressAndContact((IOrgEntryData) organization, savedEntity);
 
         var dto = organizationRepository.findById(Long.parseLong(savedEntity.getId()), OrgPrivateProfileProjection.class);
         return dto.orElse(null);
     }
 
 
-    private void saveAddressAndContact(IOrganizationEntryData dto, OrganizationEntity organization) {
+    private void saveAddressAndContact(IOrgEntryData dto, OrgEntity organization) {
         saveMainAddress(dto, organization);
         saveMainContact(dto, organization);
         saveApplianceContact(dto, organization);
     }
 
 
-    private void saveMainContact(IOrganizationEntryData dto, OrganizationEntity org) {
+    private void saveMainContact(IOrgEntryData dto, OrgEntity org) {
         var mainContact = contactRepository.findFirstContactMainByOwner(org)
                 .orElse(new ContactMainEntity());
 
@@ -133,7 +136,7 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     }
 
 
-    private void saveApplianceContact(IOrganizationEntryData dto, OrganizationEntity org) {
+    private void saveApplianceContact(IOrgEntryData dto, OrgEntity org) {
         var applianceContact = contactRepository.findFirstContactApplianceByOwner(org)
                 .orElse(new ContactApplianceEntity());
 
@@ -145,7 +148,7 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     }
 
 
-    void saveMainAddress(IOrganizationEntryData dto, OrganizationEntity org) {
+    void saveMainAddress(IOrgEntryData dto, OrgEntity org) {
         var mainAddress = addressRepository.findFirstAddressMainByOwnerId(Long.parseLong(org.getId()))
                     .orElse(new AddressMainEntity());
 
@@ -159,21 +162,42 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     @Override
     @Transactional
     public void delete(String id) {
-        var optional = organizationRepository.findById(Long.parseLong(id), OrganizationEntity.class);
+        var optional = organizationRepository.findById(Long.parseLong(id), OrgEntity.class);
         var entity = optional.orElseThrow(EntityNotFoundException::new);
         organizationRepository.delete(entity);
     }
 
     @Override
+    @Transactional
     public OrgPublicProfileProjection getOrgPublicProfile(String id) {
         var organizationProfile = organizationRepository.findById(Long.parseLong(id), OrgPublicProfileProjection.class);
-        return organizationProfile.orElseThrow(EntityNotFoundException::new);
+        if(organizationProfile.isEmpty()) {
+            throw new EntityNotFoundException("Organização não encontrada");
+        }
+
+        var org = organizationProfile.get();
+        org.getMainAddress();
+        org.getApplianceContact();
+        org.getMainContact();
+
+        return org;
     }
 
     @Override
+    @Transactional
     public OrgPrivateProfileProjection getOrgPrivateProfile(String id) {
         var organizationProfile = organizationRepository.findById(Long.parseLong(id), OrgPrivateProfileProjection.class);
-        return organizationProfile.orElseThrow(EntityNotFoundException::new);
+
+        if(organizationProfile.isEmpty()) {
+            throw new EntityNotFoundException("Organização não encontrada");
+        }
+
+        var org = organizationProfile.get();
+        org.getMainAddress();
+        org.getApplianceContact();
+        org.getMainContact();
+
+        return org;
     }
 
     @Override
@@ -182,8 +206,8 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     }
 
     @Override
-    public List<IOrganization> getExclusiveReceiversForJob(String id) {
-        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), IOrganization.class);
+    public List<IOrg> getExclusiveReceiversForJob(String id) {
+        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), IOrg.class);
     }
 
 
@@ -196,19 +220,19 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     // TODO Refactor: Contatos e Endereços está um lamaçal, precisa refatorar
     @Override
     public IContact getOrgMainContact(String orgId) {
-        var optional = organizationRepository.findById(Long.parseLong(orgId), OrganizationEntity.class);
+        var optional = organizationRepository.findById(Long.parseLong(orgId), OrgEntity.class);
         var entity = optional.orElseThrow(EntityNotFoundException::new);
         return entity.getMainContact();
     }
 
     @Override
-    public List<AddressProjection> getAllAddressesFromOrg(String orgId) {
-        return addressRepository.findByOwnerId(Long.parseLong(orgId), AddressProjection.class);
+    public List<AddressDetailsProjection> getAllAddressesFromOrg(String orgId) {
+        return addressRepository.findByOwnerId(Long.parseLong(orgId), AddressDetailsProjection.class);
     }
 
     @Override
-    public List<ContactProjection> getAllContactsFromOrg(String orgId) {
-        return contactRepository.findByOwnerId(Long.parseLong(orgId), ContactProjection.class);
+    public List<ContactDetailsProjection> getAllContactsFromOrg(String orgId) {
+        return contactRepository.findByOwnerId(Long.parseLong(orgId), ContactDetailsProjection.class);
     }
 
 }

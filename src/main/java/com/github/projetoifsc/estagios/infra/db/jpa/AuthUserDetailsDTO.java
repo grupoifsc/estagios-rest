@@ -13,6 +13,7 @@ public class AuthUserDetailsDTO implements CustomUserDetails {
     private String password;
     private String username;
     private String id;
+    private boolean ie;
 
     @Override
     public List<SimpleGrantedAuthority> getAuthorities() {
@@ -54,6 +55,15 @@ public class AuthUserDetailsDTO implements CustomUserDetails {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public Boolean getIe() {
+        return ie;
+    }
+
+    public void setIe(boolean ie) {
+        this.ie = ie;
     }
 
 }

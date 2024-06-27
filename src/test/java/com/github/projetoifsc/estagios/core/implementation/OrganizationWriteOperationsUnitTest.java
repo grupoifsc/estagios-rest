@@ -1,9 +1,10 @@
 package com.github.projetoifsc.estagios.core.implementation;
-import com.github.projetoifsc.estagios.app.model.request.NewOrgProfileRequest;
-import com.github.projetoifsc.estagios.core.models.IOrganization;
+import com.github.projetoifsc.estagios.app.model.request.OrgEntryData;
+import com.github.projetoifsc.estagios.core.models.IOrg;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
-import com.github.projetoifsc.estagios.core.dto.OrganizationImpl;
+import com.github.projetoifsc.estagios.core.dto.OrgImpl;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
+import com.github.projetoifsc.estagios.core.models.projections.OrgPrivateProfileProjection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,22 +22,22 @@ public class OrganizationWriteOperationsUnitTest {
 
     OrganizationWriteOperations service = new OrganizationWriteOperations(organizationRepository);
 
-    IOrganization organizationA;
-    IOrganization organizationB;
-    NewOrgProfileRequest newUser;
+    IOrg organizationA;
+    IOrg organizationB;
+    OrgEntryData newUser;
 
     @BeforeEach
     void setUp() {
-        organizationA = new OrganizationImpl("1", false);
-        organizationB = new OrganizationImpl("2", true);
-        newUser = mapper.map(organizationA, NewOrgProfileRequest.class);
+        organizationA = new OrgImpl("1", false);
+        organizationB = new OrgImpl("2", true);
+        newUser = mapper.map(organizationA, OrgEntryData.class);
     }
 
 
     @Test
     void updatedProfileHasSameIdAsOrganization() {
-        newUser = mapper.map(organizationB, NewOrgProfileRequest.class);
-        when(organizationRepository.save(newUser)).thenReturn(newUser);
+        newUser = mapper.map(organizationB, OrgEntryData.class);
+        when(organizationRepository.save(newUser)).thenReturn((OrgPrivateProfileProjection) newUser);
 
         assertEquals(
                 organizationA.getId(),

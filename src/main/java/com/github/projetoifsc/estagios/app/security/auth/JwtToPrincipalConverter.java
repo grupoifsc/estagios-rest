@@ -14,6 +14,7 @@ public class JwtToPrincipalConverter {
                 jwt.getSubject(),
                 null,
                 null,
+                null,
                 extractAuthoritiesFromClaim(jwt)
         );
     }

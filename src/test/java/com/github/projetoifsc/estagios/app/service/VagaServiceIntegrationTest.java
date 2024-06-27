@@ -1,7 +1,7 @@
 package com.github.projetoifsc.estagios.app.service;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.request.NewJobRequest;
+import com.github.projetoifsc.estagios.app.model.request.JobEntryData;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.infra.db.jpa.JobMocker;
@@ -32,7 +32,7 @@ class VagaServiceIntegrationTest {
 
     @Test
     void create() {
-        var entryData = mapper.map(jobMocker.generate(), NewJobRequest.class);
+        var entryData = mapper.map(jobMocker.generate(), JobEntryData.class);
 //        entryData.setReceiversIds(List.of("273", "274"));
 //        entryData.setAreasIds(List.of("1", "2", "50"));
 //        entryData.setContactId("69");
@@ -44,7 +44,7 @@ class VagaServiceIntegrationTest {
 
     @Test
     void update() {
-        var entryData = mapper.map(jobMocker.generate(), NewJobRequest.class);
+        var entryData = mapper.map(jobMocker.generate(), JobEntryData.class);
         String id = "29";
         var updated = service.update(userPrincipal, id, entryData);
         assertTrue(updated.getId().equalsIgnoreCase(id));
