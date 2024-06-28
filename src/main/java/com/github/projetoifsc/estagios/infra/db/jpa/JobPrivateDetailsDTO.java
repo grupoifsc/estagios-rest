@@ -7,7 +7,7 @@ import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProject
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobPrivateDetailsDTO extends JobPublicDetailsDTO implements JobPrivateDetailsProjection {
+class JobPrivateDetailsDTO extends JobPublicDetailsDTO implements JobPrivateDetailsProjection {
 
     private List<OrgSummaryProjection> exclusiveReceivers = new ArrayList<>();
 

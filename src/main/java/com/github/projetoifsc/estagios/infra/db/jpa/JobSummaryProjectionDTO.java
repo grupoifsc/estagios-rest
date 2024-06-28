@@ -7,7 +7,7 @@ import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProject
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobSummaryProjectionDTO implements JobSummaryProjection {
+class JobSummaryProjectionDTO implements JobSummaryProjection {
 
     private String id;
     private OrgSummaryProjectionDTO owner;

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class JobPublicDetailsDTO implements JobPublicDetailsProjection {
+class JobPublicDetailsDTO implements JobPublicDetailsProjection {
 
     private String id;
     private OrgSummaryProjectionDTO owner;

@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
 
-public class OrgSummaryProjectionDTO implements OrgSummaryProjection {
+class OrgSummaryProjectionDTO implements OrgSummaryProjection {
 
     private String id;
     private String nome;
