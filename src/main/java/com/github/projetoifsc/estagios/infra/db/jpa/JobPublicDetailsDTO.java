@@ -1,19 +1,15 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.core.models.IArea;
-import com.github.projetoifsc.estagios.core.models.IFormat;
-import com.github.projetoifsc.estagios.core.models.ILevel;
-import com.github.projetoifsc.estagios.core.models.IPeriod;
+import com.github.projetoifsc.estagios.core.models.*;
 import com.github.projetoifsc.estagios.core.models.projections.AddressDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.ContactDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
-import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-class JobPublicDetailsDTO implements JobPublicDetailsProjection {
+public class JobPublicDetailsDTO implements JobPublicDetailsProjection {
 
     private String id;
     private OrgSummaryProjectionDTO owner;
@@ -47,6 +43,14 @@ class JobPublicDetailsDTO implements JobPublicDetailsProjection {
     @Override
     public OrgSummaryProjectionDTO getOwner() {
         return owner;
+    }
+
+    @Override
+    public void setOwner(IOrg owner) {
+        this.owner = new OrgSummaryProjectionDTO();
+        this.owner.setId(owner.getId());
+        this.owner.setNome(owner.getNome());
+        this.owner.setIe(owner.getIe());
     }
 
     public void setOwner(OrgSummaryProjectionDTO owner) {

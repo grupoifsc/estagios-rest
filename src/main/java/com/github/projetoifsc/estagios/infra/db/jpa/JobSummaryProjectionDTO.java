@@ -1,12 +1,13 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
-import com.github.projetoifsc.estagios.core.models.projections.JobBasicProjection;
+import com.github.projetoifsc.estagios.core.models.IOrg;
+import com.github.projetoifsc.estagios.core.models.projections.JobSummaryProjection;
 import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class JobBasicProjectionDTO implements JobBasicProjection {
+public class JobSummaryProjectionDTO implements JobSummaryProjection {
 
     private String id;
     private OrgSummaryProjectionDTO owner;
@@ -23,6 +24,13 @@ class JobBasicProjectionDTO implements JobBasicProjection {
     }
 
     @Override
+    public void setOwner(IOrg owner) {
+        this.owner = new OrgSummaryProjectionDTO();
+        this.owner.setId(owner.getId());
+        this.owner.setIe(owner.getIe());
+    }
+
+    @Override
     public List<OrgSummaryProjection> getExclusiveReceivers() {
         return exclusiveReceivers;
     }
@@ -35,7 +43,8 @@ class JobBasicProjectionDTO implements JobBasicProjection {
         this.owner = owner;
     }
 
-    public void setExclusiveReceivers(List<OrgSummaryProjection> exclusiveReceivers) {
-        this.exclusiveReceivers = exclusiveReceivers;
+    public void setExclusiveReceivers(List<OrgSummaryProjectionDTO> exclusiveReceivers) {
+        this.exclusiveReceivers.addAll(exclusiveReceivers);
     }
+
 }

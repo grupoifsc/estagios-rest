@@ -15,19 +15,13 @@ interface OrganizationRepository extends PagingAndSortingRepository<OrgEntity, L
 
     <T> Optional<T> findById(long id, Class<T> projectionClass);
 
-    <T> Optional<T> findByUserCredentialsEmail(String email, Class<T> projectionClass);
-
-    <T> Optional<T> findByUserCredentialsId(long userId, Class<T> projectionClass);
-
     void delete(OrgEntity org);
     void deleteById(long id);
 
-    <T> T findFirstProjectedBy(Class<T> projectionClass);
-    <T> Page<T> findAllProjectedBy(Pageable pageable, Class<T> projectionClass);
-
     <T> Page<T> findAllByIe(boolean ie, Pageable pageable, Class<T> projectionClass);
-    <T> List<T> findAllByIdIn(List<Long> ids, Class<T> projectionClass);
-    <T> List<T> findAllByExclusiveReceivedJobsId(long jobId, Class<T> projectionClass);
 
+    <T> List<T> findAllByIdIn(List<Long> ids, Class<T> projectionClass);
+
+    <T> List<T> findAllByExclusiveReceivedJobsId(long jobId, Class<T> projectionClass);
 
 }

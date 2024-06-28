@@ -25,10 +25,6 @@ import java.util.List;
 })
 public class JobEntryData implements IJobEntryData {
 
-    public JobEntryData() {
-        System.out.println("Entrei aqui!!!");
-    }
-
     // TODO: Tirar esse mapper daqui!
     private Mapper mapper = new Mapper();
 

@@ -1,12 +1,13 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.models.IOrg;
+import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
 
 import java.util.List;
 
 class ReceiverValidation {
 
-    public static void validateReceivers(List<IOrg> receivers) {
+    public static void validateReceivers(List<OrgSummaryProjection> receivers) {
         var invalidReceiversIds = listInvalidReceiversIds(receivers);
         if(invalidReceiversIds.isEmpty()) {
             return;
@@ -16,7 +17,7 @@ class ReceiverValidation {
     }
 
 
-    private static List<String> listInvalidReceiversIds(List<IOrg> receivers) {
+    private static List<String> listInvalidReceiversIds(List<OrgSummaryProjection> receivers) {
         return receivers.stream()
                 .filter(receiver -> !OrganizationValidation.isValidReceiver(receiver))
                 .map(IOrg::getId)

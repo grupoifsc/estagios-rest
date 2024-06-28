@@ -18,7 +18,6 @@ class AuthenticationDAOImpl implements IAuthenticationDAO {
         this.userCredentialsRepository = userCredentialsRepository;
     }
 
-    // TODO Test: Checar se está funcionando mesmo quando retorna nullo
     @Transactional
     public Optional<CustomUserDetails> findByUsername(String username) {
         return userCredentialsRepository.findByEmail(username)
@@ -29,7 +28,7 @@ class AuthenticationDAOImpl implements IAuthenticationDAO {
     private CustomUserDetails mapAuthUserToCustomUserDetails(UserCredentialsEntity user) {
         var customUserDetails = new AuthUserDetailsDTO();
         customUserDetails.setUsername(user.getEmail());
-        customUserDetails.setId(String.valueOf(user.getId()));
+        customUserDetails.setId(String.valueOf(user.getOrganization().getId()));
         customUserDetails.setPassword(user.getPwd());
         customUserDetails.addAuthority(user.getRole());
         customUserDetails.setIe(user.getOrganization().getIe());

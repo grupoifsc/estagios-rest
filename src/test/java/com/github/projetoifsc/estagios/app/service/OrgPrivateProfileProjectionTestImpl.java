@@ -27,7 +27,7 @@ class OrgPrivateProfileProjectionTestImpl implements OrgPrivateProfileProjection
         return id;
     }
 
-    @Override
+    //@Override
     public UserCredentialsProjection getUserCredentials() {
         return null;
     }

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -46,7 +47,7 @@ class JobEntity implements IJob {
         joinColumns = @JoinColumn(name = "job_id"),
         inverseJoinColumns = @JoinColumn(name = "org_id")
     )
-    List<OrgEntity> exclusiveReceivers;
+    List<OrgEntity> exclusiveReceivers = new ArrayList<>();
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,7 +61,7 @@ class JobEntity implements IJob {
 
 
     @OneToMany(mappedBy = "job")
-    Set<ModeratedJobsEntity> moderatedJobs;
+    Set<ModeratedJobsEntity> moderatedJobs = new HashSet<>();
 
     // Solução: https://stackoverflow.com/questions/27930449/jpa-many-to-one-relation-need-to-save-only-id
     // Funciona, pois acusa falha de restrição de FK quando insere um valor que não existe na tabela relacionada

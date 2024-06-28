@@ -33,9 +33,8 @@ public class OrgService {
 
     public OrgPrivateProfile create(OrgEntryData newOrgProfileRequest) {
         newOrgProfileRequest.getUserCredentials().setPwd((passwordEncoder.encode(newOrgProfileRequest.getUserCredentials().getPwd())));
-       // var createdUser = organizationUseCases.createProfile(newOrgProfileRequest);
-       // return mapper.map(createdUser, OrgPrivateProfile.class);
-        return null;
+        var createdUser = organizationUseCases.createProfile(newOrgProfileRequest);
+        return mapper.map(createdUser, OrgPrivateProfile.class);
     }
 
 
@@ -53,9 +52,8 @@ public class OrgService {
 
     public OrgPrivateProfile updateAuthUserPerfil(UserPrincipal userPrincipal, OrgEntryData updatedUserData) {
         updatedUserData.getUserCredentials().setPwd((passwordEncoder.encode(updatedUserData.getUserCredentials().getPwd())));
-//        var org = organizationUseCases.updateProfile(userPrincipal.getId(), userPrincipal.getId(), updatedUserData);
-//        return mapper.map(org, OrgPrivateProfile.class);
-        return null;
+        var org = organizationUseCases.updateProfile(userPrincipal.getId(), userPrincipal.getId(), updatedUserData);
+        return mapper.map(org, OrgPrivateProfile.class);
     }
 
 

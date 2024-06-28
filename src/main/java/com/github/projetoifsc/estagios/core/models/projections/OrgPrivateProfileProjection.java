@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public interface OrgPrivateProfileProjection {
 
     String getId();
-    UserCredentialsProjection getUserCredentials();
+//    UserCredentialsProjection getUserCredentials();
     String getNome();
     String getCnpj();
     Boolean getIe();

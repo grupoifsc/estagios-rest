@@ -40,7 +40,7 @@ public class OrgPrivateProfile extends OrgPublicProfile implements OrgPrivatePro
 		this.cnpj = cnpj;
 	}
 
-	@Override
+	//@Override
 	public UserCredentialsProjectionResponse getUserCredentials() {
 		return userCredentials;
 	}

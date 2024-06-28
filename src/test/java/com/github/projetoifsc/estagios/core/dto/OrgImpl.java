@@ -1,11 +1,13 @@
 package com.github.projetoifsc.estagios.core.dto;
 
 import com.github.projetoifsc.estagios.core.models.IOrg;
+import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
 
-public class OrgImpl implements IOrg {
+public class OrgImpl implements IOrg, OrgSummaryProjection {
 
     private String id;
     boolean isSchool;
+    private String nome;
 
     public OrgImpl(String id, boolean isSchool) {
         this.id = id;
@@ -17,7 +19,7 @@ public class OrgImpl implements IOrg {
         return id;
     }
 
-//    @Override
+    //    @Override
     public void setId(String id) {
         this.id = id;
     }
@@ -29,6 +31,15 @@ public class OrgImpl implements IOrg {
 
     public void setIe(boolean school) {
         isSchool = school;
+    }
+
+    @Override
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
 }

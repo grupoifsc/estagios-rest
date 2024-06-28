@@ -50,31 +50,31 @@ class OrganizationDAOImplTest {
     }
 
     @Test
-    void findByIdReturnsBasicInfoOrNull() {
+    void findByIdSummaryProjectionReturnsBasicInfoOrNull() {
 
-        var dto = organizationDB.findById(org.getId());
+        var dto = organizationDB.findByIdSummaryProjection(org.getId());
 
         jsonParser.printValue(dto);
 
     }
 
     @Test
-    void findAllByIdReturnsBasicInfoOrEmptyList() {
+    void findAllByIdSummaryProjectionReturnsBasicInfoOrEmptyList() {
         var ids = List.of(org.getId());
-        var dtos = organizationDB.findAllById(ids);
+        var dtos = organizationDB.findAllByIdSummaryProjection(ids);
 
         jsonParser.printValue(dtos);
 
     }
 
-    @Test
-    void findByUsernameReturnsBasicInfoOrNull() {
-        var ent = mapper.map(org, OrgPrivateProfile.class);
-        var dto = organizationDB.findByUsername(ent.getUserCredentials().getEmail());
-
-        jsonParser.printValue(dto);
-
-    }
+//    @Test
+//    void findByUsernameWithCredentialsReturnsBasicInfoOrNull() {
+//        var ent = mapper.map(org, OrgPrivateProfile.class);
+//        var dto = organizationDB.findByUsernameWithCredentials(ent.getUserCredentials().getEmail());
+//
+//        jsonParser.printValue(dto);
+//
+//    }
 
     @Test
     void saveReturnsPrivateProfile() {

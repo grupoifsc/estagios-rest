@@ -11,7 +11,7 @@ public class IIIOrgPrivateProfileProjectionProjectionImplProjection extends IIOr
         super(id, isSchool);
     }
 
-    @Override
+    //@Override
     public UserCredentialsProjection getUserCredentials() {
         return null;
     }

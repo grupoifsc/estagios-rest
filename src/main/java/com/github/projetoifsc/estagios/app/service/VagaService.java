@@ -29,13 +29,10 @@ public class VagaService {
 
     public JobPrivateDetails create(UserPrincipal userPrincipal, IJobEntryData newJobRequest) {
         var savedVaga = jobUseCases.create(userPrincipal.getId(), newJobRequest);
-        jsonParser.printValue(savedVaga);
-        var mapped =  mapper.map(
+        return mapper.map(
                 savedVaga,
                 JobPrivateDetails.class
         );
-        jsonParser.printValue(mapped);
-        return mapped;
     }
 
 
@@ -55,17 +52,14 @@ public class VagaService {
 
     public JobPublicDetails getPublicProfile(UserPrincipal userPrincipal, String vagaId) {
         var vaga = jobUseCases.getOnePublicDetails(userPrincipal.getId(), vagaId);
-        return mapper.map(
-                vaga,
-                JobPublicDetails.class
-        );
+        return mapper.map(vaga,
+                JobPublicDetails.class);
     }
 
 
     public JobPrivateDetails getPrivateProfile(UserPrincipal userPrincipal, String vagaId) {
         var vaga = jobUseCases.getOnePrivateDetails(userPrincipal.getId(), vagaId);
-        return mapper.map(
-                vaga,
+        return mapper.map(vaga,
                 JobPrivateDetails.class
         );
     }
@@ -82,6 +76,7 @@ public class VagaService {
 
     public Page<JobPublicDetails> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
         var available = jobUseCases.getAllAvailableSummary(userPrincipal.getId(), userPrincipal.getId());
+        jsonParser.printValue(available);
         var mapped = available
                 .stream().map(job -> mapper.map(job, JobPublicDetails.class)).toList();
         return new PageImpl<>(mapped);

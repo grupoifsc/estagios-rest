@@ -8,7 +8,7 @@ class UserCredentialsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "org_id")
     private Long id;
 
     private String email;
@@ -18,6 +18,7 @@ class UserCredentialsEntity {
     private String role;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JoinColumn(name = "org_id")
     private OrgEntity organization;
 

@@ -9,6 +9,7 @@ import com.github.projetoifsc.estagios.app.model.request.ELevel;
 import com.github.projetoifsc.estagios.app.model.request.EPeriod;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.models.*;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +27,7 @@ import java.util.List;
         "duracao_meses", "data_inicio", "data_fim", "imagem_url", "endereco", "contato",
         "criado_em", "atualizado_em", "_links"
 })
-public class JobPublicDetails implements com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection {
+public class JobPublicDetails implements JobPublicDetailsProjection {
 
     private Mapper mapper = new Mapper();
 
@@ -272,6 +273,7 @@ public class JobPublicDetails implements com.github.projetoifsc.estagios.core.mo
         this.imagem = imagem;
     }
 
+
     @Override
     public Contact getContact() {
         return contact;
@@ -283,7 +285,9 @@ public class JobPublicDetails implements com.github.projetoifsc.estagios.core.mo
 
     @JsonProperty("contato")
     public ContactWithoutType getContactWithoutType() {
-        return mapper.map(contact, ContactWithoutType.class);
+        return contact != null
+            ? mapper.map(contact, ContactWithoutType.class)
+            : null;
     }
 
     @Override
@@ -297,8 +301,14 @@ public class JobPublicDetails implements com.github.projetoifsc.estagios.core.mo
 
     @JsonProperty("endereco")
     public AddressWithoutType getAddressWithoutType() {
-        return mapper.map(address, AddressWithoutType.class);
+        return address != null
+            ? mapper.map(address, AddressWithoutType.class)
+            : null;
     }
+
+
+
+
 
     @Override
     public LocalDateTime getCreatedAt() {

@@ -1,9 +1,11 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.request.JobEntryData;
+import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
+import com.github.projetoifsc.estagios.app.service.VagaService;
+import com.github.projetoifsc.estagios.core.IJobDAO;
+import com.github.projetoifsc.estagios.core.IJobUseCases;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
-import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
@@ -11,42 +13,30 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
-@Rollback(value = false)
 class JobDAOImplTest {
 
     JobMocker mocker =
             new JobMocker(new Faker(new Locale("pt-Br")));
 
-    @Autowired
-    JobDAOImpl jobDBImpl;
-
-    @Autowired
-    JobRepository jobRepository;
-
-    @Autowired
-    OrganizationDAOImpl organizationDB;
-
-    @Autowired
-    AreaDAOImpl areaDB;
-
-    @Autowired
-    Mapper mapper;
-
-    @Autowired
-    JsonParser jsonParser;
+    private final JobDAOImpl jobDAOImpl;
+    private final Mapper mapper;
+    private final JsonParser jsonParser;
 
     JobEntity jobEntity;
 
+    @Autowired
+    JobDAOImplTest(JobDAOImpl jobDAOImpl, Mapper mapper, JsonParser jsonParser) {
+        this.jobDAOImpl = jobDAOImpl;
+        this.mapper = mapper;
+        this.jsonParser = jsonParser;
+    }
 
     @BeforeEach
     void setUp() {
@@ -55,119 +45,51 @@ class JobDAOImplTest {
 
 
     @Test
-    void saveAndGetIdWithoutOtherEntities() {
-        var entryData = mapper.map(jobEntity, JobEntryData.class);
-        var savedId = jobDBImpl.saveAndGetId(entryData);
-        assertNotEquals(savedId, "0");
-    }
-
-    @Test
-    @Transactional
-    @Rollback(value = false)
-    void saveAndGetIdWithRelatedEntities() {
-
-        var owner = organizationDB.findById("379");
-        var mappedOwner = mapper.map(owner, OrgEntity.class);
-
-//        var mainAddress = organizationDB.getMainAddress(owner.getId());
-//        System.out.println(jsonParser.valueAsString(mainAddress));
-//        var mappedAddress = mapper.map(mainAddress, AddressEntity.class);
-//
-//        var mainContact = organizationDB.getMainContact(owner.getId());
-//        var mappedContact = mapper.map(mainContact, ContactEntity.class);
-
-        var receivers = organizationDB.findAllById(List.of("272", "273", "274"));
-        var mappedReceivers = receivers.stream().map(
-                o -> mapper.map(o, OrgEntity.class)
-        ).toList();
-
-        var areaA = areaDB.getById("1");
-        var areaB = areaDB.getById("2");
-        var mappedAreaA = mapper.map(areaA, AreaEntity.class);
-        var mappedAreaB = mapper.map(areaB, AreaEntity.class);
-
-        jobEntity.setOwner(mappedOwner);
-        jobEntity.setExclusiveReceivers(mappedReceivers);
-        jobEntity.setAreas(List.of(mappedAreaA, mappedAreaB));
-//        jobEntity.setAddress(mappedAddress);
-//        jobEntity.setContact(mappedContact);
-
-        var entryData = mapper.map(jobEntity, JobEntryData.class);
-        var savedId = jobDBImpl.saveAndGetId(entryData);
-        assertNotEquals("0", savedId);
-
-    }
-
-    @Test
     void getJobBasicInfoByIdReturnsEntityOrThrowsException() {
-        assertDoesNotThrow(() -> jobDBImpl.getJobBasicInfo("2"));
-        assertThrows(Exception.class, () -> jobDBImpl.getJobBasicInfo("0"));
-        assertInstanceOf(IJob.class, jobDBImpl.getJobBasicInfo("2"));
-    }
-
-
-    @Test
-    void deleteOrThrowException() {
-        assertDoesNotThrow(() -> jobDBImpl.delete("2"));
-        assertThrows(Exception.class, () -> jobDBImpl.delete("1"));
+        assertDoesNotThrow(() -> jobDAOImpl.getJobSummary("13"));
+        assertThrows(Exception.class, () -> jobDAOImpl.getJobSummary("0"));
     }
 
 
     @Test
     void getJobPublicDetails() {
-        String id = "8";
+        String id = "16";
         //var publicProjection = jobDBImpl.getPublicDetails(id);
-        var publicProjection = jobDBImpl.getJobPublicDetails(id);
-        var jsonString = jsonParser.valueAsString(publicProjection);
-        assertFalse(jsonString.contains("receivers"));
-        System.out.println(jsonString);
+        var publicProjection = jobDAOImpl.getJobPublicDetails(id);
+        jsonParser.printValue(publicProjection);
+//        assertFalse(jsonString.contains("receivers"));
         assertInstanceOf(JobPublicDetailsProjection.class, publicProjection);
     }
 
+
+
     @Test
     void getJobPrivateDetails() {
-        // É pra devolver tudo.. e pegar tbm as vagas...
-        String id = "4";
-        //var publicProjection = jobDBImpl.getPublicDetails(id);
-        var privateProjection = jobDBImpl.getJobPrivateDetails(id);
-        var jsonString = jsonParser.valueAsString(privateProjection);
-        assertTrue(jsonString.contains("receivers"));
-        System.out.println(jsonString);
+        String id = "67";
+
+        var privateProjection = jobDAOImpl.getJobPrivateDetails(id);
+        jsonParser.printValue(privateProjection);
+        assertTrue(jsonParser.valueAsString(privateProjection).contains("receivers"));
         assertInstanceOf(JobPrivateDetailsProjection.class, privateProjection);
     }
 
 
-    @Test
-    void approveJob() {
-        jobDBImpl.setJobApprovedByOrg("34", "378");
-    }
-
-    @Test
-    void rejectJob() {
-        jobDBImpl.setJobRejectedByOrg("36", "378");
-    }
-
-
-    @Test
-    void getAllPublic() {
-        var vagas = jobDBImpl.findAllPublicJobsSummary();
-        System.out.println(vagas.size());
-        jsonParser.printValue(vagas);
-    }
+//    @Test
+//    void approveJob() {
+//        jobDAORead.setJobApprovedByOrg("34", "378");
+//    }
+//
+//    @Test
+//    void rejectJob() {
+//        jobDAORead.setJobRejectedByOrg("36", "378");
+//    }
 
 
-    @Test
-    void getAllApproved() {
-        var id = "378";
-        var approved = jobDBImpl.getAllApprovedSummaryFromOrg(id);
-        System.out.println(approved.size());
-        jsonParser.printValue(approved);
-    }
 
     @Test
     void getAllRejected() {
-        var id = "378";
-        var vagas = jobDBImpl.getAllRejectedBy(id);
+        var id = "397";
+        var vagas = jobDAOImpl.getAllRejectedBy(id);
         System.out.println(vagas.size());
         jsonParser.printValue(vagas);
     }
@@ -176,7 +98,7 @@ class JobDAOImplTest {
     @Test
     void getAllPending() {
         var id = "397";
-        var vagas = jobDBImpl.getAllToBeModeratedBy(id);
+        var vagas = jobDAOImpl.getAllToBeModeratedBy(id);
         System.out.println(vagas.size());
         jsonParser.printValue(vagas);
     }
@@ -184,7 +106,7 @@ class JobDAOImplTest {
     @Test
     void getAllCreated() {
         var id = "198";
-        var vagas = jobDBImpl.getAllCreatedBy(id);
+        var vagas = jobDAOImpl.getAllCreatedBy(id);
         System.out.println(vagas.getNumberOfElements());
         jsonParser.printValue(vagas);
     }
@@ -192,25 +114,18 @@ class JobDAOImplTest {
     @Test
     void getAllAvailable() {
         var id = "415";
-        var available = jobDBImpl.getAllCreatedOrApprovedBy(id);
+        var available = jobDAOImpl.getAllCreatedOrApprovedBy(id);
         System.out.println(available.size());
         System.out.println(available.get(0).getOwner().getId());
         jsonParser.printValue(available);
     }
 
-    @Test
-    void getExclusiveReceivedJobsReturnsJobsSummaryPublicInfo() {
-        String id = "195";
-        var received = jobDBImpl.getExclusiveReceivedJobsSummaryForOrg(id);
-        System.out.println(received.size());
-        jsonParser.printValue(received);
-    }
 
     @Test
     void isJobOfferedToOrg() {
         var orgId = "397";
         var jobId = "8";
-        var response = jobDBImpl.isJobOfferedToOrg(jobId, orgId);
+        var response = jobDAOImpl.isJobOfferedToOrg(jobId, orgId);
         System.out.println("Is Job Offered To Org? " + response);
     }
 

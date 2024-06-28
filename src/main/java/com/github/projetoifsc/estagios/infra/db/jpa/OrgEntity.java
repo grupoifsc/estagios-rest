@@ -25,10 +25,7 @@ class OrgEntity implements IOrg {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = LAZY)
-    private UserCredentialsEntity userCredentials;
-
-    private String nome;
+    String nome;
 
     private String cnpj;
 
@@ -36,16 +33,16 @@ class OrgEntity implements IOrg {
 
     private String info;
 
-    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL)
     private List<JobEntity> createdJobs = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL)
     private List<ContactEntity> contatos;
 
-    @OneToMany(mappedBy = "owner", fetch = LAZY)
+    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL)
     private List<ContactMainEntity> mainContact = new ArrayList<>();
 
-    @OneToMany(mappedBy = "owner", fetch = LAZY)
+    @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL)
     private List<ContactApplianceEntity> applianceContact;
 
     @OneToMany(mappedBy = "owner", fetch = LAZY, cascade = CascadeType.ALL)
@@ -67,8 +64,12 @@ class OrgEntity implements IOrg {
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 
-    @ManyToMany(mappedBy = "exclusiveReceivers", fetch = LAZY)
+    @ManyToMany(mappedBy = "exclusiveReceivers")
     List<JobEntity> exclusiveReceivedJobs;
+
+    public List<JobEntity> getExclusiveReceivedJobs() {
+        return exclusiveReceivedJobs;
+    }
 
     public OrgEntity() {
     }
@@ -201,12 +202,5 @@ class OrgEntity implements IOrg {
         this.updatedAt = updatedAt;
     }
 
-    public UserCredentialsEntity getUserCredentials() {
-        return userCredentials;
-    }
-
-    public void setUserCredentials(UserCredentialsEntity userCredentials) {
-        this.userCredentials = userCredentials;
-    }
 
 }

@@ -29,6 +29,7 @@ public class JobPrivateDetails extends JobPublicDetails implements JobPrivateDet
 		this.exclusiveReceivers = exclusiveReceivers;
 	}
 
+
 	@Override
 	@JsonProperty("contato")
 	public Contact getContact() {
@@ -39,6 +40,7 @@ public class JobPrivateDetails extends JobPublicDetails implements JobPrivateDet
 	public ContactWithoutType getContactWithoutType() {
 		return null;
 	}
+
 
 	@Override
 	@JsonProperty("endereco")

@@ -25,10 +25,23 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     boolean existsByIdAndExclusiveReceiversEmptyOrExclusiveReceiversId(long jobId, long orgId);
 
     @Query(value =
-        "SELECT j from JobEntity j JOIN FETCH j.owner as owner " +
-            "JOIN FETCH j.exclusiveReceivers as receivers " +
+        "SELECT j from JobEntity j LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.exclusiveReceivers as receivers " +
         "WHERE j.id = :id ")
     Optional<JobEntity> findByIdBasicInfo(long id);
+
+    @Query(value =
+        "SELECT j from JobEntity j LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.exclusiveReceivers as receivers " +
+        "WHERE j.id IN :ids ")
+    List<JobEntity> findByIdsBasicInfo(List<Long> ids);
+
+
+    @Query(value =
+        "SELECT j from JobEntity j " +
+            "LEFT JOIN FETCH j.exclusiveReceivers as receivers " +
+        "WHERE j.id = :id ")
+    Optional<JobEntity> findByIdWithReceivers(long id);
 
 
 //    @Query(value =

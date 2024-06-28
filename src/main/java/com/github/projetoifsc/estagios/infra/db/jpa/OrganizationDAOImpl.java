@@ -44,15 +44,15 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
 
     @Override
-    public IOrg findById(String id) {
-        var optional = organizationRepository.findById(Long.parseLong(id), OrgSummaryProjection.class);
-        return (IOrg) optional.orElseThrow(EntityNotFoundException::new);
-
+    public OrgSummaryProjection findByIdSummaryProjection(String id) {
+        return organizationRepository.findById(Long.parseLong(id),
+                        OrgSummaryProjection.class)
+            .orElseThrow(EntityNotFoundException::new);
     }
 
 
     @Override
-    public List<IOrg> findAllById(List<String> ids) {
+    public List<OrgSummaryProjection> findAllByIdSummaryProjection(List<String> ids) {
 
         List<Long> longIds = ids.stream()
                 .map(Long::valueOf)
@@ -61,9 +61,7 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
         var found =  organizationRepository.findAllByIdIn(longIds, OrgSummaryProjection.class);
 
         if(ids.size() == found.size()) {
-            return found.stream()
-                    .map(org -> (IOrg) org)
-                    .toList();
+            return found;
         }
 
         List<String> notfound = new ArrayList<>(ids);
@@ -81,28 +79,31 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     }
 
 
-    @Override
-    public IOrg findByUsername(String username) {
-        var optionalOrganization = organizationRepository.findByUserCredentialsEmail(username, OrgSummaryProjection.class);
-        return (IOrg) optionalOrganization.orElseThrow(EntityNotFoundException::new);
-    }
+//    @Override
+//    public IOrg findByUsernameWithCredentials(String username) {
+//        var optionalOrganization = organizationRepository.findByUserCredentialsEmail(username, OrgSummaryProjection.class);
+//        return (IOrg) optionalOrganization.orElseThrow(EntityNotFoundException::new);
+//    }
 
 
-    // Estou sacrificando um pouco de performance para poder continuar usando projeção com interfaces
-    // E para não ter que mapear
-    // TODO pesquisar se há outras soluções possíveis
-    // Aqui vamos usar transaction para salvar os objetos "menores" tbm!
+
     @Override
     @Transactional
     public OrgPrivateProfileProjection save(IOrgEntryData organization) {
+
         var entity = mapper.map(organization, OrgEntity.class);
 
-        entity.setUserCredentials(null);
+//        entity.setUserCredentials(null);
+
         var savedEntity = organizationRepository.save(entity);
 
         var userCredentials = mapper.map(organization.getUserCredentials(), UserCredentialsEntity.class);
 
         // TODO: Talvez isso fique melhor lá na camada da API, que é onde controla a Autorização
+        // Pegar a credential... e a
+        if(organization.getId() != null)
+            userCredentialsRepository.selectIdByOrganizationId(Long.parseLong(organization.getId()))
+                .ifPresent(userCredentials::setId);
         userCredentials.setRole(
                 organization.getIe() ? "IE" : "EMPRESA"
         );
@@ -110,7 +111,7 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
         userCredentialsRepository.save(userCredentials);
 
         // TODO Refactor: Olha uma dependẽncia escondida aqui!
-        saveAddressAndContact((IOrgEntryData) organization, savedEntity);
+        saveAddressAndContact(organization, savedEntity);
 
         var dto = organizationRepository.findById(Long.parseLong(savedEntity.getId()), OrgPrivateProfileProjection.class);
         return dto.orElse(null);
@@ -162,9 +163,14 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     @Override
     @Transactional
     public void delete(String id) {
-        var optional = organizationRepository.findById(Long.parseLong(id), OrgEntity.class);
-        var entity = optional.orElseThrow(EntityNotFoundException::new);
-        organizationRepository.delete(entity);
+        var orgId = Long.parseLong(id);
+
+        userCredentialsRepository.findById(orgId)
+            .ifPresent(userCredentialsRepository::delete);
+
+        organizationRepository.findById(orgId, OrgEntity.class)
+            .ifPresentOrElse(organizationRepository::delete,
+        () -> { throw new EntityNotFoundException(); });
     }
 
     @Override
@@ -206,8 +212,8 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
     }
 
     @Override
-    public List<IOrg> getExclusiveReceiversForJob(String id) {
-        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), IOrg.class);
+    public List<OrgSummaryProjection> getExclusiveReceiversForJob(String id) {
+        return organizationRepository.findAllByExclusiveReceivedJobsId(Long.parseLong(id), OrgSummaryProjection.class);
     }
 
 

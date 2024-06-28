@@ -59,18 +59,26 @@ class OrganizationRepositoryUnitTest {
         jsonParser.printValue(updated);
     }
 
+//    @Test
+//    @Transactional
+//    void findAllProjectedBy() {
+//        var responseProjection = repository.findAllProjectedBy(PageRequest.of(0, 20), OrgPublicProfileProjection.class);
+//        jsonParser.printValue(responseProjection.getContent());
+//    }
+
+
     @Test
-    @Transactional
-    void findAllProjectedBy() {
-        var responseProjection = repository.findAllProjectedBy(PageRequest.of(0, 20), OrgPublicProfileProjection.class);
-        jsonParser.printValue(responseProjection.getContent());
+//    @Transactional
+    void findById() {
+        var projection = repository.findById(195L, OrgEntity.class);
+        var org = projection.orElse(null);
+        jsonParser.printValue(org);
     }
 
 
     @Test
-    @Transactional
-    void findById() {
-        var projection = repository.findById(195L, OrgEntity.class);
+    void findById_BasicInfo_Projection() {
+        var projection = repository.findById(195L, OrgSummaryProjection.class);
         var org = projection.orElse(null);
         jsonParser.printValue(org);
     }
@@ -106,33 +114,33 @@ class OrganizationRepositoryUnitTest {
     }
 
 
-    @Test
-    @Transactional
-    void findByUserCredentialsEmail() {
-        var email = "teste@teste.com";
-        var org_id = "395";
-       // var user_id = 3L;
+//    @Test
+//    @Transactional
+//    void findByUserCredentialsEmail() {
+//        var email = "teste@teste.com";
+//        var org_id = "395";
+//       // var user_id = 3L;
+//
+//        var org = repository.findByUserCredentialsEmail(email, OrgEntity.class).orElseThrow();
+////        jsonParser.printValue(org.getUserCredentials());
+//        jsonParser.printValue(org.getId());
+//        assertEquals(org.getId(), org_id);
+//    }
 
-        var org = repository.findByUserCredentialsEmail(email, OrgEntity.class).orElseThrow();
-        jsonParser.printValue(org.getUserCredentials());
-        jsonParser.printValue(org.getId());
-        assertEquals(org.getId(), org_id);
-    }
-
-    @Test
-    @Transactional
-    void findByUserCredentialsId() {
-     //   var email = "teste@teste.com";
-        var org_id = "395";
-        var user_id = 3L;
-
-        var org = repository.findByUserCredentialsId(user_id, OrgEntity.class).orElseThrow();
-        var credentials = org.getUserCredentials();
-        jsonParser.printValue(credentials);
-        //jsonParser.printValue(org.getUserCredentials());
-        jsonParser.printValue(org.getId());
-        assertEquals(org.getId(), org_id);
-    }
+//    @Test
+//    @Transactional
+//    void findByUserCredentialsId() {
+//     //   var email = "teste@teste.com";
+//        var org_id = "395";
+//        var user_id = 3L;
+//
+//        var org = repository.findByUserCredentialsId(user_id, OrgEntity.class).orElseThrow();
+//        var credentials = org.getUserCredentials();
+//        jsonParser.printValue(credentials);
+//        //jsonParser.printValue(org.getUserCredentials());
+//        jsonParser.printValue(org.getId());
+//        assertEquals(org.getId(), org_id);
+//    }
 
 
 }

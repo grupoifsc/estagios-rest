@@ -1,12 +1,13 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
+import com.github.projetoifsc.estagios.core.models.IOrg;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class JobPrivateDetailsDTO extends JobPublicDetailsDTO implements JobPrivateDetailsProjection {
+public class JobPrivateDetailsDTO extends JobPublicDetailsDTO implements JobPrivateDetailsProjection {
 
     private List<OrgSummaryProjection> exclusiveReceivers = new ArrayList<>();
 

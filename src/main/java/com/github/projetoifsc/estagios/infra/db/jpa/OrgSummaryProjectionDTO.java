@@ -2,7 +2,7 @@ package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
 
-class OrgSummaryProjectionDTO implements OrgSummaryProjection {
+public class OrgSummaryProjectionDTO implements OrgSummaryProjection {
 
     private String id;
     private String nome;
@@ -14,21 +14,22 @@ class OrgSummaryProjectionDTO implements OrgSummaryProjection {
     }
 
     @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override
     public Boolean getIe() {
         return ie;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public void setIe(boolean ie) {

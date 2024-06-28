@@ -7,7 +7,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 @SpringBootTest
@@ -75,15 +74,15 @@ class ProjectionsTest {
         value = contactRepository.findAllProjectedBy(ContactDetailsProjection.class);
     }
 
-    @Test
-    void getOneUserCredentialsProjection() {
-        value = userCredentialsRepository.findFirstProjectedBy(OrgPrivateProfileProjection.UserCredentialsProjection.class);
-    }
-
-    @Test
-    void getAllUserCredentialsProjection() {
-        value = userCredentialsRepository.findAllProjectedBy(OrgPrivateProfileProjection.UserCredentialsProjection.class);
-    }
+//    @Test
+//    void getOneUserCredentialsProjection() {
+//        value = userCredentialsRepository.findFirstProjectedBy(OrgPrivateProfileProjection.UserCredentialsProjection.class);
+//    }
+//
+//    @Test
+//    void getAllUserCredentialsProjection() {
+//        value = userCredentialsRepository.findAllProjectedBy(OrgPrivateProfileProjection.UserCredentialsProjection.class);
+//    }
 
     @Test
     void getOneModeratedJobProjection() {
@@ -95,32 +94,32 @@ class ProjectionsTest {
         value = moderatedJobRepository.findAllProjectedBy(ModerationDetailsProjection.class);
     }
 
-    @Test
-    void getOneOrgProjection() {
-        value = organizationRepository.findFirstProjectedBy(OrgSummaryProjection.class);
-        jsonParser.printValue(value);
+//    @Test
+//    void getOneOrgProjection() {
+//        value = organizationRepository.findFirstProjectedBy(OrgSummaryProjection.class);
+//        jsonParser.printValue(value);
+//
+//        value = organizationRepository.findFirstProjectedBy(OrgPublicProfileProjection.class);
+//        jsonParser.printValue(value);
+//
+//        value = organizationRepository.findFirstProjectedBy(OrgPrivateProfileProjection.class);
+//    }
 
-        value = organizationRepository.findFirstProjectedBy(OrgPublicProfileProjection.class);
-        jsonParser.printValue(value);
-
-        value = organizationRepository.findFirstProjectedBy(OrgPrivateProfileProjection.class);
-    }
-
-    @Test
-    void getAllOrgProjection() {
-        var pageable = PageRequest.of(0, 10);
-        value = organizationRepository.findAllProjectedBy(pageable,OrgSummaryProjection.class);
-        jsonParser.printValue(value);
-
-        value = organizationRepository.findAllProjectedBy(pageable, OrgPublicProfileProjection.class);
-        jsonParser.printValue(value);
-
-        value = organizationRepository.findAllProjectedBy(pageable, OrgPrivateProfileProjection.class);
-    }
+//    @Test
+//    void getAllOrgProjection() {
+//        var pageable = PageRequest.of(0, 10);
+//        value = organizationRepository.findAllProjectedBy(pageable,OrgSummaryProjection.class);
+//        jsonParser.printValue(value);
+//
+//        value = organizationRepository.findAllProjectedBy(pageable, OrgPublicProfileProjection.class);
+//        jsonParser.printValue(value);
+//
+//        value = organizationRepository.findAllProjectedBy(pageable, OrgPrivateProfileProjection.class);
+//    }
 
     @Test
     void getOneJobProjection() {
-        value = jobRepository.findFirstProjectedBy(JobBasicProjection.class);
+        value = jobRepository.findFirstProjectedBy(JobSummaryProjection.class);
         jsonParser.printValue(value);
 
         value = jobRepository.findFirstProjectedBy(JobPublicDetailsProjection.class);
@@ -132,7 +131,7 @@ class ProjectionsTest {
     @Test
     void getAllJobsProjection() {
         var pageable = PageRequest.of(0, 10);
-        value = jobRepository.findAllProjectedBy(pageable,JobBasicProjection.class);
+        value = jobRepository.findAllProjectedBy(pageable, JobSummaryProjection.class);
         jsonParser.printValue(value);
 
         value = jobRepository.findAllProjectedBy(pageable, JobPublicDetailsProjection.class);

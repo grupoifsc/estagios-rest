@@ -4,7 +4,7 @@ import com.github.javafaker.Faker;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
-import com.github.projetoifsc.estagios.core.models.projections.JobBasicProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobSummaryProjection;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 @SpringBootTest
@@ -84,7 +85,7 @@ class JobRepositoryUnitTest {
 
     @Test
     void findAllByExclusiveReceiversId() {
-        var jobs = repository.findAllByExclusiveReceiversId(272L, JobBasicProjection.class);
+        var jobs = repository.findAllByExclusiveReceiversId(272L, JobSummaryProjection.class);
         System.out.println(jobs.size());
         jsonParser.printValue(jobs);
     }
@@ -176,7 +177,7 @@ class JobRepositoryUnitTest {
                                 .toList();
         var owner = mapper.map(value.getOwner(), OrgSummaryProjectionDTO.class);
         //var job = mapper.map(value, JobBasicProjectionDTO.class);
-        var job = new JobBasicProjectionDTO();
+        var job = new JobSummaryProjectionDTO();
         job.setId(value.getId());
         job.setOwner(owner);
         job.getExclusiveReceivers().addAll(receivers);
@@ -187,7 +188,7 @@ class JobRepositoryUnitTest {
 
     @Test
     void findBasicProjectionById() {
-        var entity = repository.findByIdBasicInfo(15L).orElseThrow();
+        var entity = repository.findByIdBasicInfo(67L).orElseThrow();
         System.out.println(entity.getId());
     }
 
@@ -210,6 +211,7 @@ class JobRepositoryUnitTest {
         var job = mapper.map(entity, JobPrivateDetailsDTO.class);
         jsonParser.printValue(job);
     }
+
 
     @Test
     void findAllCreatedByWithPublicProjectionQuery() {

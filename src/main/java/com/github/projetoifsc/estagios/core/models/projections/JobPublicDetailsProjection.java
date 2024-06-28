@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface JobPublicDetailsProjection  {
+public interface JobPublicDetailsProjection extends IJob  {
 
     String getId();
     OrgSummaryProjection getOwner();
@@ -16,7 +16,6 @@ public interface JobPublicDetailsProjection  {
     IPeriod getPeriod();
     ILevel getLevel();
     IFormat getFormat();
-
     String getTitulo();
     String getDescricao();
     String getImagem();
