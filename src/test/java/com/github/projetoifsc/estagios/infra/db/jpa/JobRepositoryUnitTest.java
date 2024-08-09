@@ -262,4 +262,13 @@ class JobRepositoryUnitTest {
         return job;
     }
 
+    @Test
+    void findAllReceived() {
+        var entities = this.repository.findAllReceived(397L);
+        var jobs = entities.stream()
+            .map(this::mapToPublicDetailsDTO)
+            .toList();
+        jsonParser.printValue(jobs);
+        System.out.println(jobs.size());
+    }
 }

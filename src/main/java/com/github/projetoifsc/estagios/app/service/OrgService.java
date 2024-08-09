@@ -64,6 +64,7 @@ public class OrgService {
 
     public Page<OrgPublicProfile> getAllSchools(UserPrincipal userPrincipal) {
         var orgs = organizationUseCases.getAllSchools();
+        jsonParser.printValue(orgs.getContent());
         return orgs.map(
                 org -> mapper.map(org, OrgPublicProfile.class)
         );

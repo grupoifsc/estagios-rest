@@ -65,8 +65,9 @@ public class WebSecurityConfig {
             .formLogin(AbstractHttpConfigurer::disable)
             .exceptionHandling(h -> h.authenticationEntryPoint(delegatedAuthenticationEntryPoint))
             .authorizeHttpRequests(registry -> registry
-                .requestMatchers(POST, "/api/v1/organizacoes").permitAll()
-                .requestMatchers("/api/v1/organizacoes/**").authenticated()
+                .requestMatchers(POST, "/api/v1/orgs").permitAll()
+                .requestMatchers("/api/v1/org/**").authenticated()
+                .requestMatchers("/api/v1/orgs/**").authenticated()
                 .requestMatchers("/api/v1/areas/**").authenticated()
                 .requestMatchers("/api/v1/vagas/**").authenticated()
                 .requestMatchers(GET, "/api/v1/auth/admin/**").hasRole("ADMIN")

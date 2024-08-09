@@ -4,7 +4,7 @@ import com.github.projetoifsc.estagios.app.exception.InvalidException;
 
 public class PaginationValidation {
 
-	public static final String DEFAULT_PAGE_VALUE = "1"; // OFFSET
+	public static final String DEFAULT_PAGE_VALUE = "0"; // OFFSET
 	public static final String DEFAULT_LIMIT_VALUE = "10";
 	public static final int MAX_LIMIT_VALUE = 30;
 

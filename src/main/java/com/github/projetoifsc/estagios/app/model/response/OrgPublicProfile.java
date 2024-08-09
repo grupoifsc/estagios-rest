@@ -26,7 +26,7 @@ public class OrgPublicProfile extends OrgSummary implements OrgPublicProfileProj
     private String info;
 
     @JsonProperty(value = "contato_principal")
-    @NotNull
+   // @NotNull
     @Valid
     private Contact mainContact;
 
@@ -66,6 +66,7 @@ public class OrgPublicProfile extends OrgSummary implements OrgPublicProfileProj
 
     @JsonProperty("contato_principal")
     public ContactWithoutType getMainContactWithoutType() {
+        if(this.mainContact == null) return null;
         return mapper.map(mainContact, ContactWithoutType.class);
     }
 
@@ -81,6 +82,7 @@ public class OrgPublicProfile extends OrgSummary implements OrgPublicProfileProj
 
     @JsonProperty("contato_candidaturas")
     public ContactWithoutType getApplianceContactWithoutType() {
+        if(this.applianceContact ==  null) return null;
         return mapper.map(applianceContact, ContactWithoutType.class);
     }
 
@@ -97,6 +99,7 @@ public class OrgPublicProfile extends OrgSummary implements OrgPublicProfileProj
 
     @JsonProperty("endereco")
     public AddressWithoutType getAddressWithoutType() {
+        if(this.mainAddress == null) return  null;
         return mapper.map(mainAddress, AddressWithoutType.class);
     }
 

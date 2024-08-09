@@ -208,7 +208,7 @@ public class OrganizationDAOImpl implements IOrganizationDAO {
 
     @Override
     public Page<OrgPublicProfileProjection> getAllSchoolsPublicProfile() {
-        return organizationRepository.findAllByIe(true, PageRequest.of(0, 20), OrgPublicProfileProjection.class);
+        return organizationRepository.findAllByIe(true, PageRequest.of(0, 1000), OrgPublicProfileProjection.class);
     }
 
     @Override

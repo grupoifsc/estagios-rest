@@ -21,8 +21,8 @@ public class RateLimiterService {
     }
 
     private Bucket newBucket(String s) {
-        var refillInterval = Refill.intervally(10,  Duration.of(1, ChronoUnit.MINUTES));
-        var limit = Bandwidth.classic(10, refillInterval);
+        var refillInterval = Refill.intervally(50,  Duration.of(1, ChronoUnit.MINUTES));
+        var limit = Bandwidth.classic(50, refillInterval);
         return Bucket4j.builder()
                 .addLimit(limit)
                 .build();

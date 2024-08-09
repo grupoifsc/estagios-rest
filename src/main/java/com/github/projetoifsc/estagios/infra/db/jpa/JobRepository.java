@@ -128,7 +128,7 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     List<JobEntity> findAllCreatedOrModeratedByOrg(long orgId, short statusId);
 
 
-    // * Find all pending jobs, to be moderated (depende de uma query em outro repositório)
+    // * Find all pending jobs, to be moderated
     // Que são públicos OU que o usuário está na lista de receivers MAS O usuário não moderou a vaga
     @Query(value =
         "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
@@ -142,6 +142,21 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
             "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
     )
     List<JobEntity> findAllPending (long orgId);
+
+
+    @Query(value =
+        "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+            "LEFT JOIN FETCH j.moderatedJobs as moderatedJobs " +
+            "LEFT JOIN j.exclusiveReceivers as receivers " +
+            "WHERE j.owner.id != :orgId " +
+//            "AND (j.moderatedJobs IS EMPTY OR moderatedJobs.orgId = :orgId) " +
+            "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
+    )
+    List<JobEntity> findAllReceived (long orgId);
+
 
 
 

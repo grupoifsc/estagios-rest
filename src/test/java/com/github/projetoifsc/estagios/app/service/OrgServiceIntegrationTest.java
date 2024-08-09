@@ -36,13 +36,13 @@ class OrgServiceIntegrationTest {
    // IOrg entity;
 
 
-    @BeforeEach
-    void setUp() {
-        var mockedEntity = mocker.generateWithIdAsZero();
-        var view = mapper.map(mockedEntity, OrgEntryData.class);
-        var entity = orgService.create(view);
-        userPrincipal = new UserPrincipal(entity.getId(), true,null,null, null);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        var mockedEntity = mocker.generateWithIdAsZero();
+//        var view = mapper.map(mockedEntity, OrgEntryData.class);
+//        var entity = orgService.create(view);
+//        userPrincipal = new UserPrincipal(entity.getId(), true,null,null, null);
+//    }
 
     @Test
     void getPrivateProfile() {
@@ -133,5 +133,10 @@ class OrgServiceIntegrationTest {
 
     }
 
-
+    @Test
+    void getSchools() {
+        var schools = orgService.getAllSchools(userPrincipal);
+        jsonParser.printValue(schools);
+        jsonParser.printValue(schools.getContent());
+    }
 }
