@@ -158,6 +158,32 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     List<JobEntity> findAllReceived (long orgId);
 
 
+    // TODO Preciso de ajuda com uma query do banco... Não queria usar nativo
+    // Mas não to conseguindo fazer ela usando o JPQL (HQL - Hibernate)
+//    @Query(value =
+//        "SELECT DISTINCT j, m FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+//            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+//            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+//            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+//            "LEFT JOIN j.exclusiveReceivers as receivers " +
+//            "LEFT JOIN ModeratedJobsEntity m ON j.id = m.jobId AND m.orgId = :orgId " +
+//            "WHERE j.owner.id != :orgId " +
+//            "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
+//    )
+    @Query(value =
+        "SELECT DISTINCT j FROM JobEntity j " +
+            "LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+            "LEFT JOIN j.exclusiveReceivers as receivers " +
+            "LEFT JOIN j.moderatedJobs as mod ON mod.jobId = j.id AND mod.orgId = :orgId " +
+        "WHERE j.owner.id != :orgId " +
+            "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
+            // "AND (j.moderatedJobs IS EMPTY mod.orgId = :orgId)"
+    )
+    List<JobEntity> findAllReceivedWithStatus(long orgId);
+
 
 
 }
