@@ -185,5 +185,32 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     List<JobEntity> findAllReceivedWithStatus(long orgId);
 
 
+    @Query(value =
+            "SELECT DISTINCT j, mod.statusId FROM JobEntity j " +
+                    "LEFT JOIN FETCH j.owner as owner " +
+                    "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+                    "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+                    "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+                    "LEFT JOIN j.exclusiveReceivers as receivers " +
+                    "LEFT JOIN j.moderatedJobs as mod ON mod.jobId = j.id AND mod.orgId = :orgId " +
+                    "WHERE j.owner.id != :orgId " +
+                    "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
+    )
+    List<JobEntity> findAllReceivedWithStatusTrial(long orgId);
+
+
+    @Query(value = "SELECT j as job, mod.status.name as modStatus FROM JobEntity j " +
+            "LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+            "LEFT JOIN j.exclusiveReceivers as receivers " +
+            "LEFT JOIN j.moderatedJobs as mod ON mod.jobId = j.id AND mod.orgId = :orgId " +
+            "WHERE j.owner.id != :orgId " +
+            "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
+    )
+    List<JobWithModStatusDTO> findWithModStatus(long orgId);
+
+
 
 }

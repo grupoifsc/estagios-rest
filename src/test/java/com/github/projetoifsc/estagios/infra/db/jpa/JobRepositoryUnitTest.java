@@ -273,15 +273,13 @@ class JobRepositoryUnitTest {
     }
 
     @Test
-    void findAllReceivedWithStatus() {
-        var entities = this.repository.findAllReceivedWithStatus(397L);
-        var jobs = entities.stream()
-                .map(this::mapToPublicDetailsDTO)
-                .toList();
-        jsonParser.printValue(jobs);
-        System.out.println(jobs.size());
+    void findAllReceivedWithStatusTrial() {
+        var entities = this.repository
+                .findWithModStatus(397L);
+        jsonParser.printValue(entities);
+        System.out.println(entities.size());
         System.out.println("Apenas os ids");
-        jobs.forEach(j -> System.out.println(j.getId()));
+        entities.forEach(j -> System.out.println(j.getJob().getId()));
     }
 
 
