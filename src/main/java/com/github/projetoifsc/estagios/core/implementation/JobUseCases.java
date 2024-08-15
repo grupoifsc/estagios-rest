@@ -60,18 +60,18 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
-    public List<JobPublicDetailsProjection> getAllAvailableSummary(String loggedId, String targetId) {
-        return readOperations.getAllAvailableSummary(loggedId, targetId);
+    public Page<JobPublicDetailsProjection> getAllAvailable(String loggedId, String targetId) {
+        return readOperations.getAllAvailable(loggedId, targetId);
     }
 
     @Override
-    public List<JobPublicDetailsProjection> getAllPendingSummary(String loggedId, String targetId) {
-        return readOperations.getAllPendingSummary(loggedId, targetId);
+    public Page<JobPublicDetailsProjection> getAllPending(String loggedId, String targetId) {
+        return readOperations.getAllPending(loggedId, targetId);
     }
 
     @Override
-    public List<JobPublicDetailsProjection> getAllRejectedSummary(String loggedId, String targetId) {
-        return readOperations.getAllRejectedSummary(loggedId, targetId);
+    public Page<JobPublicDetailsProjection> getAllRejected(String loggedId, String targetId) {
+        return readOperations.getAllRejected(loggedId, targetId);
     }
 
 

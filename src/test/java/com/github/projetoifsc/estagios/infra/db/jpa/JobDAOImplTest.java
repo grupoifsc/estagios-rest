@@ -90,7 +90,7 @@ class JobDAOImplTest {
     void getAllRejected() {
         var id = "397";
         var vagas = jobDAOImpl.getAllRejectedBy(id);
-        System.out.println(vagas.size());
+        System.out.println(vagas.getContent().size());
         jsonParser.printValue(vagas);
     }
 
@@ -99,7 +99,7 @@ class JobDAOImplTest {
     void getAllPending() {
         var id = "397";
         var vagas = jobDAOImpl.getAllToBeModeratedBy(id);
-        System.out.println(vagas.size());
+        System.out.println(vagas.getContent().size());
         jsonParser.printValue(vagas);
     }
 
@@ -115,8 +115,8 @@ class JobDAOImplTest {
     void getAllAvailable() {
         var id = "415";
         var available = jobDAOImpl.getAllCreatedOrApprovedBy(id);
-        System.out.println(available.size());
-        System.out.println(available.get(0).getOwner().getId());
+        System.out.println(available.getContent().size());
+        System.out.println(available.getContent().get(0).getOwner().getId());
         jsonParser.printValue(available);
     }
 

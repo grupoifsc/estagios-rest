@@ -56,12 +56,12 @@ class JobDAOImpl implements IJobDAO {
     }
 
     @Override
-    public List<JobPublicDetailsProjection> getAllRejectedBy(String orgId) {
+    public Page<JobPublicDetailsProjection> getAllRejectedBy(String orgId) {
         return jobDAORead.getAllRejectedBy(orgId);
     }
 
     @Override
-    public List<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId) {
+    public Page<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId) {
         return jobDAORead.getAllToBeModeratedBy(orgId);
     }
 
@@ -71,7 +71,7 @@ class JobDAOImpl implements IJobDAO {
     }
 
     @Override
-    public List<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId) {
+    public Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId) {
         return jobDAORead.getAllCreatedOrApprovedBy(orgId);
     }
 

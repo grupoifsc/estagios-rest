@@ -53,7 +53,6 @@ class JobRepositoryUnitTest {
         jsonParser.printValue (saved);
     }
 
-
     @Test
     void delete() {
         var opt = repository.findById(19L, JobEntity.class);
@@ -62,10 +61,8 @@ class JobRepositoryUnitTest {
         repository.delete(job);
     }
 
-
     @Test
     void findById() {}
-
 
     @Test
     void findAllByOwnerIdTestingProjections () {
@@ -74,14 +71,12 @@ class JobRepositoryUnitTest {
         jsonParser.printValue(jobs.getContent());
     }
 
-
     @Test
     void findAllByExclusiveReceiversEmpty() {
         var jobs = repository.findAllByExclusiveReceiversEmpty(IJob.class);
         System.out.println(jobs.size());
         jsonParser.printValue(jobs);
     }
-
 
     @Test
     void findAllByExclusiveReceiversId() {
@@ -281,6 +276,5 @@ class JobRepositoryUnitTest {
         System.out.println("Apenas os ids");
         entities.forEach(j -> System.out.println(j.getJob().getId()));
     }
-
 
 }

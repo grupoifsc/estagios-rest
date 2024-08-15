@@ -2,7 +2,6 @@ package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.*;
-import com.github.projetoifsc.estagios.core.models.IOrg;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Page;
 
 import static com.github.projetoifsc.estagios.core.implementation.OrganizationValidation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 class JobReadOperations {
@@ -57,7 +55,7 @@ class JobReadOperations {
         throw new UnauthorizedAccessException(errorMessage);
     }
 
-    public List<JobPublicDetailsProjection> getAllRejectedSummary(String loggedId, String targetId) {
+    public Page<JobPublicDetailsProjection> getAllRejected(String loggedId, String targetId) {
         var org = organizationDB.findByIdSummaryProjection(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
             return jobDB.getAllRejectedBy(loggedId);
@@ -65,7 +63,7 @@ class JobReadOperations {
     }
 
 
-    public List<JobPublicDetailsProjection> getAllPendingSummary(String loggedId, String targetId) {
+    public Page<JobPublicDetailsProjection> getAllPending(String loggedId, String targetId) {
         var org = organizationDB.findByIdSummaryProjection(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
             return jobDB.getAllToBeModeratedBy(loggedId);
@@ -88,7 +86,7 @@ class JobReadOperations {
 //    }
 
 
-    public List<JobPublicDetailsProjection> getAllAvailableSummary(String loggedId, String targetId) {
+    public Page<JobPublicDetailsProjection> getAllAvailable(String loggedId, String targetId) {
         var org = organizationDB.findByIdSummaryProjection(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
             return jobDB.getAllCreatedOrApprovedBy(loggedId);

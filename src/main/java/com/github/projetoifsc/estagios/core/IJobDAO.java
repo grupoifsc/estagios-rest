@@ -23,9 +23,9 @@ public interface IJobDAO {
     JobPrivateDetailsProjection getJobPrivateDetails(String id);
 
     Page<JobPrivateDetailsProjection> getAllCreatedBy(String orgId);
-    List<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId);
-    List<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId);
-    List<JobPublicDetailsProjection> getAllRejectedBy(String orgId);
+    Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId);
+    Page<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId);
+    Page<JobPublicDetailsProjection> getAllRejectedBy(String orgId);
 
     boolean isJobOfferedToOrg(String jobId, String orgId);
 

@@ -106,11 +106,12 @@ class JobDAORead {
                 entities;
     }
 
-    public List<JobPublicDetailsProjection> getAllRejectedBy(String orgId) {
+    public Page<JobPublicDetailsProjection> getAllRejectedBy(String orgId) {
         var entities = jobRepository.findAllModeratedByOrgAndStatus(
                 Long.parseLong(orgId),
                 ModerationStatusEnum.REJECTED.getId());
-        return this.mapToPublicDetailsList(entities);
+        var publicDetailsList = this.mapToPublicDetailsList(entities);
+        return new PageImpl<JobPublicDetailsProjection>(publicDetailsList, Pageable.ofSize(10), 10);
     }
 
 
@@ -123,17 +124,19 @@ class JobDAORead {
     }
 
 
-    public List<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId) {
+    public Page<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId) {
         var parsedId = Long.parseLong(orgId);
         var entities = jobRepository.findAllPending(parsedId);
-        return this.mapToPublicDetailsList(entities);
+        var publicDetailsList = this.mapToPublicDetailsList(entities);
+        return new PageImpl<JobPublicDetailsProjection>(publicDetailsList, Pageable.ofSize(10), 10);
     }
 
 
-    public List<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId) {
+    public Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId) {
         var organizationId = Long.parseLong(orgId);
         var entities = jobRepository.findAllCreatedOrModeratedByOrg(organizationId, ModerationStatusEnum.APPROVED.getId());
-        return this.mapToPublicDetailsList(entities);
+        var publicDetailsList = this.mapToPublicDetailsList(entities);
+        return new PageImpl<JobPublicDetailsProjection>(publicDetailsList, Pageable.ofSize(10), 10);
     }
 
 

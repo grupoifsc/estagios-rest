@@ -75,27 +75,31 @@ public class VagaService {
 
 
     public Page<JobPublicDetails> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var available = jobUseCases.getAllAvailableSummary(userPrincipal.getId(), userPrincipal.getId());
-        jsonParser.printValue(available);
-        var mapped = available
-                .stream().map(job -> mapper.map(job, JobPublicDetails.class)).toList();
-        return new PageImpl<>(mapped);
+        var available = jobUseCases.getAllAvailable(userPrincipal.getId(), userPrincipal.getId());
+        return available.map(job -> mapper.map(
+                job,
+                JobPublicDetails.class
+        ));
     }
 
 
     public Page<JobPublicDetails> getAuthUserRejectedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var rejected = jobUseCases.getAllRejectedSummary(userPrincipal.getId(), userPrincipal.getId());
-        var mapped = rejected
-                .stream().map(job -> mapper.map(job, JobPublicDetails.class)).toList();
-        return new PageImpl<>(mapped);
+        var rejected = jobUseCases.getAllRejected(userPrincipal.getId(), userPrincipal.getId());
+        return rejected.map(job -> mapper.map(
+                job,
+                JobPublicDetails.class
+        ));
     }
 
+
     public Page<JobPublicDetails> getAuthUserPendingJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var pending = jobUseCases.getAllPendingSummary(userPrincipal.getId(), userPrincipal.getId());
-        var mapped = pending
-                .stream().map(job -> mapper.map(job, JobPublicDetails.class)).toList();
-        return new PageImpl<>(mapped);
+        var pending = jobUseCases.getAllPending(userPrincipal.getId(), userPrincipal.getId());
+        return pending.map(job -> mapper.map(
+                job,
+                JobPublicDetails.class
+        ));
     }
+
 
     public void approve(UserPrincipal userPrincipal, List<String> jobIds) {
         jobUseCases.approve(userPrincipal.getId(), jobIds);

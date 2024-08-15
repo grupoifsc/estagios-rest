@@ -1,11 +1,9 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
-import com.github.projetoifsc.estagios.app.model.request.JobEntryData;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.dto.JobImpl;
 import com.github.projetoifsc.estagios.core.dto.JobPublicDetailsProjectionImpl;
 import com.github.projetoifsc.estagios.core.IOrganizationDAO;
-import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.core.IJobDAO;
 import com.github.projetoifsc.estagios.core.dto.OrgImpl;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
@@ -146,19 +144,19 @@ public class JobReadOperationsUnitTest {
         when(organizationDB.findByIdSummaryProjection(school.getId())).thenReturn(school);
         when(organizationDB.findByIdSummaryProjection(enterprise.getId())).thenReturn(enterprise);
 
-        assertDoesNotThrow(()->service.getAllAvailableSummary(school.getId(), school.getId()));
+        assertDoesNotThrow(()->service.getAllAvailable(school.getId(), school.getId()));
 //        assertDoesNotThrow(()->service.getAllApprovedSummary(school.getId(), school.getId()));
-        assertDoesNotThrow(()->service.getAllRejectedSummary(school.getId(), school.getId()));
-        assertDoesNotThrow(()->service.getAllPendingSummary(school.getId(), school.getId()));
+        assertDoesNotThrow(()->service.getAllRejected(school.getId(), school.getId()));
+        assertDoesNotThrow(()->service.getAllPending(school.getId(), school.getId()));
 
         assertThrows(UnauthorizedAccessException.class,
-                ()->service.getAllAvailableSummary(school.getId(), enterprise.getId()));
+                ()->service.getAllAvailable(school.getId(), enterprise.getId()));
 //        assertThrows(UnauthorizedAccessException.class,
 //                ()->service.getAllApprovedSummary(school.getId(), enterprise.getId()));
         assertThrows(UnauthorizedAccessException.class,
-                ()->service.getAllRejectedSummary(school.getId(), enterprise.getId()));
+                ()->service.getAllRejected(school.getId(), enterprise.getId()));
         assertThrows(UnauthorizedAccessException.class,
-                ()->service.getAllPendingSummary(school.getId(), enterprise.getId()));
+                ()->service.getAllPending(school.getId(), enterprise.getId()));
     }
 
     @Test
@@ -168,15 +166,15 @@ public class JobReadOperationsUnitTest {
         when(organizationDB.findByIdSummaryProjection(enterprise.getId())).thenReturn(enterprise);
 
 //        assertDoesNotThrow(()->service.getAllApprovedSummary(school.getId(), school.getId()));
-        assertDoesNotThrow(()->service.getAllRejectedSummary(school.getId(), school.getId()));
-        assertDoesNotThrow(()->service.getAllPendingSummary(school.getId(), school.getId()));
+        assertDoesNotThrow(()->service.getAllRejected(school.getId(), school.getId()));
+        assertDoesNotThrow(()->service.getAllPending(school.getId(), school.getId()));
 
 //        assertThrows(UnauthorizedAccessException.class,
 //                ()->service.getAllApprovedSummary(enterprise.getId(), enterprise.getId()));
         assertThrows(UnauthorizedAccessException.class,
-                ()->service.getAllRejectedSummary(enterprise.getId(), enterprise.getId()));
+                ()->service.getAllRejected(enterprise.getId(), enterprise.getId()));
         assertThrows(UnauthorizedAccessException.class,
-                ()->service.getAllPendingSummary(enterprise.getId(), enterprise.getId()));
+                ()->service.getAllPending(enterprise.getId(), enterprise.getId()));
     }
 
 

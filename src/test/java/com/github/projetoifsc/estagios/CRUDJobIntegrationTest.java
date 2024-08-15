@@ -38,7 +38,7 @@ class CRUDJobIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        var user = authUserService.findByUsername("joana@email.com").orElseThrow();
+        var user = authUserService.findByUsername("ifsc@email.com").orElseThrow();
         userPrincipal = new UserPrincipal(user.getId(), user.getIe(), user.getUsername(), user.getPassword(), user.getAuthorities());
     }
 
