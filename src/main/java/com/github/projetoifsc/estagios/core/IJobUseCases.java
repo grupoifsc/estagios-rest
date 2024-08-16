@@ -1,5 +1,6 @@
 package com.github.projetoifsc.estagios.core;
 
+import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.core.models.IJobEntryData;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
@@ -14,6 +15,7 @@ public interface IJobUseCases {
     JobPrivateDetailsProjection update(String organizationId, String traineeshipId, IJobEntryData newData);
     void delete(String organizationId, String traineeshipId);
 
+    IJob getOneDetails(String organizationId, String traineeshipId);
     JobPublicDetailsProjection getOnePublicDetails(String organizationId, String traineeshipId);
     JobPrivateDetailsProjection getOnePrivateDetails(String organizationId, String traineeshipId);
 

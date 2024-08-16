@@ -7,6 +7,8 @@ import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.IJobUseCases;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.models.IJobEntryData;
+import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -49,6 +51,18 @@ public class VagaService {
         jobUseCases.delete(userPrincipal.getId(), vagaId);
     }
 
+    public JobPublicDetails getJobDetails(UserPrincipal userPrincipal, String vagaId) {
+        var vaga = jobUseCases.getOneDetails(userPrincipal.getId(), vagaId);
+        if(vaga instanceof JobPrivateDetailsProjection) {
+            return mapper.map(vaga,
+                JobPrivateDetails.class);
+        }
+        if(vaga instanceof JobPublicDetailsProjection) {
+            return mapper.map(vaga,
+                JobPublicDetails.class);
+        }
+        return null;
+    }
 
     public JobPublicDetails getPublicProfile(UserPrincipal userPrincipal, String vagaId) {
         var vaga = jobUseCases.getOnePublicDetails(userPrincipal.getId(), vagaId);
@@ -64,7 +78,6 @@ public class VagaService {
         );
     }
 
-
     public Page<JobPrivateDetails> getAuthUserCreatedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
         var vagas = jobUseCases.getAllCreatedDetails(userPrincipal.getId(), userPrincipal.getId());
         return vagas.map(vaga -> mapper.map(
@@ -72,7 +85,6 @@ public class VagaService {
                 JobPrivateDetails.class
         ));
     }
-
 
     public Page<JobPublicDetails> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
         var available = jobUseCases.getAllAvailable(userPrincipal.getId(), userPrincipal.getId());

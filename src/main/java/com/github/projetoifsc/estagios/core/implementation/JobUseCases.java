@@ -1,6 +1,7 @@
 package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.core.*;
+import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.core.models.IJobEntryData;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
@@ -32,6 +33,11 @@ public class JobUseCases implements IJobUseCases {
     @Override
     public void delete(String organizationId, String traineeshipId) {
         writeOperations.delete(organizationId, traineeshipId);
+    }
+
+    @Override
+    public IJob getOneDetails(String organizationId, String traineeshipId) {
+        return readOperations.getOneDetails(organizationId, traineeshipId);
     }
 
     @Override

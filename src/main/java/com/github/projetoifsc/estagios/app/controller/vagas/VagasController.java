@@ -2,6 +2,7 @@ package com.github.projetoifsc.estagios.app.controller.vagas;
 
 import com.github.projetoifsc.estagios.app.configs.OpenApiConfig;
 import com.github.projetoifsc.estagios.app.model.request.JobEntryData;
+import com.github.projetoifsc.estagios.app.model.response.JobPublicDetails;
 import com.github.projetoifsc.estagios.app.model.response.wrapper.SuccessResponse;
 import com.github.projetoifsc.estagios.app.model.response.JobPrivateDetails;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
@@ -93,12 +94,12 @@ public class VagasController {
 	@Operation(summary="Ver Perfil de Vaga", description="Ver perfil **** " +
 			"ATUALIZAR MENSAGEM! privado de uma vaga. Autorizado apenas ao " +
 			"criador da vaga.", tags= {VAGAS}, operationId="getVagaPrivate")
-	public ResponseEntity<SuccessResponse<JobPrivateDetails>> getPrivateProfile (
+	public ResponseEntity<SuccessResponse<JobPublicDetails>> getJobProfile (
 			@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@PathVariable("id") String vagaId
 	) {
 		return responseEntity.successResponse(
-				service.getPrivateProfile(userPrincipal, vagaId)
+				service.getJobDetails(userPrincipal, vagaId)
 		);
 	}
 

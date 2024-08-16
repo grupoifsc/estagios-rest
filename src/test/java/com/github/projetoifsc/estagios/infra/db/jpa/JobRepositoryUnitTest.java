@@ -239,7 +239,7 @@ class JobRepositoryUnitTest {
 
     @Test
     void findAllPending_UsingQueryMethod() {
-        var entities = repository.findAllPending(397L);
+        var entities = repository.findAllPending(427L);
         var jobs = entities.stream()
                 .map(this::mapToPublicDetailsDTO)
                 .toList();

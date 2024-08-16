@@ -2,6 +2,7 @@ package com.github.projetoifsc.estagios.core.implementation;
 
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.*;
+import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
@@ -107,6 +108,19 @@ class JobReadOperations {
         }
         var errorMessage = "Only IEs can see moderation info";
         throw new InvalidReceiverException(errorMessage);
+    }
+
+    public IJob getOneDetails(String organizationId, String traineeshipId) {
+        var organization = organizationDB.findByIdSummaryProjection(organizationId);
+        var jobBasicProjection = jobDB.getJobSummary(traineeshipId);
+        if (OrganizationValidation.isOwner(organization, jobBasicProjection)) {
+           return jobDB.getJobPrivateDetails(traineeshipId);
+        }
+        if (OrganizationValidation.isReceiver(organization, jobBasicProjection)) {
+            return jobDB.getJobPublicDetails(traineeshipId);
+        }
+        var errorMessage = "Organizations can only see traineeships which they own or receive";
+        throw new UnauthorizedAccessException(errorMessage);
     }
 
 }

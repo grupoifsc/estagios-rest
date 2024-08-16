@@ -138,8 +138,9 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
             "LEFT JOIN FETCH j.moderatedJobs as moderatedJobs " +
             "LEFT JOIN j.exclusiveReceivers as receivers " +
         "WHERE j.owner.id != :orgId " +
-            "AND (j.moderatedJobs IS EMPTY OR moderatedJobs.orgId != :orgId) " +
-            "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
+            "AND (j.moderatedJobs IS EMPTY OR j.id NOT IN " +
+                "(SELECT DISTINCT m.jobId FROM ModeratedJobsEntity m WHERE m.orgId = :orgId)" +
+            ") AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
     )
     List<JobEntity> findAllPending (long orgId);
 
