@@ -100,6 +100,7 @@ public class JobPublicDetails implements JobPublicDetailsProjection {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
+
     @Override
     public String getId() {
         return id;
@@ -163,7 +164,7 @@ public class JobPublicDetails implements JobPublicDetailsProjection {
         return requisitos;
     }
 
-    public void setRequisitos(List<String> requisitos) {
+    public void setRequisitosList(List<String> requisitos) {
         this.requisitos = requisitos;
     }
 

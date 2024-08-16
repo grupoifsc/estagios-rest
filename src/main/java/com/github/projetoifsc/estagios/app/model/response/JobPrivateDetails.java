@@ -29,7 +29,6 @@ public class JobPrivateDetails extends JobPublicDetails implements JobPrivateDet
 		this.exclusiveReceivers = exclusiveReceivers;
 	}
 
-
 	@Override
 	@JsonProperty("contato")
 	public Contact getContact() {

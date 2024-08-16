@@ -114,7 +114,7 @@ class JobReadOperations {
         var organization = organizationDB.findByIdSummaryProjection(organizationId);
         var jobBasicProjection = jobDB.getJobSummary(traineeshipId);
         if (OrganizationValidation.isOwner(organization, jobBasicProjection)) {
-           return jobDB.getJobPrivateDetails(traineeshipId);
+            return jobDB.getJobPrivateDetails(traineeshipId);
         }
         if (OrganizationValidation.isReceiver(organization, jobBasicProjection)) {
             return jobDB.getJobPublicDetails(traineeshipId);

@@ -28,8 +28,8 @@ class JobPublicDetailsDTO implements JobPublicDetailsProjection {
     private int cargaHorariaSemanal;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private ContactDetailsProjection contact;
-    private AddressDetailsProjection address;
+    private ContactDetailsDTO contact;
+    private AddressDetailsDTO address;
 
     @Override
     public String getId() {
@@ -193,21 +193,20 @@ class JobPublicDetailsDTO implements JobPublicDetailsProjection {
     }
 
     @Override
-    public ContactDetailsProjection getContact() {
+    public ContactDetailsDTO getContact() {
         return contact;
     }
 
-    public void setContact(ContactDetailsProjection contact) {
+    public void setContact(ContactDetailsDTO contact) {
         this.contact = contact;
     }
 
     @Override
-    public AddressDetailsProjection getAddress() {
+    public AddressDetailsDTO getAddress() {
         return address;
     }
 
-    public void setAddress(AddressDetailsProjection address) {
+    public void setAddress(AddressDetailsDTO address) {
         this.address = address;
     }
-
 }

@@ -75,7 +75,7 @@ class CRUDJobIntegrationTest {
 
     @Test
     void getOnePrivateDetails() {
-        value = jobService.getPrivateProfile(userPrincipal, "66");
+        value = jobService.getPrivateProfile(userPrincipal, "90");
     }
 
 

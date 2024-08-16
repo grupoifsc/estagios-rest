@@ -37,7 +37,7 @@ class JobEntity implements IJob {
         joinColumns = @JoinColumn(name="job_id"),
         inverseJoinColumns = @JoinColumn(name="area_id")
     )
-    List<AreaEntity> areas = new ArrayList<>();
+    Set<AreaEntity> areas = new HashSet<>();
 
     // Ver outra solução para esta relação:
     // https://www.baeldung.com/jpa-many-to-many
@@ -139,11 +139,11 @@ class JobEntity implements IJob {
         this.owner = (OrgEntity) owner;
     }
 
-    public List<AreaEntity> getAreas() {
+    public Set<AreaEntity> getAreas() {
         return areas;
     }
 
-    public void setAreas(List<AreaEntity> areas) {
+    public void setAreas(Set<AreaEntity> areas) {
         this.areas = areas;
     }
 

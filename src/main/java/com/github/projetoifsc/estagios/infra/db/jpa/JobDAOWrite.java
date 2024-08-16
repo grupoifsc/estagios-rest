@@ -74,6 +74,7 @@ class JobDAOWrite {
         }
 
 
+        System.out.println("Contact id = " + newJob.getContactId());
         var contactId = newJob.getContactId();
         if(contactId != null) {
             var contact = contactRepository.findById(Long.parseLong(contactId))
@@ -83,6 +84,7 @@ class JobDAOWrite {
         else newJobEntity.setContact(null);
 
         var addressId = newJob.getAddressId();
+        System.out.println("Address Id = " + addressId);
         if(addressId != null) {
             var address = addressRepository.findById(Long.parseLong(addressId))
                     .orElseThrow(() -> new EntityNotFoundException("Endereço com id " + addressId + " não encontrado"));

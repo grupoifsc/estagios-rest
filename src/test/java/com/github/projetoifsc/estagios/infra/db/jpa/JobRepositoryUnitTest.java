@@ -1,6 +1,7 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
+import com.github.projetoifsc.estagios.app.model.response.JobPrivateDetails;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
@@ -247,7 +248,12 @@ class JobRepositoryUnitTest {
         jsonParser.printValue(jobs);
     }
 
-
+    @Test
+    void findOnePrivateDetailsFetchAll() {
+        var job = repository.findByIdPrivateDetails(90L).orElse(null);
+        var mapped = mapper.map(job, JobPrivateDetailsDTO.class);
+        jsonParser.printValue(mapped);
+    }
 
     private JobPublicDetailsDTO mapToPublicDetailsDTO(JobEntity entity) {
         var job = mapper.map(entity, JobPublicDetailsDTO.class);

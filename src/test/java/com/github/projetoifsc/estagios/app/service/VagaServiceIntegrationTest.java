@@ -63,7 +63,8 @@ class VagaServiceIntegrationTest {
 
     @Test
     void getOnePrivate() {
-        String id = "29";
+        userPrincipal = new UserPrincipal("427", null, null, null, null);
+        String id = "90";
         var vaga = service.getPrivateProfile(userPrincipal, id);
         jsonParser.printValue(vaga);
 
@@ -72,10 +73,21 @@ class VagaServiceIntegrationTest {
 
     @Test
     void getOnePublic() {
-        String id = "4";
+        userPrincipal = new UserPrincipal("427", null, null, null, null);
+        String id = "16";
         var vaga = service.getPublicProfile(userPrincipal, id);
         jsonParser.printValue(vaga);
     }
+
+
+    @Test
+    void getOneDetails() {
+        userPrincipal = new UserPrincipal("427", null, null, null, null);
+        String id = "90";
+        var vaga = service.getJobDetails(userPrincipal, id);
+        jsonParser.printValue(vaga);
+    }
+
 
 
     @Test

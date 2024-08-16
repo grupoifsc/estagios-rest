@@ -59,7 +59,7 @@ public class TesteController {
         var job = new JobPrivateDetails();
         job.setRequisitos("aaaa;bbb;cccc");
         job.setAddress(new Address());
-        job.setRequisitos(List.of("aaaaaaaa", "bbbbbbb", "cccccccc"));
+        job.setRequisitosList(List.of("aaaaaaaa", "bbbbbbb", "cccccccc"));
         job.setAreas(List.of());
         job.setId("2");
         job.setContact(new Contact());

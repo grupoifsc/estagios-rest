@@ -67,14 +67,12 @@ class JobDAORead {
     }
 
 
-    @Transactional
     public JobPrivateDetailsProjection getJobPrivateDetails(String id) {
         var jobId = Long.parseLong(id);
         var job = getOptionalOrThrow(
                 jobId,
-                jobRepository::findByIdPublicDetails
+                jobRepository::findByIdPrivateDetails
         );
-        job = jobRepository.findByIdWithReceivers(jobId).orElseThrow();
         return mapper.map(job, JobPrivateDetailsDTO.class);
     }
 

@@ -65,7 +65,7 @@ class JobDAOImplTest {
 
     @Test
     void getJobPrivateDetails() {
-        String id = "67";
+        String id = "90";
 
         var privateProjection = jobDAOImpl.getJobPrivateDetails(id);
         jsonParser.printValue(privateProjection);

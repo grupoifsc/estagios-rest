@@ -44,14 +44,14 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     Optional<JobEntity> findByIdWithReceivers(long id);
 
 
-//    @Query(value =
-//        "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
-//            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
-//            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
-//            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
-//            "LEFT JOIN FETCH j.exclusiveReceivers as receivers " +
-//        "WHERE j.id = :id")
-//    Optional<JobEntity> findByIdPrivateDetails(long id);
+    @Query(value =
+        "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+            "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+            "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+            "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+            "LEFT JOIN FETCH j.exclusiveReceivers as receivers " +
+        "WHERE j.id = :id")
+    Optional<JobEntity> findByIdPrivateDetails(long id);
 
 
     @Query(value =

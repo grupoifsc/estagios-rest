@@ -8,6 +8,7 @@ import java.io.Serializable;
  * DTO for {@link AddressEntity}
  */
 class AddressDetailsDTO implements AddressDetailsProjection {
+
     private Long id;
     private String rua;
     private String bairro;
