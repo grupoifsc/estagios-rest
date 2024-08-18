@@ -54,6 +54,14 @@ class JobReadOperations {
         throw new UnauthorizedAccessException(errorMessage);
     }
 
+    public Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithModeration(String loggedId, String targetId, int page, int limit) {
+        if(isSelf(loggedId, targetId))
+            return jobDB.getAllCreatedByWithPagination(targetId, page, limit);
+        var errorMessage = "Organizations can only access their own created jobs";
+        throw new UnauthorizedAccessException(errorMessage);
+    }
+
+
     public Page<JobPublicDetailsProjection> getAllRejected(String loggedId, String targetId) {
         var org = organizationDB.findByIdSummaryProjection(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))

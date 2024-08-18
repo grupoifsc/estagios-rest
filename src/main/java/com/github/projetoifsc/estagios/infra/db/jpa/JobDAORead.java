@@ -8,6 +8,7 @@ import com.github.projetoifsc.estagios.core.models.projections.JobSummaryProject
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,6 +95,14 @@ class JobDAORead {
                 jobs.add(mapper.map(job, JobPrivateDetailsDTO.class));
         });
         return new PageImpl<JobPrivateDetailsProjection>(jobs, Pageable.ofSize(10), 10);
+    }
+
+//    @Transactional
+    public Page<JobPrivateDetailsProjection> getAllCreatedByWithPagination(String orgId, int page, int limit) {
+        var parsedId = Long.parseLong(orgId);
+        Pageable pageable = PageRequest.of(page, limit);
+        var entities = jobRepository.findAllByOwnerIdWithReceiversPaginated(parsedId, pageable);
+        return entities.map(job -> mapper.map(job, JobPrivateDetailsProjection.class));
     }
 
     @Transactional

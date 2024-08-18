@@ -23,6 +23,8 @@ public interface IJobDAO {
     JobPrivateDetailsProjection getJobPrivateDetails(String id);
 
     Page<JobPrivateDetailsProjection> getAllCreatedBy(String orgId);
+    Page<JobPrivateDetailsProjection> getAllCreatedByWithPagination(String orgId, int page, int limit);
+
     Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId);
     Page<JobPublicDetailsProjection> getAllToBeModeratedBy(String orgId);
     Page<JobPublicDetailsProjection> getAllRejectedBy(String orgId);

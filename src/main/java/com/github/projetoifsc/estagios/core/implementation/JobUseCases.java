@@ -55,7 +55,6 @@ public class JobUseCases implements IJobUseCases {
         return readOperations.getOnePublicDetailsWithMod(organizationId,traineeshipId);
     }
 
-
         @Override
     public void approve(String organizationId, List<String> traineeshipIds) {
         writeOperations.approve(organizationId, traineeshipIds);
@@ -69,6 +68,11 @@ public class JobUseCases implements IJobUseCases {
     @Override
     public Page<JobPrivateDetailsProjection> getAllCreatedDetails(String loggedId, String targetId) {
         return readOperations.getAllCreatedDetails(loggedId, targetId);
+    }
+
+    @Override
+    public Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithPagination(String loggedId, String targetId, int page, int limit) {
+        return readOperations.getAllCreatedDetailsWithModeration(loggedId, targetId, page, limit);
     }
 
     @Override

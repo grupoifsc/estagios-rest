@@ -24,6 +24,7 @@ public interface IJobUseCases {
     void reject(String organizationId, List<String> traineeshipIds);
 
     Page<JobPrivateDetailsProjection> getAllCreatedDetails(String loggedId, String targetId);
+    Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithPagination(String loggedId, String targetId, int page, int limit);
     Page<JobPublicDetailsProjection> getAllAvailable(String loggedId, String targetId);
     Page<JobPublicDetailsProjection> getAllRejected(String loggedId, String targetId);
     Page<JobPublicDetailsProjection> getAllPending(String loggedId, String targetId);

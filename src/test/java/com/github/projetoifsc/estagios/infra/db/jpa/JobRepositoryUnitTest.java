@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Locale;
@@ -270,5 +271,14 @@ class JobRepositoryUnitTest {
         System.out.println(jobs.size());
     }
 
-
+    @Test
+    void findAllCreatedWithPagination() {
+        int page = 0;
+        int limit = 5;
+        Pageable pageable = PageRequest.of(page, limit);
+        long orgId = 195;
+        var entities = this.repository.findAllByOwnerIdWithReceiversPaginated(orgId, pageable);
+        var jobs = entities.map(job -> mapper.map(job, JobPrivateDetailsDTO.class));
+        jsonParser.printValue(jobs);
+    }
 }

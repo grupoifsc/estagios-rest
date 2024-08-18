@@ -103,7 +103,6 @@ class VagaServiceIntegrationTest {
     }
 
 
-
 //    @Test
 //    void getAllReceived() {
 //        String id = "274";
