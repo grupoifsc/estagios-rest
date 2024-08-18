@@ -51,6 +51,12 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
+    public JobPublicDetailsProjection getOnePublicDetailsWithMod(String organizationId, String traineeshipId) {
+        return readOperations.getOnePublicDetailsWithMod(organizationId,traineeshipId);
+    }
+
+
+        @Override
     public void approve(String organizationId, List<String> traineeshipIds) {
         writeOperations.approve(organizationId, traineeshipIds);
     }

@@ -61,7 +61,12 @@ class JobDAOImplTest {
         assertInstanceOf(JobPublicDetailsProjection.class, publicProjection);
     }
 
+    @Test
+    void getModerationInfo() {
+        var info = jobDAOImpl.getModerationInfo("427", "8");
+        jsonParser.printValue(info);
 
+    }
 
     @Test
     void getJobPrivateDetails() {

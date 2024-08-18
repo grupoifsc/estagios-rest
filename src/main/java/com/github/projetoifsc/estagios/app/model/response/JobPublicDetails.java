@@ -10,6 +10,7 @@ import com.github.projetoifsc.estagios.app.model.request.EPeriod;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.models.*;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +26,7 @@ import java.util.List;
 @JsonPropertyOrder({"id", "titulo", "criado_por", "descricao", "requisitos",
         "areas", "carga_horaria_semanal", "remuneracao", "periodo", "nivel", "formato",
         "duracao_meses", "data_inicio", "data_fim", "imagem_url", "endereco", "contato",
-        "criado_em", "atualizado_em", "_links"
+        "criado_em", "atualizado_em", "moderacao", "_links"
 })
 public class JobPublicDetails implements JobPublicDetailsProjection {
 
@@ -99,6 +100,9 @@ public class JobPublicDetails implements JobPublicDetailsProjection {
     @JsonProperty("atualizado_em")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+
+    @JsonProperty("moderacao")
+    private ModerationDetail moderationDetail;
 
 
     @Override
@@ -307,10 +311,6 @@ public class JobPublicDetails implements JobPublicDetailsProjection {
             : null;
     }
 
-
-
-
-
     @Override
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -329,5 +329,19 @@ public class JobPublicDetails implements JobPublicDetailsProjection {
         this.updatedAt = updatedAt;
     }
 
+    @Override
+    public ModerationDetail getModerationDetail() {
+        return moderationDetail;
+    }
+
+    @Override
+    public void setModerationDetail(ModerationDetailsProjection moderationDetail) {
+        var mapped = mapper.map(moderationDetail, ModerationDetail.class);
+        this.moderationDetail = mapped;
+    }
+
+    public void setModerationDetail(ModerationDetail moderationDetail) {
+        this.moderationDetail = moderationDetail;
+    }
 
 }

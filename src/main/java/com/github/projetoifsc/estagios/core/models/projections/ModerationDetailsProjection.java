@@ -5,10 +5,7 @@ import java.time.LocalDateTime;
 public interface ModerationDetailsProjection {
     
     LocalDateTime getModifiedAt();
-    ModerationStatusProjection getStatus();
-    
-    interface ModerationStatusProjection {
-        String getName();
-    }
-    
+    String getStatus();
+    void setStatus(String status);
+
 }

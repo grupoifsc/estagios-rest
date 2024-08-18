@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 	"areas", "carga_horaria_semanal", "remuneracao", "periodo", "nivel", "formato",
 		"duracao_meses", "data_inicio", "data_fim", "imagem_url", "endereco", "contato",
 		"destinatarios",
-		"criado_em", "atualizado_em", "_links"
+		"criado_em", "atualizado_em", "moderacao", "_links"
 })
 public class JobPrivateDetails extends JobPublicDetails implements JobPrivateDetailsProjection {
 

@@ -1,7 +1,6 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.model.response.JobPrivateDetails;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
@@ -13,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.Locale;
 
 @SpringBootTest
@@ -273,14 +270,5 @@ class JobRepositoryUnitTest {
         System.out.println(jobs.size());
     }
 
-    @Test
-    void findAllReceivedWithStatusTrial() {
-        var entities = this.repository
-                .findWithModStatus(397L);
-        jsonParser.printValue(entities);
-        System.out.println(entities.size());
-        System.out.println("Apenas os ids");
-        entities.forEach(j -> System.out.println(j.getJob().getId()));
-    }
 
 }

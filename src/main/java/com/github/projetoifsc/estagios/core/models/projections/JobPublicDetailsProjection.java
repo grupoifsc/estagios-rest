@@ -29,5 +29,7 @@ public interface JobPublicDetailsProjection extends IJob  {
     LocalDateTime getUpdatedAt();
     AddressDetailsProjection getAddress();
     ContactDetailsProjection getContact();
+    ModerationDetailsProjection getModerationDetail();
+    void setModerationDetail(ModerationDetailsProjection moderationDetail);
 
 }

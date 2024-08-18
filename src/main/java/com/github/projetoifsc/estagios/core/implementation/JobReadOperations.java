@@ -3,9 +3,7 @@ package com.github.projetoifsc.estagios.core.implementation;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.core.models.IJob;
-import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
-import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
-import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 
@@ -97,14 +95,12 @@ class JobReadOperations {
 
     public ModerationDetailsProjection getModerationInfo(String orgId, String jobId) {
         var org = organizationDB.findByIdSummaryProjection(orgId);
+        return this.getModerationInfo(org, jobId);
+    }
+
+    public ModerationDetailsProjection getModerationInfo(OrgSummaryProjection org, String jobId) {
         if(isIE(org)) {
-            try{
-                return jobDB.getModerationInfo(orgId, jobId);
-            }
-            catch (EntityNotFoundException enf) {
-                var job = jobDB.getJobSummary(jobId);
-                return ModerationProjection.resolve(org, job);
-            }
+            return jobDB.getModerationInfo(org.getId(), jobId);
         }
         var errorMessage = "Only IEs can see moderation info";
         throw new InvalidReceiverException(errorMessage);
@@ -122,5 +118,25 @@ class JobReadOperations {
         var errorMessage = "Organizations can only see traineeships which they own or receive";
         throw new UnauthorizedAccessException(errorMessage);
     }
+
+
+    public JobPublicDetailsProjection getOnePublicDetailsWithMod(String organizationId, String traineeshipId) {
+        var organization = organizationDB.findByIdSummaryProjection(organizationId);
+        var jobBasicProjection = jobDB.getJobSummary(traineeshipId);
+        JobPublicDetailsProjection job;
+        if (OrganizationValidation.isOwner(organization, jobBasicProjection)
+                || OrganizationValidation.isReceiver(organization, jobBasicProjection)) {
+            job = jobDB.getJobPublicDetails(traineeshipId);
+        }
+        else {
+            var errorMessage = "Organizations can only see traineeships which they own or receive";
+            throw new UnauthorizedAccessException(errorMessage);
+        }
+        var moderationInfo = this.getModerationInfo(organization, jobBasicProjection.getId());
+        moderationInfo = ModerationResolver.resolve(organization, jobBasicProjection, moderationInfo);
+        job.setModerationDetail(moderationInfo);
+        return job;
+    }
+
 
 }

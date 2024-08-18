@@ -18,6 +18,7 @@ public interface IJobUseCases {
     IJob getOneDetails(String organizationId, String traineeshipId);
     JobPublicDetailsProjection getOnePublicDetails(String organizationId, String traineeshipId);
     JobPrivateDetailsProjection getOnePrivateDetails(String organizationId, String traineeshipId);
+    JobPublicDetailsProjection getOnePublicDetailsWithMod(String organizationId, String traineeshipId);
 
     void approve(String organizationId, List<String> traineeshipIds);
     void reject(String organizationId, List<String> traineeshipIds);

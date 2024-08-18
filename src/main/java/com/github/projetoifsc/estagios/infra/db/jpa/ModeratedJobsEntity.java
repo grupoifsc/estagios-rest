@@ -32,7 +32,7 @@ class ModeratedJobsEntity {
     @Column(name = "org_id")
     private long orgId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", insertable = false, updatable = false)
     private ModerationStatusEntity status;
 

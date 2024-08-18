@@ -4,6 +4,7 @@ import com.github.projetoifsc.estagios.core.models.*;
 import com.github.projetoifsc.estagios.core.models.projections.AddressDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.ContactDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
+import com.github.projetoifsc.estagios.core.models.projections.ModerationDetailsProjection;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ class JobPublicDetailsDTO implements JobPublicDetailsProjection {
     private LocalDateTime updatedAt;
     private ContactDetailsDTO contact;
     private AddressDetailsDTO address;
+    private ModJobDTO modJobDTO;
 
     @Override
     public String getId() {
@@ -197,6 +199,18 @@ class JobPublicDetailsDTO implements JobPublicDetailsProjection {
         return contact;
     }
 
+    @Override
+    public ModerationDetailsProjection getModerationDetail() {
+        return modJobDTO;
+    }
+
+    @Override
+    public void setModerationDetail(ModerationDetailsProjection moderationDetail) {
+        if(moderationDetail instanceof ModJobDTO modJob)
+            this.modJobDTO = modJob;
+        else throw new ClassCastException("Moderation Details não é ModJobDTO");
+    }
+
     public void setContact(ContactDetailsDTO contact) {
         this.contact = contact;
     }
@@ -209,4 +223,7 @@ class JobPublicDetailsDTO implements JobPublicDetailsProjection {
     public void setAddress(AddressDetailsDTO address) {
         this.address = address;
     }
+
+
+
 }

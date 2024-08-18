@@ -1,10 +1,7 @@
 package com.github.projetoifsc.estagios.core.dto;
 
 import com.github.projetoifsc.estagios.core.models.*;
-import com.github.projetoifsc.estagios.core.models.projections.AddressDetailsProjection;
-import com.github.projetoifsc.estagios.core.models.projections.ContactDetailsProjection;
-import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
-import com.github.projetoifsc.estagios.core.models.projections.OrgSummaryProjection;
+import com.github.projetoifsc.estagios.core.models.projections.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -114,5 +111,15 @@ public class JobPublicDetailsProjectionImpl2 implements JobPublicDetailsProjecti
     @Override
     public ContactDetailsProjection getContact() {
         return null;
+    }
+
+    @Override
+    public ModerationDetailsProjection getModerationDetail() {
+        return null;
+    }
+
+    @Override
+    public void setModerationDetail(ModerationDetailsProjection moderationDetail) {
+
     }
 }

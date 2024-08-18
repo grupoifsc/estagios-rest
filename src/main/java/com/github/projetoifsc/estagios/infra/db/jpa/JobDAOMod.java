@@ -19,13 +19,19 @@ class JobDAOMod {
         this.mapper = mapper;
     }
 
+
     public ModerationDetailsProjection getModerationInfo(String orgId, String jobId) {
-        return moderatedJobRepository
+        var entity = moderatedJobRepository
                 .findByJobIdAndOrganizationId(
                         Long.parseLong(jobId),
-                        Long.parseLong(orgId),
-                        ModerationDetailsProjection.class )
-                .orElseThrow(EntityNotFoundException::new);
+                        Long.parseLong(orgId))
+                .orElse(null);
+        ModJobDTO dto = new ModJobDTO();
+        if( entity!=null ) {
+            dto.setStatus(entity.getStatus().getName());
+            dto.setModifiedAt(entity.getModifiedAt());
+        }
+        return dto;
     }
 
 

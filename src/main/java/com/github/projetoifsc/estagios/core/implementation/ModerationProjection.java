@@ -6,46 +6,28 @@ import com.github.projetoifsc.estagios.core.models.projections.ModerationDetails
 
 import java.time.LocalDateTime;
 
-class ModerationProjection implements ModerationDetailsProjection {
+class ModerationResolver {
 
-    private final LocalDateTime modifiedAt;
-    private final ModerationStatus status;
-
-    // TODO: ver a questão da vaga!
-    public static ModerationProjection resolve(IOrg org, IJob job) {
+    /**
+     * Modifica o status da Moderação
+     * @param org
+     * @param job
+     * @param moderation
+     * @return
+     */
+    public static ModerationDetailsProjection resolve(IOrg org, IJob job, ModerationDetailsProjection moderation) {
         if(OrganizationValidation.isOwner(org, job)) {
-            return new ModerationProjection("owner", null);
+            moderation.setStatus(EModerationStatus.OWNER.getNamePtBR());
+        } else if (moderation.getStatus() != null) {
+            moderation.setStatus(
+                    moderation.getStatus().equalsIgnoreCase("aprovado") ?
+                            EModerationStatus.ACCEPTED.getNamePtBR() :
+                            EModerationStatus.REJECTED.getNamePtBR()
+            );
+        } else {
+            moderation.setStatus(EModerationStatus.PENDING.getNamePtBR());
         }
-        return new ModerationProjection("pendente", null);
+        return moderation;
     }
 
-    private ModerationProjection(String status, LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
-        this.status = new ModerationStatus(status);
-    }
-
-    @Override
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    @Override
-    public ModerationStatus getStatus() {
-        return status;
-    }
-
-    public static class ModerationStatus implements ModerationStatusProjection {
-
-        private final String name;
-
-        private ModerationStatus(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String getName() {
-            return name;
-        }
-
-    }
 }

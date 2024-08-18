@@ -25,4 +25,9 @@ class JobReadIntegrationTest {
         jsonParser.printValue(job);
     }
 
+    @Test
+    void getOnePublicDetailsWithMod() {
+        var job = useCases.getOnePublicDetailsWithMod("427", "8");
+        jsonParser.printValue(job);
+    }
 }

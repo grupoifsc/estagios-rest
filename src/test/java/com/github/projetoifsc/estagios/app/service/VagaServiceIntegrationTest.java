@@ -88,7 +88,12 @@ class VagaServiceIntegrationTest {
         jsonParser.printValue(vaga);
     }
 
-
+    @Test
+    void getOnePublicDetailsWithMod() {
+        userPrincipal = new UserPrincipal("427", null, null, null, null);
+        var vaga = service.getPublicProfileWithModerationStatus(userPrincipal, "91");
+        jsonParser.printValue(vaga);
+    }
 
     @Test
     void getAllCreated() {

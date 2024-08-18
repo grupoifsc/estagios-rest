@@ -71,6 +71,13 @@ public class VagaService {
     }
 
 
+    public JobPublicDetails getPublicProfileWithModerationStatus(UserPrincipal userPrincipal, String vagaId) {
+        var vaga = jobUseCases.getOnePublicDetailsWithMod(userPrincipal.getId(), vagaId);
+        return mapper.map(vaga,
+                JobPublicDetails.class);
+    }
+
+
     public JobPrivateDetails getPrivateProfile(UserPrincipal userPrincipal, String vagaId) {
         var vaga = jobUseCases.getOnePrivateDetails(userPrincipal.getId(), vagaId);
         return mapper.map(vaga,
