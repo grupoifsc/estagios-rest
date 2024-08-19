@@ -37,7 +37,8 @@ public class JobUseCases implements IJobUseCases {
 
     @Override
     public IJob getOneDetails(String organizationId, String traineeshipId) {
-        return readOperations.getOneDetails(organizationId, traineeshipId);
+        //return readOperations.getOneDetails(organizationId, traineeshipId);
+        return readOperations.getOneDetailsWithModStatus(organizationId, traineeshipId);
     }
 
     @Override

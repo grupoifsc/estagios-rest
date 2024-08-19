@@ -146,6 +146,22 @@ class JobReadOperations {
         return job;
     }
 
+    public IJob getOneDetailsWithModStatus(String organizationId, String traineeshipId) {
+        var organization = organizationDB.findByIdSummaryProjection(organizationId);
+        var jobBasicProjection = jobDB.getJobSummary(traineeshipId);
+        if (OrganizationValidation.isOwner(organization, jobBasicProjection)) {
+            return jobDB.getJobPrivateDetails(traineeshipId);
+        }
+        if (OrganizationValidation.isReceiver(organization, jobBasicProjection)) {
+            var job = jobDB.getJobPublicDetails(traineeshipId);
+            var moderationInfo = this.getModerationInfo(organization, jobBasicProjection.getId());
+            moderationInfo = ModerationResolver.resolve(organization, jobBasicProjection, moderationInfo);
+            job.setModerationDetail(moderationInfo);
+            return job;
+        }
+        var errorMessage = "Organizations can only see traineeships which they own or receive";
+        throw new UnauthorizedAccessException(errorMessage);
+    }
 
     public Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, int page, int limit) {
         var org = organizationDB.findByIdSummaryProjection(loggedId);
