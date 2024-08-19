@@ -28,6 +28,7 @@ public interface IJobUseCases {
     Page<JobPublicDetailsProjection> getAllAvailable(String loggedId, String targetId);
     Page<JobPublicDetailsProjection> getAllRejected(String loggedId, String targetId);
     Page<JobPublicDetailsProjection> getAllPending(String loggedId, String targetId);
+    Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, int page, int limit);
 
     List<JobPublicDetailsProjection> filterAllAvailableSummary(String loggedId, String targetId);
 

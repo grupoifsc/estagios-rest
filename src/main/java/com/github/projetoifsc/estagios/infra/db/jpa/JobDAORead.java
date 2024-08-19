@@ -105,6 +105,16 @@ class JobDAORead {
         return entities.map(job -> mapper.map(job, JobPrivateDetailsDTO.class));
     }
 
+    public Page<JobPublicDetailsProjection> getAllReceivedByWithPagination(String orgId, int page, int limit) {
+        var parsedId = Long.parseLong(orgId);
+        Pageable pageable = PageRequest.of(page, limit);
+        var entities = jobRepository.findAllReceived(parsedId, pageable);
+        return entities.map(job -> mapper.map(
+                job,
+                JobPublicDetailsDTO.class
+        ));
+    }
+
     @Transactional
     public List<JobEntity> fetchCreatedBy (long orgId) {
         var entities = jobRepository.findAllByOwnerId(orgId);
@@ -154,6 +164,7 @@ class JobDAORead {
                 .existsByIdAndExclusiveReceiversEmptyOrExclusiveReceiversId(
                         jobLongId, orgLongId);
     }
+
 
 
 }

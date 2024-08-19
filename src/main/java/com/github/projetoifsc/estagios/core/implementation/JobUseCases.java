@@ -86,6 +86,11 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
+    public Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, int page, int limit) {
+        return readOperations.getAllReceivedWithPagination(loggedId, targetId, page, limit);
+    }
+
+    @Override
     public Page<JobPublicDetailsProjection> getAllRejected(String loggedId, String targetId) {
         return readOperations.getAllRejected(loggedId, targetId);
     }

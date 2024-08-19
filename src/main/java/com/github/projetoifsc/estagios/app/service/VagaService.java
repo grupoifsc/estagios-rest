@@ -101,6 +101,14 @@ public class VagaService {
         ));
     }
 
+    public Page<JobPublicDetails> getAuthUserReceivedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
+        var received = jobUseCases.getAllReceivedWithPagination(userPrincipal.getId(), userPrincipal.getId(), page, limit);
+        return received.map(job -> mapper.map(
+                job,
+                JobPublicDetails.class
+        ));
+    }
+
     public Page<JobPublicDetails> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
         var available = jobUseCases.getAllAvailable(userPrincipal.getId(), userPrincipal.getId());
         return available.map(job -> mapper.map(

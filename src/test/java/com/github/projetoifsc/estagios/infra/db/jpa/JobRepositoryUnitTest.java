@@ -263,12 +263,11 @@ class JobRepositoryUnitTest {
 
     @Test
     void findAllReceived() {
-        var entities = this.repository.findAllReceived(397L);
-        var jobs = entities.stream()
-            .map(this::mapToPublicDetailsDTO)
-            .toList();
+        Pageable pageable = PageRequest.of(0, 10);
+        var entities = this.repository.findAllReceived(427L, pageable);
+        var jobs = entities.map(ent -> mapper.map(ent, JobPublicDetailsDTO.class));
         jsonParser.printValue(jobs);
-        System.out.println(jobs.size());
+       // System.out.println(jobs.getNumberOfElements());
     }
 
     @Test

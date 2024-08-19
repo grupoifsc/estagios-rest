@@ -51,6 +51,22 @@ public class AuthUserVagasController {
         );
     }
 
+
+    @GetMapping("/recebidas")
+    @Operation(summary="Vagas Recebidas", description="Ver todas as vagas " +
+            "recebidas por uma instituição",
+            tags= {MODERACAO}, operationId="getVagasRecebidas")
+    public ResponseEntity<SuccessResponse<Page<JobPublicDetails>>> getAllReceivedForUser (
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam(value= "limit", defaultValue = DEFAULT_LIMIT_VALUE) Integer limit,
+            @RequestParam(value= "page", defaultValue = DEFAULT_PAGE_VALUE) Integer page
+    ) {
+        return responseEntity.successResponse(
+                service.getAuthUserReceivedJobs(userPrincipal, page, limit)
+        );
+    }
+
+
     @GetMapping("/disponiveis")
     @Operation(summary="Vagas Disponíveis", description="Ver todas as vagas " +
             "APROVADAS e disponíveis para a instituição",

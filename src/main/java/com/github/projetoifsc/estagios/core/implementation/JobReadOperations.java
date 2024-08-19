@@ -147,4 +147,11 @@ class JobReadOperations {
     }
 
 
+    public Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, int page, int limit) {
+        var org = organizationDB.findByIdSummaryProjection(loggedId);
+        if(isSelf(loggedId, targetId) && isIE(org))
+            return jobDB.getAllReceivedByOrgPaginated(loggedId, page, limit);
+        throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
+    }
+
 }
