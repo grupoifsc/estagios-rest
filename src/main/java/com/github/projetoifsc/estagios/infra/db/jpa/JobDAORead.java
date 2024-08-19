@@ -102,7 +102,7 @@ class JobDAORead {
         var parsedId = Long.parseLong(orgId);
         Pageable pageable = PageRequest.of(page, limit);
         var entities = jobRepository.findAllByOwnerIdWithReceiversPaginated(parsedId, pageable);
-        return entities.map(job -> mapper.map(job, JobPrivateDetailsProjection.class));
+        return entities.map(job -> mapper.map(job, JobPrivateDetailsDTO.class));
     }
 
     @Transactional

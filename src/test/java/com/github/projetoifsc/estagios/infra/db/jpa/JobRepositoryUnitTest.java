@@ -273,7 +273,7 @@ class JobRepositoryUnitTest {
 
     @Test
     void findAllCreatedWithPagination() {
-        int page = 0;
+        int page = 1;
         int limit = 5;
         Pageable pageable = PageRequest.of(page, limit);
         long orgId = 195;

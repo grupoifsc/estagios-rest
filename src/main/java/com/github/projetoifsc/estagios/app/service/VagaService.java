@@ -93,6 +93,14 @@ public class VagaService {
         ));
     }
 
+    public Page<JobPrivateDetails> getAuthUserCreatedJobsPaginated(UserPrincipal userPrincipal, Integer page, Integer limit) {
+        var vagas = jobUseCases.getAllCreatedDetailsWithPagination(userPrincipal.getId(), userPrincipal.getId(), page, limit);
+        return vagas.map(vaga -> mapper.map(
+                vaga,
+                JobPrivateDetails.class
+        ));
+    }
+
     public Page<JobPublicDetails> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
         var available = jobUseCases.getAllAvailable(userPrincipal.getId(), userPrincipal.getId());
         return available.map(job -> mapper.map(

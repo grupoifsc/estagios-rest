@@ -112,4 +112,13 @@ class VagaServiceIntegrationTest {
 //        jsonParser.printValue(vagas);
 //    }
 
+
+    @Test
+    void getAllCreatedWithPagination() {
+        userPrincipal = new UserPrincipal("195", null, null, null, null);
+        int page = 1;
+        int limit = 5;
+        var vagas = service.getAuthUserCreatedJobsPaginated(userPrincipal, page, limit);
+        jsonParser.printValue(vagas);
+    }
 }

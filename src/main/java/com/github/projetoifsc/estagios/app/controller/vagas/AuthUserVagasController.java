@@ -47,7 +47,7 @@ public class AuthUserVagasController {
             @RequestParam(value= "page", defaultValue = DEFAULT_PAGE_VALUE) Integer page
     ) {
         return responseEntity.successResponse(
-                service.getAuthUserCreatedJobs(userPrincipal, page, limit)
+                service.getAuthUserCreatedJobsPaginated(userPrincipal, page, limit)
         );
     }
 
