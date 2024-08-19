@@ -163,10 +163,22 @@ class JobReadOperations {
         throw new UnauthorizedAccessException(errorMessage);
     }
 
+    private ModerationDetailsProjection getModerationInfo(OrgSummaryProjection organization, JobPublicDetailsProjection job) {
+        var moderationInfo = this.getModerationInfo(organization, job.getId());
+        return ModerationResolver.resolve(organization, job, moderationInfo);
+    }
+
+
     public Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, int page, int limit) {
         var org = organizationDB.findByIdSummaryProjection(loggedId);
-        if(isSelf(loggedId, targetId) && isIE(org))
-            return jobDB.getAllReceivedByOrgPaginated(loggedId, page, limit);
+        if(isSelf(loggedId, targetId) && isIE(org)) {
+            var jobs = jobDB.getAllReceivedByOrgPaginated(loggedId, page, limit);
+            return jobs.map(job -> {
+                var moderationInfo = this.getModerationInfo(org, job);
+                job.setModerationDetail(moderationInfo);
+                return job;
+            });
+        }
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
