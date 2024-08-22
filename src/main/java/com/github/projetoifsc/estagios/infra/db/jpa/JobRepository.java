@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -115,6 +116,17 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     Page<JobEntity> findAllByOwnerIdWithReceiversPaginated(long id, Pageable pageable);
 
 
+    @Query(value =
+            "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+                    "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+                    "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+                    "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+                    "LEFT JOIN FETCH j.exclusiveReceivers as receivers " +
+                    "WHERE j.owner.id = :id AND j.titulo LIKE %:title%")
+    Page<JobEntity> findAllByOwnerIdWithReceiversPaginatedByTitle(@Param("id") long id, @Param("title") String title, Pageable pageable);
+
+
+
 
     // * Find all rejected OR approved by organization
     @Query(value =
@@ -138,6 +150,18 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     List<JobEntity> findAllCreatedOrModeratedByOrg(long orgId, short statusId);
 
 
+    // * Get All Available (created By and approved By) BY Title OR Owner Name
+    @Query(value =
+            "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+                    "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+                    "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+                    "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+                    "LEFT JOIN FETCH j.moderatedJobs as moderatedJobs " +
+                    "WHERE (j.owner.id = :orgId OR (moderatedJobs.orgId = :orgId AND moderatedJobs.statusId = :statusId)) " +
+                    "AND (owner.nome LIKE %:search% OR j.titulo LIKE %:search%)" )
+    Page<JobEntity> findAllCreatedOrModeratedByOrgByTitleByOwner(@Param("orgId") long orgId, @Param("search") String search, short statusId, Pageable pageable);
+
+
     // * Find all pending jobs, to be moderated
     // Que são públicos OU que o usuário está na lista de receivers MAS O usuário não moderou a vaga
     @Query(value =
@@ -155,6 +179,7 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
     List<JobEntity> findAllPending (long orgId);
 
 
+    // Find All Received, moderated or not
     @Query(value =
         "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
             "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
@@ -166,6 +191,19 @@ interface JobRepository extends ListPagingAndSortingRepository<JobEntity, Long> 
             "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) "
     )
     Page<JobEntity> findAllReceived (long orgId, Pageable pageable);
+
+    @Query(value =
+            "SELECT DISTINCT j FROM JobEntity j LEFT JOIN FETCH j.owner as owner " +
+                    "LEFT JOIN FETCH j.areas as areas LEFT JOIN FETCH j.contact as contact " +
+                    "LEFT JOIN FETCH j.address as address LEFT JOIN FETCH j.format as format " +
+                    "LEFT JOIN FETCH j.level as level LEFT JOIN FETCH j.period as period " +
+                    "LEFT JOIN FETCH j.moderatedJobs as moderatedJobs " +
+                    "LEFT JOIN j.exclusiveReceivers as receivers " +
+                    "WHERE j.owner.id != :orgId " +
+                    "AND (j.exclusiveReceivers IS EMPTY OR receivers.id = :orgId) " +
+                    "AND (owner.nome LIKE %:search% OR j.titulo LIKE %:search%)"
+    )
+    Page<JobEntity> findAllReceivedByOwnerOrTitle (@Param("orgId") long orgId, @Param("search") String search, Pageable pageable);
 
 
 }

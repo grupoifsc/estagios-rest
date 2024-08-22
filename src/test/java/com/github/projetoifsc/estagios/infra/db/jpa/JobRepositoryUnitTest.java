@@ -280,4 +280,49 @@ class JobRepositoryUnitTest {
         var jobs = entities.map(job -> mapper.map(job, JobPrivateDetailsDTO.class));
         jsonParser.printValue(jobs);
     }
+
+
+    @Test
+    void findAllCreatedWithPaginationByTitle() {
+        int page = 0;
+        int limit = 5;
+        Pageable pageable = PageRequest.of(page, limit);
+        long orgId = 195;
+        String title = "";
+        var entities = this.repository.findAllByOwnerIdWithReceiversPaginatedByTitle(orgId, title, pageable);
+        var jobs = entities.map(job -> mapper.map(job, JobPrivateDetailsDTO.class));
+        jobs.getContent().forEach(job -> System.out.println(job.getId() + " " + job.getTitulo()));
+        jsonParser.printValue(jobs);
+    }
+
+
+    @Test
+    void findAllReceivedWithPaginationByTitleOrOwnerName() {
+        int page = 0;
+        int limit = 10;
+        Pageable pageable = PageRequest.of(page, limit);
+        long orgId = 427;
+        String search = "marketing";
+        var entities = this.repository.findAllReceivedByOwnerOrTitle(orgId, search, pageable);
+        var jobs = entities.map(job -> mapper.map(job, JobPublicDetailsDTO.class));
+        jobs.getContent().forEach(job -> System.out.println(job.getId() + " " + job.getTitulo()));
+        jsonParser.printValue(jobs);
+    }
+
+    @Test
+    void findAllAvailableWithPaginationByTitleOrOwnerName() {
+        int page = 0;
+        int limit = 10;
+        Pageable pageable = PageRequest.of(page, limit);
+        long orgId = 427;
+        String search = "al";
+        var entities = this.repository.findAllCreatedOrModeratedByOrgByTitleByOwner (orgId, search, (short) 1, pageable);
+        var jobs = entities.map(job -> mapper.map(job, JobPublicDetailsDTO.class));
+        jobs.getContent().forEach(job -> System.out.println(job.getId() + " - " + job.getTitulo() + " - " + job.getOwner().getNome()));
+        jsonParser.printValue(jobs);
+    }
+
+
+
+
 }

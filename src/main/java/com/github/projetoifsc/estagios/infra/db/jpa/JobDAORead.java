@@ -101,19 +101,23 @@ class JobDAORead {
     public Page<JobPrivateDetailsProjection> getAllCreatedByWithPagination(String orgId, int page, int limit) {
         var parsedId = Long.parseLong(orgId);
         Pageable pageable = PageRequest.of(page, limit);
-        var entities = jobRepository.findAllByOwnerIdWithReceiversPaginated(parsedId, pageable);
+        var search = "";
+        var entities = jobRepository.findAllByOwnerIdWithReceiversPaginatedByTitle(parsedId, search, pageable);
         return entities.map(job -> mapper.map(job, JobPrivateDetailsDTO.class));
     }
+
 
     public Page<JobPublicDetailsProjection> getAllReceivedByWithPagination(String orgId, int page, int limit) {
         var parsedId = Long.parseLong(orgId);
         Pageable pageable = PageRequest.of(page, limit);
-        var entities = jobRepository.findAllReceived(parsedId, pageable);
+        var search = "";
+        var entities = jobRepository.findAllReceivedByOwnerOrTitle(parsedId, search, pageable);
         return entities.map(job -> mapper.map(
                 job,
                 JobPublicDetailsDTO.class
         ));
     }
+
 
     @Transactional
     public List<JobEntity> fetchCreatedBy (long orgId) {
@@ -151,9 +155,10 @@ class JobDAORead {
 
     public Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId) {
         var organizationId = Long.parseLong(orgId);
-        var entities = jobRepository.findAllCreatedOrModeratedByOrg(organizationId, ModerationStatusEnum.APPROVED.getId());
-        var publicDetailsList = this.mapToPublicDetailsList(entities);
-        return new PageImpl<JobPublicDetailsProjection>(publicDetailsList, Pageable.ofSize(10), 10);
+        var search = "";
+        var page = PageRequest.of(0, 10);
+        var entities = jobRepository.findAllCreatedOrModeratedByOrgByTitleByOwner(organizationId, search, ModerationStatusEnum.APPROVED.getId(), page);
+        return entities.map(ent -> mapper.map(ent, JobPublicDetailsDTO.class));
     }
 
 
