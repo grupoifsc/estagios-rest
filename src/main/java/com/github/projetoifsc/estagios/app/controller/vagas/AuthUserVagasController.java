@@ -43,11 +43,12 @@ public class AuthUserVagasController {
             "organização", tags= {VAGAS}, operationId="getVagasCriadas")
     public ResponseEntity<SuccessResponse<Page<JobPrivateDetails>>> getAllCreatedByUser (
             @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam(value = "search", defaultValue = "") String search,
             @RequestParam(value= "limit", defaultValue = DEFAULT_LIMIT_VALUE) Integer limit,
             @RequestParam(value= "page", defaultValue = DEFAULT_PAGE_VALUE) Integer page
     ) {
         return responseEntity.successResponse(
-                service.getAuthUserCreatedJobsPaginated(userPrincipal, page, limit)
+                service.getAuthUserCreatedJobsPaginated(userPrincipal, search, page, limit)
         );
     }
 
@@ -58,11 +59,12 @@ public class AuthUserVagasController {
             tags= {MODERACAO}, operationId="getVagasRecebidas")
     public ResponseEntity<SuccessResponse<Page<JobPublicDetails>>> getAllReceivedForUser (
             @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam(value = "search", defaultValue = "") String search,
             @RequestParam(value= "limit", defaultValue = DEFAULT_LIMIT_VALUE) Integer limit,
             @RequestParam(value= "page", defaultValue = DEFAULT_PAGE_VALUE) Integer page
     ) {
         return responseEntity.successResponse(
-                service.getAuthUserReceivedJobs(userPrincipal, page, limit)
+                service.getAuthUserReceivedJobs(userPrincipal, search, page, limit)
         );
     }
 
@@ -73,11 +75,12 @@ public class AuthUserVagasController {
             tags= {MODERACAO}, operationId="getVagasDisponiveis")
     public ResponseEntity<SuccessResponse<Page<JobPublicDetails>>> getAllAvailableForUser (
             @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @RequestParam(value = "search", defaultValue = "") String search,
             @RequestParam(value= "limit", defaultValue = DEFAULT_LIMIT_VALUE) Integer limit,
             @RequestParam(value= "page", defaultValue = DEFAULT_PAGE_VALUE) Integer page
     ) {
         return responseEntity.successResponse(
-                service.getAuthUserAvailableJobs(userPrincipal, page, limit)
+                service.getAuthUserAvailableJobs(userPrincipal, search, page, limit)
         );
     }
 

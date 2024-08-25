@@ -24,11 +24,14 @@ public interface IJobUseCases {
     void reject(String organizationId, List<String> traineeshipIds);
 
     Page<JobPrivateDetailsProjection> getAllCreatedDetails(String loggedId, String targetId);
-    Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithPagination(String loggedId, String targetId, int page, int limit);
-    Page<JobPublicDetailsProjection> getAllAvailable(String loggedId, String targetId);
+
+    Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithPagination(String loggedId, String targetId, String search, int page, int limit);
+    Page<JobPublicDetailsProjection> getAllAvailableWithPagination(String loggedId, String targetId, String search, int page, int limit);
+
     Page<JobPublicDetailsProjection> getAllRejected(String loggedId, String targetId);
     Page<JobPublicDetailsProjection> getAllPending(String loggedId, String targetId);
-    Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, int page, int limit);
+
+    Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, String search, int page, int limit);
 
     List<JobPublicDetailsProjection> filterAllAvailableSummary(String loggedId, String targetId);
 

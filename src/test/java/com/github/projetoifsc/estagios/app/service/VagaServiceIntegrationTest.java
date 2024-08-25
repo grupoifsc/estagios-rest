@@ -118,7 +118,8 @@ class VagaServiceIntegrationTest {
         userPrincipal = new UserPrincipal("195", null, null, null, null);
         int page = 1;
         int limit = 5;
-        var vagas = service.getAuthUserCreatedJobsPaginated(userPrincipal, page, limit);
+        String sc = "";
+        var vagas = service.getAuthUserCreatedJobsPaginated(userPrincipal, sc, page, limit);
         jsonParser.printValue(vagas);
     }
 
@@ -127,7 +128,7 @@ class VagaServiceIntegrationTest {
         userPrincipal = new UserPrincipal("427", null, null, null, null);
         int page = 0;
         int limit = 5;
-        var vagas = service.getAuthUserReceivedJobs(userPrincipal, page, limit);
+        var vagas = service.getAuthUserReceivedJobs(userPrincipal, "", page, limit);
         jsonParser.printValue(vagas);
     }
 

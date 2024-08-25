@@ -1,10 +1,6 @@
 package com.github.projetoifsc.estagios.infra.db.jpa;
 
 import com.github.javafaker.Faker;
-import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
-import com.github.projetoifsc.estagios.app.service.VagaService;
-import com.github.projetoifsc.estagios.core.IJobDAO;
-import com.github.projetoifsc.estagios.core.IJobUseCases;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.app.utils.Mapper;
@@ -13,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.Locale;
 
@@ -121,7 +115,7 @@ class JobDAOImplTest {
     @Test
     void getAllAvailable() {
         var id = "415";
-        var available = jobDAOImpl.getAllCreatedOrApprovedBy(id);
+        var available = jobDAOImpl.getAllCreatedOrApprovedBy(id, "", 0, 10);
         System.out.println(available.getContent().size());
         System.out.println(available.getContent().get(0).getOwner().getId());
         jsonParser.printValue(available);
@@ -139,7 +133,7 @@ class JobDAOImplTest {
     @Test
     void getAllCreatedWithPagination() {
         String orgId = "195";
-        var response = jobDAOImpl.getAllCreatedByWithPagination(orgId, 1, 5);
+        var response = jobDAOImpl.getAllCreatedByWithPagination(orgId, "", 1, 5);
         jsonParser.printValue(response);
     }
 }

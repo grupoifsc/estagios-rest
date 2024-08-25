@@ -21,7 +21,7 @@ public class VagaControllerTest {
     @Test
     void getAllCreatedByWithPagination() {
         userPrincipal = new UserPrincipal("195", null, null, null, null);
-        var vagas = authUserVagasController.getAllCreatedByUser(userPrincipal, 5, 0);
+        var vagas = authUserVagasController.getAllCreatedByUser(userPrincipal, "", 5, 0);
         jsonParser.printValue(vagas);
     }
 }

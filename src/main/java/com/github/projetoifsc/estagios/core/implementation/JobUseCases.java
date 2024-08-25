@@ -72,13 +72,13 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
-    public Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithPagination(String loggedId, String targetId, int page, int limit) {
-        return readOperations.getAllCreatedDetailsWithModeration(loggedId, targetId, page, limit);
+    public Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithPagination(String loggedId, String targetId, String search, int page, int limit) {
+        return readOperations.getAllCreatedDetailsWithModeration(loggedId, targetId, search, page, limit);
     }
 
     @Override
-    public Page<JobPublicDetailsProjection> getAllAvailable(String loggedId, String targetId) {
-        return readOperations.getAllAvailable(loggedId, targetId);
+    public Page<JobPublicDetailsProjection> getAllAvailableWithPagination(String loggedId, String targetId, String search, int page, int limit) {
+        return readOperations.getAllAvailable(loggedId, targetId, search, page, limit);
     }
 
     @Override
@@ -87,8 +87,8 @@ public class JobUseCases implements IJobUseCases {
     }
 
     @Override
-    public Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, int page, int limit) {
-        return readOperations.getAllReceivedWithPagination(loggedId, targetId, page, limit);
+    public Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, String search, int page, int limit) {
+        return readOperations.getAllReceivedWithPagination(loggedId, targetId, search, page, limit);
     }
 
     @Override

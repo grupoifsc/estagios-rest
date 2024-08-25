@@ -6,11 +6,8 @@ import com.github.projetoifsc.estagios.app.model.request.EPeriod;
 import com.github.projetoifsc.estagios.app.model.request.JobEntryData;
 import com.github.projetoifsc.estagios.app.security.auth.UserPrincipal;
 import com.github.projetoifsc.estagios.app.service.AuthUserService;
-import com.github.projetoifsc.estagios.app.service.AuthenticationService;
-import com.github.projetoifsc.estagios.app.service.OrgService;
 import com.github.projetoifsc.estagios.app.service.VagaService;
 import com.github.projetoifsc.estagios.app.utils.JsonParser;
-import com.github.projetoifsc.estagios.core.IJobDAO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -88,7 +85,7 @@ class CRUDJobIntegrationTest {
 
     @Test
     void getAvailable() {
-        value = jobService.getAuthUserAvailableJobs(userPrincipal, 0, 10);
+        value = jobService.getAuthUserAvailableJobs(userPrincipal, "", 0, 10);
     }
 
 

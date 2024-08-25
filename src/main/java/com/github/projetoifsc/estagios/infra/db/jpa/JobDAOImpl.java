@@ -71,18 +71,18 @@ class JobDAOImpl implements IJobDAO {
     }
 
     @Override
-    public Page<JobPrivateDetailsProjection> getAllCreatedByWithPagination(String orgId, int page, int limit) {
-        return jobDAORead.getAllCreatedByWithPagination(orgId, page, limit);
+    public Page<JobPrivateDetailsProjection> getAllCreatedByWithPagination(String orgId, String search, int page, int limit) {
+        return jobDAORead.getAllCreatedByWithPagination(orgId, search, page, limit);
     }
 
     @Override
-    public Page<JobPublicDetailsProjection> getAllReceivedByOrgPaginated(String loggedId, int page, int limit) {
-        return jobDAORead.getAllReceivedByWithPagination(loggedId, page, limit);
+    public Page<JobPublicDetailsProjection> getAllReceivedByOrgPaginated(String loggedId, String search, int page, int limit) {
+        return jobDAORead.getAllReceivedByWithPagination(loggedId, search, page, limit);
     }
 
     @Override
-    public Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId) {
-        return jobDAORead.getAllCreatedOrApprovedBy(orgId);
+    public Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId, String search, int page, int limit) {
+        return jobDAORead.getAllCreatedOrApprovedBy(orgId, search, page, limit);
     }
 
     @Override

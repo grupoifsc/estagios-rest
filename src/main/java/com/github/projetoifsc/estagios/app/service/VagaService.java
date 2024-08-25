@@ -10,7 +10,6 @@ import com.github.projetoifsc.estagios.core.models.IJobEntryData;
 import com.github.projetoifsc.estagios.core.models.projections.JobPrivateDetailsProjection;
 import com.github.projetoifsc.estagios.core.models.projections.JobPublicDetailsProjection;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -93,24 +92,24 @@ public class VagaService {
         ));
     }
 
-    public Page<JobPrivateDetails> getAuthUserCreatedJobsPaginated(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var vagas = jobUseCases.getAllCreatedDetailsWithPagination(userPrincipal.getId(), userPrincipal.getId(), page, limit);
+    public Page<JobPrivateDetails> getAuthUserCreatedJobsPaginated(UserPrincipal userPrincipal, String search, Integer page, Integer limit) {
+        var vagas = jobUseCases.getAllCreatedDetailsWithPagination(userPrincipal.getId(), userPrincipal.getId(), search, page, limit);
         return vagas.map(vaga -> mapper.map(
                 vaga,
                 JobPrivateDetails.class
         ));
     }
 
-    public Page<JobPublicDetails> getAuthUserReceivedJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var received = jobUseCases.getAllReceivedWithPagination(userPrincipal.getId(), userPrincipal.getId(), page, limit);
+    public Page<JobPublicDetails> getAuthUserReceivedJobs(UserPrincipal userPrincipal, String search, Integer page, Integer limit) {
+        var received = jobUseCases.getAllReceivedWithPagination(userPrincipal.getId(), userPrincipal.getId(), search, page, limit);
         return received.map(job -> mapper.map(
                 job,
                 JobPublicDetails.class
         ));
     }
 
-    public Page<JobPublicDetails> getAuthUserAvailableJobs(UserPrincipal userPrincipal, Integer page, Integer limit) {
-        var available = jobUseCases.getAllAvailable(userPrincipal.getId(), userPrincipal.getId());
+    public Page<JobPublicDetails> getAuthUserAvailableJobs(UserPrincipal userPrincipal, String search, Integer page, Integer limit) {
+        var available = jobUseCases.getAllAvailableWithPagination(userPrincipal.getId(), userPrincipal.getId(), search, page, limit);
         return available.map(job -> mapper.map(
                 job,
                 JobPublicDetails.class

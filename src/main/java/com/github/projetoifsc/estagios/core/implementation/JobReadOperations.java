@@ -4,12 +4,9 @@ import com.github.projetoifsc.estagios.app.utils.JsonParser;
 import com.github.projetoifsc.estagios.core.*;
 import com.github.projetoifsc.estagios.core.models.IJob;
 import com.github.projetoifsc.estagios.core.models.projections.*;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 
 import static com.github.projetoifsc.estagios.core.implementation.OrganizationValidation.*;
-
-import java.util.List;
 
 class JobReadOperations {
 
@@ -54,9 +51,9 @@ class JobReadOperations {
         throw new UnauthorizedAccessException(errorMessage);
     }
 
-    public Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithModeration(String loggedId, String targetId, int page, int limit) {
+    public Page<JobPrivateDetailsProjection> getAllCreatedDetailsWithModeration(String loggedId, String targetId, String search, int page, int limit) {
         if(isSelf(loggedId, targetId))
-            return jobDB.getAllCreatedByWithPagination(targetId, page, limit);
+            return jobDB.getAllCreatedByWithPagination(targetId, search, page, limit);
         var errorMessage = "Organizations can only access their own created jobs";
         throw new UnauthorizedAccessException(errorMessage);
     }
@@ -93,10 +90,10 @@ class JobReadOperations {
 //    }
 
 
-    public Page<JobPublicDetailsProjection> getAllAvailable(String loggedId, String targetId) {
+    public Page<JobPublicDetailsProjection> getAllAvailable(String loggedId, String targetId, String search, int page, int limit) {
         var org = organizationDB.findByIdSummaryProjection(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org))
-            return jobDB.getAllCreatedOrApprovedBy(loggedId);
+            return jobDB.getAllCreatedOrApprovedBy(loggedId, search, page, limit);
         throw new UnauthorizedAccessException("User not authorized to access these resources because is not self OR is not IE");
     }
 
@@ -169,10 +166,10 @@ class JobReadOperations {
     }
 
 
-    public Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, int page, int limit) {
+    public Page<JobPublicDetailsProjection> getAllReceivedWithPagination(String loggedId, String targetId, String search, int page, int limit) {
         var org = organizationDB.findByIdSummaryProjection(loggedId);
         if(isSelf(loggedId, targetId) && isIE(org)) {
-            var jobs = jobDB.getAllReceivedByOrgPaginated(loggedId, page, limit);
+            var jobs = jobDB.getAllReceivedByOrgPaginated(loggedId, search, page, limit);
             return jobs.map(job -> {
                 var moderationInfo = this.getModerationInfo(org, job);
                 job.setModerationDetail(moderationInfo);

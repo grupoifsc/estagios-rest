@@ -98,19 +98,17 @@ class JobDAORead {
     }
 
 //    @Transactional
-    public Page<JobPrivateDetailsProjection> getAllCreatedByWithPagination(String orgId, int page, int limit) {
+    public Page<JobPrivateDetailsProjection> getAllCreatedByWithPagination(String orgId, String search, int page, int limit) {
         var parsedId = Long.parseLong(orgId);
         Pageable pageable = PageRequest.of(page, limit);
-        var search = "";
         var entities = jobRepository.findAllByOwnerIdWithReceiversPaginatedByTitle(parsedId, search, pageable);
         return entities.map(job -> mapper.map(job, JobPrivateDetailsDTO.class));
     }
 
 
-    public Page<JobPublicDetailsProjection> getAllReceivedByWithPagination(String orgId, int page, int limit) {
+    public Page<JobPublicDetailsProjection> getAllReceivedByWithPagination(String orgId, String search, int page, int limit) {
         var parsedId = Long.parseLong(orgId);
         Pageable pageable = PageRequest.of(page, limit);
-        var search = "";
         var entities = jobRepository.findAllReceivedByOwnerOrTitle(parsedId, search, pageable);
         return entities.map(job -> mapper.map(
                 job,
@@ -153,11 +151,10 @@ class JobDAORead {
     }
 
 
-    public Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId) {
+    public Page<JobPublicDetailsProjection> getAllCreatedOrApprovedBy(String orgId, String search, int page, int limit) {
         var organizationId = Long.parseLong(orgId);
-        var search = "";
-        var page = PageRequest.of(0, 10);
-        var entities = jobRepository.findAllCreatedOrModeratedByOrgByTitleByOwner(organizationId, search, ModerationStatusEnum.APPROVED.getId(), page);
+        var pageable = PageRequest.of(page, limit);
+        var entities = jobRepository.findAllCreatedOrModeratedByOrgByTitleByOwner(organizationId, search, ModerationStatusEnum.APPROVED.getId(), pageable);
         return entities.map(ent -> mapper.map(ent, JobPublicDetailsDTO.class));
     }
 
