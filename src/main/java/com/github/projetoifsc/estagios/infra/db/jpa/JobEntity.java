@@ -60,7 +60,11 @@ class JobEntity implements IJob {
     ContactEntity contact;
 
 
-    @OneToMany(mappedBy = "job")
+    @OneToMany(
+	mappedBy = "job",
+	cascade = CascadeType.REMOVE,
+        orphanRemoval = true
+    )
     Set<ModeratedJobsEntity> moderatedJobs = new HashSet<>();
 
     // Solução: https://stackoverflow.com/questions/27930449/jpa-many-to-one-relation-need-to-save-only-id

@@ -33,3 +33,18 @@ VALUES
     (1, "aprovado"),
     (2, "rejeitado")
 ;
+
+
+INSERT INTO `areas` (`name`) VALUES
+('Ciências da Computação'),
+('Administração de Empresas'),
+('Engenharia de Software'),
+('Matemática Aplicada'),
+('Psicologia'),
+('Economia'),
+('Design Gráfico'),
+('Comunicação Social'),
+('Engenharia de Produção'),
+('Biotecnologia');
+
+
