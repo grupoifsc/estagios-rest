@@ -340,8 +340,8 @@ public class JobPublicDetails implements JobPublicDetailsProjection {
         this.moderationDetail = mapped;
     }
 
-    public void setModerationDetail(ModerationDetail moderationDetail) {
-        this.moderationDetail = moderationDetail;
-    }
+//    public void setModerationDetail(ModerationDetail moderationDetail) {
+//        this.moderationDetail = moderationDetail;
+//    }
 
 }
