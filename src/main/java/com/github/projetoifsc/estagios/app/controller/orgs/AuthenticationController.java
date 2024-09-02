@@ -57,21 +57,4 @@ public class AuthenticationController {
     }
 
 
-    @GetMapping("/test")
-    @Operation(tags = AUTH, security = {@SecurityRequirement(name = AUTHORIZATION)})
-    public ResponseEntity<SuccessResponse<String>> testAuth(@AuthenticationPrincipal UserPrincipal principal) {
-        return responseEntity.successResponse(
-                "User Id: " + principal.getId()
-        );
-    }
-
-
-    // TODO BugFix: Quando a autorização é com base em ROLES, o erro devolvido não passa pelo HandlerExceptionResolver e o json fica fora do padrão do restante da aplicação
-    @GetMapping("/admin")
-    @Operation(tags = AUTH, security = {@SecurityRequirement(name = AUTHORIZATION)})
-    public ResponseEntity<SuccessResponse<String>> adminTest(@AuthenticationPrincipal UserPrincipal principal) {
-        return responseEntity.successResponse( "You are a admin!");
-    }
-
-
 }
