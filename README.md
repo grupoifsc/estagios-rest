@@ -62,7 +62,7 @@ Ou abra o projeto e execute com sua IDE Java favorita
 
 ## Documentação
 
-A documentação completa do projeto pode ser acessada em: https://github.io/juhachmann/estagios-app
+A documentação completa do projeto pode ser acessada em: https://grupoifsc.github.io/estagios-app
 
 ## Para desenvolvedores
 
