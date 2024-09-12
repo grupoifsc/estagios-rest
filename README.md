@@ -64,6 +64,8 @@ Ou abra o projeto e execute com sua IDE Java favorita
 
 A documentação completa do projeto pode ser acessada em: https://grupoifsc.github.io/estagios-app
 
+Repositório do projeto da documentação em Angular: https://github.com/grupoifsc/estagios-app
+
 ## Para desenvolvedores
 
 Este projeto foi desenvolvido como um exercício de aprendizagem de construção de serviços REST com o ecossistema Spring. 
