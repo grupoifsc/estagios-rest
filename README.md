@@ -2,7 +2,7 @@
 
 Um serviço web para conectar instituições de ensino e empresas em torno de um objetivo comum: divulgar vagas de estágio à comunidade estudantil. 
 
-> Este projeto foi desenvolvido como Projeto de Conclusão do Curso Técnico em Desenvolvimento de Sistemas - IFSC - Florianópolis, semestre 2024.1. E também como Projeto de Extensão do Curso de Análise e Desenvolvimento de Sistemas da Estácio - 2024.1
+> Este projeto foi desenvolvido no contexto do Curso Técnico em Desenvolvimento de Sistemas - IFSC - Florianópolis, semestre 2024.1 e do Curso de Análise e Desenvolvimento de Sistemas da Estácio - 2024.1
 
 ## Recursos
 
