@@ -2,9 +2,9 @@ spring:
   application:
     name: 
   datasource:
-    url: jdbc:mysql://localhost:3306/estagios
-    username: estagiosapp
-    password: estagios123
+    url: jdbc:mysql://localhost:3306/database-name
+    username: user
+    password: pwd
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: true
