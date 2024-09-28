@@ -1,3 +1,4 @@
+# General Spring
 spring:
   application:
     name: app-name
