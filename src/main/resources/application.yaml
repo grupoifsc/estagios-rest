@@ -1,14 +1,14 @@
 spring:
   application:
-    name: estagios
+    name: 
   datasource:
     url: jdbc:mysql://localhost:3306/estagios
-    username: admin
-    password: admin
+    username: estagiosapp
+    password: estagios123
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     generate-ddl: true
-    show-sql: true
+    show-sql: false
   jackson:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
     serialization:
@@ -34,12 +34,13 @@ security:
   jwt:
     access-token-expiration-minutes: 60
     refresh-token-expiration-minutes: 1440
-    access-token-secret-key: verysecretkeyohmygodwhyisitsosecretdonttellanybody
-    refresh-token-secret-key: anotherverysecretaccesskeydonteverletitleak
+    access-token-secret-key: makealongsecret
+    refresh-token-secret-key: makeareallongsecret
 
 
 #DEFAULT SERVER.ERROR CONFIGS
 server:
+  port: 8080
   error:
     include-binding-errors: never
     include-exception: false
